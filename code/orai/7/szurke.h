@@ -14,3 +14,4 @@ public:
 };
 
 #endif // SZURKE_H
+//

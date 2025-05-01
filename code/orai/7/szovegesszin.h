@@ -11,3 +11,5 @@ public:
 };
 
 #endif // SZOVEGESSZIN_H
+
+
