@@ -425,6 +425,4 @@ Here are the **key takeaways** from the `main.cpp` program:
 - JSON reading, data parsing, and class responsibilities are **cleanly separated**.
 - Logic for displaying or formatting is encapsulated inside class methods.
 
----
-
-Would you like me to summarize this as a diagram or mind map for better visualization?
+ 
