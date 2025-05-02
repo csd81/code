@@ -4,7 +4,9 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += main.cpp \
-    datum.cpp
+    datum.cpp \
+    hatarido.cpp
 
 HEADERS += \
-    datum.h
+    datum.h \
+    hatarido.h
