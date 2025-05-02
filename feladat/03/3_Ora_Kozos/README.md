@@ -1,0 +1,9 @@
+# Feladat
+
+- A feladat elkezdéséhez a mellékelt projekt tartalmaz kódokat. A megoldás bizonyos feladatoknál ezekhez a kódokhoz is hozzá kell nyúlni, és a teszteléshez a `main` függvényben a nem használt kódokat ki lehet kommentezni.
+- A megadott osztály a `Szemely` osztály, mely tárolja egy személy vezeték- és keresztnevét, valamint életkorát, pár alapvető függvénnyel.
+- Ügyelj arra, hogy minden lefoglalt memória kerüljön megfelelően felszabadításra.
+- Származtass egy `Hallgato` osztályt a `Szemely`-ből. Az osztály tárolja még a hallgató Neptun-kódját és befejezett féléveinek számát. Ezeket is kapja meg a konstruktor, de a félévek száma legyen elhagyható, ekkor az értéke legyen 1. Getter függvény minden adathoz legyen, setter csak a félévek számához.
+- A `Szemely` osztályban van egy `kiir` függvény, amely kiírja az adatait. Írd felül ezt a függvényt a `Hallgato`-ban, amely kiír minden adatot az ősosztály `kiir` függvényét felhasználva.
+- Készíts a `Hallgato` osztályba egy **furcsa** függvényt. A függvény igazzal térjen vissza, ha a hallgató fiatalabb, mint ahogy a féléveinek száma sugallja, egyébként hamissal. (Egy hallgató általában legalább 18 éves, amikor az első félévét elkezdi.)
+- Készíts a `Szemely` osztályba egy `fiatalabb` függvényt, ami paraméterben egy másik személyt vár. A függvény térjen vissza igaz értékkel, ha az adott személy fiatalabb, mint a paraméterben átadott. Egyébként térjen vissza hamissal.

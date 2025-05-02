@@ -1,0 +1,1 @@
+/usr/bin/g++ -g CMakeFiles/02szamok.dir/main.cpp.o CMakeFiles/02szamok.dir/szamok.cpp.o -o 02szamok 

@@ -1,0 +1,7 @@
+/home/d/git/code/feladat/02szamok/build/Desktop-Debug/CMakeFiles/02szamok.dir
+/home/d/git/code/feladat/02szamok/build/Desktop-Debug/CMakeFiles/edit_cache.dir
+/home/d/git/code/feladat/02szamok/build/Desktop-Debug/CMakeFiles/rebuild_cache.dir
+/home/d/git/code/feladat/02szamok/build/Desktop-Debug/CMakeFiles/list_install_components.dir
+/home/d/git/code/feladat/02szamok/build/Desktop-Debug/CMakeFiles/install.dir
+/home/d/git/code/feladat/02szamok/build/Desktop-Debug/CMakeFiles/install/local.dir
+/home/d/git/code/feladat/02szamok/build/Desktop-Debug/CMakeFiles/install/strip.dir
