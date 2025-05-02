@@ -14,4 +14,4 @@ public:
 	void setNap(unsigned int value);
 };
 
-#endif // DATUM_H
+#endif // DATUM_H hello
