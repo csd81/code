@@ -1,6 +1,3 @@
-Here is the provided text converted into **Markdown** format:
-
-```markdown
 # Feladat
 
 A feladat elkezdéséhez a mellékelt projekt tartalmaz kódokat. A megoldás bizonyos feladatoknál ezekhez a kódokhoz is hozzá kell nyúlni, és a teszteléshez a `main` függvényben a nem használt kódokat ki lehet kommentezni.
@@ -77,6 +74,3 @@ A megadott osztály a `Szin` osztály, amely nem tárol adattagot, viszont egy a
 | (6,54,15)         | `#06360F`      |
 | (212,200,253)     | `#D4C8FD`      |
 | (128,96,177)      | `#8060B1`      |
-```
-
-Would you like this saved to a file or converted into HTML as well?
