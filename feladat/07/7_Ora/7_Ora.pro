@@ -4,7 +4,15 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += main.cpp \
-    szin.cpp
+    feketefeher.cpp \
+    rgbszin.cpp \
+    szin.cpp \
+    szovegesszin.cpp \
+    szurke.cpp
 
 HEADERS += \
-    szin.h
+    feketefeher.h \
+    rgbszin.h \
+    szin.h \
+    szovegesszin.h \
+    szurke.h
