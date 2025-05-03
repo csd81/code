@@ -1,0 +1,56 @@
+[
+	{
+		"nev": "OsMagus12",
+		"kaszt": "magus",
+		"szint": 8,
+		"mana": 45
+	},
+	{
+		"nev": "RobinHood42",
+		"kaszt": "ijasz",
+		"szint": 8,
+		"pontossag": 84
+	},
+	{
+		"nev": "Szoke herceg",
+		"kaszt": "harcos",
+		"szint": 2,
+		"fegyver": "kard"
+	},
+	{
+		"nev": "Harry Potter",
+		"kaszt": "magus",
+		"szint": 5,
+		"mana": 25
+	},
+	{
+		"nev": "Lone Unsullied",
+		"kaszt": "harcos",
+		"szint": 12,
+		"fegyver": "landzsa"
+	},
+	{
+		"nev": "Gandalf25",
+		"kaszt": "magus",
+		"szint": 19,
+		"mana": 59
+	},
+	{
+		"nev": "MrLegolas",
+		"kaszt": "ijasz",
+		"szint": 15,
+		"pontossag": 95
+	},
+	{
+		"nev": "TracThor",
+		"kaszt": "harcos",
+		"szint": 17,
+		"fegyver": "kalapacs"
+	},
+	{
+		"nev": "This Is Sparta",
+		"kaszt": "harcos",
+		"szint": 9,
+		"fegyver": "landzsa"
+	}
+]
