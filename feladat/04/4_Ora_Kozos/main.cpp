@@ -1,7 +1,6 @@
 #include <iostream>
-#include <fstream>
 #include "datum.h"
-//#include "hatarido.h"
+#include "hatarido.h"
 
 using namespace std;
 
@@ -11,80 +10,84 @@ void datumKiir(const Datum *d)
 	else cout << d->getEv() << "." << d->getHonap() << "." << d->getNap() << endl;
 }
 
-//void hataridotKiir(const Hatarido &h)
-//{
-//	cout << h.getNev() << ": " << endl;
-//	cout << "  alpha: ";
-//	datumKiir(h.getAlphaDatum());
-//	cout << "  beta: ";
-//	datumKiir(h.getBetaDatum());
-//	cout << "  vegso: ";
-//	datumKiir(h.getVegsoDatum());
-//}
+void hataridotKiir(const Hatarido &h)
+{
+    cout << h.getNev() << ": " << endl;
+    cout << "  alpha: ";
+    datumKiir(h.getAlphaDatum());
+    cout << "  beta: ";
+    datumKiir(h.getBetaDatum());
+    cout << "  vegso: ";
+    datumKiir(h.getVegsoDatum());
+}
 
 int main()
 {
 
-//	// Létrehozás és név beállítás
-//	Hatarido h1("Elso tarolo osztaly");
-//	cout << "Kerek egy masik nevet: ";
-//	string nev;
-//	getline(cin, nev); // Teljes sor bekérése
-//	Hatarido h2(nev);
-//	cout << h1.getNev() << endl;
-//	cout << h2.getNev() << endl;
-//	h1.setNev("Atallitott nev");
-//	cout << h1.getNev() << endl;
-//	cout << h2.getNev() << endl;
+    // Létrehozás és név beállítás
+    Hatarido h1("Elso tarolo osztaly");
+    cout << "Kerek egy masik nevet: ";
+    string nev;
+    getline(cin, nev); // Teljes sor bekérése
+    Hatarido h2(nev);
+    cout << h1.getNev() << endl;
+    cout << h2.getNev() << endl;
+    h1.setNev("Atallitott nev");
+    cout << h1.getNev() << endl;
+    cout << h2.getNev() << endl;
 
-//	// Dátum beállítása
-//	cout << endl;
-//	h1.setAlphaDatum(Datum(2017, 3, 6));
-//	cout << "Kerek egy datumot (ev, honap, nap): ";
-//	unsigned int e, h, n;
-//	cin >> e >> h >> n;
-//	h1.setVegsoDatum(Datum(e,h,n));
-//	cout << "Kerek meg egy datumot (ev, honap, nap): ";
-//	cin >> e >> h >> n;
-//	Datum d(e,h,n);
-//	h2.setBetaDatum(d);
-//	hataridotKiir(h1);
-//	hataridotKiir(h2);
+    // Dátum beállítása
+    cout << endl;
+    h1.setAlphaDatum(new Datum(2017, 3, 6));
+    cout << "Kerek egy datumot (ev, honap, nap): ";
+    unsigned int e, h, n;
+    cin >> e >> h >> n;
+    h1.setVegsoDatum(new Datum(e,h,n));
+    cout << "Kerek meg egy datumot (ev, honap, nap): ";
+    cin >> e >> h >> n;
 
-//	// Aktuális dátum kezelése
-//	Datum aktualis = Hatarido::getAktualisDatum();
-//	cout << "Aktualis datum: " << aktualis.getEv() << "." << aktualis.getHonap() << "." << aktualis.getNap() << endl;
-//	cout << h1.getNev() << " lejart?" << endl;
-//	h1.lejart();
-//	cout << h2.getNev() << " lejart?" << endl;
-//	h2.lejart();
-//	cout << "Kerem az uj aktualis datumot (ev, honap, nap): ";
-//	cin >> e >> h >> n;
-//	Hatarido::setAktualisDatum(Datum(e,h,n));
-//	aktualis = Hatarido::getAktualisDatum();
-//	cout << "Aktualis datum: " << aktualis.getEv() << "." << aktualis.getHonap() << "." << aktualis.getNap() << endl;
-//	cout << h1.getNev() << " lejart?" << endl;
-//	h1.lejart();
-//	cout << h2.getNev() << " lejart?" << endl;
-//	h2.lejart();
+    Datum* d = new Datum(e, h, n);
 
-//	// Dátum átállítása és törlése
-//	cout << endl;
-//	h1.setVegsoDatum(Datum(2000,1,1));
-//	h1.hataridoTorol("alpha"); // Ezt kitörli
-//	h1.hataridoTorol("beta"); // Itt nincs dátum tárolva
-//	h1.hataridoTorol("gamma"); // Ilyen meg nincs is
-//	hataridotKiir(h1);
 
-//	// Másolat készítése
-//	cout << endl;
-//	Hatarido uj(h1);
-//	hataridotKiir(h1);
-//	hataridotKiir(uj);
-//	uj.setNev("UJ");
-//	uj.setBetaDatum(Datum(1996,8,9));
-//	hataridotKiir(h1);
-//	hataridotKiir(uj);
+
+    h2.setBetaDatum(d);
+    hataridotKiir(h1);
+    hataridotKiir(h2);
+
+    // Aktuális dátum kezelése
+    Datum aktualis = Hatarido::getAktualisDatum();
+    cout << "Aktualis datum: " << aktualis.getEv() << "." << aktualis.getHonap() << "." << aktualis.getNap() << endl;
+    cout << h1.getNev() << " lejart?" << endl;
+    h1.lejart();
+    cout << h2.getNev() << " lejart?" << endl;
+    h2.lejart();
+    cout << "Kerem az uj aktualis datumot (ev, honap, nap): ";
+    cin >> e >> h >> n;
+    Hatarido::setAktualisDatum(Datum(e,h,n));
+    aktualis = Hatarido::getAktualisDatum();
+    cout << "Aktualis datum: " << aktualis.getEv() << "." << aktualis.getHonap() << "." << aktualis.getNap() << endl;
+    cout << h1.getNev() << " lejart?" << endl;
+    h1.lejart();
+    cout << h2.getNev() << " lejart?" << endl;
+    h2.lejart();
+
+    // Dátum átállítása és törlése
+    cout << endl;
+    h1.setVegsoDatum(new Datum(2000,1,1));
+    h1.hataridoTorol("alpha"); // Ezt kitörli
+    h1.hataridoTorol("beta"); // Itt nincs dátum tárolva
+    h1.hataridoTorol("gamma"); // Ilyen meg nincs is
+    hataridotKiir(h1);
+
+    // Másolat készítése
+    cout << endl;
+    Hatarido uj(h1);
+    hataridotKiir(h1);
+    hataridotKiir(uj);
+    uj.setNev("UJ");
+    uj.setBetaDatum(new Datum(1996,8,9));
+    hataridotKiir(h1);
+    hataridotKiir(uj);
 
 	return 0;
 }
