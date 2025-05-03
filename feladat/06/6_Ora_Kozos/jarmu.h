@@ -3,10 +3,16 @@
 
 class Jarmu
 {
-	unsigned int tomeg, sebesseg;
+protected:
+    unsigned int tomeg;
+    unsigned int sebesseg;
 public:
 	Jarmu(unsigned int t, unsigned int s);
-	void kiir() const;
+    virtual ~Jarmu() = default;
+    int getSebesseg() const;
+    int getTomeg() const;
+    virtual void kiir() const = 0;
+
 };
 
 #endif // JARMU_H
