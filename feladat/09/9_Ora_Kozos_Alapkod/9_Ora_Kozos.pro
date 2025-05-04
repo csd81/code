@@ -6,4 +6,6 @@ CONFIG -= qt
 SOURCES += \
         main.cpp
 
-HEADERS +=
+HEADERS += \
+    tomb.h \
+    tombalap.h
