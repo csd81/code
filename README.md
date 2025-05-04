@@ -3369,4 +3369,293 @@ Majd hasonlítsd össze két `Komplex` típusú változó összeadását, érté
 
 ---
 
+Remek téma! A **C++ sablonok (templates)** lehetővé teszik, hogy típusfüggetlen, újrahasznosítható, generikus kódot írjunk. Az alábbi részletes (\~2000 szavas) tananyag végigvezet a sablonok teljes működésén, szintaxisán, használatán, és gyakorlati példákon. Tartalmazz elméletet, osztály- és függvénysablonokat, specializációt, és a sablonprogramozás előnyeit.
+
+---
+
+## 📘 Tartalomjegyzék
+
+1. Bevezetés a sablonokba
+2. Függvénysablonok
+3. Osztálysablonok
+4. Típusparaméterek és nem típusparaméterek
+5. Sablon specializáció
+6. Sablonok használata STL-ben
+7. Sablonok és inline kódgenerálás
+8. `typename` és `template` kulcsszavak
+9. Legjobb gyakorlatok
+10. Összegzés
+
+---
+
+## 🧠 1. Bevezetés: Mi az a sablon?
+
+A **sablon** (template) egy **általánosított kódstruktúra**, amely lehetővé teszi, hogy **különböző típusokra működő, mégis egyetlen** kódot írjunk meg.
+
+### Előnyök:
+
+* **Típusfüggetlen** kód (pl. `int`, `double`, `string`)
+* **Karbantarthatóbb** és rövidebb programok
+* **Fordítási időben történik a generálás** – hatékony
+
+---
+
+## 🔧 2. Függvénysablonok
+
+### Szintaxis:
+
+```cpp
+template <typename T>
+T osszead(T a, T b) {
+    return a + b;
+}
+```
+
+### Használat:
+
+```cpp
+cout << osszead(3, 4) << endl;       // int → 7
+cout << osszead(2.5, 4.1) << endl;   // double → 6.6
+cout << osszead(string("a"), "b") << endl; // "ab"
+```
+
+### Megjegyzés:
+
+* A fordító **automatikusan kitalálja** a `T` típusát az argumentumok alapján.
+* Típuskiírással is használható: `osszead<double>(2.1, 3.4);`
+
+---
+
+### Több típusparaméter:
+
+```cpp
+template <typename T1, typename T2>
+auto osszead(T1 a, T2 b) -> decltype(a + b) {
+    return a + b;
+}
+```
+
+---
+
+## 🧱 3. Osztálysablonok
+
+### Szintaxis:
+
+```cpp
+template <typename T>
+class Tarolo {
+private:
+    T adat;
+public:
+    Tarolo(T a) : adat(a) {}
+    void kiir() const {
+        cout << "Adat: " << adat << endl;
+    }
+};
+```
+
+### Használat:
+
+```cpp
+Tarolo<int> szam(42);
+szam.kiir();
+
+Tarolo<string> szoveg("Helló");
+szoveg.kiir();
+```
+
+---
+
+### Több típusparaméter:
+
+```cpp
+template <typename T1, typename T2>
+class Par {
+public:
+    T1 elso;
+    T2 masodik;
+
+    Par(T1 e, T2 m) : elso(e), masodik(m) {}
+};
+```
+
+---
+
+## 🔢 4. Típusparaméterek és nem típusparaméterek
+
+Sablonparaméter lehet **típus** vagy **nem típus** (pl. `int`, `char`, stb.).
+
+### Nem típusparaméter példa:
+
+```cpp
+template <typename T, int MERET>
+class FixTomb {
+    T tomb[MERET];
+public:
+    T& operator[](int index) { return tomb[index]; }
+};
+```
+
+Használat:
+
+```cpp
+FixTomb<int, 5> tomb;
+tomb[0] = 10;
+```
+
+---
+
+## 🎭 5. Sablon specializáció
+
+### Teljes specializáció:
+
+```cpp
+template <>
+class Tarolo<bool> {
+private:
+    bool adat;
+public:
+    Tarolo(bool a) : adat(a) {}
+    void kiir() const {
+        cout << "Logikai érték: " << (adat ? "true" : "false") << endl;
+    }
+};
+```
+
+---
+
+### Részleges specializáció:
+
+```cpp
+template <typename T>
+class Tarolo<T*> {
+    T* ptr;
+public:
+    Tarolo(T* p) : ptr(p) {}
+    void kiir() const {
+        cout << "Mutatott érték: " << *ptr << endl;
+    }
+};
+```
+
+---
+
+### Függvénysablon specializáció:
+
+```cpp
+template <typename T>
+void kiir(T val) {
+    cout << "Általános: " << val << endl;
+}
+
+template <>
+void kiir<bool>(bool val) {
+    cout << (val ? "IGAZ" : "HAMIS") << endl;
+}
+```
+
+---
+
+## 📦 6. Sablonok a STL-ben
+
+A C++ **standard template library (STL)** teljesen sablonokra épül.
+
+### Példák:
+
+```cpp
+vector<int> szamok;
+map<string, int> szotar;
+pair<int, double> p(1, 3.14);
+```
+
+Minden STL konténer (pl. `vector`, `list`, `set`) sablonként van megvalósítva.
+
+---
+
+### STL algoritmusok sablonos használata:
+
+```cpp
+vector<int> v = {1, 2, 3, 4};
+sort(v.begin(), v.end());
+```
+
+A `sort` egy sablon, amely bármilyen típusú tartalomra működik, ha van `<` operátor.
+
+---
+
+## 🧮 7. Sablonok fordítási sajátosságai
+
+* **Fordítási időben** történik a sablon **kibontása**
+* Ha nem használjuk, nem generálódik a kód
+* Sablonok **egy fájlban** maradjanak (headerben), különben linkelési hiba
+
+---
+
+### Inline sablonok:
+
+A sablonkódot gyakran **header fájlba tesszük**, nem külön forrásfájlba.
+
+```cpp
+// Tarolo.h
+template <typename T>
+class Tarolo {
+    ...
+};
+```
+
+Ne különítsd el `.cpp` fájlba!
+
+---
+
+## 🔍 8. `typename` és `template` kulcsszavak
+
+### `typename` kulcsszó
+
+A `template<typename T>` szintaxisban is, de akkor is kell, ha sablon paraméterben típusnevet használunk:
+
+```cpp
+template <typename T>
+void f(typename T::value_type val);
+```
+
+### `template` kulcsszó (nested templates)
+
+```cpp
+template <typename T>
+void f(T t) {
+    typename T::iterator it = t.begin();
+}
+```
+
+---
+
+## ✅ 9. Legjobb gyakorlatok
+
+* Mindig használd `typename` sablonparaméterekhez
+* Használj `explicit` specializációt csak ha tényleg szükséges
+* Osztálysablonokat és függvénysablonokat külön fájlban (pl. `.h`)
+* Ne bonyolítsd túl a sablonokat – olvasható maradjon
+* Teszteld sablonos kódot több típussal
+
+---
+
+## 📌 10. Összefoglalás
+
+| Fogalom                | Magyarázat                                    |
+| ---------------------- | --------------------------------------------- |
+| `template<typename T>` | Függvények és osztályok sablonosítása         |
+| `template<int N>`      | Nem típusparaméter                            |
+| Függvénysablon         | Típusfüggetlen logika pl. összeadás           |
+| Osztálysablon          | Típusfüggetlen adatszerkezet                  |
+| Specializáció          | Egyedi viselkedés adott típusokra             |
+| STL sablonok           | Konténerek (vector, map), algoritmusok        |
+| `typename` használat   | Típusnév megkülönböztetése sablonparaméterből |
+| Sablon inline          | Sablon definíciók header fájlban maradjanak   |
+
+---
+
+## 🔚 Záró gondolatok
+
+A **C++ sablonok** lehetővé teszik az **általános programozást** (generic programming), amivel egyszerű, mégis hatékony típusfüggetlen kód írható. Az STL, a `vector`, `sort`, `pair` vagy `map` mind sablonos kód eredménye. Ha elsajátítod a sablonokat, **magabiztosabban fogsz tudni újrahasznosítható könyvtárakat és eszközöket építeni**.
+
  
