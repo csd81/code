@@ -2847,4 +2847,266 @@ konyvtar.push_back(make_unique<Konyv>("C++ Primer"));
 * Tartsd be a **Rule of 3/5** elvét, ha szükséges
 * Kerüld a memóriaszivárgást → RAII, `vector`, `unique_ptr`, `shared_ptr` használata
 
- 
+ Rendben! Az alábbi részletes (\~1500 szavas) tananyag a **C++ operátor átdefiniálásáról (operator overloading)** szól. Az operátorok újradefiniálása lehetővé teszi, hogy **osztályainkhoz természetes, olvasható szintaxist biztosítsunk**, mintha beépített típusokkal dolgoznánk. Ez különösen hasznos **matematikai objektumoknál, komplex adatszerkezeteknél, string osztályoknál stb.**
+
+---
+
+## 📘 Tartalomjegyzék
+
+1. Mi az operátor túlterhelés (overloading)?
+2. Mely operátorok definiálhatók újra?
+3. Szintaxis és szabályok
+4. Példák: +, ==, \[], <<, ++, =
+5. Barát függvények és operátorok
+6. Elkerülendő hibák
+7. Mikor érdemes újradefiniálni operátort?
+8. Összefoglalás
+
+---
+
+## 🧠 1. Mi az operátor túlterhelés?
+
+Az **operátor túlterhelés** (operator overloading) lehetővé teszi, hogy **megváltoztassuk egy operátor működését**, amikor az saját típusainkkal (pl. osztályobjektumokkal) dolgozik.
+
+### Példa: összeadás `+` operátorral
+
+```cpp
+Komplex a(3, 4), b(1, 2);
+Komplex c = a + b;
+```
+
+Ez akkor működik, ha **újradefiniáljuk a `+` operátort** a `Komplex` osztályban.
+
+---
+
+## ✔️ 2. Mely operátorok definiálhatók újra?
+
+C++-ban **szinte minden operátor** újradefiniálható, kivéve néhány kulcsfontosságú operátort.
+
+### Újradefiniálható példák:
+
+* Aritmetikai: `+ - * / %`
+* Összehasonlító: `== != < > <= >=`
+* Logikai: `&& || !`
+* Bitműveletek: `& | ^ ~ << >>`
+* Hozzárendelő: `= += -= *= /=`
+* Indexelés: `[]`
+* Hívás: `()`
+* Tagelérés mutatóval: `->`
+* Be- és kimenet: `<< >>`
+
+### Nem definiálhatók újra:
+
+* `.` (pont operátor)
+* `.*` (tagmutató)
+* `::` (névtér, osztály scope)
+* `sizeof`, `typeid`, `alignof`, `decltype`
+* `?:` (ternáris feltétel)
+
+---
+
+## 🧱 3. Szintaxis és szabályok
+
+### Tagfüggvényként (member function)
+
+```cpp
+ReturnType operatorOp(const MásikTípus& rhs);
+```
+
+### Külső (globális vagy barát) függvényként
+
+```cpp
+ReturnType operatorOp(const SajátTípus& lhs, const SajátTípus& rhs);
+```
+
+* **Tagfüggvényként**: bal oldali operandus az adott osztály objektuma
+* **Globálisként**: mindkét operandus átadható, akár más sorrendben is
+
+---
+
+## ➕ 4. Példák a leggyakoribb operátorokra
+
+### 4.1 `+` – összeadás
+
+```cpp
+class Vektor {
+    int x, y;
+public:
+    Vektor(int a, int b) : x(a), y(b) {}
+
+    Vektor operator+(const Vektor& masik) const {
+        return Vektor(x + masik.x, y + masik.y);
+    }
+
+    void kiir() const {
+        cout << "(" << x << ", " << y << ")" << endl;
+    }
+};
+
+int main() {
+    Vektor a(1, 2), b(3, 4);
+    Vektor c = a + b;
+    c.kiir();  // (4, 6)
+}
+```
+
+---
+
+### 4.2 `==` – egyenlőség vizsgálat
+
+```cpp
+bool operator==(const Vektor& masik) const {
+    return x == masik.x && y == masik.y;
+}
+```
+
+---
+
+### 4.3 `[]` – indexelés
+
+```cpp
+class Sorozat {
+    vector<int> adatok;
+public:
+    Sorozat(initializer_list<int> l) : adatok(l) {}
+
+    int& operator[](size_t index) {
+        return adatok[index];
+    }
+};
+```
+
+---
+
+### 4.4 `<<` – kiírás (stream operátor)
+
+```cpp
+class Pont {
+    int x, y;
+public:
+    Pont(int a, int b) : x(a), y(b) {}
+
+    friend ostream& operator<<(ostream& os, const Pont& p) {
+        os << "(" << p.x << ", " << p.y << ")";
+        return os;
+    }
+};
+```
+
+> A `<<` operátort mindig barátfüggvényként szokás megvalósítani.
+
+---
+
+### 4.5 `++` – növelés
+
+```cpp
+class Szamlalo {
+    int ertek;
+public:
+    Szamlalo(int e) : ertek(e) {}
+
+    // Prefix
+    Szamlalo& operator++() {
+        ertek++;
+        return *this;
+    }
+
+    // Postfix
+    Szamlalo operator++(int) {
+        Szamlalo regi = *this;
+        ertek++;
+        return regi;
+    }
+};
+```
+
+---
+
+### 4.6 `=` – értékadás
+
+Alapértelmezés szerint generálódik, de ha dinamikus erőforrásokat kezelsz, **muszáj felüldefiniálni**:
+
+```cpp
+Vektor& operator=(const Vektor& rhs) {
+    if (this != &rhs) {
+        x = rhs.x;
+        y = rhs.y;
+    }
+    return *this;
+}
+```
+
+---
+
+## 🤝 5. Barát függvények és operátorok
+
+Ha az operátornak hozzá kell férnie a privát adattagokhoz, **barátfüggvényként** deklaráljuk:
+
+```cpp
+class Komplex {
+    double re, im;
+public:
+    Komplex(double r, double i) : re(r), im(i) {}
+
+    friend Komplex operator+(const Komplex& a, const Komplex& b);
+};
+
+Komplex operator+(const Komplex& a, const Komplex& b) {
+    return Komplex(a.re + b.re, a.im + b.im);
+}
+```
+
+---
+
+## 🧱 6. Elkerülendő hibák
+
+| Hiba                                | Magyarázat                                      |
+| ----------------------------------- | ----------------------------------------------- |
+| Hiányzó `const`                     | Ha nem jelöljük, hogy az operandus nem változik |
+| Összeadás nem másolatot ad vissza   | Visszatérési értékkel dolgozz, ne referenciával |
+| Hiányzó referencia `operator<<`-nél | `ostream&` és `const T&` legyen                 |
+| Dinamikus memória kezelése nélkül   | Túlcsordulás, memóriaszivárgás                  |
+| Postfix `++` nincs megkülönböztetve | `(int)` kell a szignatúrába                     |
+
+---
+
+## 📌 7. Mikor érdemes újradefiniálni operátort?
+
+### Érdemes, ha:
+
+* A művelet **természetesen illeszkedik** az osztály viselkedéséhez
+* Növeli a **kód olvashatóságát**
+* Az osztály **matematikai objektum** (komplex szám, mátrix, vektor)
+
+### Kerüld, ha:
+
+* Az operátor viselkedése **nem egyértelmű** vagy zavaró lehet
+* Az osztály viselkedése nem természetesen illeszkedik a művelethez
+* Bonyolult mellékhatásokat okoz (pl. memória kezelése)
+
+---
+
+## 📜 8. Összefoglalás
+
+| Fogalom      | Magyarázat                               |
+| ------------ | ---------------------------------------- |
+| `operator+`  | Összeadás újradefiniálása                |
+| `operator==` | Egyenlőség vizsgálat                     |
+| `operator[]` | Indexelés                                |
+| `operator<<` | Stream kimenet (általában barátfüggvény) |
+| `operator++` | Növelő operátor (prefix/postfix)         |
+| `operator=`  | Értékadás, fontos a mély másolásnál      |
+| `friend`     | Hozzáférés privát tagokhoz kívülről      |
+
+---
+
+### 💡 Legjobb gyakorlatok
+
+* Használj `const`-ot ahol lehet
+* Visszatérési érték legyen új objektum (pl. `a + b`)
+* Indexelésnél: `operator[]` → figyelj a határokra
+* Kiírásnál: `operator<<` → barátként definiálva
+* Ne bonyolítsd túl: csak azokat az operátorokat definiáld újra, amiket érdemben tudsz jól megvalósítani
+
+---
+
