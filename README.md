@@ -196,3 +196,286 @@ Modern C++-ban ajánlott a `std::unique_ptr`, `std::shared_ptr` vagy `std::vecto
 | `string`        | Karakterlánc típus, objektum-orientált kezelés   |
 | `new`, `delete` | Dinamikus memóriafoglalás és felszabadítás       |
  
+
+ Nagyszerű téma! A **C++ függvényekkel** kapcsolatos alábbi részletes (kb. 2000 szavas) ismertető az alábbi fogalmakat öleli fel:
+
+1. **Függvény átdefiniálás (overriding)**
+2. **Cím szerinti paraméterátadás (pass by address)**
+3. **Érték szerinti paraméterátadás (pass by value)**
+4. **Referencia szerinti paraméterátadás (pass by reference)**
+5. **Alapértelmezett argumentumérték (default argument)**
+6. **Paraméter átadás optimalizálása (effektív C++ stílusban)**
+
+---
+
+## 1. Függvény átdefiniálás (Function Overriding)
+
+A **függvény átdefiniálás (overriding)** az öröklődés során történik, amikor az alosztály **újradefiniálja** az ősosztályból származó virtuális függvényt.
+
+### Jellemzői:
+
+* Csak örökléskor használható (osztályok között)
+* A **virtuális** függvényeket lehet felüldefiniálni
+* A dinamikus típus szerint hívódik meg (futásidőben)
+
+### Példa:
+
+```cpp
+#include <iostream>
+using namespace std;
+
+class Allat {
+public:
+    virtual void hang() const {
+        cout << "Valamilyen állathang" << endl;
+    }
+};
+
+class Kutya : public Allat {
+public:
+    void hang() const override {
+        cout << "Vau!" << endl;
+    }
+};
+
+void megszolal(const Allat& a) {
+    a.hang(); // dinamikusan meghívja a megfelelő hang() függvényt
+}
+
+int main() {
+    Allat a;
+    Kutya k;
+    megszolal(a); // "Valamilyen állathang"
+    megszolal(k); // "Vau!"
+    return 0;
+}
+```
+
+### `override` kulcsszó:
+
+C++11-től kezdve az `override` kulcsszó kötelezővé teheti a fordító számára, hogy ellenőrizze: valóban egy bázisosztálybeli virtuális függvényt írunk felül.
+
+---
+
+## 2. Cím szerinti paraméterátadás (Pass by Address)
+
+Ebben az esetben egy **mutatót (pointert)** adunk át függvénynek. A függvény így közvetlenül tudja módosítani a változó tartalmát.
+
+### Példa:
+
+```cpp
+void novel(int* ptr) {
+    (*ptr)++;
+}
+
+int main() {
+    int x = 10;
+    novel(&x);
+    cout << x << endl; // 11
+    return 0;
+}
+```
+
+### Előnyök:
+
+* Hatékony, mert nem másolja az adatot
+* A függvény módosíthatja a hívó fél változóját
+
+### Hátrány:
+
+* Nullpointer kezelése szükséges
+* Nehezebb az olvashatóság
+
+---
+
+## 3. Érték szerinti paraméterátadás (Pass by Value)
+
+Ez a legegyszerűbb típus: a **változó értékének másolata** kerül a függvénybe. Az eredeti változó **nem módosul**.
+
+### Példa:
+
+```cpp
+void novel(int szam) {
+    szam++;
+}
+
+int main() {
+    int x = 10;
+    novel(x);
+    cout << x << endl; // 10
+    return 0;
+}
+```
+
+### Előnyök:
+
+* Biztonságos: az eredeti adat változatlan
+* Egyszerű használat
+
+### Hátrány:
+
+* Nagy objektumok esetén lassú lehet a másolás
+
+---
+
+## 4. Referencia szerinti paraméterátadás (Pass by Reference)
+
+A C++ egyik fontos újítása a **referenciák** bevezetése. Egy referencia egy **alternatív név** az adott változóra. Ha referenciaként adunk át paramétert, akkor a függvény **az eredeti változót** fogja módosítani.
+
+### Példa:
+
+```cpp
+void novel(int& szam) {
+    szam++;
+}
+
+int main() {
+    int x = 10;
+    novel(x);
+    cout << x << endl; // 11
+    return 0;
+}
+```
+
+### Előnyök:
+
+* Nem történik másolás
+* Az eredeti adat módosítható
+* Egyszerűbb a szintaxis, mint a pointerek esetén
+
+### Konstans referencia (`const T&`):
+
+Nagy objektumokat érdemes **konstans referenciaként** átadni, ha nem akarjuk módosítani azokat:
+
+```cpp
+void kiir(const string& uzenet) {
+    cout << uzenet << endl;
+}
+```
+
+Ez **hatékony** (nincs másolás), és **biztonságos** (nem változtatható).
+
+---
+
+## 5. Alapértelmezett argumentumérték (Default Arguments)
+
+C++ lehetővé teszi, hogy a függvény paramétereinek legyen **alapértelmezett értéke**.
+
+### Példa:
+
+```cpp
+void udvozlet(string nev = "ismeretlen") {
+    cout << "Üdv, " << nev << "!" << endl;
+}
+
+int main() {
+    udvozlet("Anna");     // "Üdv, Anna!"
+    udvozlet();           // "Üdv, ismeretlen!"
+}
+```
+
+### Szabályok:
+
+* Az alapértelmezett értékek mindig **balról jobbra** legyenek megadva
+* Egy paraméter alapértelmezett lehet, de utána lévők **mindegyikének** is alapértelmezettnek kell lennie
+
+```cpp
+// Hibás:
+void fgv(int a = 5, int b); // ERROR
+
+// Helyes:
+void fgv(int a, int b = 10);
+```
+
+---
+
+## 6. Paraméterátadás optimalizálása
+
+A C++ nagy objektumoknál és komplex típusoknál lehetőséget nyújt az **erőforrások hatékony átadására**, így optimalizálva a teljesítményt. Nézzük meg az ajánlott gyakorlatokat.
+
+---
+
+### 6.1. Kis típusok: érték szerint
+
+Kis típusokat (pl. `int`, `double`, `char`, `bool`) nyugodtan átadhatunk **érték szerint**, mert a másolás gyors.
+
+```cpp
+void szoroz(int a, int b); // OK
+```
+
+---
+
+### 6.2. Nagy típusok: konstans referenciával
+
+Objektumok vagy tömbszerű típusok esetén célszerű **konstans referenciával** átadni:
+
+```cpp
+void feldolgoz(const string& szoveg);     // Nincs másolás
+void rajzol(const vector<int>& adatok);  // Hatékony
+```
+
+---
+
+### 6.3. Módosítandó adatok: referencia vagy pointer
+
+Ha a függvény célja a hívó fél adatának **módosítása**, akkor:
+
+* Használj `T&` referenciát, ha kötelező az érték
+* Használj `T*` mutatót, ha opcionális (NULL is lehet)
+
+```cpp
+void novel(int& x);     // kötelező
+void torol(vector<int>* v);  // lehet nullptr
+```
+
+---
+
+### 6.4. Move szemantika (C++11+)
+
+Ha egy nagy objektum **átadható vagy elmozdítható**, akkor használható a **move constructor** vagy `std::move`:
+
+```cpp
+void atvesz(string&& szoveg); // Rvalue reference (átvétel)
+```
+
+Példa:
+
+```cpp
+string szoveg = "hello";
+atvesz(std::move(szoveg)); // szoveg tartalma "átkerül"
+```
+
+---
+
+### 6.5. Return érték optimalizálás
+
+Modern fordítók **Return Value Optimization-t (RVO)** végeznek, azaz a függvény visszatérési értékét nem másolják feleslegesen:
+
+```cpp
+string generalSzoveg() {
+    string s = "valami";
+    return s; // nem történik másolás modern fordítónál
+}
+```
+
+---
+
+## Összefoglaló táblázat
+
+| Paraméter típusa         | Mikor használjuk?                 | Hatás                 |
+| ------------------------ | --------------------------------- | --------------------- |
+| `T` (érték szerint)      | Kis, egyszerű típusok             | Gyors, de másol       |
+| `const T&` (konst. ref.) | Nagy, nem módosítandó típusok     | Hatékony, biztonságos |
+| `T&` (ref.)              | Módosítani akarjuk az értéket     | Nincs másolás         |
+| `T*` (mutató)            | Opcionális érték, lehet `nullptr` | Rugalmas              |
+| `T&&` (rvalue ref.)      | Átmeneti, "mozgatott" értékek     | Optimalizált          |
+
+---
+
+## Összegzés
+
+A C++ hatalmas rugalmasságot nyújt a függvények kezelésében. A nyelv lehetővé teszi az optimalizált memóriahasználatot, különösen nagy objektumokkal való munka során. A referencia, cím és érték szerinti átadás különböző célokra szolgál: **biztonság, sebesség, vagy módosítás**. A **függvény felüldefiniálás** lehetőséget ad az objektumorientált viselkedésre, míg az **alapértelmezett paraméterek** segítik a tisztább, olvashatóbb kódot.
+
+---
+
+Ha szeretnéd, készíthetek ehhez interaktív feladatokat, kvízt, vagy gyakorlóprogramokat is. Szeretnéd gyakorolni ezeket a fogalmakat példákon keresztül?
