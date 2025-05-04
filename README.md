@@ -2068,5 +2068,290 @@ A jól felépített OOP struktúra:
 
 ---
 
+Rendben! Az alábbi részletes (\~1500 szavas) tananyag a **C++ öröklés (inheritance)** és a **delegálás (delegation)** fogalmait és gyakorlati különbségeit tárgyalja. A cél, hogy megértsük **mikor, melyiket érdemes alkalmazni**, és hogyan segítik elő a **rugalmas, karbantartható, újrafelhasználható** kód megalkotását.
 
+---
 
+## 🧠 1. Bevezetés: Öröklés vs Delegálás
+
+Az objektumorientált programozásban gyakran kell osztályokat úgy összekapcsolnunk, hogy azok **valamilyen viselkedést újrahasznosítsanak** más osztályoktól.
+
+Erre két fő módszer áll rendelkezésre:
+
+| Módszer       | Jelentés                                                                            |
+| ------------- | ----------------------------------------------------------------------------------- |
+| **Öröklés**   | Egy osztály átveszi egy másik osztály adattagjait és metódusait.                    |
+| **Delegálás** | Egy osztály egy másik osztály példányát tartalmazza, és annak metódusait használja. |
+
+---
+
+## 🏛️ 2. Öröklés (Inheritance)
+
+### 2.1 Alapfogalom
+
+Az öröklés lehetővé teszi, hogy egy **leszármazott osztály** automatikusan tartalmazza az **ősosztály** publikus és protected tagjait.
+
+```cpp
+class Allat {
+public:
+    void eszik() {
+        cout << "Az állat eszik." << endl;
+    }
+};
+
+class Kutya : public Allat {
+public:
+    void ugat() {
+        cout << "Vau!" << endl;
+    }
+};
+```
+
+A `Kutya` automatikusan tartalmazza az `eszik()` metódust, mert örökölte.
+
+---
+
+### 2.2 Előnyök
+
+* **Egyszerű**: nem kell újraírni ugyanazt a kódot
+* **Polimorfizmus**: virtuális függvényeken keresztül dinamikusan viselkedhetnek az objektumok
+* **Kód újrafelhasználás**
+
+---
+
+### 2.3 Hátrányok
+
+* **Erős összefüggés** jön létre a bázis és a származtatott osztály között
+* **Nem lehet több bázisosztály** öröklésének konfliktusait egyszerűen kezelni
+* **Bázisosztály módosítása** kockázatos – hatással van minden leszármazottra
+
+---
+
+## 🔄 3. Delegálás (Delegation)
+
+### 3.1 Alapfogalom
+
+A delegálás során egy osztály **tartalmaz** egy másik osztály példányát, és annak metódusait hívja meg. Ez egy **"has-a" kapcsolat**, szemben az öröklés "is-a" kapcsolatával.
+
+```cpp
+class Motor {
+public:
+    void indit() {
+        cout << "Motor indul..." << endl;
+    }
+};
+
+class Auto {
+private:
+    Motor motor;
+public:
+    void elindul() {
+        motor.indit();  // delegálás
+    }
+};
+```
+
+Az `Auto` nem örökli a `Motor` metódusát, hanem **delegálja** annak működését.
+
+---
+
+### 3.2 Előnyök
+
+* **Lazább kapcsolat** – kevésbé függünk a másik osztály belső működésétől
+* **Jobb karbantarthatóság** – ha változik a delegált osztály, kisebb a mellékhatás
+* **Nagyobb kontroll** – nem örököljük automatikusan az összes metódust
+* **Egyszerűbb tesztelhetőség** – külön is tesztelhetők
+
+---
+
+### 3.3 Hátrányok
+
+* Több **kódírást** igényel (wrapper metódusok)
+* Nem támogatja a polimorfizmust úgy, ahogy az öröklés
+
+---
+
+## 🧭 4. Mikor használjunk öröklést?
+
+### Használd öröklést, ha:
+
+* A kapcsolat **logikailag "is-a"** kapcsolat
+  Pl. `Kutya is an Allat`
+* Használni akarod a **polimorfizmust**
+* A bázisosztály **viselkedését át akarod örökíteni**
+* El akarod kerülni a dupla implementációt
+
+---
+
+### Példa:
+
+```cpp
+class Alkalmazott {
+public:
+    virtual void munkatVegez() const {
+        cout << "Általános munka" << endl;
+    }
+};
+
+class Programozo : public Alkalmazott {
+public:
+    void munkatVegez() const override {
+        cout << "Programozás történik..." << endl;
+    }
+};
+```
+
+---
+
+## 🧭 5. Mikor használjunk delegálást?
+
+### Használd delegálást, ha:
+
+* A kapcsolat **"has-a"**
+  Pl. `Auto has a Motor`
+* Több különböző viselkedést szeretnél kombinálni
+* Későbbi cserélhetőség/kompozíció fontos
+* A bázisosztály viselkedését **nem** akarod automatikusan örökölni
+
+---
+
+### Példa:
+
+```cpp
+class Nyomtato {
+public:
+    void nyomtat(string szoveg) {
+        cout << "Nyomtatás: " << szoveg << endl;
+    }
+};
+
+class Jelentes {
+private:
+    Nyomtato nyomtato;
+public:
+    void keszit(string tartalom) {
+        cout << "Jelentés készül..." << endl;
+        nyomtato.nyomtat(tartalom); // delegálás
+    }
+};
+```
+
+---
+
+## ⚖️ 6. Összehasonlító táblázat
+
+| Szempont             | Öröklés                    | Delegálás                  |
+| -------------------- | -------------------------- | -------------------------- |
+| Kapcsolat típusa     | „is-a”                     | „has-a”                    |
+| Kód újrafelhasználás | Automatikus                | Kézi implementációval      |
+| Polimorfizmus        | Támogatott (virtuális fv.) | Nem automatikus            |
+| Kötöttség            | Erős                       | Lazább                     |
+| Változás hatása      | Erős mellékhatás           | Kisebb hatás               |
+| Flexibilitás         | Kisebb                     | Nagyobb                    |
+| Bonyolultság         | Egyszerű                   | Több kód, de irányítottabb |
+
+---
+
+## 🧪 7. Kombináció: Kompozíció + Öröklés
+
+C++-ban gyakran alkalmazzuk **kompozíció és öröklés kombinációját** is. Ez különösen hasznos, ha többféle viselkedést akarunk újrahasznosítani.
+
+### Példa:
+
+```cpp
+class Logger {
+public:
+    void log(string uzenet) {
+        cout << "[LOG]: " << uzenet << endl;
+    }
+};
+
+class Tarolo {
+    Logger logger; // delegálás
+public:
+    void mentes(string adat) {
+        // Adat mentése logikailag itt történne
+        logger.log("Adat mentve: " + adat);
+    }
+};
+```
+
+A `Tarolo` saját viselkedését valósítja meg, de bizonyos funkciókat **delegál** a `Logger` példányára.
+
+---
+
+## 🎯 8. SOLID elvek és delegálás
+
+A SOLID elvek egyik fő gondolata a **kompozíció előnyben részesítése az örökléssel szemben**:
+
+* **O**pen/Closed Principle (zárt a módosításra, nyitott a bővítésre)
+* **L**iskov Substitution Principle (helyettesíthetőség örökléssel)
+* **D**ependency Inversion Principle (használjunk interfészeket, ne konkrét típusokat)
+
+A delegálás jobban illeszkedik ezekhez, mert **modulárisabb** és **cserélhetőbb** architektúrákat eredményez.
+
+---
+
+## 🧰 9. C++ nyelvi eszközök a delegáláshoz
+
+### 9.1 Referencia tagok
+
+Ha nem akarunk példányt tárolni:
+
+```cpp
+class A {
+public:
+    void hello() { cout << "Szia A!" << endl; }
+};
+
+class B {
+private:
+    A& aRef;
+public:
+    B(A& ref) : aRef(ref) {}
+
+    void koszont() {
+        aRef.hello();
+    }
+};
+```
+
+### 9.2 Smart pointerek
+
+Ha dinamikusan kezeljük:
+
+```cpp
+#include <memory>
+
+class C {
+public:
+    void f() { cout << "C::f" << endl; }
+};
+
+class D {
+    std::shared_ptr<C> c;
+public:
+    D(std::shared_ptr<C> ptr) : c(ptr) {}
+    void hasznal() { c->f(); }
+};
+```
+
+---
+
+## 🔚 10. Összefoglalás
+
+| Kulcskérdés                 | Öröklés             | Delegálás         |
+| --------------------------- | ------------------- | ----------------- |
+| „X egy Y”?                  | Használj öröklést   | Nem               |
+| „X használ Y-t”?            | Használj delegálást | Igen              |
+| Szükséges polimorfizmus?    | Igen                | Nem automatikusan |
+| Moduláris, laza kapcsolat?  | Nehezebb elérni     | Kiválóan alkalmas |
+| SOLID elvekhez illeszkedik? | Kevésbé             | Jobban            |
+
+---
+
+A **jó tervezés** kulcsa nem az, hogy „öröklés vagy delegálás?”, hanem az, hogy „melyik illik jobban az adott problémára?” A **kompozíció előnyben részesítése** manapság a preferált irány, mert rugalmasabb és jobban skálázható, különösen nagyobb szoftverrendszerek esetén.
+
+---
+
+ 
