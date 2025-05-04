@@ -3658,4 +3658,282 @@ void f(T t) {
 
 A **C++ sablonok** lehetővé teszik az **általános programozást** (generic programming), amivel egyszerű, mégis hatékony típusfüggetlen kód írható. Az STL, a `vector`, `sort`, `pair` vagy `map` mind sablonos kód eredménye. Ha elsajátítod a sablonokat, **magabiztosabban fogsz tudni újrahasznosítható könyvtárakat és eszközöket építeni**.
 
+
+Kiváló téma! Az alábbi részletes (\~2000 szavas) tananyag végigvezet a **C++ objektumok mentésének és betöltésének** folyamatán **JSON formátumban**. Ez a képesség kulcsfontosságú, ha adatok tárolására, konfigurációkra, állapotmentésre, vagy fájl-alapú kommunikációra van szükség.
+
+---
+
+## 📘 Tartalomjegyzék
+
+1. Bevezetés: mi az a JSON?
+2. Miért JSON C++-ban?
+3. JSON feldolgozó könyvtárak
+4. Példa osztály: `Ember`
+5. Objektum mentése JSON-be
+6. Objektum betöltése JSON-ből
+7. Tömbök, listák és összetett objektumok
+8. Fájlba írás és fájlból olvasás
+9. Hibaellenőrzés és robusztusság
+10. Haladó lehetőségek: nested JSON, konvertálás STL konténerekkel
+11. Összegzés és gyakorlati tanácsok
+
+---
+
+## 🧠 1. Bevezetés: Mi az a JSON?
+
+A **JSON (JavaScript Object Notation)** egy könnyen olvasható, szöveges adatformátum.
+
+### JSON példa:
+
+```json
+{
+  "nev": "Anna",
+  "kor": 28,
+  "hobbik": ["futás", "olvasás"]
+}
+```
+
+* Kulcs–érték párokból áll
+* Beágyazható (nested)
+* Nyelvfüggetlen
+
+---
+
+## 💬 2. Miért JSON C++-ban?
+
+* Emberi olvashatóság
+* Széles körű támogatás (web, hálózat)
+* Platformfüggetlen
+* Könnyű integráció más nyelvekkel (pl. Python, JavaScript)
+
+---
+
+## 🔧 3. JSON feldolgozó könyvtárak C++-hoz
+
+### Népszerű JSON könyvtárak:
+
+| Könyvtár            | Előnyök                                    |
+| ------------------- | ------------------------------------------ |
+| **nlohmann/json**   | Modern, könnyű használat, STL-kompatibilis |
+| RapidJSON           | Nagyon gyors, alacsony szintű              |
+| JSON for Modern C++ | = `nlohmann/json` más néven                |
+
+Mi a **nlohmann/json** könyvtárat fogjuk használni, mert:
+
+* Fejlesztőbarát szintaxis
+* Header-only (nincs fordítás)
+* STL típusokkal kompatibilis
+
+### Telepítés:
+
+1. `vcpkg install nlohmann-json`
+2. vagy: [Letöltés GitHubról](https://github.com/nlohmann/json)
+
+Használat:
+
+```cpp
+#include <nlohmann/json.hpp>
+using json = nlohmann::json;
+```
+
+---
+
+## 👤 4. Példa osztály: `Ember`
+
+```cpp
+#include <string>
+using namespace std;
+
+class Ember {
+public:
+    string nev;
+    int kor;
+
+    Ember() = default;
+    Ember(string n, int k) : nev(n), kor(k) {}
+};
+```
+
+---
+
+## 💾 5. Objektum mentése JSON-be
+
+A `nlohmann::json` könyvtárban operátorokat (`to_json`, `from_json`) definiálunk:
+
+```cpp
+void to_json(json& j, const Ember& e) {
+    j = json{{"nev", e.nev}, {"kor", e.kor}};
+}
+```
+
+### Használat:
+
+```cpp
+Ember e("Béla", 42);
+json j = e;
+
+cout << j.dump(4) << endl; // pretty print
+```
+
+Kimenet:
+
+```json
+{
+    "kor": 42,
+    "nev": "Béla"
+}
+```
+
+---
+
+## 📥 6. Objektum betöltése JSON-ből
+
+Definiáljuk a `from_json` függvényt:
+
+```cpp
+void from_json(const json& j, Ember& e) {
+    j.at("nev").get_to(e.nev);
+    j.at("kor").get_to(e.kor);
+}
+```
+
+### Használat:
+
+```cpp
+string szoveg = R"({"nev": "Anna", "kor": 30})";
+json j = json::parse(szoveg);
+
+Ember e = j.get<Ember>();
+cout << e.nev << ", " << e.kor << endl;
+```
+
+---
+
+## 📚 7. Tömbök, listák és összetett objektumok
+
+### Tömb mentése:
+
+```cpp
+vector<Ember> lista = {
+    {"Anna", 25},
+    {"Gábor", 40}
+};
+
+json j = lista;
+```
+
+### JSON-ből lista:
+
+```cpp
+vector<Ember> betoltott = j.get<vector<Ember>>();
+```
+
+Ez akkor működik, ha `to_json` és `from_json` definiálva van az `Ember` típusra.
+
+---
+
+## 📁 8. Fájlba írás és fájlból olvasás
+
+```cpp
+#include <fstream>
+
+void mentesFajlba(const Ember& e, const string& fajlnev) {
+    json j = e;
+    ofstream f(fajlnev);
+    f << j.dump(4);
+}
+
+Ember betoltesFajlbol(const string& fajlnev) {
+    ifstream f(fajlnev);
+    json j;
+    f >> j;
+    return j.get<Ember>();
+}
+```
+
+---
+
+## 🛡️ 9. Hibaellenőrzés és robusztusság
+
+Mindig ellenőrizzünk:
+
+```cpp
+try {
+    json j = json::parse(szoveg);
+    Ember e = j.get<Ember>();
+} catch (json::exception& e) {
+    cerr << "JSON hiba: " << e.what() << endl;
+}
+```
+
+---
+
+## 🧩 10. Haladó lehetőségek
+
+### Beágyazott objektumok:
+
+```cpp
+class Cim {
+public:
+    string varos;
+    int iranyitoszam;
+};
+
+class Ember {
+public:
+    string nev;
+    int kor;
+    Cim cim;
+};
+```
+
+Kell `to_json` és `from_json` mindkét osztályra.
+
+---
+
+### STL konténerek konvertálása:
+
+```cpp
+map<string, int> szotar = {{"alma", 2}, {"banán", 3}};
+json j = szotar;
+```
+
+### Automatikus típuskonverziók:
+
+```cpp
+int x = j.value("kor", 0); // ha nincs „kor” kulcs, akkor 0
+```
+
+---
+
+## 📌 11. Összegzés
+
+| Művelet              | Példa C++ kóddal                       |
+| -------------------- | -------------------------------------- |
+| JSON írás            | `json j = e;`                          |
+| JSON olvasás         | `e = j.get<Ember>();`                  |
+| Tömb mentése         | `json j = vector<Ember>;`              |
+| JSON fájlba írás     | `ofstream f("f.json"); f << j;`        |
+| JSON fájlból olvasás | `ifstream f("f.json"); f >> j;`        |
+| Hibaellenőrzés       | `try { ... } catch (json::exception&)` |
+
+---
+
+## ✅ Legjobb gyakorlatok
+
+* Használj `nlohmann/json` könyvtárat olvashatóság és egyszerűség miatt
+* Különítsd el a `to_json` / `from_json` definíciókat a `model.h` fájlban
+* Gondoskodj hibaellenőrzésről fájlkezelésnél
+* Preferáld `dump(4)` használatát fejlesztés alatt (formázott JSON)
+* Használj `json::value("kulcs", alap)` a biztonságos kulcslekéréshez
+
+---
+
+## 🎯 Következő lépések
+
+Ha szeretnéd:
+
+* írok egy teljes **minta projektet** (JSON mentés + betöltés + fájlkezelés)
+* vagy készítek gyakorlófeladatokat a `json` használatára STL konténerekkel
+
  
