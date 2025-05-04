@@ -5,7 +5,9 @@ CONFIG -= qt
 
 SOURCES += \
         esemeny.cpp \
+        helyszin.cpp \
         main.cpp
 
 HEADERS += \
-	esemeny.h
+	esemeny.h \
+	helyszin.h
