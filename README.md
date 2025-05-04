@@ -807,4 +807,342 @@ A **hozzáférési módok** és **referencia-mechanizmusok** révén a C++ képe
 
 ---
 
- 
+ Kiváló téma! Az alábbi részletes (kb. 2000 szavas) anyag a **C++ konstruktorok és destruktorok** működését és megvalósítását mutatja be alaposan. A témát az alábbi fő pontok mentén tárgyaljuk:
+
+---
+
+### **Tartalomjegyzék**
+
+1. Mi a konstruktor és destruktor?
+2. Konstruktorok típusai
+3. Destruktor szerepe
+4. Többszörös konstruktorok és overloading
+5. Konstruktorok láncolása
+6. Másoló konstruktor
+7. Mozgató konstruktor (C++11)
+8. Alapértelmezett és törölt konstruktor/destruktor
+9. Konstruktor/destruktor viselkedés öröklés esetén
+10. Gyakorlati tanácsok, legjobb gyakorlatok
+
+---
+
+## **1. Mi a konstruktor és destruktor?**
+
+### **Konstruktor**
+
+A **konstruktor** egy speciális tagfüggvény, amely automatikusan lefut, amikor egy objektum példányosításra kerül. Fő feladata az **inicializálás**.
+
+```cpp
+class Ember {
+public:
+    string nev;
+    int kor;
+
+    // Konstruktor
+    Ember(string n, int k) {
+        nev = n;
+        kor = k;
+    }
+};
+```
+
+### **Destruktor**
+
+A **destruktor** az objektum **megsemmisítésekor** fut le. Jele: `~OsztályNév()`. Általában erőforrások felszabadítására használjuk.
+
+```cpp
+~Ember() {
+    cout << nev << " objektum törölve." << endl;
+}
+```
+
+---
+
+## **2. Konstruktorok típusai**
+
+### **Alapértelmezett konstruktor**
+
+Olyan konstruktor, amely **nem vár paramétert**, vagy minden paraméterének van alapértelmezett értéke.
+
+```cpp
+class Auto {
+public:
+    string marka;
+
+    Auto() {
+        marka = "Ismeretlen";
+    }
+};
+```
+
+Ha nem adunk meg konstruktort, a fordító automatikusan generál egy **default konstruktort** – de csak akkor, ha nincs másik konstruktor.
+
+---
+
+### **Paraméteres konstruktor**
+
+Paramétereket vár, amik segítségével az adattagokat inicializálja.
+
+```cpp
+Auto(string m) {
+    marka = m;
+}
+```
+
+---
+
+### **Iniciálizáló lista használata**
+
+Hatékonyabb és ajánlott, ha az adattagokat **inicializáló listával** adjuk át:
+
+```cpp
+Auto(string m) : marka(m) {}
+```
+
+Ez különösen fontos `const` adattagok vagy referencia típusok esetén.
+
+---
+
+## **3. Destruktor szerepe**
+
+A destruktor **nem vehet fel paramétert**, és **nem lehet túlterhelni**.
+
+```cpp
+class Fajl {
+private:
+    FILE* f;
+public:
+    Fajl(const char* nev) {
+        f = fopen(nev, "r");
+    }
+
+    ~Fajl() {
+        if (f) fclose(f);
+    }
+};
+```
+
+A destruktor gyakori felhasználása:
+
+* fájlok lezárása
+* memória felszabadítása
+* hálózati kapcsolatok bontása
+* `new`-vel lefoglalt objektumok törlése
+
+---
+
+## **4. Konstruktorok túlterhelése (Overloading)**
+
+Egy osztály több konstruktort is tartalmazhat, eltérő paraméterlistával.
+
+```cpp
+class Ember {
+public:
+    string nev;
+    int kor;
+
+    Ember() : nev("ismeretlen"), kor(0) {}
+    Ember(string n) : nev(n), kor(0) {}
+    Ember(string n, int k) : nev(n), kor(k) {}
+};
+```
+
+A túlterhelés lehetővé teszi, hogy az objektumokat **különböző módokon** példányosítsuk.
+
+---
+
+## **5. Konstruktorok láncolása**
+
+C++11-től lehetőség van **konstruktor delegálásra**:
+
+```cpp
+class Ember {
+public:
+    string nev;
+    int kor;
+
+    Ember() : Ember("Ismeretlen", 0) {}
+    Ember(string n) : Ember(n, 0) {}
+    Ember(string n, int k) : nev(n), kor(k) {}
+};
+```
+
+Ez segít az ismétlődő kód elkerülésében.
+
+---
+
+## **6. Másoló konstruktor (Copy Constructor)**
+
+A másoló konstruktor egy meglévő objektumból hoz létre másolatot.
+
+```cpp
+class Ember {
+public:
+    string nev;
+
+    Ember(string n) : nev(n) {}
+
+    // Másoló konstruktor
+    Ember(const Ember& e) {
+        nev = e.nev;
+    }
+};
+```
+
+### Mikor hívódik meg?
+
+* Objektum átadás érték szerint
+* Objektum visszatérés érték szerint
+* Objektum másolása
+
+### Miért fontos?
+
+Ha egy osztály **dinamikus memóriát** használ, akkor **saját másoló konstruktort** kell írni, hogy elkerüljük a **shallow copy** problémát (amikor két objektum ugyanarra a memóriára mutat).
+
+---
+
+## **7. Mozgató konstruktor (Move Constructor – C++11)**
+
+A **mozgató konstruktor** akkor hívódik meg, amikor egy **ideiglenes objektumból** (rvalue) hozunk létre egy másikat.
+
+```cpp
+class Adat {
+    int* tomb;
+public:
+    Adat(int meret) {
+        tomb = new int[meret];
+    }
+
+    // Mozgató konstruktor
+    Adat(Adat&& a) noexcept {
+        tomb = a.tomb;
+        a.tomb = nullptr;
+    }
+
+    ~Adat() {
+        delete[] tomb;
+    }
+};
+```
+
+### Előnye:
+
+* Nincs szükség másolásra
+* Hatékony: csak mutatókat cserélünk
+
+---
+
+## **8. Alapértelmezett és törölt konstruktor/destruktor**
+
+C++11-ben megadhatjuk, hogy a fordító **generálja** vagy **tiltsa** a konstruktorokat/destruktort.
+
+```cpp
+class A {
+public:
+    A() = default;          // Kérem az alapértelmezettet
+    A(const A&) = delete;   // Tiltom a másolást
+};
+```
+
+Ez segít az API viselkedésének szabályozásában.
+
+---
+
+## **9. Öröklés és konstruktorok/destruktorok**
+
+### Bázisosztály konstruktorának hívása:
+
+```cpp
+class Szemely {
+public:
+    string nev;
+    Szemely(string n) : nev(n) {}
+};
+
+class Diak : public Szemely {
+public:
+    int evfolyam;
+    Diak(string n, int e) : Szemely(n), evfolyam(e) {}
+};
+```
+
+A leszármazott osztály **köteles** a bázisosztály konstruktorát meghívni, ha az nem default.
+
+---
+
+### Destruktor öröklésnél
+
+Ha a bázisosztályból öröklünk, a destruktort **virtuálissá** kell tenni, hogy a helyes példány destruktora fusson le:
+
+```cpp
+class Alap {
+public:
+    virtual ~Alap() {}  // Fontos!
+};
+
+class Leszarmazott : public Alap {
+    ~Leszarmazott() override {
+        cout << "Leszarmazott destruktor" << endl;
+    }
+};
+```
+
+---
+
+## **10. Gyakorlati tanácsok**
+
+### RAII – Resource Acquisition Is Initialization
+
+Használj konstruktort az erőforrások lefoglalására, destruktort a felszabadításra.
+
+```cpp
+class Fajl {
+    FILE* f;
+public:
+    Fajl(const char* fn) {
+        f = fopen(fn, "r");
+    }
+
+    ~Fajl() {
+        if (f) fclose(f);
+    }
+};
+```
+
+### Kerüld a nyers pointereket – használj smart pointert!
+
+```cpp
+#include <memory>
+
+class Adat {
+    std::unique_ptr<int[]> tomb;
+public:
+    Adat(int meret) {
+        tomb = std::make_unique<int[]>(meret);
+    }
+};
+```
+
+### Ha szükséges: írd meg a 3/5 szabály szerinti metódusokat
+
+* Másoló konstruktor
+* Másoló értékadó operátor
+* Destruktor
+  *(+ C++11-től: mozgató konstruktor, mozgató operátor)*
+
+---
+
+## **Összegzés**
+
+A C++ konstruktorok és destruktorok kulcsszerepet játszanak az objektumok életciklusának kezelésében. Segítségükkel:
+
+* Biztonságosan lehet inicializálni erőforrásokat
+* Automatizálható a felszabadítás
+* Hatékonyabb működés érhető el (pl. move constructor)
+* Komplex osztályok viselkedése precízen szabályozható
+
+A modern C++ számos új eszközt kínál (default/delete, delegált konstruktorok, move szemantika), amelyek segítségével **robosztusabb és hatékonyabb kód** írható.
+
+---
+
+Ha szeretnéd, készíthetek ehhez kódgyakorlatokat, kvízt vagy egy mintaosztályt a 3/5 szabály szerint. Érdekelnének ilyen gyakorlati példák is?
