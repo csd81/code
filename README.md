@@ -2581,3 +2581,270 @@ Ilyenkor a függvény **virtuális diszpécser** alapján a `Kor`-osztály `rajz
 * Használj **tiszta absztrakciót** plugin rendszerekhez, GUI komponensekhez, fájlkezelő modulokhoz stb.
 
  
+ Rendben! Az alábbi részletes (\~1500 szavas) tananyag a **C++ objektumok életciklusáról**, a különböző **objektumtárolókról**, valamint az **automatikusan méreteződő tömbökről** szól. Ez a téma fontos ahhoz, hogy megbízható, hatékony, memóriaszivárgás-mentes kódot írjunk.
+
+---
+
+## 📦 1. Objektumok születése és halála (életciklus)
+
+### 1.1 Mi az objektum életciklusa?
+
+Az **objektum életciklusa** az objektum **létrejöttétől a megsemmisüléséig** tart. A ciklus három fő fázisa:
+
+1. **Létrehozás (konstruktor meghívása)**
+2. **Használat (objektum aktív élete)**
+3. **Megsemmisítés (destruktor meghívása)**
+
+---
+
+### 1.2 Élettartam típusai
+
+#### a) Automatikus (stack-en lévő) objektum
+
+```cpp
+class Teszt {
+public:
+    Teszt() { cout << "Létrejött!" << endl; }
+    ~Teszt() { cout << "Törölve!" << endl; }
+};
+
+int main() {
+    Teszt obj;  // konstruktor hívódik
+    // használat
+} // automatikusan törlődik (destruktor hívódik)
+```
+
+> Ezeket hívjuk **stack**-en lévő objektumoknak. Az életciklus automatikusan vezérelt.
+
+---
+
+#### b) Dinamikus (heap-en lévő) objektum
+
+```cpp
+Teszt* ptr = new Teszt(); // konstruktor
+delete ptr;               // destruktor
+```
+
+> Ezek **heap**-en élnek. Neked kell gondoskodnod a törlésről – különben **memóriaszivárgás** történik.
+
+---
+
+#### c) Statikus objektum
+
+Globális vagy `static` kulcsszóval definiált objektum, amely a program egész futása alatt él.
+
+```cpp
+static Teszt globalObj;
+```
+
+---
+
+### 1.3 Különleges életciklusok
+
+* **Rövid életű temporális objektum**: `Teszt()` – azonnal létrejön és eltűnik
+* **RAII (Resource Acquisition Is Initialization)**: konstruktorban szerzünk erőforrást, destruktorban elengedjük (fájl, mutex, stb.)
+
+---
+
+## 📚 2. Objektum tárolók C++-ban
+
+C++-ban különböző tárolószerkezetek (container-ek) állnak rendelkezésre objektumok rendszerezésére:
+
+---
+
+### 2.1 Statikus tömb
+
+```cpp
+Ember tomb[10];
+```
+
+* Fix méretű
+* Nem méretezhető át
+* Egyszerű, de merev
+
+---
+
+### 2.2 `std::vector` – automatikusan méreteződő tömb
+
+A `std::vector` a **leggyakoribb és legpraktikusabb** dinamikus tömb.
+
+```cpp
+#include <vector>
+vector<Ember> emberek;
+emberek.push_back(Ember("Anna", 30));
+```
+
+> Automatikusan bővül, ha új elemet adunk hozzá.
+
+---
+
+### 2.3 `std::list`, `std::deque`
+
+* `std::list`: láncolt lista (duplán láncolt)
+* `std::deque`: két végű sor
+* Kevésbé hatékony tömbműveleteknél
+
+---
+
+### 2.4 `std::array` (C++11-től)
+
+```cpp
+array<int, 5> tomb = {1, 2, 3, 4, 5};
+```
+
+Statikus méret, de típusbiztosabb és kényelmesebb, mint C-stílusú tömb.
+
+---
+
+## 🧩 3. Automatikusan méreteződő tömb: `std::vector`
+
+### 3.1 Mi az a `vector`?
+
+A `std::vector` egy **dinamikus tömb**, amely:
+
+* Tetszőleges számú elemet tárolhat
+* Automatikusan átméretezi magát
+* Képes bármilyen objektumtípust kezelni
+* Biztonságos, mert nem kell kézzel memóriát kezelni
+
+---
+
+### 3.2 Példák
+
+```cpp
+vector<int> szamok;
+szamok.push_back(10);
+szamok.push_back(20);
+
+cout << szamok[0] << endl; // 10
+cout << szamok.size() << endl; // 2
+```
+
+---
+
+### 3.3 Objektumokkal
+
+```cpp
+class Ember {
+    string nev;
+public:
+    Ember(string n) : nev(n) {}
+    void koszont() const {
+        cout << "Szia, " << nev << endl;
+    }
+};
+
+vector<Ember> lista;
+lista.push_back(Ember("Béla"));
+lista.push_back(Ember("Erika"));
+```
+
+---
+
+### 3.4 Fontos metódusok
+
+| Metódus       | Funkció                          |
+| ------------- | -------------------------------- |
+| `push_back()` | Elem hozzáadása                  |
+| `pop_back()`  | Utolsó elem eltávolítása         |
+| `size()`      | Méret lekérdezése                |
+| `empty()`     | Üres-e?                          |
+| `clear()`     | Kiüríti a vektort                |
+| `resize(n)`   | Méret állítása                   |
+| `reserve(n)`  | Memória foglalás                 |
+| `at(i)`       | Biztonságos elérés ellenőrzéssel |
+
+---
+
+### 3.5 Mi történik háttérben?
+
+A `vector`:
+
+* Kezdetben lefoglal egy kis memóriát
+* Ha betelik, **új memóriát foglal**, a régit átmásolja, a régit felszabadítja
+* Ezért érdemes **előre lefoglalni** a helyet, ha ismert a méret: `reserve(n)`
+
+---
+
+### 3.6 Objektumok életciklusa `vector` esetén
+
+```cpp
+vector<Teszt> v;
+v.push_back(Teszt()); // konstruktor → másoló/move konstruktor
+```
+
+Ha a `vector` átméreteződik, a benne lévő objektumok **áthelyeződnek**, és emiatt **másolás/move történik**.
+
+---
+
+### 3.7 Érdemes-e pointereket tárolni?
+
+Néha szükség lehet rá (polimorf viselkedés miatt):
+
+```cpp
+vector<Allat*> allatkert;
+allatkert.push_back(new Kutya());
+```
+
+→ Ne feledd: **kézzel kell törölni** vagy használj smart pointert:
+
+```cpp
+vector<unique_ptr<Allat>> allatkert;
+allatkert.push_back(make_unique<Kutya>());
+```
+
+---
+
+## 🧠 4. Objektumkezelés: szabályok és jó gyakorlatok
+
+### 4.1 A "Rule of 3/5"
+
+Ha az osztály:
+
+* **dinamikus memóriát kezel**
+* vagy **nyers pointert tárol**
+
+akkor implementáld:
+
+* Másoló konstruktor
+* Másoló értékadó operátor
+* Destruktor
+  (+ C++11-től: move konstruktor és move értékadó operátor)
+
+---
+
+### 4.2 Smart pointer használat
+
+Használj `unique_ptr`, `shared_ptr`, `weak_ptr`:
+
+```cpp
+vector<unique_ptr<Konyv>> konyvtar;
+konyvtar.push_back(make_unique<Konyv>("C++ Primer"));
+```
+
+> Automatikusan felszabadítják a memóriát – **nincs delete!**
+
+---
+
+## 📌 5. Összegzés
+
+| Fogalom                  | Lényeg                                              |
+| ------------------------ | --------------------------------------------------- |
+| **Objektum életciklusa** | Konstruktor → használat → destruktor                |
+| **Tárolók**              | `array`, `vector`, `list`, stb.                     |
+| **`vector`**             | Automatikusan bővülő tömb                           |
+| **Stack vs heap**        | Automatikus vs dinamikus kezelés                    |
+| **Smart pointer**        | Automatikus memóriafelszabadítás                    |
+| **RAII**                 | Konstruktorban foglalunk, destruktorban engedünk el |
+
+---
+
+## ✅ Záró tanácsok
+
+* **Használj `vector`-t**, ha dinamikus tárolás kell
+* Használj **smart pointereket** a nyers `new`/`delete` helyett
+* Tervezz az **objektumok életciklusa köré**: tudd, ki birtokol mit
+* Tartsd be a **Rule of 3/5** elvét, ha szükséges
+* Kerüld a memóriaszivárgást → RAII, `vector`, `unique_ptr`, `shared_ptr` használata
+
+ 
