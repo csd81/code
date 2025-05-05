@@ -8,5 +8,6 @@
         "plaintext": false,
         "markdown": false,
         "scminput": false
-    }
+    },
+    "cmake.sourceDirectory": "/home/d/git/code/feladat/02szamok"
 }
