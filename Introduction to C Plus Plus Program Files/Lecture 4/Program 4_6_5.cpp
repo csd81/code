@@ -25,4 +25,18 @@ int main() {
 		//Check for Hypotension: S<=90 or D<=60
 
 		//Say OK if nothing else applies            
+		else if ((systolic >= 130) && (systolic <= 139) || (diastolic >= 80) && (diastolic <= 89)) {
+		cout << "You have Stage 1 Hypertension." << endl;
+	} else if ((systolic >= 140) && (systolic < 180) || (diastolic >= 90) && (diastolic < 120)) {	
+		//Check for Stage 2 Hypertension: 180>S>=140 or 120>D>=90                   
+		cout << "You have Stage 2 Hypertension." << endl;
+	} else if ((systolic >= 180) || (diastolic >= 120)) {
+		//Check for Danger Zone: S>=180 or D>=120
+		cout << "You are in the Danger Zone." << endl;
+	} else if ((systolic <= 90) || (diastolic <= 60)) {
+		//Check for Hypotension: S<=90 or D<=60
+		cout << "You have Hypotension." << endl;
+	} else {
+		cout << "Your blood pressure is OK." << endl;
+	}
 }
