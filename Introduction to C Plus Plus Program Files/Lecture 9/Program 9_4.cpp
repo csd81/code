@@ -11,5 +11,5 @@ int main()
 	cin >> username;
 	cout << "What's your favorite color? ";
 	cin >> favoritecolor;
-	cout << username << ", I like the color " << favoritecolor << ", too!" << endl;                
+	cout << "Hello " << username << ", I like the color " << favoritecolor << ", too!" << endl;                
 }

@@ -7,3 +7,5 @@ int main() {
 	char testchar = 66;
 	cout << testchar << endl;    
 }
+
+// char is

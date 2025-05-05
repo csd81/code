@@ -8,6 +8,10 @@ int main()
 {
 	string firstname, lastname;
 	cout << "What's your name? (Enter first name and last name) ";
-	cin >> firstname >> lastname;
+	cin >> firstname;
+	cin >> lastname;
 	cout << "Howdy, " << firstname << " " << lastname << "!" << endl;                  
 }
+// cin will a white space character to separate the first name and last name
+// cin will read the first name and last name into two separate variables
+// cin will stop reading when it encounters a white space character

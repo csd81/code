@@ -10,3 +10,7 @@ int main()
 	greeting = "Hello, World!";
 	cout << greeting << endl;                   
 }
+
+// greeting is a string variable
+// greeting is assigned the string "Hello, World!"
+// The string is printed to the console
