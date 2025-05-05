@@ -18,10 +18,15 @@ int main() {
 	electricfile >> date >> meter; 
 	while (!electricfile.eof()) {
 		/* Store Date and Meter Reading in Parallel Vectors */  
-		
+		// vector<string> date_vector;
+		// vector<int> meter_vector;
+		// date_vector.push_back(date);
+		// meter_vector.push_back(meter);
+		/* Read Next Line */
 		electricfile >> date >> meter; 
 	}
-	electricfile.close();
+	electricfile.close(); 
+
 	/*** Read Past Weather Data ***/
 
 	/*** Read Past Individual Schedule ***/

@@ -8,5 +8,14 @@ float average(float a, float b, float c) {
 }
 
 int main() {
-	cout << "The average of 10, 35, and 17 is: " << average(10, 35, 17) << endl;            
+	float x, y, z;
+	cout << "Enter three numbers: ";
+	cin >> x >> y >> z;
+	cout << "The average of " << x << ", " << y <<", and " << z <<" is: ";
+	cout << average(x, y, z) << endl;
+	return 0;
 }
+
+// This program demonstrates the use of a function to calculate the average of three numbers.
+// The function takes three float parameters and returns their average.
+// The main function calls the average function with three numbers and prints the result.

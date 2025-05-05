@@ -3,7 +3,8 @@
         "iostream": "cpp",
         "string": "cpp",
         "fstream": "cpp",
-        "sstream": "cpp"
+        "sstream": "cpp",
+        "ostream": "cpp"
     },
     "github.copilot.enable": {
         "*": true,
