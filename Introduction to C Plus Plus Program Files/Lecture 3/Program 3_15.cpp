@@ -1,10 +1,16 @@
 // Program 3_15
 // Illustrating mulitple if-else statements                        
+// we can nest if statements to create multiple if-else statements.
+// this can complicate the code and make it difficult to read.
+// instead, we can use the switch statement to create multiple if-else statements.
+
 #include <iostream>
 using namespace std;
 
 int main() {
-	int age = 10;
+	int age;
+	cout << "Enter your age: ";
+	cin >> age; // input the age of the person
 	float cost;
 	if (age < 3) {
 		cost = 0.0;

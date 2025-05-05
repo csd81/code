@@ -4,9 +4,11 @@
 using namespace std;
 
 int main() {
-	int numFish = 1, numCats = 2, numDogs = 2;
-	cout << (numFish == numCats) << endl;
-	cout << (numFish != numCats) << endl;
-	cout << (numCats == numDogs) << endl;
-	cout << (numCats != numDogs) << endl;                             
+	int numFish = 1; 
+	int numCats = 2; 
+	int numDogs = 2;
+	std::cout << (numFish == numCats) << std::endl; // False
+	std::cout << (numFish != numCats) << std::endl; // True
+	std::cout << (numCats == numDogs) << std::endl;	 // True
+	std::cout << (numCats != numDogs) << std::endl;         // False                    
 }

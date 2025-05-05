@@ -4,6 +4,8 @@
 using namespace std;
 
 int main() {
-	cout << (!true || !false && true) << endl;
-	cout << ((!true) || ((!false) && true)) << endl;                         
+	cout << "(!true || !false && true)" << endl;
+	cout << ( (!true || !false && true) ? "True" : "False") << endl;
+	cout << "((!true) || ((!false) && true))" << endl;                         
+	cout << ( ((!true) || ((!false) && true)) ? "True" : "False") << endl;                         
 }
