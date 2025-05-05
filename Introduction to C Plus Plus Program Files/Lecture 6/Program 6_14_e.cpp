@@ -27,7 +27,12 @@ int main() {
 		}
 
 		// Get another guess
+		cout << "Guess another number from 1 to 100: ";
+		cin >> user_guess;
+		num_guesses = num_guesses + 1;
 	}
 
 	// User guessed it - report how many tries.
+	cout << "You won" << endl;
+	cout << "You guessed it in " << num_guesses << " tries." << endl;
 }

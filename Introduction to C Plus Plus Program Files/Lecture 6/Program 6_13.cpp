@@ -11,4 +11,9 @@ int main() {
 	cout << "The random number is " << x << endl;
 	cout << "Here is another random number: " << (rand() % 100) + 1 << endl;
 	cout << "... and another: " << (rand() % 100) + 1 << endl;                   
+
+	int y = (rand() % 1000) + 1;
+	cout << "The random number is " << y << endl;
+	cout << "Here is another random number 1000: " << (rand() % 1000) + 1 << endl;
+	cout << "... and another: " << (rand() % 1000) + 1 << endl;                   
 }

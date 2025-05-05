@@ -11,3 +11,8 @@ int main() {
 	cout << "Here is another random number: " << rand() << endl;
 	cout << "... and another: " << rand() << endl;                                            
 }
+
+// seed value is a starting point for the sequence of pseudo-random numbers.
+// The seed value is used to initialize the random number generator.
+// The seed value determines the starting point for the sequence of pseudo-random numbers.
+// If you use the same seed value, you will get the same sequence of pseudo-random numbers.

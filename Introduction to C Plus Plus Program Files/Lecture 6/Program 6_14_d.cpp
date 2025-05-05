@@ -8,20 +8,28 @@ using namespace std;
 int main() {
 	// Generate a random number
 	srand(time(0));  // Set the seed for the pseudorandom sequence
-	int num_to_guess = (rand() % 100) + 1;
+	int num = (rand() % 100) + 1;
 
 	// Get a user's initial guess
-	int user_guess;
+	int guess;
 	cout << "Guess a number from 1 to 100: ";
-	cin >> user_guess;
-	int num_guesses = 1;
+	cin >> guess;
+	int guesses = 1;
 
 	// Repeat until the user guesses the right value
-	while (user_guess != num_to_guess) {
+	while (guess != num) {
 		// Report if too high or too low
-
+		if (guess < num) {
+			cout << "Too low! Try again: ";
+		} else {
+			cout << "Too high! Try again: ";
+		}
 		// Get another guess
+		cin >> guess;
+		guesses++;
 	}
 
 	// User guessed it - report how many tries.
+	cout << "You guessed it in " << guesses << " tries." << endl;
+	cout << "The number was " << num << endl;
 }
