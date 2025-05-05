@@ -9,5 +9,6 @@ int main() {
 	int fat_grams = 15; 
 	int calories;
 	calories = 4 * carb_grams + 4 * protein_grams + 9 * fat_grams;
-	cout << calories << endl;
+	// output the result
+	cout << calories << endl; //  output just the variable
 }

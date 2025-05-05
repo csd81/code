@@ -9,5 +9,6 @@ int main()
 	a = 7;
 	b = 3;
 	cout << a / b << endl;  // INTEGER Division (no remainder)
-	cout << a % b << endl;  // MODULUS (the remainder from division)
+	cout << a % b << endl;  // MODULUS (the remainder from division); 
+							// this is used in cryptography for example in RSA and Diffie-Hellman;
 }

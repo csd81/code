@@ -11,6 +11,7 @@ int main() {
 	protein_grams = 5;
 	fat_grams = 15;  // First we assign a value of 15
 	fat_grams--;  // Decrements the value stored by 1
+					// -- operator	
 	int calories;
 	calories = 4 * carb_grams + 4 * protein_grams + 9 * fat_grams;
 	cout << "There are " << calories << " calories in this dish" << endl;
