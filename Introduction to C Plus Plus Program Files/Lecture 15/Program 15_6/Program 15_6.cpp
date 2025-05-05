@@ -2,7 +2,7 @@
 // file that will use library
 // main file
 #include "greeter.h"
-#include<iostream>
+#include <iostream>
 
 int main() {
 	mynamespace::greeting();        

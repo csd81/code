@@ -30,3 +30,6 @@ int main() {
 		}
 	}                      
 }
+// // this program demonstrates how to use exceptions in C++ to handle errors and exceptional conditions.
+// // It defines a function find_result that takes an integer argument and throws different types of exceptions based on the value of the argument.
+// // The main function reads an integer from the user and calls the find_result function.

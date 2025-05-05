@@ -22,3 +22,7 @@ int main() {
 		}
 	}          
 }
+
+// this program demonstrates how to use a vector to store and access a list of hours worked.
+// it initializes a vector with a list of hours worked for 5 days and then attempts to access the hours worked for 7 days.
+// however, the program will throw an exception because the vector only contains 5 elements,

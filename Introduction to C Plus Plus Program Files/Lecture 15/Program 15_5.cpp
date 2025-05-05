@@ -19,7 +19,15 @@ namespace spanish {
 
 }
 
-using namespace spanish;                        
+namespace magyar {
+
+	void greeting() {
+		cout << "Szia!" << endl;                
+	}
+
+}
+
+using namespace magyar; 
 
 int main()
 {

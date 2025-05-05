@@ -21,5 +21,5 @@ namespace spanish {
 
 int main()
 {
-	greeting();                                                    
+	spanish::greeting();                                                    
 }

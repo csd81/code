@@ -2,7 +2,7 @@
 // Using Namespace example - error
 #include <iostream>
 using namespace std;           
-using namespace english;
+
 
 namespace english {
 
@@ -20,7 +20,7 @@ namespace spanish {
 
 }
 
-
+using namespace english;
 int main()
 {
 	greeting();           

@@ -23,4 +23,8 @@ int main()
 {
 	english::greeting();
 	spanish::greeting();              
+
+	// The output will be:
+	// Hello!
+	// Hola!
 }

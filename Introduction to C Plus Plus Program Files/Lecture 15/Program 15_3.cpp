@@ -6,7 +6,7 @@ using namespace std;
 namespace english {
 
 	void greeting() {
-		cout << "Hello!" << endl;
+		cout << "Szia!" << endl;
 	}
 
 }

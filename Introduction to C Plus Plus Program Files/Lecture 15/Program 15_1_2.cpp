@@ -22,6 +22,7 @@ void initialize_game() {
 
 int main() {
 	int a, b;
-	get_board_size(a, b);
+	get_board_size(a, b); // these parameters are passed by reference
+	// so they can be changed in the function
 	cout << "Returned " << a << " columns and " << b << " rows." << endl;           
 }

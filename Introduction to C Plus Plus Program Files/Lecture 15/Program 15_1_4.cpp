@@ -1,10 +1,10 @@
 // Program 15_1_4
 // Connect 4 Program - complete
-#include <iostream>
+#include <iostream> // iostream library for input and output
 #include <vector>
 using namespace std;
 
-void get_board_size(int& columns, int& rows) {                        
+void get_board_size(int& columns, int& rows) {            // // this function takes the number of columns and rows as parameters            
 	/* Get size of board from user */
 	cout << "How many columns should the board have? ";
 	cin >> columns;
@@ -12,10 +12,13 @@ void get_board_size(int& columns, int& rows) {
 	cin >> rows;
 }
 
-vector<vector<int> > initialize_board(int columns, int rows) {
+vector<vector<int> > initialize_board(int columns, int rows) { // this function takes the number of columns and rows as parameters
+	// and returns a 2D vector representing the board
 	/* Initialize the board itself, to all empty squares */
-	vector<int> column(rows, 0);
-	vector<vector<int> > board(columns, column);
+	vector<int> column(rows, 0); // Initialize a column with empty spaces
+	vector<vector<int> > board(columns, column); // Initialize the row with empty spaces
+	// using a 2D vector
+
 	return board;
 }
 
@@ -28,7 +31,7 @@ void display_board(vector<vector<int> > board) {
 		for (i = 0; i < board.size(); i++) {
 			//Display that location
 			if (board[i][j] == 0) {
-				cout << ". "; //Empty Cell
+				cout << ": "; //Empty Cell
 			}
 			else if (board[i][j] == 1) {
 				cout << "1 "; //Player 1 has it
@@ -52,14 +55,17 @@ int get_move(int player) {
 	return col;
 }
 
-void place_piece(int column, vector<vector<int> >& board, int player) {
+void place_piece(int column, vector<vector<int> >& board, int player) { // // this function takes the column number, the board, and the player number as parameters
+	/* Place a piece in the board, in the designated column */
+	//Check to see if the column is full
 	/* Update the board by adding a piece to the designated column */
-	int last_empty = 0;
-	while ((last_empty < board[column].size()) && (board[column][last_empty] == 0)) {
+	int last_empty = 0; // Last empty space in the column
+	while ((last_empty < board[column].size()) && (board[column][last_empty] == 0)) { // Check for empty spaces
+		//If there is an empty space, move down
 		last_empty++;
 	}
-	last_empty--;
-	board[column][last_empty] = player;
+	last_empty--; // Move back to the last empty space
+	board[column][last_empty] = player; // Place the piece in the last empty space
 }
 
 bool check_vertical_winner(vector<vector<int> > board, int player) {
@@ -68,9 +74,9 @@ bool check_vertical_winner(vector<vector<int> > board, int player) {
 	for (i = 0; i < board.size(); i++) {
 		//Can loop over all but last 3 rows, comparing 4 at a time
 		for (j = 0; j < board[i].size() - 3; j++) {
-			if ((board[i][j] == player) && (board[i][j + 1] == player) 
+			if ((board[i][j] == player) && (board[i][j + 1] == player)  
 				&& (board[i][j + 2] == player) && (board[i][j + 3] == player)) {
-				return true;
+				return true; // Found a winning combination
 			}
 		}
 	}

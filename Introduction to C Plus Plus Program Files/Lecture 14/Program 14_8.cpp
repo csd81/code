@@ -21,3 +21,7 @@ int main() {
 		cout << "Had an exception!" << endl;
 	}                            
 }
+
+// // stdexcept is a standard library header that provides classes and functions for handling exceptions in C++.
+// // It includes the standard exception class and its derived classes, which can be used to represent different types of exceptions.
+// // throw is a keyword in C++ that is used to throw an exception.

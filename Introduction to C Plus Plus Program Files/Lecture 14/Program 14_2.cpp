@@ -19,7 +19,7 @@ bool is_palindrome(string s) {
 	string no_spaces = remove_spaces(s);
 	bool could_be_palindrome = true;
 	for (int i = 0; i < no_spaces.size() / 2; i++) {
-		if (no_spaces[i] != no_spaces[no_spaces.size() - 1 - i]) {
+		if (no_spaces[i] != no_spaces[no_spaces.size() - 1 - i]) { // Fix the index
 			could_be_palindrome = false;
 		}
 	}
