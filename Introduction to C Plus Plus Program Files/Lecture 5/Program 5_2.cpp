@@ -1,5 +1,11 @@
 // Program 5_2
-// Multiple if statements for computing balance
+// Multiple if statements for computing balance 
+//
+// this can be cumbersome and inefficient. The program uses multiple if statements to compute
+// the balance of a bank account after multiple payments and interest
+// charges. The program also counts the number of payments made.
+// we can reuse the code without having to write it multiple times.
+// if we use a loop, we can make the code more efficient and easier to read.
 #include <iostream>
 using namespace std;                                
 

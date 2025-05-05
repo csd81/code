@@ -4,7 +4,7 @@
 using namespace std;
 
 int main() {
-	while (true) {
+	while (true) {  // true is always true, so the loop will never terminate
 		cout << "Howdy! " << endl;
 	}                                  
 }
