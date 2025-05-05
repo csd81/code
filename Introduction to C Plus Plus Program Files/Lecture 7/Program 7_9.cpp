@@ -18,3 +18,9 @@ int main() {
 		}
 	}    
 }
+
+// // this program will not compile because the array is not initialized
+// it actually compiles but the values are not initialized therefore the values are garbage values
+// it is not a good practice to use uninitialized variables
+// it is better to initialize the variables before using them
+ 

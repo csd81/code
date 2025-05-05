@@ -1,5 +1,11 @@
 {
     "files.associations": {
         "iostream": "cpp"
+    },
+    "github.copilot.enable": {
+        "*": true,
+        "plaintext": false,
+        "markdown": false,
+        "scminput": false
     }
 }

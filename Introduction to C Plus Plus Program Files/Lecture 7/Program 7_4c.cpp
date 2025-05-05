@@ -24,4 +24,12 @@ int main() {
 	cout << "The average temperature was " << average << endl;
 
 	// Print out elements greater than the average                       
+	for (int i = 0; i < counttemps; i++ ){
+		if (temps[i] > average) {
+			cout << temps[i] << " is greater than the average" << endl;
+		}
+	}
+
 }
+
+// Program 7_4c

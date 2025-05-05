@@ -20,8 +20,28 @@ int main() {
 
 	for (i = 0; i < 5; i++) {
 		for (j = 0; j < 3; j++) {
-			cout << "Person " << i << ", account " << j << " has balance " 
+			cout << "Person " << i + 1 << ", account " << j + 1  << " has balance " 
 				<< accounts[i][j] << endl;
 		}
 	}                 
+
+	for (i = 0; i < 5; i++) {
+		for (j = 0; j < 3; j++) {
+		cout << accounts[i][j] << "\t";
+		}
+		cout << endl;
+	}
 }
+
+// now the program will compile and run
+// the program will initialize the array with 0.0
+
+//in the first nested for loop we are initializing the array with 0.0
+//in the second nested for loop we are displaying the values of the array
+
+ 
+
+// we can also add one to the iterator in the for loop when counting persons. 
+// for (i = 0; i < 5; i++) {
+// 	for (j = 0; j < 3; j++) {
+// 		cout << "Person " << i + 1 << ", account " << j + 1 << " has balance "
