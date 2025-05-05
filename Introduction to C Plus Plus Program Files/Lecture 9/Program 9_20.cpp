@@ -10,6 +10,8 @@ int main()
 	timezone.replace(timezone.begin() + 8, timezone.begin() + 16, "Daylight");
 	timezone.replace(timezone.begin() + 0, timezone.begin() + 7, "Eastern");
 	cout << timezone << endl;        
+
+	// Output: Eastern Daylight Time
 }
 
 // replace() is a member function of the string class that replaces a substring in a string with another string.
@@ -26,3 +28,10 @@ int main()
 // end() is a member function of the string class that returns an iterator pointing to one past the last character of the string.
 // iterators are objects that point to a specific position in a container, such as a string or an array.
 // They are used to traverse the elements of the container and perform operations on them.
+
+// iterators have a type, which is determined by the container they point to.
+// how can I output the an iterator in C++ to the console?
+// You can use the dereference operator (*) to access the value pointed to by the iterator.
+// For example, if you have an iterator it pointing to a character in a string, you can output the character using:
+// cout << *it << endl;
+

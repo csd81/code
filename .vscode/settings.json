@@ -1,7 +1,9 @@
 {
     "files.associations": {
         "iostream": "cpp",
-        "string": "cpp"
+        "string": "cpp",
+        "fstream": "cpp",
+        "sstream": "cpp"
     },
     "github.copilot.enable": {
         "*": true,
