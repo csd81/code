@@ -5,6 +5,13 @@
 
 using namespace std;
 
+
+
+// void kisebbAtlag (Szamsor s1, Szamsor s2){ }
+
+
+
+
 void szamsorKiir(const Szamsor &s)
 {
 	for (unsigned int i=0; i<s.getDarab(); i++)

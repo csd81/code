@@ -4,9 +4,11 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += main.cpp \
+    rendezveny.cpp \
     szemely.cpp \
     szamsor.cpp
 
 HEADERS += \
+    rendezveny.h \
     szemely.h \
     szamsor.h
