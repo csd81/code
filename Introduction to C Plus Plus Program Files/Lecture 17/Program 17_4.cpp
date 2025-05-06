@@ -35,10 +35,14 @@ public:
 
 int main()
 {
-	cout << "How many items does the machine start wtih? ";
+	cout << "How many items does  the first machine start wtih? ";
 	int init_number;
 	cin >> init_number;
-	vending_machine lobby_machine(init_number);
+	vending_machine first_machine(init_number);
+	cout << "There are " << first_machine.number_remaining() << " items in the first machine." << endl;                
 
-	cout << "There are " << lobby_machine.number_remaining() << " items." << endl;                
+	cout << "How many items does  the 2nd machine start wtih? ";
+	cin >> init_number;
+	vending_machine second_machine(init_number);
+	cout << "There are " << second_machine.number_remaining() << " items in the 2nd machine." << endl;                
 }

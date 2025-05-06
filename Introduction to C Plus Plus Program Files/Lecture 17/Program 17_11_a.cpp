@@ -13,13 +13,13 @@ public:
 		weight = 13000.0;
 	}
 
-	void operator ++() {
-		//Prefix operator - for ++elephant
+	void operator ++() { // Prefix operator - for ++elephant, it is a unary operator, takes no arguments
+		//Prefix operator - for ++elephant 
 		cout << "increasing height of elephant" << endl;
 		height += 0.1;
 	}
 
-	void operator ++(int whatever) {
+	void operator ++(int whatever) { // int is a dummy variable, it is not used but is required to differentiate between prefix and postfix
 		//Postfix operator - for elephant++
 		cout << "increasing weight of elephant" << endl;
 		weight += 100.0;
@@ -33,8 +33,8 @@ public:
 int main() {
 	elephant Dumbo;
 	Dumbo.print_characteristics();
-	Dumbo++;
+	Dumbo++; // Postfix operator - for Dumbo++, increment weight
 	Dumbo.print_characteristics();
-	++Dumbo;
+	++Dumbo; // Prefix operator - for ++Dumbo, increment height
 	Dumbo.print_characteristics();                     
 }

@@ -4,36 +4,61 @@
 using namespace std;
 
 class lightbulb {
-public:
+
 	int watts_used;
 	int lumens;
 	int temperature;
-
-	lightbulb() {
-		watts_used = 60;
-		lumens = 900;
-		temperature = 2700;
+public:
+	lightbulb(int w = 60, int l = 900, int t = 2700) : 
+		watts_used(w), lumens(l), temperature(t) {
+		cout << "Lightbulb created." << endl;
+	}
+	~lightbulb() {
+		cout << "Lightbulb destroyed." << endl;
+	}
+	void set_watts(int w) {
+		watts_used = w;
+	}
+	void set_lumens(int l) {
+		lumens = l;
+	}
+	void set_temperature(int t) {
+		temperature = t;
+	}
+	int get_watts() const {
+		return watts_used;
+	}
+	int get_lumens() const {
+		return lumens;
+	}	
+	int get_temperature() const {
+		return temperature;
 	}
 };
 
-lightbulb operator *(lightbulb bulb, int increase_factor) {
-	lightbulb ans;
-	ans.watts_used = bulb.watts_used * increase_factor;
-	ans.lumens = bulb.lumens * increase_factor;
-	ans.temperature = bulb.temperature;
+lightbulb operator *(const lightbulb& bulb, int increase_factor) {
+	lightbulb ans(0,0,0);
+	ans.set_watts(bulb.get_watts() * increase_factor);
+	ans.set_lumens(bulb.get_lumens() * increase_factor);
+	ans.set_temperature(bulb.get_temperature());
 	return ans;
 }
 
-lightbulb operator *(int increase_factor, lightbulb bulb) {
-	lightbulb ans;
-	ans.watts_used = bulb.watts_used * increase_factor;
-	ans.lumens = bulb.lumens * increase_factor;
-	ans.temperature = bulb.temperature;
-	return ans;
+lightbulb operator *(int increase_factor, const lightbulb& bulb) {
+	 
+	return  bulb * increase_factor; //  this is the reverse-order multiplication
 }
+
 
 int main() {
-	lightbulb bulba, bulbb;
-	bulbb = 2 * bulba;
-	cout << bulbb.watts_used << " " << bulbb.lumens << " " << bulbb.temperature << endl;             
+ 
+
+	lightbulb bulba, bulbb, bulbc;
+	cout << bulba.get_watts()  << " W, " << bulba.get_lumens() << " lm, " << bulba.get_temperature() << " K\n";
+	
+	bulbb = bulba * 2;
+	cout << bulbb.get_watts() << " W, " << bulbb.get_lumens() << " lm, " << bulbb.get_temperature() << " K\n";
+	
+	bulbc = 2 * bulba;
+	cout << bulbc.get_watts() << " W, " << bulbc.get_lumens() << " lm, " << bulbc.get_temperature() << " K\n";
 }

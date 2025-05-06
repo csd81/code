@@ -26,7 +26,9 @@ public:
 		inventory = starting_inventory;
 		cout << "Created a new vending machine." << endl;
 	}
-
+	~vending_machine() {
+		cout << "Destroying vending machine." << endl;
+	}
 	int number_remaining() {
 		return inventory;
 	}
@@ -35,7 +37,9 @@ public:
 
 int main()
 {
-	vending_machine lobby_machine(50);
+	vending_machine standard;
+	cout << "There are " << standard.number_remaining() << " items." << endl;                                    
 
+	vending_machine lobby_machine(50);
 	cout << "There are " << lobby_machine.number_remaining() << " items." << endl;                                    
 }
