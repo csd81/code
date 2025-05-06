@@ -12,28 +12,27 @@ private:
 
 protected:
 	double balance;
-
 	void set_account(long long int acctnum, double startbalance = 0.0) {
 		account_number = acctnum;
 		balance = startbalance;
 	}
 
 public:
-	bank_account() {
+	bank_account() {  // Default constructor
 		owner_name = "";
 		owner_address = "";
 		account_number = 0;
 		balance = 0.0;
 	}
 
-	bank_account(string name, string address, long long int num, double bal) {
+	bank_account(string name, string address, long long int num, double bal) {  // Constructor with parameters
 		owner_name = name;
 		owner_address = address;
 		account_number = num;
 		balance = bal;
 	}
 
-	void update_owner(string name, string address) {
+	void update_owner(string name, string address) { // this should not be public, i guess ...
 		owner_name = name;
 		owner_address = address;
 	}
@@ -44,16 +43,21 @@ public:
 		cout << "Owner: " << owner_name << endl;
 		cout << "Address: " << owner_address << endl;
 	}
+	double get_balance() {
+		return balance;
+	}
 };
 
 class checking_account : public bank_account {
 public:
 
-	checking_account() : bank_account() {
+	checking_account() 
+		: bank_account() {  // Default constructor
+		// No need to initialize anything here, as the base class constructor
 	}
 
-	checking_account(string name, string address, long long int num, 
-		double bal) : bank_account(name, address, num, bal) {
+	checking_account(string name, string address, long long int num, double bal) 
+		: bank_account(name, address, num, bal) {
 	}
 
 
@@ -80,12 +84,13 @@ class savings_account : public bank_account {
 	double interest_rate;
 
 public:
-	savings_account() : bank_account() {
+	savings_account() : bank_account() {  // Default constructor
 		interest_rate = 0.0;
 	}
 
-	savings_account(string name, string address, long long int num, double bal, 
-		double rate) : bank_account(name, address, num, bal) {
+	savings_account(string name, string address, long long int num, double bal, double rate)  // 
+		: bank_account(name, address, num, bal) 
+	{
 		interest_rate = rate;
 	}
 
@@ -102,9 +107,18 @@ public:
 int main() {
 	checking_account my_checking("John Keyser", "123 Any St., Anytown, TX 77777", 
 		11122233, 100.0);
-	savings_account my_savings("John Keyser", "123 Any St., Anytown, TX 77777", 
-		99988877, 500.0, 0.03);
+	savings_account my_savings("My Name", "My address", 
+		99988877, 500.0, 0.20);
 
+	cout << endl << "Checking account info:" << endl;
 	my_checking.print_account_info();
+
+	while (my_savings.get_balance() < 100000) { // make some money
+		my_savings.generate_interest();
+	} 
+	
+	my_savings.update_owner("My Name", "My address"); // change the owner name and address
+
+	cout << endl << "Savings account info:" << endl;
 	my_savings.print_account_info();                     
 }

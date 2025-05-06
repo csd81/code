@@ -5,20 +5,23 @@
 using namespace std;
 
 class bank_account {
-private:
-	string owner_name;
-	string owner_address;
-	long long int account_number;
 
-protected:
-	double balance;
+private: // Private members are not accessible outside the class
+	string owner_name;  
+	string owner_address;
+	long long int account_number;  // long long int is used for large account numbers
+
+protected:	
+
+	double balance; // Protected members are accessible in derived classes
 
 	void set_account(long long int acctnum, double startbalance = 0.0) {
 		account_number = acctnum;
 		balance = startbalance;
 	}
 
-public:
+public: 			// Public members are accessible from outside the class
+	
 	void update_owner(string name, string address) {
 		owner_name = name;
 		owner_address = address;
@@ -78,8 +81,20 @@ int main() {
 
 	Holmes_checking.deposit(50.0);
 	Holmes_checking.withdraw(25.0);
-	Holmes_savings.generate_interest();
+	
+	for (int i = 0; i < 100; i++) {
+		Holmes_savings.generate_interest();
+	}
+		
+	Holmes_savings.update_owner("my name", "my address"); // 
+	
 
 	Holmes_checking.print_account_info();
+	cout << "I stole this money from Sherlock Holmes!" << endl;
 	Holmes_savings.print_account_info();              
 }
+
+// Public/Protected/Private are access specifiers in C++ that control the visibility of class members.
+// Public members are accessible from outside the class.
+// Protected members are accessible in derived classes but not from outside the class.
+// Private members are only accessible within the class itself. 
