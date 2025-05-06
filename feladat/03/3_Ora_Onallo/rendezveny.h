@@ -9,7 +9,7 @@ class Rendezveny : public Szamsor {
 public:
     Rendezveny();
     Rendezveny(const Rendezveny& r); // copy con
-    ~Rendezveny() { delete kiemeltVendeg; } // destructor
+    ~Rendezveny();
 
     void setKiemeltVendeg(const Szemely& szemely);
     const Szemely* getKiemeltVendeg() const;
