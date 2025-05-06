@@ -70,3 +70,5 @@ int main()
 	}
 	cout << "There are " << lobby_machine.number_remaining() << " items left." << endl;                  
 }
+
+// Output: cool

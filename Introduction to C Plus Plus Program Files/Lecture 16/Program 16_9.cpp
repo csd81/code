@@ -8,9 +8,24 @@ private:
 	float price = 1.0;
 	float credit = 0.0;
 	float money_collected = 0.0;
-
-public:                                           
 	int inventory = 0;
+
+public:              
+	vending_machine() {
+		cout << "Vending machine created" << endl;
+	}
+	~vending_machine() {
+		cout << "Vending machine destroyed" << endl;
+	}                             
+	void set_inventory(int num_items) {
+		if (num_items >= 0) {
+			inventory = num_items;
+		}
+		else {
+			cout << "Invalid inventory amount" << endl; // can't be negative
+		}
+	}
+
 	int number_remaining() {
 		return inventory;
 	}
@@ -51,7 +66,7 @@ public:
 int main()
 {
 	vending_machine lobby_machine;
-	lobby_machine.inventory = 200;
+	lobby_machine.set_inventory(200);
 
 	lobby_machine.deposit_money(0.25);
 	lobby_machine.deposit_money(0.25);

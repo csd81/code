@@ -4,21 +4,24 @@
 using namespace std;
 
 class vending_machine {
-public:
+
 	float price;
 	float credit;
 	float money_collected;
 	int inventory;
-
-	int number_remaining() {
+public:
+	int get_inventory() {
 		return inventory;
+	}
+	void set_inventory(int i) {
+		inventory = i;
 	}
 };
 
 int main()
 {
 	vending_machine lobby_machine;
-	lobby_machine.inventory = 250;
+	lobby_machine.set_inventory(250);
 
-	cout << lobby_machine.number_remaining() << " items remain in the machine." << endl;             
+	cout << lobby_machine.get_inventory() << " items remain in the machine." << endl;             
 }
