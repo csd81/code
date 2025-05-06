@@ -7,8 +7,9 @@ közös feladatban is használt Szemely osztály.
 Ügyelj arra, hogy minden lefoglalt memória kerüljön megfelelően felszabadításra.
 Származtass egy Rendezveny osztályt a Szamsor osztályból, ami egy egy hetes rendezvény
 adatait tárolja. Ebben az ősosztály által létrehozott dinamikus tömb mindenképpen 7 méretű
-lesz (egy-egy szám a hét minden napjához, ami az adott napi létszám). Ezen felül tároljon egy
-Szemely mutatót, ami a rendezvény kiemelt vendégének nevét tárolja (feltéve ha van, ezért
+lesz (egy-egy szám a hét minden napjához, ami az adott napi létszám). 
+
+Ezen felül tároljon egy Szemely mutatót, ami a rendezvény kiemelt vendégének nevét tárolja (feltéve ha van, ezért
 mutató). A kiemelt vendéget lehessen beállítani és lekérdezni.
 
 Készíts a Rendezveny osztályba egy kiir függvényt, amely kiírja az összes adatot.

@@ -4,17 +4,18 @@
 #include "szamsor.h"
 #include "szemely.h"
 
-class Rendezveny : public Szamsor
-{
-    Szemely* szemelyek;
+class Rendezveny : public Szamsor {
+    Szemely* kiemeltVendeg;
 public:
     Rendezveny();
-    Rendezveny(Rendezveny& r); // copy con
+    Rendezveny(const Rendezveny& r); // copy con
+    ~Rendezveny() { delete kiemeltVendeg; } // destructor
 
-    void setSzemely(Szemely* sz);
-    Szemely* getSzemely();
-    void kiir();
-    void legjobbNap(); //  legnagyobb a létszámú nap
+    void setKiemeltVendeg(const Szemely& szemely);
+    const Szemely* getKiemeltVendeg() const;
+    
+    void kiir() const;
+    void legjobbNap() const; //  legnagyobb a létszámú nap
 };
 
 #endif // RENDEZVENY_H

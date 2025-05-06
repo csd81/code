@@ -1,13 +1,36 @@
 #include <iostream>
 #include "szemely.h"
 #include "szamsor.h"
-//#include "rendezveny.h"
+#include "rendezveny.h"
 
 using namespace std;
 
 
 
-// void kisebbAtlag (Szamsor s1, Szamsor s2){ }
+ void kisebbAtlag (Szamsor& a, Szamsor& b) {
+	double atlagA = 0, atlagB = 0;
+	for (unsigned int i=0; i<a.getDarab(); i++)
+	{
+		atlagA += a.getErtek(i);
+	}
+	atlagA /= a.getDarab();
+	for (unsigned int i=0; i<b.getDarab(); i++)
+	{
+		atlagB += b.getErtek(i);
+	}
+	atlagB /= b.getDarab();
+
+	cout << "Elso szamsor atlaga: " << atlagA << endl;
+    cout << "Masodik szamsor atlaga: " << atlagB << endl;
+
+    if (atlagA > atlagB)
+        cout << "Az elso szamsor atlaga a nagyobb." << endl;
+    else if (atlagB > atlagA)
+        cout << "A masodik szamsor atlaga a nagyobb." << endl;
+    else
+        cout << "A ket szamsor atlaga megegyezik." << endl;
+}
+
 
 
 
@@ -43,55 +66,55 @@ int main()
 	szamsorKiir(s2);
 
 //	// Rendezveny teszt: kiírás
-//	cout << endl;
-//	Rendezveny r1, r2;
-//	r1.setErtek(0,5);
-//	r1.setErtek(1,6);
-//	r1.setErtek(2,3);
-//	r1.setErtek(3,7);
-//	r1.setErtek(4,8);
-//	r1.setErtek(5,4);
-//	r1.setErtek(6,9);
+	cout << endl;
+	Rendezveny r1, r2;
+	r1.setErtek(0,5);
+	r1.setErtek(1,6);
+	r1.setErtek(2,3);
+	r1.setErtek(3,7);
+	r1.setErtek(4,8);
+	r1.setErtek(5,4);
+	r1.setErtek(6,9);
 
-//	r2.setErtek(0,1);
-//	r2.setErtek(1,10);
-//	r2.setErtek(2,2);
-//	r2.setErtek(3,4);
-//	r2.setErtek(4,5);
-//	r2.setErtek(5,2);
-//	r2.setErtek(6,6);
-//	r2.setKiemeltVendeg(Szemely("Vendeg", "Piroska", 30));
+	r2.setErtek(0,1);
+	r2.setErtek(1,10);
+	r2.setErtek(2,2);
+	r2.setErtek(3,4);
+	r2.setErtek(4,5);
+	r2.setErtek(5,2);
+	r2.setErtek(6,6);
+	r2.setKiemeltVendeg(Szemely("Vendeg", "Piroska", 30));
 
-//	r1.kiir();
-//	r2.kiir();
+	r1.kiir();
+	r2.kiir();
 
 //	// Rendezveny teszt: másoló konstruktor
-//	cout << endl;
-//	Rendezveny masolat(r2);
-//	masolat.kiir();
-//	masolat.setErtek(4,123);
-//	masolat.setErtek(1,222);
-//	masolat.kiir();
+	cout << endl;
+	Rendezveny masolat(r2);
+	masolat.kiir();
+	masolat.setErtek(4,123);
+	masolat.setErtek(1,222);
+	masolat.kiir();
 
 //	// Rendezveny teszt: legjobb nap
-//	cout << endl;
-//	r1.legjobbNap();
-//	r2.legjobbNap();
+	cout << endl;
+	r1.legjobbNap();
+	r2.legjobbNap();
 
 //	// Szamsor teszt: kisebb átlag
-//	cout << endl;
-//	cout << "Atlag osszehasonlitas: s1 vs s2: ";
-//	kisebbAtlag(s1,s2);
-//	cout << "Atlag osszehasonlitas: s2 vs r1: ";
-//	kisebbAtlag(s2,r1);
-//	cout << "Atlag osszehasonlitas: r1 vs r2: ";
-//	kisebbAtlag(r1,r2);
-//	cout << "Atlag osszehasonlitas: r2 vs s1: ";
-//	kisebbAtlag(r2,s1);
-//	cout << "Atlag osszehasonlitas: s1 vs r1: ";
-//	kisebbAtlag(s1,r1);
-//	cout << "Atlag osszehasonlitas: s2 vs r2: ";
-//	kisebbAtlag(s2,r2);
+	cout << endl;
+	cout << "Atlag osszehasonlitas: s1 vs s2: ";
+	kisebbAtlag(s1,s2);
+	cout << "Atlag osszehasonlitas: s2 vs r1: ";
+	kisebbAtlag(s2,r1);
+	cout << "Atlag osszehasonlitas: r1 vs r2: ";
+	kisebbAtlag(r1,r2);
+	cout << "Atlag osszehasonlitas: r2 vs s1: ";
+	kisebbAtlag(r2,s1);
+	cout << "Atlag osszehasonlitas: s1 vs r1: ";
+	kisebbAtlag(s1,r1);
+	cout << "Atlag osszehasonlitas: s2 vs r2: ";
+	kisebbAtlag(s2,r2);
 
 	return 0;
 }
