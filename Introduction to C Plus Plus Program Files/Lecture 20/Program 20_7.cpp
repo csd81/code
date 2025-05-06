@@ -42,7 +42,7 @@ public:
 		safety_enhancements = s;
 	}
 
-	void print_info() {
+	void print_info() override { // overrides the base class print_info function
 		cout << "The model " << model_name;
 		float total_price = base_price;
 		if (performance_package) {
@@ -60,7 +60,7 @@ public:
 		cout << " costs " << total_price << endl;
 	}
 
-	float price() {
+	float price() override { // overrides the base class price function
 		float total_price = base_price;
 		if (performance_package) {
 			total_price += 3000.0;
@@ -85,3 +85,4 @@ int main() {
 	SC300 y(true, false, true);
 	print_car(y);                   
 }
+

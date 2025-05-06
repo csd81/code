@@ -474,3 +474,22 @@ int main() {
 		g.start_game();
 	}
 }
+// !!!
+
+// This program is a game of Connect 4 or Reversi.  The user can choose which game to play.
+// The game is played on a board, which is represented by a 2D vector of integers.
+// The gameboard class is an abstract class that defines the interface for a game board.
+// The connect4_board and reversi_board classes inherit from the gameboard class and implement the interface.
+// The gamemove class is an abstract class that defines the interface for a game move.
+// The connect4_move and reversi_move classes inherit from the gamemove class and implement the interface.
+// The game class takes a reference to a gameboard and a gamemove object and manages the game.
+// The main function creates a game object and starts the game.
+// The program uses polymorphism to allow the game class to work with different types of game boards and moves.
+// The program uses inheritance to create a hierarchy of classes for the game board and game move.
+// The program uses encapsulation to hide the implementation details of the game board and game move classes.
+// The program uses abstraction to define the interface for the game board and game move classes.
+// The program uses dynamic binding to allow the game class to work with different types of game boards and moves.
+// The program uses a vector to represent the game board, which allows for dynamic resizing.
+// The program uses a vector of vectors to represent the game board, which allows for a 2D array.
+// The program uses a vector of pairs to represent the possible moves in the game.
+// The program uses a pair to represent a move, which allows for easy access to the row and column of the move.

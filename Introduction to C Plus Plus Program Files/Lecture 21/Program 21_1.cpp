@@ -474,3 +474,7 @@ int main() {
 		g.start_game();
 	}          
 }
+
+// this code is a simple game of Connect 4 or Reversi
+// however, it will throw an error if you try to play Connect 4
+// because the connect4_move class is not fully implemented

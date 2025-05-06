@@ -13,3 +13,7 @@ int main() {
 		cout << "This iterator refers to: " << *my_iterator << endl;
 	}
 }
+
+// auto is a C++11 feature that allows the compiler to automatically deduce the type of a variable based on its initializer.
+// In this case, the type of my_iterator is deduced to be vector<int>::iterator, which is the type of the iterator for the vector<int>.
+// This makes the code cleaner and easier to read, as you don't have to explicitly specify the type of the iterator.

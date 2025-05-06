@@ -12,7 +12,7 @@ protected:
 public:
 	car() {
 		base_price = 20000.0;
-		model_name = "Generic1";
+		model_name = "Generic Motor Company";
 	}
 
 	car(float price, string name) {
@@ -78,6 +78,19 @@ public:
 int main() {
 	car x;
 	x.print_info();
-	SC300 y(true, false, true);
+
+	SC300 y(0, 0, 0);
 	y.print_info();                   
+
+	SC300 z(1, 1, 1);
+	z.print_info();                   
 }
+
+
+// this program demonstrates the use of inheritance and polymorphism in C++.
+// The car class is a base class that represents a generic car with a base price and model name.
+// The SC300 class is a derived class that represents a specific car model with additional features.
+// there are some issues with the code:
+// 1. The print_info() method in the SC300 class does not call the base class's print_info() method.
+// 2. The price() method in the SC300 class does not override the base class's price() method.
+// 3. The main() function creates an instance of the car class and an instance of the SC300 class,

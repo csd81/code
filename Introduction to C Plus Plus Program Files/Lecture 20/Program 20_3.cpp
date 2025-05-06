@@ -32,7 +32,7 @@ void something_to_do(int x) {
 int main() {
 	try {
 		something_to_do(1);
-		something_to_do(5);
+		// something_to_do(5);
 		something_to_do(10);
 	}
 	catch (exception e) {
