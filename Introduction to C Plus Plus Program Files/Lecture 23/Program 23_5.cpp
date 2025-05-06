@@ -18,3 +18,7 @@ int main() {
 	pq.pop();
 	cout << "The next oldest person in the group is: " << pq.top().second << endl;      
 }
+// // this program demonstrates the use of the priority queue class in C++.
+// // The program creates a priority queue object that holds pairs of integers and strings.
+// // It assigns values to the elements of the priority queue using the push function.
+// // Finally, it prints out the values of the priority queue to the console.

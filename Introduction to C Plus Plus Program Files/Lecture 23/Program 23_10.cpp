@@ -28,3 +28,10 @@ int main() {
 		}
 	}    
 }
+
+// this program demonstrates how to find all instances of an element in a vector.
+// The program creates a vector of integers representing ages.
+// It prompts the user for an age to find and uses a while loop to search for all instances of that age in the vector.
+// If the age is found, it prints out the found age and continues searching for more instances.
+// If the age is not found, it prints out a message indicating that the age was not found any more.
+// The program continues to prompt the user for ages until the user terminates the program.

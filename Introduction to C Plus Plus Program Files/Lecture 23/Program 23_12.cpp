@@ -21,3 +21,9 @@ int main() {
 		cout << agetofind << " not found" << endl;
 	}             
 }
+// this program demonstrates the use of the lower_bound algorithm in C++.
+// The program creates a vector of integers representing ages.
+// It prompts the user for an age to find and uses the lower_bound algorithm to search for that age in the vector.
+// The lower_bound algorithm performs a binary search on the sorted vector to find the first element that is not less than the specified value.
+// If the age is found, it prints out the found age.
+// If the age is not found, it prints out a message indicating that the age was not found.
