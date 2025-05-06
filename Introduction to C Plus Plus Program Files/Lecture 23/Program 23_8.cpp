@@ -23,3 +23,9 @@ int main() {
 		}
 	}           
 }
+// this program demonstrates the use of the find algorithm in C++.
+// The program creates a vector of integers representing ages.
+// It prompts the user for an age to find and uses the find algorithm to search for that age in the vector.
+// If the age is found, it prints out the found age.
+// If the age is not found, it prints out a message indicating that the age was not found.
+// The program continues to prompt the user for ages until the user terminates the program.

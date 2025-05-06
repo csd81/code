@@ -19,3 +19,11 @@ int main() {
 	}
 	cout << endl;            
 }
+// this program demonstrates the use of the sort algorithm in C++.
+// The program creates a vector of integers and initializes it with some values.
+// It prints the vector before sorting.
+// It then uses the sort algorithm to sort the vector in ascending order.
+// Finally, it prints the vector after sorting.
+// The program uses the standard library's sort function, which is a part of the <algorithm> header.
+// The sort function takes two iterators as arguments, representing the beginning and end of the range to be sorted.
+// The program uses a range-based for loop to iterate through the vector and print its elements.

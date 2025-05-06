@@ -65,7 +65,8 @@
         "*": true,
         "plaintext": false,
         "markdown": false,
-        "scminput": false
+        "scminput": false,
+        "cpp": true
     },
     "cmake.sourceDirectory": "/home/d/git/code/feladat/02szamok"
 }

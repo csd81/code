@@ -12,3 +12,8 @@ int main() {
 	cout << get<0>(c) << " is " << get<3>(c) << " inches tall and weighs " 
 		<< get<4>(c) << " pounds." << endl;             
 }
+
+// this program demonstrates the use of the tuple class in C++.
+// The program creates a tuple object that holds a string, a string, an integer, a double, and another double.
+// It assigns values to the elements of the tuple using the make_tuple function.
+// Finally, it prints out the values of the tuple to the console.	
