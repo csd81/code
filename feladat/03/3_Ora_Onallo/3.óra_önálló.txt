@@ -1,0 +1,34 @@
+Feladat
+•
+
+•
+
+•
+•
+
+•
+•
+•
+•
+
+A feladat elkezdéséhez a mellékelt projekt tartalmaz kódokat. A megoldás bizonyos feladatoknál
+ezekhez a kódokhoz is hozzá kell nyúlni, és a teszteléshez a main függvényben a nem használt
+kódokat ki lehet kommentezni.
+A megadott osztály a Szamsor osztály, amely egy dinamikusan foglalt tömböt tárol egész
+számokból, pár alapvető függvénnyel. A tömb méretét a konstruktora adja meg. Szintén adott a
+közös feladatban is használt Szemely osztály.
+Ügyelj arra, hogy minden lefoglalt memória kerüljön megfelelően felszabadításra.
+Származtass egy Rendezveny osztályt a Szamsor osztályból, ami egy egy hetes rendezvény
+adatait tárolja. Ebben az ősosztály által létrehozott dinamikus tömb mindenképpen 7 méretű
+lesz (egy-egy szám a hét minden napjához, ami az adott napi létszám). Ezen felül tároljon egy
+Szemely mutatót, ami a rendezvény kiemelt vendégének nevét tárolja (feltéve ha van, ezért
+mutató). A kiemelt vendéget lehessen beállítani és lekérdezni.
+Készíts a Rendezveny osztályba egy kiir függvényt, amely kiírja az összes adatot.
+Készíts másoló konstruktort a Rendezveny osztályhoz.
+Készíts a Rendezveny-be egy legjobbNap függvényt, amely kiírja, hogy a rendezvény hanyadik
+napján volt a legnagyobb a létszám.
+Készíts a main.cpp-be egy kisebbAtlag függvényt, amely paraméterben megkap két Szamsor-t. A
+függvény írja ki, hogy az első vagy a második paraméterben eltárolt számoknak nagyobb-e az
+átlaga, vagy esetleg azonos.
+
+
