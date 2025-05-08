@@ -1,3 +1,955 @@
+Itt van a részletes magyarázat az egyes Bash parancsokhoz:
+
+---
+
+### `01. Könyvtárak létrehozása`
+
+```bash
+mkdir ~/projekt ~/projekt/dokumentumok ~/projekt/kepek
+```
+
+* `mkdir` = könyvtár (directory) létrehozása
+* `~` = a felhasználó home könyvtára (pl. `/home/felhasznalonev`)
+* Egyszerre több könyvtárat is létrehozunk: egy főkönyvtárt `projekt` néven, majd azon belül két alkönyvtárat: `dokumentumok` és `kepek`.
+
+---
+
+### `02. Fájlok létrehozása`
+
+```bash
+touch ~/projekt/dokumentumok/fontos.txt
+touch ~/projekt/kepek/kep1.jpg ~/projekt/kepek/kep2.jpg
+```
+
+* `touch` = új, üres fájl létrehozása, vagy meglévő fájl időbélyegének frissítése
+* A fenti parancsok létrehoznak egy szövegfájlt és két képfájlt (csak név szerint, tartalom nincs bennük).
+
+---
+
+### `03. Fájl másolása`
+
+```bash
+cp ~/projekt/dokumentumok/fontos.txt ~/backup/
+```
+
+* `cp` = másolás (copy)
+* A `fontos.txt` fájl átmásolódik a `~/backup/` könyvtárba.
+
+---
+
+### `04. Másolás és átnevezés`
+
+```bash
+cp ~/projekt/kepek/kep1.jpg ~/projekt/dokumentumok/dokumentum.jpg
+```
+
+* A fájl másolás közben új nevet kap: `kep1.jpg` → `dokumentum.jpg`
+
+---
+
+### `05. Könyvtár listázása`
+
+```bash
+ls ~/projekt
+```
+
+* `ls` = könyvtár tartalmának kilistázása
+* Csak a nem rejtett fájlokat és könyvtárakat mutatja.
+
+---
+
+### `06. Rejtett fájlokkal együtt listázás`
+
+```bash
+ls -a ~/projekt
+```
+
+* `-a` (all) opcióval a rejtett fájlokat is látjuk (például `.` vagy `..` vagy `.git`).
+
+---
+
+### `07. Egy fájl törlése`
+
+```bash
+rm ~/projekt/kepek/kep2.jpg
+```
+
+* `rm` = fájl törlése
+* A `kep2.jpg` fájl véglegesen eltávolításra kerül (nincs lomtár).
+
+---
+
+### `08. Könyvtár és tartalmának törlése`
+
+```bash
+rm -r ~/projekt
+```
+
+* `-r` = rekurzív mód, vagyis a könyvtár összes tartalma (fájlok, alkönyvtárak) törlődik.
+* VIGYÁZAT: ez visszavonhatatlanul töröl mindent a `projekt` könyvtárból.
+
+---
+
+### `09. Többszintű könyvtár létrehozása`
+
+```bash
+mkdir -p ~/osztalyok/matematika
+```
+
+* `-p` = ha a `osztalyok` még nem létezik, létrehozza azt is
+* Így a teljes útvonal biztosan létrejön (`~/osztalyok/matematika`).
+
+---
+
+### `10. Könyvtár és fájl létrehozása`
+
+```bash
+mkdir -p ~/jegyzetek/2022
+touch ~/jegyzetek/2022/jegyzet.txt
+```
+
+* Először létrehozunk egy évszám szerinti alkönyvtárt
+* Utána egy `jegyzet.txt` fájlt hozunk benne létre
+
+---
+
+Szeretnéd, hogy mindezeket egyetlen szkriptbe is összefoglaljam?
+
+
+
+Íme a részletes megoldás minden egyes feladathoz Bash parancsokkal, lépésről lépésre:
+
+---
+
+### **01. Könyvtár létrehozása**
+
+```bash
+mkdir ~/gyakorlas
+```
+
+* Létrehozza a `gyakorlas` nevű mappát a felhasználó home könyvtárában.
+
+---
+
+### **02. Fájl létrehozása és szöveg írása**
+
+```bash
+echo "Ez egy példa szöveg." > ~/gyakorlas/szoveg.txt
+```
+
+* Létrehozza (vagy felülírja) a `szoveg.txt` fájlt, és beleírja a megadott szöveget.
+
+---
+
+### **03. Nano segítségével kiegészítés**
+
+```bash
+nano ~/gyakorlas/szoveg.txt
+```
+
+* Fájl megnyitása Nano-ban. Írd be kézzel az alábbi sorokat:
+
+```
+Ej, mi a kő! tyúkanyó, kend
+A szobában lakik itt bent?
+Lám, csak jó az isten, jót ád,
+Hogy fölvitte a kend dolgát!
+
+Itt szaladgál föl és alá,
+Még a ládára is fölszáll,
+Eszébe jut, kotkodácsol,
+S nem verik ki a szobából.
+```
+
+Majd: `Ctrl + X`, `Y`, `Enter` — mentés kilépéshez.
+
+---
+
+### **04. Másolat létrehozása és átnevezés**
+
+```bash
+cp ~/gyakorlas/szoveg.txt ~/gyakorlas/masolat.txt
+```
+
+---
+
+### **05. Tartalom hozzáfűzése másik fájlhoz**
+
+```bash
+cat ~/gyakorlas/szoveg.txt >> ~/gyakorlas/masolat.txt
+```
+
+* A `>>` operátor hozzáfűzi a tartalmat.
+
+---
+
+### **06. Fájl áthelyezése és átnevezése**
+
+```bash
+mv ~/gyakorlas/szoveg.txt ~/projekt/dokumentum.txt
+```
+
+---
+
+### **07. Jogosultságok módosítása**
+
+```bash
+chmod 600 ~/gyakorlas/masolat.txt
+```
+
+* Csak a tulajdonos olvashatja és írhatja.
+
+---
+
+### **08. Könyvtár tartalmának kilistázása rejtett fájlokkal**
+
+```bash
+ls -a ~/gyakorlas
+```
+
+---
+
+### **09. Első 3 sor kiírása**
+
+```bash
+head -n 3 ~/gyakorlas/masolat.txt
+```
+
+---
+
+### **10. Utolsó 4 sor kiírása**
+
+```bash
+tail -n 4 ~/gyakorlas/masolat.txt
+```
+
+---
+
+### **11. Új fájl létrehozása adott tartalommal**
+
+```bash
+echo "Jul  6 06:33:44 user1 ubuntu: dear cj" > ~/eredeti.txt
+```
+
+---
+
+### **12. Soft link létrehozása**
+
+```bash
+ln -s ~/eredeti.txt ~/soft_link.txt
+```
+
+---
+
+### **13. Link ellenőrzése**
+
+```bash
+ls -l
+```
+
+* A soft link `soft_link.txt -> eredeti.txt` formában jelenik meg.
+
+---
+
+### **14. Hard link létrehozása**
+
+```bash
+ln ~/eredeti.txt ~/hard_link.txt
+```
+
+---
+
+### **15. Hard link ellenőrzése**
+
+```bash
+ls -l
+```
+
+* A fájlméret és inode azonos (de nincs nyíl `->`, mivel ez nem symlink).
+
+---
+
+Szeretnéd ezt a 15 feladatot egy automatikus Bash szkriptbe is összefoglalva megkapni?
+
+
+
+
+Itt van a **15 feladat teljes Bash megoldása**, magyarázatokkal:
+
+---
+
+### **01. Könyvtár és fájl létrehozása, több sor echo-val**
+
+```bash
+mkdir dokumentumok
+echo -e "Kovács;Lajos;Baja;6500\nNagy;László;Székesfehérvár;8000\nTamási;Péter;Veszprém;8200" > dokumentumok/fontos.txt
+```
+
+---
+
+### **02. projekt könyvtár és fájlok létrehozása**
+
+```bash
+mkdir projekt
+cat > projekt/adatok.txt <<EOF
+Kovacs Tamas    Szeged  6000    06-30-3874656
+Szanto Katalatin        Szekesfehervar  8000    06-20-2398763
+Nagy Lilla      Veszprem        8200    06-70-8574923
+Toth Tihamer    Budapest        1118    06-20-4987327
+Vince Iren      Balatonalmadi   8220    06-70-3977428
+Nagy Zsofi      Szeged  6000    06-70-8574923
+Zold Peter      Ajka    8400    06-20-2345976
+Pal Peter       Veszprem        8200    06-88-1234567
+EOF
+
+touch projekt/kimenet.txt
+```
+
+---
+
+### **03. dokumentumok tartalom + utolsó 3 sor**
+
+```bash
+ls -l dokumentumok
+tail -n 3 dokumentumok/fontos.txt
+```
+
+---
+
+### **04. Mindkét fájl első 4 sora**
+
+```bash
+cat dokumentumok/fontos.txt projekt/adatok.txt | head -n 4
+```
+
+---
+
+### **05. Második és harmadik karakter kivágása minden sorból**
+
+```bash
+cut -c 2-3 projekt/adatok.txt
+```
+
+---
+
+### **06. Sortolás az első mező szerint**
+
+```bash
+sort -t ';' -k 1 dokumentumok/fontos.txt
+```
+
+---
+
+### **07. .txt fájlok számlálása a projekt mappában**
+
+```bash
+ls -1 projekt/*.txt | wc -l
+```
+
+---
+
+### **08. Második mező (vezetéknév) kivágása a `;` szerint**
+
+```bash
+cut -d ';' -f2 dokumentumok/fontos.txt
+```
+
+---
+
+### **09. Három fájl létrehozása azonos tartalommal**
+
+```bash
+cat > projekt/file1.txt <<EOF
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ac justo vel nisi vestibulum aliquet.
+Suspendisse potenti. Fusce eget tincidunt risus, ac vehicula nulla. Quisque auctor justo nec ante ullamcorper, at sodales justo tempor.
+Integer ac justo vel orci consequat vulputate. In hac habitasse platea dictumst. Proin quis urna vel turpis dictum scelerisque.
+Etiam at vestibulum velit. Sed vel justo vel ipsum vehicula bibendum. Nulla facilisi.
+Vivamus fringilla mi vitae augue auctor, in scelerisque libero tristique. Nunc euismod, libero nec varius luctus, erat velit vulputate odio.
+EOF
+
+cp projekt/file1.txt projekt/file2.txt
+cp projekt/file1.txt projekt/file3.txt
+```
+
+---
+
+### **10. Backup mappa + fájlok másolása**
+
+```bash
+mkdir backup
+cp projekt/*.txt backup/
+```
+
+---
+
+### **11. Minden `.txt` fájl kilistázása a dokumentumok mappában (nem rekurzívan)**
+
+```bash
+find dokumentumok -maxdepth 1 -type f -name "*.txt"
+```
+
+---
+
+### **12. Rekurzív `.txt` fájl keresés és listázás projektben**
+
+```bash
+find projekt -type f -name "*.txt" -exec ls -1 "{}" \;
+```
+
+---
+
+### **13. dokumentumok alatti `.txt` fájlok első 3 sorának kiírása**
+
+```bash
+find dokumentumok -type f -name "*.txt" -exec head -n 3 "{}" \;
+```
+
+---
+
+### **14. backup → projekt fájlok másolása `.old` kiterjesztéssel**
+
+```bash
+find backup -type f -name "*.txt" -exec bash -c 'cp "$0" projekt/$(basename "$0").old' {} \;
+```
+
+---
+
+### **15. Nem rekurzív `.jpg` fájlok keresése, méret < 50KB**
+
+```bash
+find ~ -maxdepth 1 -type f -name "*.jpg" -size -50k
+```
+
+---
+
+Szeretnéd ezeket egy `.sh` fájlba összefoglalva futtatható szkriptként is?
+
+
+
+Az alábbiakban részletesen elmagyarázom, hogy mit csinálnak ezek a Bash scriptek, soronként és funkció szerint:
+
+---
+
+### **1. Felhasználónév bekérése és üdvözlés**
+
+```bash
+#!/bin/bash
+echo "Kerem, adja meg a nevet:"
+read name
+echo "Udvozoljuk, $name!"
+```
+
+* `#!/bin/bash` – jelzi, hogy a script Bash-ben fut.
+* `echo` – szöveget ír ki a képernyőre.
+* `read name` – beolvassa a felhasználó által megadott nevet és elmenti a `name` változóba.
+* `"Udvozoljuk, $name!"` – személyre szabott üzenet a beírt névvel.
+
+---
+
+### **2. Két szám összeadása parancssori argumentumokból**
+
+```bash
+#!/bin/bash
+sum=$(($1 + $2))
+echo "A ket szam osszege: $sum"
+```
+
+* `$1`, `$2` – az első és második parancssori argumentum.
+* `$((...))` – aritmetikai művelet.
+* `sum=...` – az eredmény mentése egy változóba.
+* Kiíratja az összeget.
+
+---
+
+### **3. Fájl létezésének ellenőrzése a `~/dokumentumok` könyvtárban**
+
+```bash
+#!/bin/bash
+echo "Kérem, adjon meg egy fájlnevet:"
+read filename
+
+if [ -e ~/dokumentumok/$filename ]; then
+    echo "A fájl létezik."
+else
+    echo "A fájl nem létezik."
+fi
+```
+
+* `-e` – ellenőrzi, hogy a fájl létezik-e.
+* A `read` változóval beolvassa a fájlnevet.
+* Kiírja a megfelelő üzenetet.
+
+---
+
+### **4. Két szám összehasonlítása**
+
+```bash
+#!/bin/bash
+echo "Kérem, adjon meg két számot:"
+read num1
+read num2
+
+if [ "$num1" -gt "$num2" ]; then
+    echo "$num1 nagyobb, mint $num2."
+elif [ "$num1" -eq "$num2" ]; then
+    echo "A két szám egyenlő."
+else
+    echo "$num2 nagyobb, mint $num1."
+fi
+```
+
+* `-gt` = nagyobb, `-eq` = egyenlő.
+* Döntési szerkezet (`if-elif-else`) a viszony meghatározásához.
+
+---
+
+### **5. Fájl másolása megadott célkönyvtárba**
+
+```bash
+#!/bin/bash
+echo "Kérem, adja meg a forrásfájl nevét:"
+read source_file
+echo "Kérem, adja meg a célkönyvtár nevét:"
+read destination_dir
+
+cp "$source_file" "$destination_dir"
+echo "A fájl másolása sikeres volt."
+```
+
+* `cp` – másolási parancs.
+* `read` – beolvasás fájl és könyvtár nevére.
+* Kiírás, hogy sikeres volt a másolás.
+
+---
+
+### **6. Fájl létezik-e és üres-e?**
+
+```bash
+#!/bin/bash
+echo "Kérem, adjon meg egy fájl nevét:"
+read filename
+
+if [ -e "$filename" ]; then
+    if [ -s "$filename" ]; then
+        echo "A fájl létezik és nem üres."
+    else
+        echo "A fájl létezik, de üres."
+    fi
+else
+    echo "A fájl nem található."
+fi
+```
+
+* `-s` – ellenőrzi, hogy a fájl nem üres-e.
+* Két szintű ellenőrzés: létezik-e, és ha igen, üres-e.
+
+---
+
+### **7. Könyvtár tartalmának listázása**
+
+```bash
+#!/bin/bash
+echo "Kérem, adjon meg egy könyvtár nevét:"
+read directory
+echo "A könyvtár tartalma:"
+ls -a $directory
+```
+
+* `ls -a` – minden fájl, beleértve a rejtetteket is.
+* Felhasználótól bekéri a könyvtár nevét.
+
+---
+
+### **8. Két szám összeadása és kiírás fájlba**
+
+```bash
+#!/bin/bash
+echo "Kérem, adjon meg két számot:"
+read num1
+read num2
+
+sum=$(($num1 + $num2))
+echo "Az összeg: $sum" > sum.txt
+echo "Az összeg ki lett írva a sum.txt fájlba."
+```
+
+* `>` – kiírás új fájlba (felülírja, ha létezik).
+* Az összeg fájlba írása történik meg.
+
+---
+
+### **9. Páros vagy páratlan szám ellenőrzése**
+
+```bash
+#!/bin/bash
+echo "Kérem, adjon meg egy számot:"
+read num
+
+if [ $(($num % 2)) -eq 0 ]; then
+    echo "$num páros szám."
+else
+    echo "$num páratlan szám."
+fi
+```
+
+* `% 2` – oszthatóság vizsgálata.
+* `-eq 0` → páros; különben páratlan.
+
+---
+
+### **10. Pozitív, negatív vagy nulla szám ellenőrzése**
+
+```bash
+#!/bin/bash
+echo "Kérem, adjon meg egy számot:"
+read num
+
+if [ $num -gt 0 ]; then
+    echo "A szám pozitív."
+elif [ $num -lt 0 ]; then
+    echo "A szám negatív."
+else
+    echo "A szám nulla."
+fi
+```
+
+* `-gt`, `-lt`, `-eq` → összehasonlító operátorok számokhoz.
+* Háromágú logikai elágazás.
+
+---
+
+Szeretnél ezekhez gyakorló feladatokat vagy tesztelési tippeket is?
+
+
+Az alábbiakban mind a **15 Bash szkript** működését részletesen elmagyarázom:
+
+---
+
+### **1. Összes `.txt` fájl sorainak összegzése**
+
+```bash
+total_lines=$(cat *.txt | wc -l)
+```
+
+* `cat *.txt` összefűzi a `.txt` fájlokat.
+* `wc -l` megszámolja a sorokat.
+* Az eredményt változóban tárolja, majd kiírja.
+
+---
+
+### **2. Páros számok 0-tól 10-ig**
+
+```bash
+for i in {0..10..2}
+```
+
+* Számsorozat generálás 0-tól 10-ig 2-es lépésekben (csak párosak).
+* `echo $i` soronként kiírja.
+
+---
+
+### **3. Gyümölcsök tömbben**
+
+```bash
+fruits=("alma" "korte" "szolo" "narancs")
+```
+
+* Tömb létrehozása.
+* `for fruit in "${fruits[@]}"` bejárja az elemeket, mindet kiírja külön sorban.
+
+---
+
+### **4. Szövegben „e” → „X” csere**
+
+```bash
+sed 's/e/X/g'
+```
+
+* `sed` parancs lecseréli az összes `e` karaktert `X`-re.
+* Az eredményt változóba menti és kiírja.
+
+---
+
+### **5. Utolsó előtti sor kiírása fájlból**
+
+```bash
+second_last_line=$(tail -n 2 "$1" | head -n 1)
+```
+
+* `tail -n 2` – utolsó két sor.
+* `head -n 1` – ezekből az első, tehát az utolsó előtti sor.
+
+---
+
+### **6. Három szám közül a legnagyobb kiválasztása**
+
+```bash
+if [ $szam1 -gt $szam2 ] && [ $szam1 -gt $szam3 ]
+```
+
+* Egyszerű `if-elif-else` logika alapján kiválasztja a legnagyobbat.
+* Ha holtverseny, kiírja, hogy egyenlőség van.
+
+---
+
+### **7. Szám hozzáfűzése vizsga nevű fájlokhoz**
+
+```bash
+for file in ./*vizsga*
+	do echo ${number} >> ${file}
+```
+
+* Fájlneveket keres, amik tartalmazzák a "vizsga" szót.
+* `>>` hozzáfűzi a számot a fájl végéhez.
+
+---
+
+### **8. Fájlok számának kiírása alma.txt-be**
+
+```bash
+find . -maxdepth 1 -type f | wc -l > alma.txt
+```
+
+* `find` kilistázza az aktuális mappában lévő fájlokat.
+* `wc -l` megszámolja.
+* Az eredményt beleírja az `alma.txt` fájlba.
+
+---
+
+### **9. Bejelentkezés felhasználónévvel és jelszóval**
+
+```bash
+read -p ... ; read -sp ...
+```
+
+* Felhasználótól olvas be adatot (a jelszót rejtve).
+* Ha mindkettő egyezik az előre megadott értékkel, sikeres bejelentkezés.
+
+---
+
+### **10. Számkitalálós játék**
+
+```bash
+if [ "$szam" -eq 10 ] || [ "$szam" -eq 20 ]
+```
+
+* A program ellenőrzi, hogy a felhasználó a 10-re vagy 20-ra gondolt-e.
+* Kimenet attól függően, hogy eltalálta vagy nem.
+
+---
+
+### **11. Fájl tartalmának soronkénti kiírása**
+
+```bash
+while read line; do echo $line; done < $filename
+```
+
+* Fájlt soronként beolvas (`while read` ciklus).
+* Minden sort külön sorba kiír.
+
+---
+
+### **12. Tetszőleges számú argumentum sorba írása**
+
+```bash
+for input in "$@"; do echo "$input"; done
+```
+
+* `"$@"` a szkript minden argumentumát jelenti.
+* Mindet külön sorba kiírja.
+
+---
+
+### **13. Sorok × szavak szorzata fájlból**
+
+```bash
+line=$(cat $1 | wc -l)
+word=$(cat $1 | wc -w)
+echo $((line * word))
+```
+
+* Először ellenőrzi, hogy a fájl létezik-e.
+* Megszámolja a sorokat (`wc -l`) és szavakat (`wc -w`).
+* A kettő szorzatát kiírja.
+
+---
+
+### **14. `.txt` fájlok másolása külön mappába**
+
+```bash
+if [ ! -d "txt_files" ]; then mkdir txt_files; fi
+cp *.txt txt_files/
+```
+
+* Ellenőrzi, hogy létezik-e `txt_files` könyvtár, ha nem, létrehozza.
+* `.txt` fájlokat bemásolja oda.
+
+---
+
+### **15. Legnagyobb és legkisebb fájl nevének kiírása**
+
+```bash
+ls -l | sort -n -k5 | head -n 2 | tail -n 1
+```
+
+* `ls -l` fájlok listázása mérettel.
+* `sort -k5` fájlméret szerint rendez.
+* `head` és `tail` kombinációval kiválasztja a legkisebbet/legnagyobbat.
+
+---
+
+Szükséged van ezekből tanulókártyákra, tesztkérdésekre, vagy hibakeresési példákra?
+
+
+
+Itt van mind a 10 reguláris kifejezést használó feladat részletes **magyarázata**:
+
+---
+
+### **1. `apple`, `banana`, `orange` sorok kiszűrése**
+
+```bash
+grep -E "(\bapple\b|\bbanana\b|\borange\b)" gyumolcs.txt
+```
+
+* `\b` szóhatárt jelöl (így az "apple" nem illeszkedik pl. "applesauce"-ra).
+* `|` logikai "vagy".
+* Csak a keresett szavakat tartalmazó sorokat adja vissza.
+
+---
+
+### **2. Nevek életkor szerinti szűrése (18–25)**
+
+```bash
+grep -E "(1[89]|2[0-5])" nevek.txt
+```
+
+* `1[89]` = 18 vagy 19
+* `2[0-5]` = 20-tól 25-ig
+* Ez visszaadja azokat a sorokat, ahol szerepel ilyen szám (pl. `Anna, 20`).
+
+---
+
+### **3. Gmail vagy Yahoo e-mail címek kiszűrése**
+
+```bash
+grep -E "(@gmail\.com|@yahoo\.com)$" emailcimek.txt
+```
+
+* `@gmail\.com` – Gmail cím
+* `@yahoo\.com` – Yahoo cím
+* `$` = sor vége (csak a teljes egyezéseket veszi).
+
+---
+
+### **4. 192.168.x.x és 10.x.x.x IP-címek**
+
+```bash
+grep -E "^(192\.168\.|10\.)" ipcimek.txt
+```
+
+* `^` – sor eleje
+* `192\.168\.` vagy `10\.` – kezdeti IP blokkok
+
+---
+
+### **5. Csak 2022. áprilisi dátumok**
+
+```bash
+grep -E '^2022-04-' evszamok.txt
+```
+
+* A dátumformátum fix: `éééé-hh-nn`
+* `^2022-04-` – sor eleje, áprilisi dátumok
+
+---
+
+### **6. Legalább 5 karakteres név + @example.com e-mail**
+
+```bash
+grep -E "^.{5,}@example\.com$" adatok.txt
+```
+
+* `^.{5,}` – legalább 5 karakter (bármilyen) a sor elején
+* `@example\.com$` – pontos domain a sor végén
+
+---
+
+### **7. http/https kezdettel .com vagy .hu végződésű URL-ek**
+
+```bash
+grep -E '^(http:\/\/|https:\/\/).*\.(com|hu)$' fontos.txt
+```
+
+* `^http:\/\/|https:\/\/` – protokoll
+* `.*\.(com|hu)$` – bármilyen domain, végződése `.com` vagy `.hu`
+
+---
+
+### **8. Városnevek kiírása `allomasok.txt` fájlból**
+
+```bash
+while read line
+do
+  city=$(echo "$line" | grep -oE "^[^,]+")
+  echo "$city"
+done < allomasok.txt
+```
+
+* `^[^,]+` – sor elejétől az első vesszőig minden karakter (városnév).
+* `grep -oE` csak a találatot írja ki.
+
+---
+
+### **9. Villamosok számának kiírása**
+
+```bash
+while read line
+do
+    tram_count=$(echo $line | grep -oE "[0-9]+ villamos")
+    if [ -n "$tram_count" ]; then
+        echo $tram_count
+    fi
+done < allomasok.txt
+```
+
+* `grep -oE "[0-9]+ villamos"` – csak a szám + `villamos` páros kiírása.
+* `-n` = ha van találat.
+
+---
+
+### **10. Buszok számának összeadása**
+
+```bash
+bus_count=0
+while read line
+do
+    bus_number=$(echo "$line" | grep -oE "\b[0-9]+ busz\b" | grep -oE "[0-9]+")
+    if [ -n "$bus_number" ]; then
+        ((bus_count+=bus_number))
+    fi
+done < allomasok.txt
+
+echo "A varosokban levo osszes busz szama: $bus_count"
+```
+
+* `\b[0-9]+ busz\b` – teljes "szám busz" egyezés.
+* `grep -oE "[0-9]+"` csak a számot veszi ki.
+* `((bus_count+=...))` összegez.
+
+---
+
+Szeretnél ehhez gyakorló regex feladatlapot vagy interaktív magyarázót is?
+
+
+
+
+
+
+
+
+
+# all 
 ```bash
 OS. gyak 1
 ---
@@ -1811,3 +2763,5 @@ b. asszimetrikus
 10. Az elosztott állománykezelésnél hasznát távoli eljáráshívás során az adatok a helyi csomópontba másolódnak.
 Igaz/Hamis
 ```
+
+

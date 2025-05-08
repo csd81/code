@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<title></title>
+	<meta name="generator" content="LibreOffice 24.2.7.2 (Linux)"/>
+	<meta name="author" content=" "/>
+	<meta name="created" content="2025-04-07T11:57:00"/>
+	<meta name="changedby" content=" "/>
+	<meta name="changed" content="2025-05-08T08:16:00"/>
+	<meta name="AppVersion" content="16.0000"/>
+	<style type="text/css">
+		@page { size: 8.27in 11.69in; margin: 0.98in }
+		p { line-height: 115%; text-align: left; orphans: 2; widows: 2; margin-bottom: 0.1in; direction: ltr; background: transparent }
+		p.western { so-language: hu-HU }
+		a:link { color: #467886; text-decoration: underline }
+	</style>
+</head>
+<body lang="en-GB" link="#467886" vlink="#800000" dir="ltr"><p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+<font size="3" style="font-size: 12pt"><i> 
+</i></font></p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+<font size="3" style="font-size: 12pt"><i>Hibajelentés és javaslat:
+</i></font><font color="#467886"><u><a href="mailto:csontos.balazs@mik.uni-pannon.hu"><font size="3" style="font-size: 12pt"><i></i></font></a></u></font></p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+<font size="3" style="font-size: 12pt"><i>A dokumentum verziója: 9</i></font></p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+<br/>
+<br/>
+
+</p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+<font size="3" style="font-size: 12pt"><b>ZÁRTHELYI 2. ALGORITMUSOK</b></font></p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+<b>I. Tárkezelés</b></p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+<i>I/1. Legjobban megfelelő (Best Fit, BF)</i></p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+Egy rendszerbe korábban már a P1, P2 és P3 folyamatok betöltésre
+kerültek, amely eredményeként az aktuális memória kiosztása az
+alábbi:</p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+ Cím:  0000   1000   2000   2200   2400   3000   5000  [Byte]</p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+                 
+|-------|-------|--------|-------|-------|-------|-------|</p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+Proc:            P1         -          P3          -          P2     
+   -          OS</p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+Ha egy 900 Byte méretű P4 és egy 200 Byte méretű P5 folyamat
+érkezik, akkor a rendszer a best fit algoritmus használatával a
+P4-t a ______ címre, a P5-t pedig a ______ címre tölti be.</p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+Az algoritmus alapja, hogy olyan memóriaterületet válasszunk ki
+egy folyamat számára, amely a legközelebb áll a folyamat
+méretéhez, de nem kisebb annál. Az ábrán látható, hogy a P1,
+P2, P3 folyamatnak korábban már sikerült helyet találnunk, így
+maradék üres helyekre kell beosztanunk a P4 (900 byte) és P5 (200
+byte) folyamatot. 
+</p>
+<p lang="hu-HU" style="line-height: 108%; margin-left: 0.5in; margin-bottom: 0.11in">
+Az üres helyek a következők:</p>
+<ul>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	1000 és 2000 között</p></li>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	2200 és 2400 között</p></li>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	3000 és 5000 között</p></li>
+</ul>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+Ezek alapján látható, hogy P4-et az 1000-es címre, míg a P5-öt
+a 2200-as címre kell elhelyeznünk.</p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+<i>I/2. Első megfelelő (First Fit, FF)</i></p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+Egy rendszerbe korábban már a P1, P2 és P3 folyamatok betöltésre
+kerültek, amely eredményeként az aktuális memória kiosztása az
+alábbi:</p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+ Cím:  0000   1000   2000   2200   2400   3000   5000  [Byte]</p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+                 
+|-------|-------|--------|-------|-------|-------|-------|</p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+Proc:            P1        -           P3           -         P2     
+   -        OS</p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+Ha egy 900 Byte méretű P4 és egy 400 Byte méretű P5 folyamat
+érkezik, akkor a rendszer a first fit algoritmus használatával a
+P4-et a ______ címre, a P5-t pedig a ______ címre tölti be.</p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+Az algoritmus alapja, hogy a memória elejéről kiindulva az első
+megfelelő méretű memóriaterületet válasszuk ki az adott
+folyamat számára. Az ábrán látható, hogy a P1, P2, P3
+folyamatnak korábban már sikerült helyet találnunk, így maradék
+üres helyekre kell beosztanunk a P4 (900 byte) és P5 (400 byte)
+folyamatot. 
+</p>
+<p lang="hu-HU" style="line-height: 108%; margin-left: 0.5in; margin-bottom: 0.11in">
+Az üres helyek a következők:</p>
+<ul>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	1000 és 2000 között</p></li>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	2200 és 2400 között</p></li>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	3000 és 5000 között</p></li>
+</ul>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+Ezek alapján látható, hogy P4-et az 1000-es címre, míg a P5-öt
+a 3000-as címre elhelyeznünk.</p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+<i>I/3. Következő megfelelő (Next Fit, NF)</i></p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+Egy rendszerbe korábban már a P1, P2 és P3 folyamatok betöltésre
+kerültek, amely eredményeként az aktuális memória kiosztása az
+alábbi:</p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in; page-break-after: avoid">
+ Cím:  0000   1000   2000   2200   2400   3000   4000  [Byte]</p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in; page-break-after: avoid">
+                 
+|-------|-------|--------|-------|-------|-------|-------|</p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in; page-break-after: avoid">
+Proc:           P1         -           P3          -          P2     
+   -          OS</p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+Ha egy 900 Byte méretű P4 és egy 200 Byte méretű P5 folyamat
+érkezik, akkor a rendszer a next fit algoritmus használatával a
+P4-et a ______ címre, a P5-öt pedig a ______ címre tölti be.</p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+Az algoritmus alapja, hogy az első olyan memóriaterületet kell
+kiválasztanunk az adott folyamat számára, amely elegendő méretű,
+és a legutóbbi folyamat beillesztése után következik az aktuális
+pozícióban a memóriában. Ez azt jelenti, hogy az NF algoritmus
+nem a memóriakezdőponttól, hanem az utolsó beillesztett folyamat
+után folytatja a keresést. Ha nem talál, akkor kezdi előről a
+keresést. 
+</p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+Első lépésben a 900 byte méretű P4 folyamatnak kell memóriát
+foglalnunk. Az utolsó folyamat a P3, amely a 2200-ig foglalja a
+memóriát, ez a kiindulási alap. 2200 és 2400 között nem fér
+be. 2400 és 3000 között a memóriát a P2 folyamat foglalja. 3000
+és 4000 között van szabad hely, így a P4-et a 3000-es címre
+helyezem. Következik a P5 folyamat 200 byte mérettel. Mivel a P4
+folyamat után már nem fér be, valamint ezt követően az OS
+következik, így előről kell kezdem a keresést. 0000 és 1000
+között a P1 folyamat szerepel, azonban 1000 és 2000 közé be
+tudom illeszteni a P5 folyamatot.</p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+Kitekintés: Mikor növekedhet a tördelődés?</p>
+<ul>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	Nem növekszik a külső tördelődés: Ha az új folyamatot
+	közvetlenül az utolsó folyamat után lehet elhelyezni, és nem
+	marad szabad terület az operációs rendszer és az utolsó
+	folyamat között.</p></li>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	Növekszik a külső tördelődés: Ha az új folyamatot nem lehet
+	közvetlenül az utolsó folyamat után elhelyezni, és az új
+	folyamat beillesztése új szabad területet eredményez az
+	operációs rendszer és az utolsó folyamat között.</p></li>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	Növekedhet a külső tördelődés: Ha az új folyamat
+	beillesztésekor nem növekszik a külső tördelődés, de az új
+	folyamat beillesztése után más folyamatok elmozdulhatnak a
+	memóriában, ami újabb szabad területeket eredményez az
+	operációs rendszer és az utolsó folyamat között, ezzel növelve
+	a külső tördelődést.</p></li>
+</ul>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+<i>I/4. Legrosszabban illeszkedő (Worst Fit, WF)</i></p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+Egy rendszerbe korábban már a P1, P2 és P3 folyamatok betöltésre
+kerültek, amely eredményeként az aktuális memória kiosztása az
+alábbi:</p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+ Cím:  0000   1000   2000   2200   2400   3000   4500  [Byte]</p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+                 
+|-------|-------|--------|-------|-------|-------|-------|</p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+Proc:            P1         -          P3          -          P2     
+    -         OS</p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+Ha egy 900 Byte méretű P4 és egy 200 Byte méretű P5 folyamat
+érkezik, akkor a rendszer a worst fit algoritmus használatával a
+P4-et a ______ címre, a P5-öt pedig a ______ címre tölti be.</p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+Az algoritmus alapja, hogy a legnagyobb elegendő méretű
+memóriaterületet válasszuk ki a folyamat számára. Az ábrán
+látható, hogy a P1, P2, P3 folyamatnak korábban már sikerült
+helyet találnunk, így maradék üres helyekre kell beosztanunk a P4
+(900 byte) és P5 (200 byte) folyamatot.</p>
+<p lang="hu-HU" style="line-height: 108%; margin-left: 0.5in; margin-bottom: 0.11in">
+Az üres helyek a következők:</p>
+<ul>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	1000 és 2000 között</p></li>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	2200 és 2400 között</p></li>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	3000 és 4500 között</p></li>
+</ul>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+Ezek alapján látható, hogy P4-et a 3000-es címre, míg a P5-öt
+az 1000-es címre kell elhelyeznünk.</p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+<b>II. Virtuális tárkezelés</b></p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+<i>II/1. Legrégebben használt lap (Least Recently Used, LRU)</i></p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+A memóriában 1 folyamat fut, amelynek a virtuális memóriája 5
+lapból áll. A végrehajtás során a lapokra az alábbi sorrendben
+hivatkozik: 1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5. A folyamatok
+lapkerete 4. 
+</p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+Ha a rendszerben a LRU (legrégebben használt lap) lapcsere
+stratégiát alkalmazzuk, akkor a folyamat ______ db laphibával fog
+lefutni.</p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+Az algoritmus alapja, hogy lapcserekor azt a lapot vesszük ki a
+memóriából, amelyre a folyamatok leghosszabb ideje nem
+hivatkoztak.</p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+1. lépés: Kezdeti táblázat felírása a meglévő adatok alapján.</p>
+<table width="515" cellpadding="7" cellspacing="0">
+	<col width="100"/>
+	<col width="19"/>
+	<col width="19"/>
+	<col width="19"/>
+	<col width="19"/>
+	<col width="19"/>
+	<col width="19"/>
+	<col width="19"/>
+	<col width="19"/>
+	<col width="19"/>
+	<col width="19"/>
+	<col width="19"/>
+	<col width="18"/>
+	<tbody>
+		<tr>
+			<td width="100" height="5" bgcolor="#ffffff" style="background: #ffffff; border-top: 1px solid #000000; border-bottom: 1.00pt solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">Laphivatkozások</span></font></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1px solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1px solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">2</span></font></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1px solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">3</span></font></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1px solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">4</span></font></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1px solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1px solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">2</span></font></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1px solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">5</span></font></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1px solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1px solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">2</span></font></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1px solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">3</span></font></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1px solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">4</span></font></font></p>
+			</td>
+			<td width="18" bgcolor="#ffffff" style="background: #ffffff; border-top: 1px solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">5</span></font></font></p>
+			</td>
+		</tr>
+	</tbody>
+	<tbody>
+		<tr>
+			<td rowspan="4" width="100" height="6" bgcolor="#ffffff" style="background: #ffffff; border-top: 1.00pt solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">Lapok
+				a tárban</span></font></font></p>
+			</td>
+			<td width="19" style="background: transparent; border-top: 1.00pt solid #000000; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></font></p>
+			</td>
+			<td width="19" style="background: transparent; border-top: 1.00pt solid #000000; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></font></p>
+			</td>
+			<td width="19" style="background: transparent; border-top: 1.00pt solid #000000; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></font></p>
+			</td>
+			<td width="19" style="background: transparent; border-top: 1.00pt solid #000000; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></font></p>
+			</td>
+			<td width="19" style="background: transparent; border-top: 1.00pt solid #000000; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></font></p>
+			</td>
+			<td width="19" style="background: transparent; border-top: 1.00pt solid #000000; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></font></p>
+			</td>
+			<td width="19" style="background: transparent; border-top: 1.00pt solid #000000; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></font></p>
+			</td>
+			<td width="19" style="background: transparent; border-top: 1.00pt solid #000000; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></font></p>
+			</td>
+			<td width="19" style="background: transparent; border-top: 1.00pt solid #000000; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></font></p>
+			</td>
+			<td width="19" style="background: transparent; border-top: 1.00pt solid #000000; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></font></p>
+			</td>
+			<td width="19" style="background: transparent; border-top: 1.00pt solid #000000; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></font></p>
+			</td>
+			<td width="18" bgcolor="#d1d1d1" style="background: #d1d1d1; border-top: 1.00pt solid #000000; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">5</span></font></font></p>
+			</td>
+		</tr>
+		<tr>
+			<td width="19" style="background: transparent; border-top: none; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p class="western" align="center">
+				<br/>
+
+				</p>
+			</td>
+			<td width="19" style="background: transparent; border-top: none; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">2</span></font></font></p>
+			</td>
+			<td width="19" style="background: transparent; border-top: none; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">2</span></font></font></p>
+			</td>
+			<td width="19" style="background: transparent; border-top: none; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">2</span></font></font></p>
+			</td>
+			<td width="19" style="background: transparent; border-top: none; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">2</span></font></font></p>
+			</td>
+			<td width="19" style="background: transparent; border-top: none; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">2</span></font></font></p>
+			</td>
+			<td width="19" style="background: transparent; border-top: none; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">2</span></font></font></p>
+			</td>
+			<td width="19" style="background: transparent; border-top: none; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">2</span></font></font></p>
+			</td>
+			<td width="19" style="background: transparent; border-top: none; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">2</span></font></font></p>
+			</td>
+			<td width="19" style="background: transparent; border-top: none; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">2</span></font></font></p>
+			</td>
+			<td width="19" style="background: transparent; border-top: none; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">2</span></font></font></p>
+			</td>
+			<td width="18" style="background: transparent; border-top: none; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">2</span></font></font></p>
+			</td>
+		</tr>
+		<tr>
+			<td width="19" style="background: transparent; border-top: none; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p class="western" align="center">
+				<br/>
+
+				</p>
+			</td>
+			<td width="19" style="background: transparent; border-top: none; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p class="western" align="center">
+				<br/>
+
+				</p>
+			</td>
+			<td width="19" style="background: transparent; border-top: none; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">3</span></font></font></p>
+			</td>
+			<td width="19" style="background: transparent; border-top: none; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">3</span></font></font></p>
+			</td>
+			<td width="19" style="background: transparent; border-top: none; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">3</span></font></font></p>
+			</td>
+			<td width="19" style="background: transparent; border-top: none; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">3</span></font></font></p>
+			</td>
+			<td width="19" bgcolor="#d1d1d1" style="background: #d1d1d1; border-top: none; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">5</span></font></font></p>
+			</td>
+			<td width="19" style="background: transparent; border-top: none; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">5</span></font></font></p>
+			</td>
+			<td width="19" style="background: transparent; border-top: none; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">5</span></font></font></p>
+			</td>
+			<td width="19" style="background: transparent; border-top: none; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">5</span></font></font></p>
+			</td>
+			<td width="19" bgcolor="#d1d1d1" style="background: #d1d1d1; border-top: none; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">4</span></font></font></p>
+			</td>
+			<td width="18" style="background: transparent; border-top: none; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">4</span></font></font></p>
+			</td>
+		</tr>
+		<tr>
+			<td width="19" style="background: transparent; border-top: none; border-bottom: 1.00pt solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p class="western" align="center">
+				<br/>
+
+				</p>
+			</td>
+			<td width="19" style="background: transparent; border-top: none; border-bottom: 1.00pt solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p class="western" align="center">
+				<br/>
+
+				</p>
+			</td>
+			<td width="19" style="background: transparent; border-top: none; border-bottom: 1.00pt solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p class="western" align="center">
+				<br/>
+
+				</p>
+			</td>
+			<td width="19" style="background: transparent; border-top: none; border-bottom: 1.00pt solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">4</span></font></font></p>
+			</td>
+			<td width="19" style="background: transparent; border-top: none; border-bottom: 1.00pt solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">4</span></font></font></p>
+			</td>
+			<td width="19" style="background: transparent; border-top: none; border-bottom: 1.00pt solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">4</span></font></font></p>
+			</td>
+			<td width="19" style="background: transparent; border-top: none; border-bottom: 1.00pt solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">4</span></font></font></p>
+			</td>
+			<td width="19" style="background: transparent; border-top: none; border-bottom: 1.00pt solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">4</span></font></font></p>
+			</td>
+			<td width="19" style="background: transparent; border-top: none; border-bottom: 1.00pt solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">4</span></font></font></p>
+			</td>
+			<td width="19" bgcolor="#d1d1d1" style="background: #d1d1d1; border-top: none; border-bottom: 1.00pt solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">3</span></font></font></p>
+			</td>
+			<td width="19" style="background: transparent; border-top: none; border-bottom: 1.00pt solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">3</span></font></font></p>
+			</td>
+			<td width="18" style="background: transparent; border-top: none; border-bottom: 1.00pt solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">3</span></font></font></p>
+			</td>
+		</tr>
+	</tbody>
+	<tbody>
+		<tr>
+			<td width="100" height="5" bgcolor="#ffffff" style="background: #ffffff; border-top: 1.00pt solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">Laphibák</span></font></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1.00pt solid #000000; border-bottom: 1px solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">x</span></font></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1.00pt solid #000000; border-bottom: 1px solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">x</span></font></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1.00pt solid #000000; border-bottom: 1px solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">x</span></font></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1.00pt solid #000000; border-bottom: 1px solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">x</span></font></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1.00pt solid #000000; border-bottom: 1px solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p class="western" align="center">
+				<br/>
+
+				</p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1.00pt solid #000000; border-bottom: 1px solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p class="western" align="center">
+				<br/>
+
+				</p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1.00pt solid #000000; border-bottom: 1px solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">x</span></font></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1.00pt solid #000000; border-bottom: 1px solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p class="western" align="center">
+				<br/>
+
+				</p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1.00pt solid #000000; border-bottom: 1px solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p class="western" align="center">
+				<br/>
+
+				</p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1.00pt solid #000000; border-bottom: 1px solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">x</span></font></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1.00pt solid #000000; border-bottom: 1px solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">x</span></font></font></p>
+			</td>
+			<td width="18" bgcolor="#ffffff" style="background: #ffffff; border-top: 1.00pt solid #000000; border-bottom: 1px solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">x</span></font></font></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+<br/>
+<br/>
+
+</p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+2. lépés: Táblázat kitöltése. Lapcsere az LRU algoritmus
+alapján:</p>
+<ul>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	Az 1-es bent van a tárban? Nincs. Beírom, és jelzem a laphibát.</p></li>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	A 2-es bent van a tárban? Nincs. Beírom, és jelzem a laphibát.</p></li>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	A 3-as bent van a tárban? Nincs. Beírom, és jelzem a laphibát.</p></li>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	A 4-es bent van a tárban? Nincs. Beírom, és jelzem a laphibát.</p></li>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	Az 1-es bent van a tárban? Igen. Nincs laphiba.</p></li>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	A 2-es bent van a tárban? Igen. Nincs laphiba.</p></li>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	Az 5-ös bent van a tárban? Nincs. Cserélem a legrégebb óta
+	hivatkozott lapra (3), majd jelzem a laphibát.</p></li>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	Az 1-es bent van a tárban? Igen. Nincs laphiba.</p></li>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	A 2-es bent van a tárban? Igen. Nincs laphiba.</p></li>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	A 3-as bent van a tárban? Nincs. Cserélem a legrégebb óta
+	hivatkozott lapra (4), majd jelzem a laphibát.</p></li>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	A 4-es bent van a tárban? Nincs. Cserélem a legrégebb óta
+	hivatkozott lapra (5), majd jelzem a laphibát.</p></li>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	Az 5-ös bent van a tárban? Nincs. Cserélem a legrégebb óta
+	hivatkozott lapra (1), majd jelzem a laphibát.</p></li>
+</ul>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+3. lépés: Összeszámolom a laphibák számát, amely összesen 8
+db.</p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+<i>II/2. Második esély (Secound Chance, SC)</i></p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+A memóriában 1 folyamat fut, amelynek a virtuális memóriája 5
+lapból áll. A végrehajtás során a lapokra az alábbi sorrendben
+hivatkozik: 1, 2, 3, 4, 3, 1, 5, 1, 2, 3, 1, 5. A folyamatok
+lapkerete 3. Ha a rendszerben a Second Chance (második esély)
+lapcsere stratégiát alkalmazzuk, akkor a folyamat...</p>
+<ol type="a">
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	5 db laphibával fog lefutni.</p></li>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	6 db laphibával fog lefutni.</p></li>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	7 db laphibával fog lefutni.</p></li>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	8 db laphibával fog lefutni.</p></li>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	9 db laphibával fog lefutni.</p></li>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	10 db laphibával fog lefutni.</p></li>
+</ol>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+Az algoritmus alapja, hogy lapcserekor az a lap kerül ki a
+memóriából, amelyik a legrégebb óta vár a sorára a FIFO
+sorrend szerint, és amelyiknek a jelölőbitje 0. A hivatkozásokat
+jelölő bittel jelöljük: ha egy lapra hivatkozás történt, annak
+a bitje 1-re áll. Ha a soron következő, legrégebben várakozó
+lap jelölőbitje 1, akkor második esélyt adunk neki: a bitjét
+0-ra állítjuk, és tovább lépünk a következő lapra a FIFO
+sorrendben. A folyamat addig ismétlődik, amíg olyan lapot nem
+találunk, amelyiknek a jelölőbitje 0, ekkor ezt a lapot cseréljük
+ki.</p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+1. lépés: Kezdeti táblázat felírása a meglévő adatok alapján.</p>
+<table width="515" cellpadding="7" cellspacing="0">
+	<col width="100"/>
+	<col width="19"/>
+	<col width="19"/>
+	<col width="19"/>
+	<col width="19"/>
+	<col width="19"/>
+	<col width="19"/>
+	<col width="19"/>
+	<col width="19"/>
+	<col width="19"/>
+	<col width="19"/>
+	<col width="19"/>
+	<col width="18"/>
+	<tbody>
+		<tr>
+			<td width="100" height="5" bgcolor="#ffffff" style="background: #ffffff; border-top: 1px solid #000000; border-bottom: 1.00pt solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">Laphivatkozások</span></font></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1px solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1px solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">2</span></font></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1px solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">3</span></font></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1px solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">4</span></font></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1px solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">3</span></font></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1px solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1px solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">5</span></font></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1px solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1px solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">2</span></font></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1px solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">3</span></font></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1px solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></font></p>
+			</td>
+			<td width="18" bgcolor="#ffffff" style="background: #ffffff; border-top: 1px solid #000000; border-bottom: 1.00pt solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">5</span></font></font></p>
+			</td>
+		</tr>
+	</tbody>
+	<tbody>
+		<tr>
+			<td rowspan="3" width="100" height="6" bgcolor="#ffffff" style="background: #ffffff; border-top: 1.00pt solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">Lapok
+				a tárban</span></font></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1.00pt solid #000000; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></font><font color="#000000"><sub><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></sub></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1.00pt solid #000000; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></font><font color="#000000"><sub><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></sub></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1.00pt solid #000000; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></font><font color="#000000"><sub><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></sub></font></p>
+			</td>
+			<td width="19" bgcolor="#d1d1d1" style="background: #d1d1d1; border-top: 1.00pt solid #000000; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">4</span></font></font><font color="#000000"><sub><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></sub></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1.00pt solid #000000; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">4</span></font></font><font color="#000000"><sub><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></sub></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1.00pt solid #000000; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">4</span></font></font><font color="#000000"><sub><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></sub></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1.00pt solid #000000; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">4</span></font></font><font color="#000000"><sub><font face="Aptos Narrow, serif"><span lang="en-GB">0</span></font></sub></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1.00pt solid #000000; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">4</span></font></font><font color="#000000"><sub><font face="Aptos Narrow, serif"><span lang="en-GB">0</span></font></sub></font></p>
+			</td>
+			<td width="19" bgcolor="#d1d1d1" style="background: #d1d1d1; border-top: 1.00pt solid #000000; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">2</span></font></font><font color="#000000"><sub><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></sub></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1.00pt solid #000000; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">2</span></font></font><font color="#000000"><sub><font face="Aptos Narrow, serif"><span lang="en-GB">0</span></font></sub></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1.00pt solid #000000; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">2</span></font></font><font color="#000000"><sub><font face="Aptos Narrow, serif"><span lang="en-GB">0</span></font></sub></font></p>
+			</td>
+			<td width="18" bgcolor="#d1d1d1" style="background: #d1d1d1; border-top: 1.00pt solid #000000; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">5</span></font></font><font color="#000000"><sub><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></sub></font></p>
+			</td>
+		</tr>
+		<tr>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: none; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p class="western" align="center" style="page-break-after: avoid">
+				<br/>
+
+				</p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: none; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">2</span></font></font><font color="#000000"><sub><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></sub></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: none; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">2</span></font></font><font color="#000000"><sub><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></sub></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: none; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">2</span></font></font><font color="#000000"><sub><font face="Aptos Narrow, serif"><span lang="en-GB">0</span></font></sub></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: none; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">2</span></font></font><font color="#000000"><sub><font face="Aptos Narrow, serif"><span lang="en-GB">0</span></font></sub></font></p>
+			</td>
+			<td width="19" bgcolor="#d1d1d1" style="background: #d1d1d1; border-top: none; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></font><font color="#000000"><sub><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></sub></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: none; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></font><font color="#000000"><sub><font face="Aptos Narrow, serif"><span lang="en-GB">0</span></font></sub></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: none; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></font><font color="#000000"><sub><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></sub></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: none; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></font><font color="#000000"><sub><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></sub></font></p>
+			</td>
+			<td width="19" bgcolor="#d1d1d1" style="background: #d1d1d1; border-top: none; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">3</span></font></font><font color="#000000"><sub><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></sub></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: none; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">3</span></font></font><font color="#000000"><sub><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></sub></font></p>
+			</td>
+			<td width="18" bgcolor="#ffffff" style="background: #ffffff; border-top: none; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">3</span></font></font><font color="#000000"><sub><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></sub></font></p>
+			</td>
+		</tr>
+		<tr>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: none; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p class="western" align="center" style="page-break-after: avoid">
+				<br/>
+
+				</p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: none; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p class="western" align="center" style="page-break-after: avoid">
+				<br/>
+
+				</p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: none; border-bottom: none; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">3</span></font></font><font color="#000000"><sub><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></sub></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: none; border-bottom: 1.00pt solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">3</span></font></font><font color="#000000"><sub><font face="Aptos Narrow, serif"><span lang="en-GB">0</span></font></sub></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: none; border-bottom: 1.00pt solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">3</span></font></font><font color="#000000"><sub><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></sub></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: none; border-bottom: 1.00pt solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">3</span></font></font><font color="#000000"><sub><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></sub></font></p>
+			</td>
+			<td width="19" bgcolor="#d1d1d1" style="background: #d1d1d1; border-top: none; border-bottom: 1.00pt solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">5</span></font></font><font color="#000000"><sub><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></sub></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: none; border-bottom: 1.00pt solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">5</span></font></font><font color="#000000"><sub><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></sub></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: none; border-bottom: 1.00pt solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">5</span></font></font><font color="#000000"><sub><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></sub></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: none; border-bottom: 1.00pt solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">5</span></font></font><font color="#000000"><sub><font face="Aptos Narrow, serif"><span lang="en-GB">0</span></font></sub></font></p>
+			</td>
+			<td width="19" bgcolor="#d1d1d1" style="background: #d1d1d1; border-top: none; border-bottom: 1.00pt solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></font><font color="#000000"><sub><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></sub></font></p>
+			</td>
+			<td width="18" bgcolor="#ffffff" style="background: #ffffff; border-top: none; border-bottom: 1.00pt solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></font><font color="#000000"><sub><font face="Aptos Narrow, serif"><span lang="en-GB">1</span></font></sub></font></p>
+			</td>
+		</tr>
+	</tbody>
+	<tbody>
+		<tr>
+			<td width="100" height="5" bgcolor="#ffffff" style="background: #ffffff; border-top: 1.00pt solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">Laphibák</span></font></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1.00pt solid #000000; border-bottom: 1px solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">x</span></font></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1.00pt solid #000000; border-bottom: 1px solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">x</span></font></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1.00pt solid #000000; border-bottom: 1px solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">x</span></font></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1.00pt solid #000000; border-bottom: 1px solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">x</span></font></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1.00pt solid #000000; border-bottom: 1px solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p class="western" align="center" style="page-break-after: avoid">
+				<br/>
+
+				</p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1.00pt solid #000000; border-bottom: 1px solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">x</span></font></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1.00pt solid #000000; border-bottom: 1px solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">x</span></font></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1.00pt solid #000000; border-bottom: 1px solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p class="western" align="center" style="page-break-after: avoid">
+				<br/>
+
+				</p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1.00pt solid #000000; border-bottom: 1px solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">x</span></font></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1.00pt solid #000000; border-bottom: 1px solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">x</span></font></font></p>
+			</td>
+			<td width="19" bgcolor="#ffffff" style="background: #ffffff; border-top: 1.00pt solid #000000; border-bottom: 1px solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">x</span></font></font></p>
+			</td>
+			<td width="18" bgcolor="#ffffff" style="background: #ffffff; border-top: 1.00pt solid #000000; border-bottom: 1px solid #000000; border-left: none; border-right: 1px solid #000000; padding-top: 0in; padding-bottom: 0in; padding-left: 0in; padding-right: 0.08in"><p lang="hu-HU" class="western" align="center" style="page-break-after: avoid">
+				<font color="#000000"><font face="Aptos Narrow, serif"><span lang="en-GB">x</span></font></font></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+<br/>
+<br/>
+
+</p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+2. lépés: Táblázat kitöltése. Lapcsere az SC algoritmus
+alapján:</p>
+<ul>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	A memória üres berakjuk az 1-est és beállítom neki az 1-es
+	jelölőbitet. Végül jelzem a laphibát. FIFO sorrend: 1</p></li>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	A memória üres berakjuk az 2-est és beállítom neki az 1-es
+	jelölőbitet. Végül jelzem a laphibát. FIFO sorrend: 1-&gt;2</p></li>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	A memória üres berakjuk az 3-ast és beállítom neki az 1-es
+	jelölőbitet. Végül jelzem a laphibát. FIFO sorrend: 1-&gt;2-&gt;3</p></li>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	A 4-es bent van a tárban? Nincs. Mivel nincs több lapkeret
+	cserélnem kell. Először megnézem FIFO sorrend szerint, hogy
+	melyik lap van legrégebb óta a tárban. Az 1-es. Mivel 1-es
+	jelölőbitje van azt átállítom 0-ra. Megnézem, hogy mi a
+	következő legrégebbi. A 2-es. Mivel 1-es jelölőbitje van azt
+	átállítom 0-ra. Végül, megnézem, hogy mi a következő
+	legrégebbi. A 3-as. Mivel 1-es jelölőbitje van azt átállítom
+	0-ra. Ezt követően visszatérek az elejére, és megnézem újra
+	az 1-es lapot. Mivel a jelölőbitje már 0-a, így kidobjuk, és
+	helyére a 4-es lapot tesszük, 1-es jelölőbittel. FIFO sorrend:
+	2-&gt;3-&gt;4</p></li>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	A 3-es bent van a tárban? Igen. Mivel még nem hivatkoztunk rá, de
+	most igen, így a jelölőbitet 1-esre állítom. Nincs laphiba.
+	FIFO sorrend: 2-&gt;3-&gt;4</p></li>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	Az 1-es bent van a tárban? Nincs, ezért cserélnem kell. Először
+	a FIFO sorrend szerinti soron következő lapot vizsgálom, amely a
+	2-es. A 2-es lap jelölőbitje 0, így kicserélem rá az 1-es
+	lapot. FIFO sorrend: 3-&gt;4-&gt;1</p></li>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	Az 5-ös bent van a tárban? Nincs, ezért cserélnem kell. Először
+	a FIFO sorrend szerinti soron következő lapot vizsgálom, amely a
+	3-as. Mivel a 3-as lap jelölőbitje 1, második esélyt adok neki:
+	a bitjét 0-ra állítom, és tovább lépek a következő lapra, a
+	4-esre. A 4-es lap jelölőbitje 1, ezért második esélyt adok
+	neki: a bitjét 0-ra állítom. A következő lap az 1-es, amelynek
+	jelölőbitje szintén 1, így neki is adok egy második esély, és
+	átállítom 0-ra a jelölőbitet. Ezt követően újra visszatérek
+	a 3-ashoz, mivel a hivatkozásbitje 0-a, így kidobom és betöltöm
+	a helyére a 5-öst. FIFO sorrend: 4-&gt;1-&gt;5</p></li>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	Az 1-es bent van a tárban? Igen. A jelölőbitet átállítom 1-re.
+	Nincs laphiba. FIFO sorrend: 4-&gt;1-&gt;5</p></li>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	A 2-es bent van a tárban? Nincs, ezért cserélnem kell. Először
+	a FIFO sorrend szerinti soron következő lapot vizsgálom, amely a
+	4-es. Mivel a 4-es jelölőbitje 0, így azt lecserélem. Helyére a
+	2-est teszem 1-es jelölőbittel. FIFO sorrend: 1-&gt;5-&gt;2</p></li>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	A 3-as bent van a tárban? Nincs, ezért cserélnem kell. Először
+	a FIFO sorrend szerinti soron következő lapot vizsgálom, amely a
+	1-es. Mivel a 1-es jelölőbitje 1, így azt lenullázom. Következő
+	az 5-ös, amelyet szintén lenullázok. Következő a 2-es, amelyet
+	újfent lenullázok. Visszatérek az 1-eshez, amelynek jelölőbitje
+	0-a, így kidobom és betöltöm a helyére a 3-ast. FIFO sorrend:
+	5-&gt;2-&gt;3</p></li>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	Az 1-es bent van a tárban? Nincs, ezért cserélnem kell. Először
+	a FIFO sorrend szerinti soron következő lapot vizsgálom, amely a
+	5-ös. Mivel az 5-ös lap jelölőbitje 0, ezért kidobom és
+	betöltöm a helyére az 1-est. FIFO sorrend: 2-&gt; 3-&gt; 1</p></li>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	Az 5-ös bent van a tárban? Nincs, ezért cserélnem kell. Először
+	a FIFO sorrend szerinti soron következő lapot vizsgálom, amely a
+	2-es. Mivel az 2-es lap jelölőbitje 0, ezért kidobom és betöltöm
+	a helyére az 5-öst. FIFO sorrend: 3-&gt; 1-&gt; 5</p></li>
+</ul>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+3. lépés: Összeszámolom a laphibák számát, amely összesen 10
+db.</p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+<b>III. Háttértár</b></p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+<i>III/1. N-lépéses pásztázó (N-Step-SCAN, N-SCAN)</i></p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+Egy merevlemezen a cilinderek száma 0-99, a rendszerbe 8 kérés
+érkezik R= (1, 2, 3, 4, 5, 6, 7, 8), melyek beérkezési időpontja
+T= (0, 0, 0, 0, 0, 0, 0, 0), és az adatokat tartalmazó cilinderek
+száma:</p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+C= (33, 27, 8, 47, 82,11, 91, 68). Adja meg a kiszolgálás
+sorrendjét, ha a háttértár a N-lépéses pásztázó (N-SCAN)
+algoritmust használja, a fej az egyik cilinderről a másikra 1 ms
+alatt mozog, és a 0. időpillanatban a 28. cilinder fölött növekvő
+irányba mozog és N = 3.</p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+A kiszolgálás sorrendje:</p>
+<table width="567" cellpadding="7" cellspacing="0">
+	<col width="23"/>
+	<col width="24"/>
+	<col width="24"/>
+	<col width="24"/>
+	<col width="24"/>
+	<col width="24"/>
+	<col width="24"/>
+	<col width="24"/>
+	<col width="24"/>
+	<col width="24"/>
+	<col width="24"/>
+	<col width="24"/>
+	<col width="24"/>
+	<col width="24"/>
+	<col width="23"/>
+	<tr>
+		<td width="23" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="left" style="orphans: 2; widows: 2">
+			<br/>
+
+			</p>
+		</td>
+		<td width="24" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			</p>
+		</td>
+		<td width="24" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			<br/>
+
+			</p>
+		</td>
+		<td width="24" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			</p>
+		</td>
+		<td width="24" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			<br/>
+
+			</p>
+		</td>
+		<td width="24" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			</p>
+		</td>
+		<td width="24" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			<br/>
+
+			</p>
+		</td>
+		<td width="24" valign="top" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			</p>
+		</td>
+		<td width="24" valign="top" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			<br/>
+
+			</p>
+		</td>
+		<td width="24" valign="top" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			</p>
+		</td>
+		<td width="24" valign="top" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			<br/>
+
+			</p>
+		</td>
+		<td width="24" valign="top" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			</p>
+		</td>
+		<td width="24" valign="top" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			<br/>
+
+			</p>
+		</td>
+		<td width="24" valign="top" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			</p>
+		</td>
+		<td width="23" valign="top" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			<br/>
+
+			</p>
+		</td>
+	</tr>
+</table>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+<br/>
+<br/>
+
+</p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+Az algoritmus alapja, hogy az aktuális cilinderből kiindulva a
+megadott irányban N számú kérést teljesítünk majd irányt
+váltunk, ahol újabb N számú kérést teljesítünk. Ha az egyik
+irányban elfogyott az összes teljesíthető kérés, akkor a másik
+irány összes kérését teljesítjük.</p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+Az útvonal következő:</p>
+<ul>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	28 -&gt; 33 (R1)</p></li>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	33 -&gt; 47 (R4)</p></li>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	47 -&gt; 68 (R8)</p></li>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	68 -&gt; 27 (R2)</p></li>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	27 -&gt; 11 (R6)</p></li>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	11 -&gt; 8 (R3)</p></li>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	8 -&gt; 82 (R5)</p></li>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	82 -&gt; 91 (R7)</p></li>
+</ul>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+A kiszolgálás sorrendje:</p>
+<table width="567" cellpadding="7" cellspacing="0">
+	<col width="23"/>
+	<col width="24"/>
+	<col width="24"/>
+	<col width="24"/>
+	<col width="24"/>
+	<col width="24"/>
+	<col width="24"/>
+	<col width="24"/>
+	<col width="24"/>
+	<col width="24"/>
+	<col width="24"/>
+	<col width="24"/>
+	<col width="24"/>
+	<col width="24"/>
+	<col width="23"/>
+	<tr>
+		<td width="23" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="left" style="orphans: 2; widows: 2">
+			<font face="Aptos, serif"><font size="2" style="font-size: 11pt">R1</font></font></p>
+		</td>
+		<td width="24" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			</p>
+		</td>
+		<td width="24" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			<font face="Aptos, serif"><font size="2" style="font-size: 11pt">R4</font></font></p>
+		</td>
+		<td width="24" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			</p>
+		</td>
+		<td width="24" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			<font face="Aptos, serif"><font size="2" style="font-size: 11pt">R8</font></font></p>
+		</td>
+		<td width="24" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			</p>
+		</td>
+		<td width="24" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			<font face="Aptos, serif"><font size="2" style="font-size: 11pt">R2</font></font></p>
+		</td>
+		<td width="24" valign="top" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			</p>
+		</td>
+		<td width="24" valign="top" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			<font face="Aptos, serif"><font size="2" style="font-size: 11pt">R6</font></font></p>
+		</td>
+		<td width="24" valign="top" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			</p>
+		</td>
+		<td width="24" valign="top" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			<font face="Aptos, serif"><font size="2" style="font-size: 11pt">R3</font></font></p>
+		</td>
+		<td width="24" valign="top" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			</p>
+		</td>
+		<td width="24" valign="top" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			<font face="Aptos, serif"><font size="2" style="font-size: 11pt">R5</font></font></p>
+		</td>
+		<td width="24" valign="top" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			</p>
+		</td>
+		<td width="23" valign="top" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			<font face="Aptos, serif"><font size="2" style="font-size: 11pt">R7</font></font></p>
+		</td>
+	</tr>
+</table>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+<br/>
+<br/>
+
+</p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+<i>III/2. Legrövidebb fejmozgási idő (Shortest seek time first,
+SSTF)</i></p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+Egy merevlemezen a cilinderek száma 0-99, a rendszerbe 8 kérés
+érkezik R= (1, 2, 3, 4, 5, 6, 7, 8), melyek beérkezési időpontja
+T= (0, 0, 0, 0, 0, 0, 0, 0), és az adatokat tartalmazó cilinderek
+száma: C= (33, 27, 8, 47, 82,11, 91, 68). Adja meg a kiszolgálás
+sorrendjét, ha a háttértár a legrövidebb fejmozgási idő (SSTF)
+algoritmus használja, a fej az egyik cilinderről a másikra 1 ms
+alatt mozog, és a 0. időpillanatban a 48. cilinder fölött
+csökkenő irányba mozog.</p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+A kiszolgálás sorrendje:</p>
+<table width="567" cellpadding="7" cellspacing="0">
+	<col width="23"/>
+	<col width="24"/>
+	<col width="24"/>
+	<col width="24"/>
+	<col width="24"/>
+	<col width="24"/>
+	<col width="24"/>
+	<col width="24"/>
+	<col width="24"/>
+	<col width="24"/>
+	<col width="24"/>
+	<col width="24"/>
+	<col width="24"/>
+	<col width="24"/>
+	<col width="23"/>
+	<tr>
+		<td width="23" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="left" style="orphans: 2; widows: 2">
+			<br/>
+
+			</p>
+		</td>
+		<td width="24" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			</p>
+		</td>
+		<td width="24" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			<br/>
+
+			</p>
+		</td>
+		<td width="24" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			</p>
+		</td>
+		<td width="24" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			<br/>
+
+			</p>
+		</td>
+		<td width="24" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			</p>
+		</td>
+		<td width="24" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			<br/>
+
+			</p>
+		</td>
+		<td width="24" valign="top" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			</p>
+		</td>
+		<td width="24" valign="top" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			<br/>
+
+			</p>
+		</td>
+		<td width="24" valign="top" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			</p>
+		</td>
+		<td width="24" valign="top" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			<br/>
+
+			</p>
+		</td>
+		<td width="24" valign="top" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			</p>
+		</td>
+		<td width="24" valign="top" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			<br/>
+
+			</p>
+		</td>
+		<td width="24" valign="top" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			</p>
+		</td>
+		<td width="23" valign="top" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			<br/>
+
+			</p>
+		</td>
+	</tr>
+</table>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+<br/>
+<br/>
+
+</p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+Az algoritmus alapja, hogy a fej aktuális cilinderből kiindulva
+arra a cilinderre kell ugranunk, amelyet a legkisebb fejmozgással
+érhetünk el a mozgási iránynak megfelelően. Ha a fej mozgási
+irányában már nincsen közelebb cilinder, akkor a fejet irányt
+vált.</p>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+Az útvonal következő:</p>
+<ul>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	48 -&gt; 47 (R4)</p></li>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	47 -&gt; 33 (R1)</p></li>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	33 -&gt; 27 (R2)</p></li>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	27 -&gt; 11 (R6)</p></li>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	11 -&gt; 8 (R3)</p></li>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	8 -&gt; 68 (R8)</p></li>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	68 -&gt; 82 (R5)</p></li>
+	<li><p lang="hu-HU" style="line-height: 108%; margin-bottom: 0.11in">
+	82 -&gt; 91 (R7)</p></li>
+</ul>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+A kiszolgálás sorrendje:</p>
+<table width="567" cellpadding="7" cellspacing="0">
+	<col width="23"/>
+	<col width="24"/>
+	<col width="24"/>
+	<col width="24"/>
+	<col width="24"/>
+	<col width="24"/>
+	<col width="24"/>
+	<col width="24"/>
+	<col width="24"/>
+	<col width="24"/>
+	<col width="24"/>
+	<col width="24"/>
+	<col width="24"/>
+	<col width="24"/>
+	<col width="23"/>
+	<tr>
+		<td width="23" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="left" style="orphans: 2; widows: 2">
+			<font face="Aptos, serif"><font size="2" style="font-size: 11pt">R4</font></font></p>
+		</td>
+		<td width="24" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			</p>
+		</td>
+		<td width="24" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			<font face="Aptos, serif"><font size="2" style="font-size: 11pt">R1</font></font></p>
+		</td>
+		<td width="24" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			</p>
+		</td>
+		<td width="24" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			<font face="Aptos, serif"><font size="2" style="font-size: 11pt">R2</font></font></p>
+		</td>
+		<td width="24" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			</p>
+		</td>
+		<td width="24" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			<font face="Aptos, serif"><font size="2" style="font-size: 11pt">R6</font></font></p>
+		</td>
+		<td width="24" valign="top" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			</p>
+		</td>
+		<td width="24" valign="top" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			<font face="Aptos, serif"><font size="2" style="font-size: 11pt">R3</font></font></p>
+		</td>
+		<td width="24" valign="top" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			</p>
+		</td>
+		<td width="24" valign="top" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			<font face="Aptos, serif"><font size="2" style="font-size: 11pt">R8</font></font></p>
+		</td>
+		<td width="24" valign="top" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			</p>
+		</td>
+		<td width="24" valign="top" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			<font face="Aptos, serif"><font size="2" style="font-size: 11pt">R5</font></font></p>
+		</td>
+		<td width="24" valign="top" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			</p>
+		</td>
+		<td width="23" valign="top" style="border: 1px solid #000000; padding: 0in 0.08in"><p lang="hu-HU" class="western" align="center" style="orphans: 2; widows: 2">
+			<font face="Aptos, serif"><font size="2" style="font-size: 11pt">R7</font></font></p>
+		</td>
+	</tr>
+</table>
+<p lang="hu-HU" class="western" style="line-height: 108%; margin-bottom: 0.11in">
+<br/>
+<br/>
+
+</p>
+</body>
+</html>
