@@ -1,0 +1,1 @@
+/usr/bin/g++ -DQT_QML_DEBUG -g CMakeFiles/untitled.dir/main.cpp.o CMakeFiles/untitled.dir/szamok.cpp.o -o untitled 
