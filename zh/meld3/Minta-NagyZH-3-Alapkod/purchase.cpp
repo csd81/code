@@ -13,27 +13,40 @@ using namespace std;
 using namespace nlohmann;
 
 
-Purchase::Purchase(const std::string& filename)
-{
+Purchase::Purchase(const std::string& filename) {
     ifstream in(filename);
-    json js;
-    in >> js;
-
-
-    for(auto& elem : js["items"]){
-        Item* item  = new Item;
-            item->name =  elem["name"];
-        item->unitPrice = static_cast<int>(std::round(elem["UnitPrice"].get<double>()));
-            item->quantity = elem["Quantity"];
-            item->unit = elem["Unit"];
-            items.push_back(item);
+    if (!in.is_open()) {
+        std::cerr << "[ERROR] Could not open file: " << filename << std::endl;
+        return;
     }
-        originalAmount = 0;
-    for(unsigned i=0; i < items.size(); i++){
-     originalAmount +=   items[i]->quantity * items[i]->unitPrice;
+    json js;
+    try {
+        in >> js;
+    } catch (json::parse_error& e) {
+        std::cerr << "[ERROR] JSON parse error: " << e.what() << " (byte: " << e.byte << ")" << std::endl;
+        return;
+    }
+
+    if (!js.is_array()) { // Changed this check
+        std::cerr << "[ERROR] Invalid JSON format: Expected a JSON array." << std::endl;
+        return;
+    }
+
+    for (auto& elem : js) { // Iterate directly over the array
+        Item* item = new Item;
+        item->name = elem["Name"];
+        item->unitPrice = elem["UnitPrice"];
+        item->quantity = elem["Quantity"]["Value"];
+        item->unit = elem["Quantity"]["Unit"];
+        items.push_back(item);
+    }
+
+    originalAmount = 0;
+    for (unsigned i = 0; i < items.size(); i++) {
+        originalAmount += items[i]->quantity * items[i]->unitPrice;
     }
     finalAmount = originalAmount;
-    usedCoupon  = nullptr;
+    usedCoupon = nullptr;
 }
 
 Purchase::~Purchase()
@@ -46,15 +59,22 @@ Purchase::~Purchase()
 
 void Purchase::print() const
 {
-    for(unsigned i=0; i < items.size(); i++){
-        cout <<  items[i]->name         << items[i]->unitPrice
-             << items[i]->quantity         << items[i]->unit << endl;
+    cout << "Purchase Items:\n";
+    for (unsigned i = 0; i < items.size(); i++) {
+        cout << "  Item " << i + 1 << ":\n";
+        cout << "    Name: " << items[i]->name << "\n";
+        cout << "    Unit Price: " << items[i]->unitPrice << "\n";
+        cout << "    Quantity: " << items[i]->quantity << "\n";
+        cout << "    Unit: " << items[i]->unit << "\n";
     }
 
-    cout << originalAmount;
-    cout << finalAmount;
-    if (usedCoupon  != nullptr)
+    cout << "\nOriginal Amount: " << originalAmount << "\n";
+    cout << "Final Amount: " << finalAmount << "\n";
+
+    if (usedCoupon != nullptr) {
+        cout << "\nUsed Coupon Details:\n";
         usedCoupon->print();
+    }
 }
 
 

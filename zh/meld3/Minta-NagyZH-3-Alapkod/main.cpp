@@ -21,6 +21,22 @@ int main()
     wallet.addCoupon( new MultiUseCoupon (2000, 5) );
     wallet.addCoupon( new MonthlyCoupon   (3000, 2024, 5) );
 
+    wallet.addCoupon( new SingleUseCoupon(1000) );
+    wallet.addCoupon( new MultiUseCoupon (2000, 5) );
+    wallet.addCoupon( new MonthlyCoupon   (3000, 2024, 5) );
+
+    wallet.addCoupon( new SingleUseCoupon(1000) );
+    wallet.addCoupon( new MultiUseCoupon (2000, 5) );
+    wallet.addCoupon( new MonthlyCoupon   (3000, 2024, 5) );
+
+    wallet.addCoupon( new SingleUseCoupon(1000) );
+    wallet.addCoupon( new MultiUseCoupon (2000, 5) );
+    wallet.addCoupon( new MonthlyCoupon   (3000, 2024, 5) );
+
+    wallet.addCoupon( new SingleUseCoupon(1000) );
+    wallet.addCoupon( new MultiUseCoupon (2000, 5) );
+    wallet.addCoupon( new MonthlyCoupon   (3000, 2024, 5) );
+
      cout << "---Vasarlasok, print()" << endl;
      Purchase purchase("purchases.json");
      purchase.print();

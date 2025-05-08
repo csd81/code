@@ -1,14 +1,14 @@
 {
     "Monthly": {
-        "Invalid": 1,
-        "Valid": 2
+        "Invalid": 7,
+        "Valid": 0
     },
     "Multiple use": {
-        "Invalid": 1,
-        "Valid": 2
+        "Invalid": 0,
+        "Valid": 7
     },
     "Single use": {
-        "Invalid": 1,
+        "Invalid": 5,
         "Valid": 2
     }
 }

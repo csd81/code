@@ -6,7 +6,8 @@
 #include "date.h"
 #include "coupon.h"
 #include "wallet.h"
-#include "json.hpp"
+
+
 
 class Purchase
 {
@@ -22,6 +23,8 @@ class Purchase
     Coupon*  usedCoupon;
     Date date;
 public:
+    Purchase(const Purchase&) = delete;
+    Purchase& operator=(const Purchase&) = delete;
     Purchase(const std::string& filename);
     ~Purchase();
     void applyCoupon(Coupon*);
