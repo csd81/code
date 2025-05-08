@@ -1,45 +1,29 @@
 #ifndef STORE_H
 #define STORE_H
-
 #include <vector>
-using namespace std;
-
-#include "furniture.h"
+#include "product.h"
 #include "order.h"
 
 class Store
 {
-    static int administrationFee;
+    std::vector<Product*> products;
+    std::vector<int> quantities;
 
-    vector<Furniture*> products;
-    vector<int> quantities;
 public:
+    Store();
+    virtual ~Store();
 
-    Store()=default;
-    ~Store();
+    void loadStock(std::string const &filename);
+    void printProducts();
+    void printStock();
+    int priceOfOrder(Order order);
+    void exportQuantities(std::string const &filename);
+    bool deliverOrder(Order order);
+    void produce(std::string productId, int quantity);
 
-    void loadStock(const string& filePath);
-
-    void printProducts() const;
-
-    void printStock() const;
-
-    static Order loadOrder(const string &filePath);
-
-    int priceOfOrder(const Order& order) const;
-
-    bool deliverOrder(const Order& order);
-
-    void produce(const string& id, int quantity);
-
-    void exportQuantities(const string& filePath) const;
-
-    static void setAdministrationFee (int administrationFee);
-
-private:
-
-    size_t indexOf (const string& productId) const;
-
+    int static processingFee;
+    static void setProcessingFee(int fee);
+    static Order loadOrder(const std::string &filename);
 };
 
 #endif // STORE_H

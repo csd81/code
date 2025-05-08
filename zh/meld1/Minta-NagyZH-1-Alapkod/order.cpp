@@ -1,22 +1,27 @@
 #include "order.h"
 
-void Order::addProduct(const string &id, int quantity)
+Order::Order()
 {
-    ids.push_back(id);  // vector<string
-    quantities.push_back(quantity); //vector<int>
 }
 
-size_t Order::getSize() const
+Order::~Order()
 {
-    return ids.size(); // ==quantities.size();
 }
 
-const string &Order::getId(size_t index) const
+void Order::addItem(const std::string id, int quantity)
 {
-    return ids[index];
+    productIds.push_back(id);
+    quantities.push_back(quantity);
 }
 
-int Order::getQuantity(size_t index) const
+const std::vector<std::string> Order::getProductIds() const
 {
-    return quantities[index];
+    return productIds;
 }
+
+const std::vector<int> Order::getQuantities() const
+{
+    return quantities;
+}
+
+

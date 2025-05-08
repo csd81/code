@@ -1,26 +1,18 @@
 #ifndef ORDER_H
 #define ORDER_H
-
+#include <iostream>
 #include <vector>
-#include <string>
-using namespace std;
 
 class Order
 {
-    vector<string> ids;
-    vector<int> quantities;
-
+    std::vector<std::string> productIds;
+    std::vector<int> quantities;
 public:
-
-    Order() = default;
-
-    void addProduct (const string& id, int quantity);
-
-    size_t getSize() const;
-
-    const string& getId (size_t index) const;
-
-    int getQuantity (size_t index) const;
+    Order();
+    ~Order();
+    void addItem(const std::string id, int quantity);
+    const std::vector<std::string> getProductIds() const;
+    const std::vector<int> getQuantities() const;
 };
 
 #endif // ORDER_H

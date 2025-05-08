@@ -1,187 +1,214 @@
 #include "store.h"
-
 #include <iostream>
 #include <fstream>
-#include <stdexcept>
+#include "json.hpp"
+#include "product.h"
+#include "chair.h"
+#include "wardrobe.h"
+#include "table.h"
+
 using namespace std;
 
-#include "json.hpp"
-using namespace nlohmann;
+int Store::processingFee = 1000;  // 1000 ft
 
-#include "fchair.h"
-#include "ftable.h"
-#include "fwardrobe.h"
 
-int Store::administrationFee = 1000;
+Store::Store()
+{
+}
 
 Store::~Store()
-    {
-        for (size_t i=0;i<products.size();i++)
-            delete products[i];
-    }
-
-
-void Store::printProducts() const
-    {
-        for (size_t i=0;i<products.size();i++)
-            products[i]->print();
-    }
-
-void Store::printStock() const
-    {
-        for (size_t i=0;i<products.size();i++)
-        {
-            cout << quantities[i] << " X ";
-            products[i]->print();
-        }
-    }
-
-Order Store::loadOrder(const string &filePath)
-    {
-        ifstream in(filePath);
-        if (!in.is_open())
-        {
-            throw runtime_error("Nem sikerult megnyitni: " + filePath);
-        }
-
-        Order order;
-
-        json root = json::parse(in);
-        for (size_t i=0; i<root.size(); i++)
-        {
-            json& item = root[i];
-            string id = item["ProductId"];
-            int quantity = item["Quantity"];
-            order.addProduct(id,quantity);
-        }
-
-        return order;
-    }
-
-int Store::priceOfOrder(const Order &order) const
-    {
-        int sum=0;
-        for (size_t k=0;k<order.getSize();k++)
-        {
-            size_t index = indexOf(order.getId(k));
-
-            sum += products[index]->getPrice() * order.getQuantity(k);
-        }
-        sum += administrationFee;
-        return sum;
-    }
-
-bool Store::deliverOrder(const Order &order)
 {
-    for (size_t k=0;k<order.getSize();k++)
-    {
-        size_t index = indexOf(order.getId(k));
+    for (Product* p : products){
+        delete p;
+    }
+}
 
-        if (quantities[index] < order.getQuantity(k))
+void Store::loadStock(const std::string &filename)
+{
+    ifstream in(filename);
+    nlohmann::json js;
+    in >> js;
+        for (auto& elem : js["Products"]) {
+            Product* p = nullptr;
+            std::string id = elem["Id"];
+            std::string woodType = elem["WoodType"];
+            int weight = elem["Weight"];
+            int width = elem["Dimensions"]["Width"];
+            int height =elem["Dimensions"]["Height"];
+            int length =elem["Dimensions"]["Length"];
+            int price = elem["Price"];
+
+            if (elem["Type"] == "Chair"){
+            std::string style = elem["Style"];
+            p = new Chair(id, woodType, weight, width, height, length, price, style);
+            } else    if (elem["Type"] == "Table"){
+                int legCount = elem["LegCount"];
+                bool legsAdjustable = elem["LegsAdjustable"];
+                p = new Table(id, woodType, weight, width, height, length, price,
+                              legCount, legsAdjustable);
+            } else     if (elem["Type"] == "Wardrobe"){
+                int doorCount = elem["DoorCount"];
+                bool hasMirror = elem["HasMirror"];
+                p = new Wardrobe(id, woodType, weight, width, height, length, price,
+                                 doorCount, hasMirror);
+            }
+            products.push_back(p);
+        }
+
+        for (auto& elem : js["Stock"]) {
+            std::string id = elem["ProductId"];
+            int quantity = elem["Quantity"];
+
+            bool found = false;
+            for (unsigned i=0; i<products.size(); i++){
+                if (products[i]->getId() == id){
+                    quantities.push_back(quantity);
+                    found = true;
+                    break;
+                    }
+                    if (!found)
+                    {quantities.push_back(0);
+                    }
+                }
+        }
+        in.close();
+}
+
+void Store::exportQuantities(const std::string &filename)
+{
+    nlohmann::json outStock = nlohmann::json::array();
+
+     for (size_t i = 0; i < products.size(); ++i) {
+        nlohmann::json item;
+        item["ProductId"] = products[i]->getId();
+        item["Quantity"] = quantities[i];
+        outStock.push_back(item);
+    }
+    std::ofstream out(filename);
+    if (out.is_open()) {
+        out << outStock.dump(4);
+        out.close();
+    } else
+        cout << "Error";
+
+}
+
+void Store::printProducts()
+{
+    for (Product* p : products){
+        p->print();
+    }
+
+}
+
+void Store::printStock()
+{
+
+    for (unsigned i=0; i<products.size(); i++){
+        cout << quantities[i] << " ";
+        products[i]->print();
+        cout << endl;
+    }
+
+
+
+}
+
+
+int Store::priceOfOrder(Order order)
+{
+    int sum = 0;
+    std::vector<std::string> ids = order.getProductIds();
+    std::vector<int> quantitiesOrdered = order.getQuantities();
+
+    for (size_t i = 0; i < ids.size(); ++i) {
+        std::string id = ids[i];
+        int quantity = quantitiesOrdered[i];
+
+        // Find product by ID
+        for (unsigned j = 0; j < products.size(); ++j) {
+            if (products[j]->getId() == id) {
+                sum += quantity * products[j]->getPrice();
+                break;
+            }
+        }
+    }
+
+    sum += processingFee;
+    return sum;
+}
+
+Order Store::loadOrder(const std::string &filename)
+{
+    std::ifstream in(filename);
+    nlohmann::json js;
+    in >> js;
+
+    Order order;
+
+    for (const auto& item : js) {
+        std::string id = item["ProductId"];
+        int quantity = item["Quantity"];
+        order.addItem(id, quantity);
+    }
+
+    return order;
+}
+
+
+
+bool Store::deliverOrder(Order order)
+{
+    std::vector<std::string> ids = order.getProductIds();
+    std::vector<int> requestedQuantities = order.getQuantities();
+
+
+    for (unsigned i = 0; i < ids.size(); ++i) {
+        const std::string& id = ids[i];
+        int requested = requestedQuantities[i];
+        bool found = false;
+
+        for (unsigned j = 0; j < products.size(); ++j) {
+            if (products[j]->getId() == id) {
+                found = true;
+                if (quantities[j] < requested) {
+                    return false;
+                }
+                break;
+            }
+        }
+
+        if (!found) {
             return false;
+        }
     }
 
-    for (size_t k=0;k<order.getSize();k++)
 
-    {
-        size_t index = indexOf(order.getId(k));
-        quantities[index] -= order.getQuantity(k);
+    for (unsigned i = 0; i < ids.size(); ++i) {
+        const std::string& id = ids[i];
+        int requested = requestedQuantities[i];
+
+        for (size_t j = 0; j < products.size(); ++j) {
+            if (products[j]->getId() == id) {
+                quantities[j] -= requested;
+                break;
+            }
+        }
     }
+
     return true;
 }
 
-void Store::produce(const string &id, int quantity)
-    {
-        quantities[indexOf(id)] += quantity;
-    }
 
-void Store::exportQuantities(const string &filePath) const
-    {
-        json root;
-        for (size_t i=0;i<products.size();i++)
-        {
-            root[i]["ProductId"] = products[i]->getId();
-            root[i]["Quantity"] = quantities[i];
-        }
-
-        ofstream out(filePath);
-        out << root.dump(2) << endl;
-    }
-
-void Store::setAdministrationFee(int administrationFee)
-    {
-        Store::administrationFee = administrationFee;
-    }
-
-size_t Store::indexOf(const string &productId) const
-    {
-        for (size_t i=0;i<products.size();i++)
-            if(products[i]->getId() == productId)
-                return i;
-        return -1;
-    }
-
-
-
-void Store::loadStock(const string &filePath)
+void Store::produce(std::string productId, int quantity)
 {
-    ifstream in(filePath);
-    if (!in.is_open())
-    {
-        throw runtime_error("Nem sikerult megnyitni: " + filePath);
+    for (unsigned i=0; i<products.size(); i++){
+        if (products[i]->getId() == productId )
+            quantities[i] += quantity;
     }
+}
 
-    json root = json::parse(in);
-    products.clear();
-
-    json& product_array = root["Products"];
-    for (size_t i=0;i<product_array.size();i++)
-    {
-        json& p = product_array[i];
-        string type = p["Type"];
-        string id = p["Id"];
-        string woodType = p["WoodType"];
-
-        double weight = p["Weight"];
-        int width = p["Dimensions"]["Width"];
-        int height = p["Dimensions"]["Height"];
-        int length = p["Dimensions"]["Length"];
-        int price = p["Price"];
-
-        if (type == "Chair")
-        {
-            products.push_back(new FChair(
-            id,woodType,weight,width,height,length,price,
-            p["Style"]));
-        }
-
-        else if (type == "Table")
-        {
-            products.push_back(new FTable(
-            id,woodType,weight,width,height,length,price,
-            p["LegCount"],p["LegsAdjustable"]));
-        }
-        else if (type == "Wardrobe")
-        {
-            products.push_back(new FWardrobe(
-            id,woodType,weight,width,height,length,price,
-            p["DoorCount"],p["HasMirror"]));
-        }
-    }
-    quantities.clear();
-
-    quantities.resize(products.size());
-
-    json& stock_array = root["Stock"];
-
-    for (size_t i=0;i<stock_array.size();i++)
-	    {
-	        json& s = stock_array[i];
-
-	        string id = s["ProductId"];
-
-	        int quantity = s["Quantity"];
-
-	        quantities[indexOf(id)] = quantity;
-	    }
+void Store::setProcessingFee(int fee)
+{
+    processingFee = fee;
 }
