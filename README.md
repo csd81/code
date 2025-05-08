@@ -1,3939 +1,1813 @@
-Természetesen! Az alábbiakban egy részletes, körülbelül 1000 szavas ismertetőt találsz a **C++ nyelvi elemekről**, különös tekintettel a következőkre: **névterek, folyamok, konstansok, logikai típus, string típus, new/delete**.
+```bash
+OS. gyak 1
+---
+cd, ls, mkdir, touch, cp, rm
 
+bal, jobb nyíl: a beírt karakterek között tudunk lépegetni
+fel, le nyíl: korábban kiadott parancsok között tudunk lépegetni
+tab: parancsok kiegészítése/befejezése
+clear: képernyő törlése
+
+gyökér könyvtár: /, ha van alkönyvtára, vagy gyerekkönyvtára akkor /valami
+
+speciális elérési útvonalat
+. (egy pont): aktuális könytár
+.. (kettő pont): egy szinttel lejebb lévő könyvtár
+~ (hullámvonal): aktuális felhasználó home könytára
+
+könyvtárak közötti mozgás: cd elérési_út
+cd /: főkönyvtár
+cd ..: egy könyvtárral feljebb lépünk
+
+abszolut útvonal a gyökérkönyvtártól a teljes mappa struktúrát tartalmazza
+
+pwd: kiíratja, hogy melyik könyvtárban tartózkodunk
+
+ls: könyvtár tartalmának listázása
+
+Legyakrabban használt kapcsolók:
+
+-l: Hosszú formátumú listázás. Részletes információkat nyújt a fájlokról és könyvtárakról, beleértve a jogosultságokat, tulajdonost, csoportot, méretet, időbélyeget stb.
+ls -l
+
+-a: Minden fájlt és könyvtárat listáz, beleértve a rejtett fájlokat is (a ponttal kezdődő nevek).
+ls -a
+
+-h: Human-readable méret. Az állományok méretét emberi olvashatóságra optimalizált mértékegységekben jeleníti meg (KB, MB, GB).
+ls -lh
+
+-t: Időrendi sorrendben listáz. A legfrissebb fájlok elől jelennek meg.
+ls -lt
+
+-r: Fordított sorrendben listáz. A legrégebben létrehozott vagy módosított fájlok elől jelennek meg.
+ls -lr
+
+-R: Rekurzív listázás. Az alkönyvtárak tartalmát is listázza.
+ls -R 
+
+1: Minden fájlt vagy könyvtárat egyetlen oszlopban jelenít meg.
+ls -1 (1 = egyes, nem l)
+  
+egybevonhatók a kapcsolók: ls -l -a == ls -la
+
+rejtett fájl: ponttal kezdődik a fájl neve, pl .serverlogs
+
+fontos megjegyezni: hogy .txt nem biztos, hogy egy szövegfájl, linux alatt mindegy, hogy mi a fájl neve
+
+ls -l (hosszú listázás értelmezése)
+első sor a logben elfoglalt összes sor
+ezt követően a fájlok kilistáza
+1. oszlop (típus, jogosultság)
+2. oszlop (link számláló)
+3. oszlop (tulajdonos)
+4. oszlop (csoportok)
+5. oszlop (fájl mérete byte-ban)
+6. oszlop (módosítás dátuma/ideje)
+7. oszlop (név)
+
+Az 1. oszlop részletezve: 
+1 karakter: fájl (-), mappa (d), soft link (l)
+2-9 karakter: tulajdonos (u), csoport (g), mások (o) jogai
+r: olvasási
+w: írási
+x: végrehajtási (lefuttatható a fájl, be lehet lépni a mappába)
+-: adott jog nem engedélyezett
+
+parancsok leírása: man parancs, man ls (list parancs szintaxisa)
+
+mkdir elérési_út (könyvtár létrehozása): aktuális könyvtárba csinál egy mappát
+
+mkdir ./os/szilva/korte
+mkdir ./os/szilva/korte/barack (ha nincs meg egy köztes könyvtár, jelen esetben korte, akkor hibád dob a rendszer)
+
+a -p kapcsoló az összes köztes könyvtárat létrehozza (mkdir -p elérési út/mappa)
+
+space-szel elválasztva több könyvtár is létreoztható
+
+touch fájlnév: tartalom nélküli fájl létrehozása
+
+Fájlok másolása:
+cp [kapcsoló] honnan hová
+
+pl. 
+cp ~/os/egy/ketto/file1.txt ~/os/egy/
+cp ./alma.txt ./ujalma.txt (meglévő fájlból egy másolat)
+
+ha van ilyen fájl, akkor azonnal felülírás
+-i kapcsolóval ha van ilyen fájl, akkor felülírás előtt rákérdez (y/n)
+
+cp -r kapcsolóval könyvtárakat is másolhatunk, alapesetben nem működik
+
+shell minták használata: "*" karakter, egy joker karakter, amely jelentése bármilyen karakter bármennyiszer
+
+cp *.txt cseresznye (aktuális könytárból a cseresznye könyvtárba másolja a txt kiterjesztésű fájlokat)
+
+Törlés:
+rm fájlnév/könyvtárnév: fájl/könyvtár törlése
+rm -i: megerősítéses törlés
+rm -d: üres mappa törlése
+rm -r: összes almappa és fájl (rekurzív) törlése
+rm -f: kérdés nélkül töröl (nem számítanak a hibaüzenezek pl. nem létezik egy fájl)Old meg bash parancsokkal:
+
+01. 
+Hozz létre egy projekt könyvtárat a home könyvtárádban. Ebben a könyvtárban hozz létre egy dokumentumok alkönyvtárat és egy kepek alkönyvtárat.
+mkdir ~/projekt ~/projekt/dokumentumok ~/projekt/kepek
+
+02. 
+Hozz létre egy fontos.txt nevű fájlt a projekt/dokumentumok könyvtárban és egy kep1.jpg és kep2.jpg fájlt a projekt/kepek könyvtárban.
+touch ~/projekt/dokumentumok/fontos.txt
+touch ~/projekt/kepek/kep1.jpg ~/projekt/kepek/kep2.jpg
+
+03. 
+Másold le a fontos.txt fájlt a backup könyvtárba.
+cp ~/projekt/dokumentumok/fontos.txt ~/backup/
+
+04.
+Másold le a kep1.jpg fájlt a projekt/kepek könyvtárból a projekt/dokumentumok könyvtárba és nevezd át dokumentum.jpg-re.
+cp ~/projekt/kepek/kep1.jpg ~/projekt/dokumentumok/dokumentum.jpg
+
+05.
+Listázd ki a projekt könyvtár tartalmát.
+ls ~/projekt
+
+06.
+Listázd ki a projekt könyvtár tartalmát, beleértve a rejtett fájlokat is.
+ls -a ~/projekt
+
+07.
+Töröld a kep2.jpg fájlt a projekt/kepek könyvtárból.
+rm ~/projekt/kepek/kep2.jpg
+
+08.
+Töröld az egész projekt könyvtárat.
+rm -r ~/projekt
+
+09.
+Hozz létre egy osztalyok/matematika könyvtárat a home könyvtáradba.
+mkdir -p ~/osztalyok/matematika
+
+10.
+Hozz létre egy jegyzetek/2022 könyvtárat, majd a 2022 könyvtárban hozz létre egy jegyzet.txt nevű fájlt.
+mkdir -p ~/jegyzetek/2022
+touch ~/jegyzetek/2022/jegyzet.txt
+OS. gyak 2
+---
+echo, mv, cat, >, >>, ln, chmod, head, tail
+
+Szöveg kiíratás:
+echo: szöveg kiíratása a konzolba
+echo szöveg
+Ha több space-t írunk, akkor is csak egy spacet használ, mert a szavakat paraméterként dolgozza fel és feltételezi, hogy a space maga szóelválasztó
+Megoldás: idézőjeleket kell használni
+Automatikusan sort emelt, ha ezt nem akarjuk, akkor -n kapcsoló
+-e escape szekveniák használata (pl. prog 1, printf: \t tabulátor, \n új sor)
+
+Áthelyezés:
+mv forrásfájl célfájl: fájlok áthelyezése
+Ugyanazon mappába kell áthelyezni egy fájlt, akkor átnevezi a fájl
+Ha két könyvtár eltér, akkor áthelyezés is történik
+Ha célfájl létezik, akkor ezt a mv parancs felül fogja írni
+
+Tobb fájl esetén mindegyiket a célmappába fogja átmozhatni (egyezés esetén felülírás)
+mv -i: áthelyezés kérdéssel
+
+Fájlok tartalának kiíratása:
+cat fáj1, fájl2, fájl3: fájlok tartalmának kiíratása
+cat *.txt: kiírja az összes txt kiterjesztésú fájl tartalmát
+cat paraméter nélkül, visszadja azt amit beírunk a konzolba (Ctrl+D-vel jelezzük a bevitel végét
+hosszú fájl esetén cat parancsa csak annyit mutat, amennyi kifér a képernyőre
+
+less fájlnév: képernyőként megy a tartalomon (kilépés a q gombbal)
+more fájlnév: hasonló, csak egy kicsit kevesebb tudással, mint a less (space: léptetés, q: kilépés)
+
+Kimenet átirányítása (pl. egy fájlba)
+---
+A kisebb nagyobb jel segítségével egy fájlba tudjuk irányítani a parancssor kimenetét
+ls -l
+ls -l > list.txt
+more lista.txt
+Fájlnév egyezés esetén felülírja a fájlt
+
+>> (dupla kisebb nagyobbb jel): hozzáfűzzük a fájl végéhez
+
+cat allatok.txt >> lista.txt (a lista.txt végére fűzi az állatok.txt fájlt)
+cat > newfile.txt: tartalom létrehozása, ennél jobb megoldás egy szerkesztő használata pl. nano, vim
+
+nano file.dat
+
+Bemenet átirányítása (pl. egy fájlba)
+---
+./pelda < bemenet.txt a példa fájlnak hozzáadjuk bemenetként a bemenet.txt fájl
+
+c kód futtatása esetén telepíteni kell a gcc-t 
+sudo apt-get update
+sudo apt-get install gcc
+
+Fájlok linkelése
 ---
 
-## **1. Névterek (Namespaces)**
+Soft link
+Egy olyan speciális fájl, amely egy másik fájl elérési útját tartalmazza
+Egy link mutathat fájlra vagy könyvtárra is. Ez egyenértékű azzal, mint ha a másik fájlra hivatkoznánk kivéve (átnevezés, törlés stb.)
+Például egy gyakran használt fájlt amely nem a home könyvtáramban van, arra érdemes lehet készíteni egy hivatkozást
 
-A **névterek (namespace)** segítségével elkerülhetjük az azonos nevű változók, függvények vagy osztályok közötti ütközéseket, különösen nagy projektek esetén.
+ln -s (soft link) létező fájl [célkönyvtár vagy célfájl]
 
-```cpp
-#include <iostream>
+Pl.:
+ln -s banan.txt bananlink
+ls -l bananlink
+lrwxrwxrwx 1 balazs balazs 9 Feb 22 13:31 bananlink -> banan.txt
 
-namespace grafika {
-    void rajzol() {
-        std::cout << "Rajzolás történik..." << std::endl;
-    }
-}
+Emlékeztető: az ls -l paranccsal látható a hivatkozás, hogy hova mutat.
 
-namespace fizika {
-    void rajzol() {
-        std::cout << "Fizikai szimuláció rajzolása..." << std::endl;
-    }
-}
+Ha törlöm az eredeti fájt, akkor a link meghíváskor kiírja, hogy nincs ilyen fájl.
 
-int main() {
-    grafika::rajzol();  // "Rajzolás történik..."
-    fizika::rajzol();   // "Fizikai szimuláció rajzolása..."
-    return 0;
-}
-```
+Hard link
+Az eredeti tartalomhoz két fájlt hozunk létre.
+ln létező fájl hivatkozással új fájl jön létre.
 
-A `using namespace` direktíva használható, de nagyobb projektekben **nem ajánlott globálisan**, mert konfliktusokat okozhat.
+ls -l esetén regular fájlként lesz kilistázva, de a linkszámláláló nőtt
 
-```cpp
-using namespace std;
-```
+Ha egy állományt törlök, akkor a másik megmaradt, a link 2-ről 1-re változik
+Könyvtárra hard linket nem lehet létrehozni, továbbá ha több fájlrendszer van, akkor a fájlrendszerek között csak soft linket lehet használni
 
-Ezáltal például a `std::cout` csak `cout` lesz, de kis projektekben ez kényelmes lehet.
-
+Jogosultsások módosítása
 ---
 
-## **2. Folyamok (Streams)**
+Kinek:
+u: user (tulajdonos)
+g: group (csoport)
+o: others (mások)
+a: all (mindenki)
 
-A **folyamok** (streams) az input/output műveleteket teszik lehetővé. A C++ `iostream` könyvtára három alapvető típust biztosít:
+Mit:
+r: read (olvasási jog)
+w: write (írási jog)
+x: execure (vágrehajtási/belépési jog)
++: megad, -: elvesz
 
-* `cin` – standard input (pl. billentyűzet)
-* `cout` – standard output (pl. képernyő)
-* `cerr` – hibaüzenetekhez
+-rw-r--r-- 1 balazs balazs   274 Apr  1  2021  zh01.sh
 
-### Példa:
+chmod modosítás fájlok neve
+chmod o+w szoveg.txt (jogosultság hozzáadása)
+chmod o-w szoveg.txt (jogosultság elvétele)
 
-```cpp
-#include <iostream>
-using namespace std;
+Oktális számok
+x: 1-esk
+w: 2-esek
+r: 4-esek
+-: 0-sok
 
-int main() {
-    int szam;
-    cout << "Adj meg egy számot: ";
-    cin >> szam;
-    cout << "A megadott szám: " << szam << endl;
-    return 0;
-}
-```
+chmod 644 szoveg.txt
 
-A `cin` bemeneti adatot olvas, míg a `cout` kimeneti adatot ír. A `<<` operátorral irányítjuk a kimenetet, a `>>` operátorral pedig a bemenetet.
+senki semmilyen jogosultság: 000
+mindenkinek minden jogosultság: 777
 
+Kitekintő:
+chown ujtulaj fájlnév/elérés: új tulajdonos létrehozása
+chgrp ujcsoport fájlnév/elérés: új csoport létrehozása
+kombinálva: chown jozsef:security server.log (sudo használatára van szükség)    
+
+Fájl eleje és vége
 ---
+head -n szám fájlnév: fájl első szám sorát íratja ki
+Ha nincs annyi sor, mint amennyit kérünk, nincs hiba
+tail -n szám fájlnév: fájl utolsó szám sorát íratja ki
 
-## **3. Konstansok (Constants)**
+Példák:
+Két fájl utolsó 3 sorának kilistázása:
+tail -n 3 file1.txt file2.txt 
 
-A **konstans** értéke nem változhat a program futása során. A `const` kulcsszóval deklarálhatjuk.
+Összes .txt fájl első két sorának kilistázása
+head -n 2 *.txt
 
-```cpp
-const double PI = 3.14159;
-```
+Kitekintés:
+tail -f tail miután kiírt x sort, nem tér vissza, hanem folyamatosan nézi, hogy kerülnek-e újabb sorok a fájlba, és azokat kiíratja, pl. log fájlok folyamatos bővüléseOld meg bash parancsokkal:
 
-A `const` változók gyakran használatosak függvényparaméterek esetén is:
+01.
+Hozz létre egy új könyvtárat "gyakorlas" néven a home könyvtáradban.
+mkdir ~/gyakorlas
 
-```cpp
-void kiir(const string& uzenet) {
-    cout << uzenet << endl;
-}
-```
+02.
+Hozz létre egy "szoveg.txt" nevű szöveges fájlt a "gyakorlas" könyvtárban, és írj bele egy tetszőleges szöveget az echo parancs segítségével.
+echo "Ez egy példa szöveg." > ~/gyakorlas/szoveg.txt
 
-Ez jelzi, hogy a `uzenet` változó **nem változhat meg** a függvényen belül.
+03. Bővítsd ki a szoveg.txt fájlt a Nano szerkesztő segítségével a következő sorokkal:
 
-Ezenkívül létezik az **enumerált típus (enum)**, amivel szintén állandókat adhatunk meg:
-
-```cpp
-enum Napok { Hetfo, Kedd, Szerda, Csutortok, Pentek };
-```
-
----
-
-## **4. Logikai típus (bool)**
-
-A **bool** típus két értéket vehet fel: `true` (igaz) és `false` (hamis).
-
-```cpp
-bool igaz = true;
-bool hamis = false;
-```
-
-A logikai típus alapvető szerepet játszik feltételes szerkezetekben (`if`, `while`, stb.):
-
-```cpp
-int x = 10;
-if (x > 5) {
-    cout << "Nagyobb mint 5." << endl;
-}
-```
-
-A bool típus implicit módon konvertálható:
-
-* 0 → `false`
-* Minden más → `true`
-
----
-
-## **5. String típus**
-
-A modern C++ a `std::string` típust használja a karakterláncok kezelésére. Sokkal kényelmesebb és biztonságosabb, mint a régi C-s `char[]`.
-
-```cpp
-#include <iostream>
-#include <string>
-using namespace std;
-
-int main() {
-    string nev = "Anna";
-    cout << "Üdv, " << nev << "!" << endl;
-
-    string vezetek = "Kovacs";
-    string teljes = vezetek + " " + nev;
-    cout << "Teljes név: " << teljes << endl;
-
-    cout << "Hossz: " << teljes.length() << " karakter" << endl;
-
-    return 0;
-}
-```
-
-A `string` típus támogatja:
-
-* konkatenációt (`+`)
-* összehasonlítást (`==`, `<`, stb.)
-* részkarakterlánc kinyerést (`substr`)
-* karakterek elérését indexeléssel
-
----
-
-## **6. new és delete (dinamikus memóriafoglalás)**
-
-A C++ lehetővé teszi a **dinamikus memóriafoglalást**, ami azt jelenti, hogy futásidőben foglalhatunk memóriát. Erre szolgálnak a `new` és `delete` operátorok.
-
-### Példa – egyszerű típus:
-
-```cpp
-int* p = new int;   // egy egész számra foglal memóriát
-*p = 42;
-cout << *p << endl;
-delete p;           // felszabadítás
-```
-
-### Példa – tömb:
-
-```cpp
-int* tomb = new int[5];   // 5 elemű tömb
-for (int i = 0; i < 5; i++) {
-    tomb[i] = i * i;
-}
-
-for (int i = 0; i < 5; i++) {
-    cout << tomb[i] << " ";
-}
-cout << endl;
-
-delete[] tomb;     // tömb felszabadítása
-```
-
-**Fontos:** minden `new`-hez **tartoznia kell egy `delete`-nek**, különben **memóriaszivárgás** történik.
-
-### Hasznosabb alternatívák: `smart pointerek`
-
-Modern C++-ban ajánlott a `std::unique_ptr`, `std::shared_ptr` vagy `std::vector` használata a `new`/`delete` helyett, mivel ezek automatikusan kezelik a memóriafelszabadítást.
-
----
-
-## Összefoglalás
-
-| Nyelvi elem     | Leírás                                           |
-| --------------- | ------------------------------------------------ |
-| `namespace`     | Névterek, a névütközések elkerülésére szolgálnak |
-| `cin`, `cout`   | Bemenet/kimenet folyamok (stream-ek)             |
-| `const`         | Állandók deklarálása                             |
-| `bool`          | Logikai típus (`true`, `false`)                  |
-| `string`        | Karakterlánc típus, objektum-orientált kezelés   |
-| `new`, `delete` | Dinamikus memóriafoglalás és felszabadítás       |
+Ej, mi a kő! tyúkanyó, kend
+A szobában lakik itt bent?
+Lám, csak jó az isten, jót ád,
+Hogy fölvitte a kend dolgát!
  
+Itt szaladgál föl és alá,
+Még a ládára is fölszáll,
+Eszébe jut, kotkodácsol,
+S nem verik ki a szobából.
 
- Nagyszerű téma! A **C++ függvényekkel** kapcsolatos alábbi részletes (kb. 2000 szavas) ismertető az alábbi fogalmakat öleli fel:
+nano szoveg.txt
+ctrl+x
+yes
+enter
 
-1. **Függvény átdefiniálás (overriding)**
-2. **Cím szerinti paraméterátadás (pass by address)**
-3. **Érték szerinti paraméterátadás (pass by value)**
-4. **Referencia szerinti paraméterátadás (pass by reference)**
-5. **Alapértelmezett argumentumérték (default argument)**
-6. **Paraméter átadás optimalizálása (effektív C++ stílusban)**
+04.
+Hozz létre egy másolatot a "szoveg.txt" fájlról a "gyakorlas" könyvtárban, és nevezd át "masolat.txt"-re.
+cp ~/gyakorlas/szoveg.txt ~/gyakorlas/masolat.txt
 
+05.
+Fűzd hozzá a "szoveg.txt" fájl tartalmát a "masolat.txt" fájlhoz.
+cat ~/gyakorlas/szoveg.txt >> ~/gyakorlas/masolat.txt
+
+06. 
+Helyezd át a szoveg.txt-t a projekt könyvtárba és nevezd át dokumentumok.txt-re.
+mv ~/gyakorlas/szoveg.txt ~/projekt/dokumentum.txt
+
+07.
+Módosítsd a "masolat.txt" fájl jogosultságait úgy, hogy csak a tulajdonos olvashassa és írhasa.
+chmod 600 ~/gyakorlas/masolat.txt
+
+08.
+Listázd ki a "gyakorlas" könyvtár tartalmát, beleértve a rejtett fájlokat is.
+ls -a ~/gyakorlas
+
+09.
+Írd ki a "masolat.txt" fájl első 3 sorát a konzolra.
+head -n 3 ~/gyakorlas/masolat.txt
+
+10.
+Írd ki a "masolat.txt" fájl utolsó 4 sorát a konzolra.
+tail -n 4 ~/gyakorlas/masolat.txt
+
+11.
+Hozz létre egy eredeti.txt fájlt a home könyvtáradban a következő tartalommal: "Jul  6 06:33:44 user1 ubuntu: dear cj"
+echo "Jul  6 06:33:44 user1 ubuntu: dear cj" > eredeti.txt
+
+12.
+Készíts az eredeti.txt fájlról egy soft linket soft_link.txt néven.
+ln -s eredeti.txt soft_link.txt
+
+13.
+Ellenőrizd a linket. Honnan látszik, hogy elkészült a soft link?
+ls -l
+
+14.
+Készíts az eredeti.txt fájlról egy hard linket hard_link.txt néven.
+ln eredeti.txt hard_link.txt
+
+15.
+Ellenőrizd a linket. Honnan látszik, hogy elkészült a hard link?
+ls -lOS. gyak 3
 ---
+pipe(|), wc, cut, sort, ps, fg, kill, find
 
-## 1. Függvény átdefiniálás (Function Overriding)
+Programok összefűzése a pipe paranccsal segítségével
+Programokat amelyekak konzolra írnak és konzolról olvasnak összefűzzük (pipeolás)
+ls -l | tail -n 5: részletes listát átadja a tailnek, amely kilistázza az utolsó 5 sort 
+cat olvassel.txt | head -n 5: az olvassel.txt első 5 sorát adja vissza
 
-A **függvény átdefiniálás (overriding)** az öröklődés során történik, amikor az alosztály **újradefiniálja** az ősosztályból származó virtuális függvényt.
+Több fájl esetén kiíratja a nevét, amelyet -q kapcsoló el lehet tüntetni
 
-### Jellemzői:
+cat fájl1.txt fájl2.txt | head -n 2: a fájl1.txt és fájl2.txt a cat által egyesített megjelenítésének első két sorát iratja ki
 
-* Csak örökléskor használható (osztályok között)
-* A **virtuális** függvényeket lehet felüldefiniálni
-* A dinamikus típus szerint hívódik meg (futásidőben)
+Pipe több parancsot is egybe lehet fűzni
+Írassuk ki egy fájl 2. sorát
 
-### Példa:
+cat sorok.txt - jelenítse meg mindet
+cat sorok.txt | head -n 2 - jelenítse meg az első kettőt
+cat sorok.txt | head -n 2 | tail -n 1 - jelenítse meg az első kettőből az utolsót
+ 
+Írassuk ki egy fájl utolsó előtti sorát
+ 
+cat sorok.txt - jelenítse meg mindet
+cat sorok.txt | tail -n 2 - jelenítse meg az utolsó kettőt
+cat sorok.txt | tail -n 2 | head -n 1 | jelenítse meg az utolsó kettőből az elsőt
 
-```cpp
-#include <iostream>
-using namespace std;
+Sorok, szavak, karakterek száma:
+wc parancs
+wc -l: sorok száma
+wc -w: szavak száma
+wc -c: karakterek száma
 
-class Allat {
-public:
-    virtual void hang() const {
-        cout << "Valamilyen állathang" << endl;
-    }
-};
+wc -l allatok.txt
+cat allatok.txt | wc -l
 
-class Kutya : public Allat {
-public:
-    void hang() const override {
-        cout << "Vau!" << endl;
-    }
-};
+Az előbbiek kombinálhatók is
+wc -wl: a szavakat és a sorokat is számolja meg
+wc minden kiír
 
-void megszolal(const Allat& a) {
-    a.hang(); // dinamikusan meghívja a megfelelő hang() függvényt
-}
+Pipe esetén használható, pl. számolja meg hány bejegyzés van az adott könyvtárban
 
-int main() {
-    Allat a;
-    Kutya k;
-    megszolal(a); // "Valamilyen állathang"
-    megszolal(k); // "Vau!"
-    return 0;
-}
-```
+ls -1 | wc -l: a bejegyzések kiíratása egy oszlopba, majd sorok számának összeszámolása
+wc -l *.txt: az összes bejegyzés sorok száma, össz. száma
 
-### `override` kulcsszó:
-
-C++11-től kezdve az `override` kulcsszó kötelezővé teheti a fordító számára, hogy ellenőrizze: valóban egy bázisosztálybeli virtuális függvényt írunk felül.
-
+Cut (mezők vágása)
 ---
+Adatott sorokból melyik mezőt adja vissza
+cut -c kezdő-vég karakterek
+cut -c 2-5 fájl.txt, a sorokból kivágja a 2-5 közötti karaktereket
+cut -c 3 fájl.txt, csak a 3. karakterek
 
-## 2. Cím szerinti paraméterátadás (Pass by Address)
+Példa, 1-3 karakter kivágása:
+cat sorok.txt | cut -c 1-3
 
-Ebben az esetben egy **mutatót (pointert)** adunk át függvénynek. A függvény így közvetlenül tudja módosítani a változó tartalmát.
+Mező vágása, egy elhatároló (tab, ' ', ';' stb) alapján. 
+Ha az elhatároló egy tabulátor, akkor nem kell a -d kapcsoló.
+cat sorok.txt | cut -f 2 (második oszlop kivágása -f kapcsoló segítségével)
+cat sorok.txt | cut -d ';' -f 1 (első oszlop kivágása, egy olyan struktúrában, amelyeket ";"-al vannak elválasztva)
 
-### Példa:
+sort (rendezés)
+pl. cat nevek.txt | sort (abc sorrend)
 
-```cpp
-void novel(int* ptr) {
-    (*ptr)++;
-}
+sort -r (csökkenő sorrend)
+pl. cat nevek.txt | sort -r 
 
-int main() {
-    int x = 10;
-    novel(&x);
-    cout << x << endl; // 11
-    return 0;
-}
-```
+sort -k:  melyik mező szerint rendezzen
+pl. ls -l | sort -k 6 (dátum növekvő)
 
-### Előnyök:
+sort -n: numerikus sorrendezés
+pl. ls -l | sort -n -k 5 (méret alapján numberikusan rendezzen)
 
-* Hatékony, mert nem másolja az adatot
-* A függvény módosíthatja a hívó fél változóját
-
-### Hátrány:
-
-* Nullpointer kezelése szükséges
-* Nehezebb az olvashatóság
-
----
-
-## 3. Érték szerinti paraméterátadás (Pass by Value)
-
-Ez a legegyszerűbb típus: a **változó értékének másolata** kerül a függvénybe. Az eredeti változó **nem módosul**.
-
-### Példa:
-
-```cpp
-void novel(int szam) {
-    szam++;
-}
-
-int main() {
-    int x = 10;
-    novel(x);
-    cout << x << endl; // 10
-    return 0;
-}
-```
-
-### Előnyök:
-
-* Biztonságos: az eredeti adat változatlan
-* Egyszerű használat
-
-### Hátrány:
-
-* Nagy objektumok esetén lassú lehet a másolás
-
----
-
-## 4. Referencia szerinti paraméterátadás (Pass by Reference)
-
-A C++ egyik fontos újítása a **referenciák** bevezetése. Egy referencia egy **alternatív név** az adott változóra. Ha referenciaként adunk át paramétert, akkor a függvény **az eredeti változót** fogja módosítani.
-
-### Példa:
-
-```cpp
-void novel(int& szam) {
-    szam++;
-}
-
-int main() {
-    int x = 10;
-    novel(x);
-    cout << x << endl; // 11
-    return 0;
-}
-```
-
-### Előnyök:
-
-* Nem történik másolás
-* Az eredeti adat módosítható
-* Egyszerűbb a szintaxis, mint a pointerek esetén
-
-### Konstans referencia (`const T&`):
-
-Nagy objektumokat érdemes **konstans referenciaként** átadni, ha nem akarjuk módosítani azokat:
-
-```cpp
-void kiir(const string& uzenet) {
-    cout << uzenet << endl;
-}
-```
-
-Ez **hatékony** (nincs másolás), és **biztonságos** (nem változtatható).
-
----
-
-## 5. Alapértelmezett argumentumérték (Default Arguments)
-
-C++ lehetővé teszi, hogy a függvény paramétereinek legyen **alapértelmezett értéke**.
-
-### Példa:
-
-```cpp
-void udvozlet(string nev = "ismeretlen") {
-    cout << "Üdv, " << nev << "!" << endl;
-}
-
-int main() {
-    udvozlet("Anna");     // "Üdv, Anna!"
-    udvozlet();           // "Üdv, ismeretlen!"
-}
-```
-
-### Szabályok:
-
-* Az alapértelmezett értékek mindig **balról jobbra** legyenek megadva
-* Egy paraméter alapértelmezett lehet, de utána lévők **mindegyikének** is alapértelmezettnek kell lennie
-
-```cpp
-// Hibás:
-void fgv(int a = 5, int b); // ERROR
-
-// Helyes:
-void fgv(int a, int b = 10);
-```
-
----
-
-## 6. Paraméterátadás optimalizálása
-
-A C++ nagy objektumoknál és komplex típusoknál lehetőséget nyújt az **erőforrások hatékony átadására**, így optimalizálva a teljesítményt. Nézzük meg az ajánlott gyakorlatokat.
-
----
-
-### 6.1. Kis típusok: érték szerint
-
-Kis típusokat (pl. `int`, `double`, `char`, `bool`) nyugodtan átadhatunk **érték szerint**, mert a másolás gyors.
-
-```cpp
-void szoroz(int a, int b); // OK
-```
-
----
-
-### 6.2. Nagy típusok: konstans referenciával
-
-Objektumok vagy tömbszerű típusok esetén célszerű **konstans referenciával** átadni:
-
-```cpp
-void feldolgoz(const string& szoveg);     // Nincs másolás
-void rajzol(const vector<int>& adatok);  // Hatékony
-```
-
----
-
-### 6.3. Módosítandó adatok: referencia vagy pointer
-
-Ha a függvény célja a hívó fél adatának **módosítása**, akkor:
-
-* Használj `T&` referenciát, ha kötelező az érték
-* Használj `T*` mutatót, ha opcionális (NULL is lehet)
-
-```cpp
-void novel(int& x);     // kötelező
-void torol(vector<int>* v);  // lehet nullptr
-```
-
----
-
-### 6.4. Move szemantika (C++11+)
-
-Ha egy nagy objektum **átadható vagy elmozdítható**, akkor használható a **move constructor** vagy `std::move`:
-
-```cpp
-void atvesz(string&& szoveg); // Rvalue reference (átvétel)
-```
+sort -t (helykitöltő alapú rendezés)
+sort -t ';' -k 2 fájl.txt (";" helykitöltő alapján rendezzen, a második adattag alapján)
 
 Példa:
+Jelenítse meg a könyvtárában a legnagyobb fájl adatait:
+ls -l | sort -k 5 | tail -n 1
+Jelenítse meg a könyvtárában a legkisebb fájl adatait:
+ls -l | sort -k 5 | head -n 2 | tail -n 1
 
-```cpp
-string szoveg = "hello";
-atvesz(std::move(szoveg)); // szoveg tartalma "átkerül"
-```
+sort -u: egyező sorok elrejtése
+pl. cat telefonszamok.txt | sort -u
 
+Folyamatok:
+A /proc alatt egy virtuális fájlrendszer található, ahol a futó folyamatokól tudhatunk meg információkat
+pl. cat /proc/cpuinfo (a gép CPU adatainak lekérdezése)
+
+ps: saját folyamataimat mutatja
+Összes felhasználó összes folyamata bővített formátumban:
+ps aux (a - összes, u - felhasználók, x - bővített formátum)
+
+Folyamat leállítása: kill
+
+pl.
+nano lorem.txt
+új terminálablak indítása
+ps aux (kilistázom a folyamatokat)
+Ezt követően kiválasztom a leállítandó folyamat PID-ját, és ezt adom meg a kill parancs paraméterének
+kill 1322
+
+ps f (gyerek folyamatok kilistáza)
+
+killall folyamatnév: összes meghatározott nevű folyamat leállítása
+
+Futó folyamatok listázáta: jobs
+Futó folyamat háttérbe helyezése:
+nano lorem.txt & (háttérben fusson), vagy futás közben ctrl + z 
+ezt követően kiírja a rendszer, hogy
+[1] - 1 jobs
+234567 - Process id
+
+Első (1) job előtérbe helyezése:
+fg 1 (első jobot)
+
+Felfüggesztett folyamat leállítás:
+kill pid (process id)
+kill -9 %1 (-9/SIGKILL %job id)
+
+Keresés: find parancs
+A find segítségével egy adott könyvtárban egy adott állományt/állományokat keresünk
+Fontos, hogy alapesetben rekurzív, lemegy a legalsó gyerekig
+Lehet, név, típus, vagy méret és egyéb tulajdonságok alapján
+
+find könyvtár kapcsolók tulajdonságok/jellegek
+
+-name: névre keresés
+-regexp: reguláris kifejezés
+-type f, -type d: fájl/könyvtár
+-size 50k/-50k/+50k: a méret 50 kB/50 kB alatt/50 kB felett 
+-exec: a megtalált fájlokon egy parancsot hajt végre, a "{}" helyére a fájl teljes elérési útvonalát helyettesíti be.
+-execdir: a megtalált fájlokon egy parancsot hajt végre, de a parancsot a fájl szülőkönyvtárában hajtja végre, így a "{}" helyére csak a fájlnév kerül.
+-maxdepth: könyvtármélység meghatározása (0 a szülő, 1 az első gyerek mélység)
+-group: csoport definiálása
+
+Példák (a "." az aktuális mappa helye, átírható tetszőleges struktúrára):
+
+find . -name hudemely.txt
+
+find . -type f -name "*.txt" (fontos: a reguláris kifejezéseket idézőjel közé kell tenni)
+
+find . -type f -name "*.txt" -exec ls -l "{}" \; {ide hellyetesítődik be amit a find talál}
+
+Összes könytár információ kilistázásaa
+find . -type d -exec ls -ld "{}" \; (ls -ld: könyvtár információk kilistázása hosszú formátumban)
+
+Összes txt fájl első két sorának kiíratása
+find . -type f -name "*.txt" -exec head -n 2 "{}" \;   
+
+Hány sorból állnak a .txt kiterjesztésű fájlok
+find . -type f -name "*.txt" -exec wc -l "{}" \;
+
+A txt fájloknak összesen hány soruk van
+find . -type f -name "*.txt" -exec cat "{}" \; | wc -l
+
+A txt fájloknak összes sorát rendezzük és lapozhatóvá tegyük
+find . -type f -name "*.txt" -exec cat "{}" \; | sort | more
+
+A sysadmins tuljdonossal rendelkező "backup" kifejezést tartalmazó mappák darabszámának visszaadása
+find . -type d -name "*backup*" -group sysadmins | wc -l
+
+A user felhasználó ".io" végű 50 MB-nál nagyobb fájljainak keresése max. 2 mélységig
+find . -maxdepth 2 -type f -name '*.io' -user user -size +50M
+
+Maximum egy gyerek mélységig megtalálható ".txt" végű fájlokról készítsen biztonsági másolatot úgy, hogy lássa el őket egy ".bak" vegződéssel a backup mappába 
+find . -maxdepth 1 -type f -name "*.txt" -execdir cp "{}" ./backup/"{}".bak \;Old meg bash parancsokkal:
+
+01.
+Hozz létre egy "dokumentumok" nevű könyvtárat, majd benne egy "fontos.txt" fájlt, amelynek az első három sorába írd bele a következő adatokat az echo parancs segítségével:
+
+Kovács;Lajos;Baja;6500
+Nagy;László;Székesfehérvár;8000
+Tamási;Péter;Veszprém;8200
+
+mkdir dokumentumok
+echo -e "Kovács;Lajos;Baja;6500\nNagy;László;Székesfehérvár;8000\nTamási;Péter;Veszprém;8200" > dokumentumok/fontos.txt
+
+02.
+Készíts egy "projekt" nevű könyvtárat, majd benne egy "adatok.txt" és "kimenet.txt" fájlt! A "kimenet.txt" üres legyen az "adatok.txt" pedig a következőket tartalmazza:
+
+Kovacs Tamas    Szeged  6000    06-30-3874656
+Szanto Katalatin        Szekesfehervar  8000    06-20-2398763
+Nagy Lilla      Veszprem        8200    06-70-8574923
+Toth Tihamer    Budapest        1118    06-20-4987327
+Vince Iren      Balatonalmadi   8220    06-70-3977428
+Nagy Zsofi      Szeged  6000    06-70-8574923
+Zold Peter      Ajka    8400    06-20-2345976
+Pal Peter       Veszprem        8200    06-88-1234567
+
+mkdir projekt
+nano projekt/adatok.txt
+másolás, beillesztés, mentés
+touch projekt/kimenet.txt
+
+03.
+Listázd ki a "dokumentumok" könyvtár tartalmát, majd jelenítsd meg az utolsó három sort!
+
+ls -l dokumentumok | tail -n 3
+
+04.
+Írasd ki egyszerre a "dokumentumok/fontos.txt" és "projekt/adatok.txt" fájlok tartalmának első négy sorát!
+
+cat dokumentumok/fontos.txt projekt/adatok.txt | head -n 4
+
+05.
+Vágd ki a "projekt/adatok.txt" fájl tartalmának második és harmadik karakterét!
+
+cat projekt/adatok.txt | cut -c 2-3
+
+06.
+Rendezd sorrendbe az "dokumentumok/fontos.txt" sorait az első mező alapján növekvő sorrendben!
+
+cat dokumentumok/fontos.txt | sort -k 1
+
+07.
+Listázd ki az összes .txt fájlt a "projekt" könyvtárban, majd számold meg őket!
+
+ls -1 projekt/*.txt | wc -l
+
+08.
+Vágd ki az "dokumentumok/fontos.txt" fájlban található sorok második mezőjét, amelyeket a ";" karakter választ el!
+
+cat dokumentumok/fontos.txt | cut -d';' -f2
+
+09.
+Hozz létre három fájlt a "projekt" könyvtárban: "file1.txt", "file2.txt", "file3.txt". Minden fájl a következőt tartalmazza:
+
+1. sor: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ac justo vel nisi vestibulum aliquet.
+2. sor: Suspendisse potenti. Fusce eget tincidunt risus, ac vehicula nulla. Quisque auctor justo nec ante ullamcorper, at sodales justo tempor.
+3. sor: Integer ac justo vel orci consequat vulputate. In hac habitasse platea dictumst. Proin quis urna vel turpis dictum scelerisque.
+4. sor: Etiam at vestibulum velit. Sed vel justo vel ipsum vehicula bibendum. Nulla facilisi.
+5. sor: Vivamus fringilla mi vitae augue auctor, in scelerisque libero tristique. Nunc euismod, libero nec varius luctus, erat velit vulputate odio.
+
+nano file1.txt
+cp file1.txt file2.txt
+cp file1.txt file3.txt
+
+10.
+Hozz létre egy "backup" nevű könyvtárat, majd másold át az "projekt" könyvtár összes .txt fájlját!
+
+mkdir backup
+cp projekt/*.txt backup/
+
+11.
+Keress meg minden .txt fájlt kizárólag a "dokumentumok" könyvtárban.
+
+find dokumentumok -maxdepth 1 -type f -name "*.txt"
+
+12.
+Keress meg minden .txt fájlt rekurzívan a "projekt" könyvtárban, és írd ki a nevüket sorban!
+
+find projekt -type f -name "*.txt" -exec ls -1 "{}" \;
+
+13.
+Keress meg minden .txt fájlt a "dokumentumok" könyvtárban, majd írd ki az első három sorát mindegyiknek!
+
+find dokumentumok -type f -name "*.txt" -exec head -n 3 "{}" \;
+
+14.
+Keress meg minden .txt fájlt a "backup" könyvtárban, majd másold át az összeset a "projekt" könyvtárba .old kiterjesztéssel!
+
+find backup -type f -name "*.txt" -execdir cp "{}" projekt/"{}".old \;
+
+15.
+Keress meg minden .jpg fájlt a "~" könyvtárban, ne rekurzívan, amelyek mérete kisebb mint 50 KB!
+
+find ~ -maxdepth 1 -type f -name "*.jpg" -size -50kOS. gyak 4
+---
+bash script futtatása, értékadás, kiíratás, argomentumok (paraméterek), változóba olvasás, elagázás, teszt utasítások, többszörös elágazás
+
+A tanult parancsokat tudjuk összefűzni egy programmá.
+Fordítóra nincs szükség, a shell magát a forráskódot értelmezi.
+A programok elyan szöveges fájlok, amelyek futtathatók lesznek.
+Kiterjesztés .sh, de bármi lehet.
+
+Shell script létrehozása
+---
+1. nano helloworld.sh
+2.
+#!/bin/bash <- kötelező sor a shell script útvonala
+echo "Hello World"
+3. chmod u+x helloworld.sh
+4. ./helloworld.sh <-relatív útvonal (vagy abszolult útvonal)
+(Ez azért van így, hogy meg lehessen különböztetni a parancsoktól a scriptet)
+
+A változók tipusnélküliek, tartalmazhatnak szöveget és számot is
+A változókat nem kell deklarálni.
+
+Értékadás
+---
+numbers=10
+salary=$numbers (numbers változó értékét adom át a salary változónak)
+text=hello
+longtext="A fizetesem   $salary alma"
+
+Kiíratás
+---
+echo $salary
+10
+
+echo $longtext
+# A szóközöket csak paraméter elválasztásnak tekinti
+A fizetesem 10 alma
+
+echo "$longtext"
+# Visszadja a teljes formázott stringet
+A fizetesem    10 alma
+
+echo '$longtext'
+# Tartalom szószerinti kiíratása
+A fizetesem $salary alma
+
+Változónév elkülönítés zárójelezéssel:
+
+A shell a helloworld nevű változót keresi:
+$helloworld
+A shell a hello nevű változót keresi a world-öt pedig stringként kezeli:
+${hello}world
+
+Parancssori argomentumok
+./elso.sh arg1 arg2 (az arg1 a $1-ben, az arg2 a $2 tárolódik)
+
+Hello World kiíratása argomentumokkal
+#!/bin/bash
+echo "$1" "$2"!
+
+Az első argomentum hozzáfűzése egy fájlhoz
+#!/bin/bash
+echo "$1">"$2"
+
+Az első argomentum másolása a másik argomentum mappájába
+#!/bin/bash
+cp "$1" "$2"
+
+Szöveg bekérése
+----
+A read parancs segítségével szöveg bekérése a shell scriptbe
+A read egy sort olvas be
+read változo1 változo2
+read x y z (ha csak egy szó szó van akkor az y, z változó üres lesz)
+
+Példa (login.sh)
+#!/bin/bash
+echo "Kerem, adja meg a nevet:"
+read name
+echo "Kerem, adja meg a jelszavat:"
+read -s password # beírt karakterek elrejtése
+echo "Kedves ${name}, most már belephet!"
+
+Elágazás (if)
+---
+if; then; fi
+
+Rövid alak, a blokkok elválasztása ";"-vel
+if ls sorok.txt; then echo "Van ilyen fajl"; else echo "Nincs ilyen fajl"; fi
+
+Hosszú alak, nem minden sorban egy új blokk
+if ls sorok.txt
+	then echo "Van ilyen fajl"
+	else echo "Nincs ilyen fajl"
+fi
+
+Vegyes alak, eliffel
+if [ feltétel1 ]; then
+    # első feltétel igaz
+elif [ feltétel2 ]; then
+    # második feltétel igaz
+else
+    # egyik feltétel sem igaz
+fi
+
+Az if utasítással használható a test utasítása, amely segítségével különböző tulajdonságokat tudunk megvizsgálni
+test -e: exist, létezik-e
+test -f: file, fájl-e az adott bejegyzés
+test -d: directory, könyvtár-e az adott bejegyzés
+test -s: üres-e vagy sem az adott bejegyzés
+
+pl. Létezik-e sorok.txt
+if test -e ~/dokumentumok/sorok.txt
+	then echo "Van ilyen fajl"
+	else echo "Nincs ilyen fajl"
+fi
+
+test utasításnak van egy rövidített formája a szögletes zárójel: []
+Fontos, hogy miden elemet szóközzel kell elválasztani pl. [ "$1" -gt "$2" ]
+
+Egész számok (integer) összehasonlítása
+-eq egyenlő
+if [ "$a" -eq "$b" ]
+-ne nem egyenlő
+if [ "$a" -ne "$b" ]
+-gt nagyobb
+if [ "$a" -gt "$b" ]
+-ge nagyobb vagy egyenlő
+if [ "$a" -ge "$b" ]
+-lt kisebb
+if [ "$a" -lt "$b" ]
+-le kisebb vagy egyenlő
+if [ "$a" -le "$b" ]
+
+Egész számok összehasonlítása C szintaxisban. Csak dupla zárójellel működik!
+kisebb ( < )
+(("$a" < "$b"))
+kisebb vagy egyenlő ( <= )
+(("$a" <= "$b"))
+nagyobb ( > )
+(("$a" > "$b"))
+nagyobb vagy egyenlő ( >= )
+(("$a" >= "$b"))
+
+Szövegek (string) összehasonlítása
+= Egyenlő
+== Az egyenlőség operátor (==) másként viselkedik a dupla zárójeles teszten belül, mint az egyszerű zárójelben.
+
+A dupla zárójel ([[ ... ]]) a bash shell speciális szerkezete, amelyet általában a feltételes kifejezésekhez használunk. A dupla zárójelben a bash kevésbé érzékeny a speciális karakterekre, mint például a <, >, &&, ||, amelyek az egyszerű zárójelben ([ ... ]) általában problémákat okozhatnak. Mivel a dupla zárójelben a bash sokkal rugalmasabban értelmezi ezeket a karaktereket, így általában nem szükséges a karakterek escape-je.
+
+[[ $a == z* ]]   # Igaz, ha $a "z"-vel kezdődik (mintaillesztés).
+[[ $a == "z*" ]] # Igaz, ha $a megyezik z*-al (szó szerinti egyezés).
+[ "$a" == z* ] # Igaz, ha $a "z"-vel kezdődik (mintaillesztés).
+[ "$a" == "z*" ] # Igaz, ha $a megyezik "z*"-al (szó szerinti egyezés).
+
+!= nem egyenlő
+if [ "$a" != "$b" ]
+
+< kisebb, mint (ASCII ábécé sorrend alapján)
+if [[ $a < $b ]] # Nem kell zárójel, ha a változó nem tartalmaz speciális karaktereket
+if [ "$a" \< "$b" ] # "\" mondja meg a bash-nek, hogy a "<" jelet szószerint értelmezze
+
+> nagyobb, mint (ASCII ábécé sorrend alapján)
+if [[ "$a" > "$b" ]]
+if [ "$a" \> "$b" ]
+
+-z üres string, a hossza zéró
+if [ -z "$s" ]
+
+-n nem nulla
+if [ -n "$s" ]
+
+Példa nagyobb.sh (paraméteres)
+Döntsük el, hogy az első paraméterben megadott szám-e a nagyobb-e, mint a második paraméterben megadott szám.
+
+#!/bin/bash
+
+if [ "$1" -gt "$2" ] #if (("$1" > "$2"))
+    then
+        echo "Az elso szam a nagyobb."
+    else
+        if [ "$1" -eq "$2" ] #if (("$1" == "$2"))
+            then
+                echo "A ket szam egyenlo."
+            else
+                echo "A masodik szam a nagyobb."
+        fi
+fi
+
+Többszörös elágazás (case)
+---
+case: többszörös elágazás
+A case után egy kifejezés, ezt követi egy in kulszó, majd a minta1, minta2
+
+Példa szamkivalaszto.sh
+#!/bin/bash
+
+echo "Kerem, valasszon egy szamot 1 és 3 kozott:"
+read number
+
+case $number in
+  1)
+    echo "Elso szamot valasztotta."
+    ;;
+  2)
+    echo "Masodik szamot valasztotta."
+    ;;
+  3)
+    echo "Harmadik szamot valasztotta."
+    ;;
+  *)
+    echo "Hibas szamot valasztott."
+    ;;
+esac
+
+expr (expresson parancs)
+---
+Aritmetikai és logikai kifejezések értékelésére szolgál
+
+sum=$(expr 5 + 3) # összeadás
+difference=$(expr 10 - 4) # kivonás
+product=$(expr 4 * 6) # szorzás
+quotient=$(expr 24 / 4) # osztás
+remainder=$(expr 27 % 5) # maradékos osztás
+
+C-szintaxisban:
+sum=$((5 + 3))
+difference=$((10 - 4))
+product=$((4 * 6))
+quotient=$((24 / 4))
+remainder=$((27 % 5))
+
+Példa osszeado.sh
+
+#!/bin/bash
+a=5
+b=3
+c=$(expr $a + $b)
+echo "Az eredmeny: $c"Old meg bash szkriptekkel:
+
+1. Készíts egy bash scriptet, amely beolvassa a felhasználó nevét és üdvözli azt egy személyre szabott üzenettel!
+
+#!/bin/bash
+
+echo "Kerem, adja meg a nevet:"
+read name
+echo "Udvozoljuk, $name!"
+
+2. Írj egy bash scriptet, amely a parancssori argumentumok között megadott két számot összeadja, majd az eredményt kiírja a képernyőre!
+
+#!/bin/bash
+
+sum=$(($1 + $2))
+echo "A ket szam osszege: $sum"
+
+3. Hozz létre egy bash scriptet, amely a felhasználótól bekér egy fájlnevet, majd ellenőrzi, hogy a megadott fájl létezik-e a dokumentumok mappában! Ha igen, írja ki "A fájl létezik.", ha nem, akkor írja ki "A fájl nem létezik."!
+
+#!/bin/bash
+
+echo "Kérem, adjon meg egy fájlnevet:"
+read filename
+
+if [ -e ~/dokumentumok/$filename ]
+then
+    echo "A fájl létezik."
+else
+    echo "A fájl nem létezik."
+fi
+
+4. Írj egy bash scriptet, amely két számot olvas be a felhasználótól, és meghatározza, hogy melyik a nagyobb, vagy ha egyenlőek, akkor erről tájékoztatja a felhasználót!
+
+#!/bin/bash
+
+echo "Kérem, adjon meg két számot:"
+read num1
+read num2
+
+if [ "$num1" -gt "$num2" ]
+then
+    echo "$num1 nagyobb, mint $num2."
+elif [ "$num1" -eq "$num2" ]
+then
+    echo "A két szám egyenlő."
+else
+    echo "$num2 nagyobb, mint $num1."
+fi
+
+5. Írj egy bash scriptet, amely egy megadott fájlt másol egy másik megadott mappába!
+
+#!/bin/bash
+
+echo "Kérem, adja meg a forrásfájl nevét:"
+read source_file
+
+echo "Kérem, adja meg a célkönyvtár nevét:"
+read destination_dir
+
+cp "$source_file" "$destination_dir"
+echo "A fájl másolása sikeres volt."
+
+6. Írj egy bash scriptet, amely ellenőrzi, hogy egy adott fájl létezik-e, és ha igen, akkor megvizsgálja, hogy az üres-e vagy sem! Ha az adott fájl nem létezik, írja ki a "A fájl nem található." üzenetet!
+
+#!/bin/bash
+
+echo "Kérem, adjon meg egy fájl nevét:"
+read filename
+
+if [ -e "$filename" ]; then
+    if [ -s "$filename" ]; then
+        echo "A fájl létezik és nem üres."
+    else
+        echo "A fájl létezik, de üres."
+    fi
+else
+    echo "A fájl nem található."
+fi
+
+7. Készíts egy bash scriptet, amely bekéri a felhasználótól egy könyvtár nevét, majd kiírja a könyvtárban található összes fájl és alkönyvtár nevét!
+
+#!/bin/bash
+
+echo "Kérem, adjon meg egy könyvtár nevét:"
+read directory
+
+echo "A könyvtár tartalma:"
+ls -a $directory
+
+8. Készíts egy bash scriptet, amely bekéri a felhasználótól két számot, majd összeadja azokat és az eredményt kiírja egy fájlba!
+
+#!/bin/bash
+
+echo "Kérem, adjon meg két számot:"
+read num1
+read num2
+
+sum=$(($num1 + $num2))
+echo "Az összeg: $sum" > sum.txt
+echo "Az összeg ki lett írva a sum.txt fájlba."
+
+9. Írj egy bash scriptet, amely eldönti, hogy a megadott szám páros vagy páratlan!
+
+#!/bin/bash
+
+echo "Kérem, adjon meg egy számot:"
+read num
+
+if [ $(($num % 2)) -eq 0 ]; then
+    echo "$num páros szám."
+else
+    echo "$num páratlan szám."
+fi
+
+10. Írj egy bash scriptet, amely a felhasználótól bekér egy számot, majd megállapítja, hogy az adott szám pozitív, negatív vagy nulla!
+
+#!/bin/bash
+
+echo "Kérem, adjon meg egy számot:"
+read num
+
+if [ $num -gt 0 ]; then
+    echo "A szám pozitív."
+elif [ $num -lt 0 ]; then
+    echo "A szám negatív."
+else
+    echo "A szám nulla."
+fiOS. gyak 5
+---
+backtick, for ciklus, while ciklus, tömb, speciális változók, elérési utak vágása, függvények, csere a sed segítségével
+
+Parancsbehelyettesítés
+---
+Szintaxis: $(command) vagy `command`
+` = altgr+7
+
+Példa:
+A text változó értéke a list.txt első sora
+text=$(cat ~/os/docs/list.txt | head -n 1)
+
+For ciklus (elsődlegesen listák bejárására)
+---
+Alap szintaxis:
+
+for változó in [LISTA]
+do
+  [UTASÍTÁSOK]
+done
+
+1. Szintaxis stringek esetén:
+for element in Hydrogen Helium Lithium Beryllium
+do
+  echo "Element: $element"
+done
+
+2. Szintaxis egy meghatározott intervallum (0-tól 3-ig számok) esetén:
+for i in {0..3}
+do
+  echo "Number: $i"
+done
+
+3. Szintaxis egy meghatározott intervallumon rögzített lépésközzel csökkenő módon:
+for value in {10..0..2}
+do
+echo $value
+done
+
+4. C szintaxis használata esetén:
+for ((num = 1; num <= 5; num++))
+do
+echo $num
+done
+
+5. Szintaxis fájlok bejárása:
+for file in ~/docs/*
+do
+  echo "Processing $file file..."
+  cat "$file"
+done
+
+Használható még a break utasítás (azonnal hagyja el a ciklust) és a continue utasítás (azonnal lépjen a következő iterációba) is.
+
+While ciklus (elsődlegesen teszt utasítások feltételeinek vizsgálatára, valamint fájlok soronkénti feldolgozására)
+---
+Alap szintaxis:
+while [teszt utasítás/parancs/feltétel]
+do
+<utasítások>
+done
+
+1. Szintaxis teszt utasítás használata esetén:
+
+Írjon egy basch scriptet while ciklus segítségével, amelyben a 1-től 10-ig íratjuk ki a számokat.
+
+#!/bin/bash
+
+counter=1
+while [ $counter -le 10 ]
+do
+echo $counter
+counter=$(( $counter + 1 )) #vagy (( counter++ ))
+done
+
+Ez egy egyszerű while ciklus, amelyben a counter változó kezdeti értéke 1. Test utasítás segítségével minden iterációban megvizsgáljuk, hogy a counter változó kisebb vagy egyenlő-e mint 10. A ciklusban az echo utasítás kiírja az adott számot a standard kimenetre, majd növeli az counter értékét egyel.
+
+2. Szintaxis egy fájl sorainak beolvasására:
+
+Írjon egy bash scriptet, amelyben beolvassuk soronként a sample.txt fájl tartalmát. Ha az aktuális sor tartalmazza az "ERROR" szót, akkor írassuk ki a képernyőre. 
+
+#!/bin/bash
+
+# Fájl neve
+file="sample.txt"
+
+# Olvassuk be a fájl tartalmát egy soronként
+while read line
+do
+  # Ha az aktuális sor tartalmazza az "ERROR" szót,
+  # akkor írjuk ki a sort a képernyőre
+  if [[ "$line" == *"ERROR"* ]]
+	then
+		echo "$line"
+  fi
+done < "$file"
+
+A fenti script egy sample.txt nevű fájlt olvas be, majd ha megtalálja az aktuális sorban az "ERROR" szót, akkor azt kiírja a képernyőre. A while read line sor olvassa be a fájl sorait, a if elagásban lévő test utasítás pedig ellenőrzi, hogy tartalmaz-e az aktuális sor "ERROR" szót. Ha igen, akkor a echo paranccsal kiírjuk az adott sort a képernyőre.
+
+Tömb
+---
+Tömb definiálása:
+number=(1 2 3 4 5 6)
+fruits=("apple" "banana" "orange")
+
+Adott elem elérése:
+echo ${fruits[0]}  # apple
+
+Tömb elemeinek kiíratása:
+echo "${fruits[*]}" # "*" - összes elem visszaadása szóközökkel elválasztva
+
+Tömb elemeinek soronkénti kiíratása:
+for fruit in "${fruits[@]}" # "@" - összes elem a tömbben
+do
+    echo $fruit # elemek kiíratása soronként
+done
+
+Tömb elemeinek bejárása:
+for ((i=0; i<${#fruits[@]}; i++)) # a "#" a fruits tömb teljes hosszát adja vissza
+do
+    echo "Index $i: ${fruits[i]}"
+done
+
+Új elem beszúrása a tömb végére 1. módszer:
+fruits+=("kiwi")
+
+Új elem beszúrása a tömb végére 2. módszer:
+
+# Eredeti tömb
+my_array=("banana" "orange")
+
+# Az új tömb hozzáfűzése az eredeti tömbhöz
+my_array=("${my_array[@]}" "apple")
+
+Új elem beszúrása a tömb elejére 1. módszer:
+# Eredeti tömb
+my_array=("banana" "orange")
+
+# Az új tömb hozzáfűzése az eredeti tömbhöz
+my_array=("apple" "${my_array[@]}")
+
+Új elem beszúrása a tömb elejére 2. módszer:
+# A tömbben lévő elemek azonosítóit egyel jobbra elcsúsztatom
+for ((i=${#fruits[@]}; i>0; i--))
+do
+    fruits[$i]=${fruits[$i-1]}
+done
+
+# Beszúrom az új elemet az első helyre
+fruits[0]="pear"
+
+Új elem beszúrása egy tetszőleges helyre:
+my_array=("${my_array[@]:0:1}" "$new_element" "${my_array[@]:1}")
+# Jelentés:
+# "${my_array[@]:0:1}" - az eredeti tömb 0. indexétől 1 hosszúságú vágásig (ez az eredeti tömb 0. indexű eleme)
+# "$new_element" - új elem
+# "${my_array[@]:1}") - az eredeti tömb 1. indexe és az ezt követő elemek
+
+Elem törlése:
+unset fruits[1]  # banana elem törlése
+
+Speciális változók
 ---
 
-### 6.5. Return érték optimalizálás
+#!/bin/bash
+echo "A script neve: $0"
+echo "Az első argumentum: $1"
+echo "Az argumentumok száma: $#"
+echo "Az összes argumentum: $@"
 
-Modern fordítók **Return Value Optimization-t (RVO)** végeznek, azaz a függvény visszatérési értékét nem másolják feleslegesen:
+Listában lévő argomentumok kiíratása:
+#!/bin/bash
 
-```cpp
-string generalSzoveg() {
-    string s = "valami";
-    return s; // nem történik másolás modern fordítónál
-}
-```
+Argomentumok kiíratása
+for argument in "$@"
+do
+	echo "$argument"
+done
 
+Az aktuális argomentumot kivágjuk az aktuális argomentumlistából és a többit pedig egyel előrébb csúsztatjuk:
+
+while [ $# -ne 0 ] # C-szintaxis (($# != 0))
+do
+	echo $1
+	shift
+	# A argomentumlista csúsztatása az első iteráció után argomentum esetén: $1 kivágba, $2 -> $1, $3 -> $2)
+	# shift szám esetén egy meghatározott szám szerint lép az argomentum listán
+done
+
+Elérési utak, elemek vágása
 ---
+basename: az utolsó elemet hagyja meg
+dirname: az utolsó elemet vágja ki
 
-## Összefoglaló táblázat
+basename ./os/allatok.txt
+allatok.txt
 
-| Paraméter típusa         | Mikor használjuk?                 | Hatás                 |
-| ------------------------ | --------------------------------- | --------------------- |
-| `T` (érték szerint)      | Kis, egyszerű típusok             | Gyors, de másol       |
-| `const T&` (konst. ref.) | Nagy, nem módosítandó típusok     | Hatékony, biztonságos |
-| `T&` (ref.)              | Módosítani akarjuk az értéket     | Nincs másolás         |
-| `T*` (mutató)            | Opcionális érték, lehet `nullptr` | Rugalmas              |
-| `T&&` (rvalue ref.)      | Átmeneti, "mozgatott" értékek     | Optimalizált          |
+dirname ./os/allatok.txt
+./os/allatok
 
+Shell parancsok előfuttatása: $(parancs)
+
+find . -type f -name "hudemely.txt"
+./mellyen/mellyebben/legmellyebben/legeslegmellyebben/hudemely.txt
+
+Fájlnév kivágása:
+basename $(find . -type f -name "hudemely.txt")
+hudemely.txt
+
+Elérési út kivágása:
+dirname $(find . -type f -name "hudemely.txt")
+./mellyen/mellyebben/legmellyebben/legeslegmellyebben/
+
+Függvények
 ---
+Lehetőségek van a bash-ban is függvényeket írni.
 
-## Összegzés
+A függvény saját paramétereit tudja elérni $1 $2 stb. változókkal, azonban a shell script változóit már nem, így azokat egy globális változóba kell tennünk, vagy át kell adnunk paraméterként.
 
-A C++ hatalmas rugalmasságot nyújt a függvények kezelésében. A nyelv lehetővé teszi az optimalizált memóriahasználatot, különösen nagy objektumokkal való munka során. A referencia, cím és érték szerinti átadás különböző célokra szolgál: **biztonság, sebesség, vagy módosítás**. A **függvény felüldefiniálás** lehetőséget ad az objektumorientált viselkedésre, míg az **alapértelmezett paraméterek** segítik a tisztább, olvashatóbb kódot.
+Példa. Írjon egy olyan bash scriptetben, amely bekér egy nevet, majd ezt a nevet a hello függvénynek átadva kiíratja egy köszönéssel.
 
----
+#!/bin/bash
 
-Remek témaválasztás! Az alábbi részletes (kb. 2000 szavas) ismertető a **C++ objektumorientált programozás** alapjait tárgyalja három fő területen:
-
-1. **Osztályok és objektumok**
-2. **Hozzáférési szintek és jogosultságok**
-3. **Struktúrák és osztályok közötti különbségek**
-
----
-
-## **1. Osztályok és objektumok (Classes and Objects)**
-
-### **Mi az osztály?**
-
-Az **osztály** (class) a C++ egyik legfontosabb építőköve. Olyan **adat- és művelethalmaz**, amely egy adott logikai egységet modellez.
-
-```cpp
-class Auto {
-public:
-    string szin;
-    int evjarat;
-
-    void dudal() {
-        cout << "Tü-tüű!" << endl;
-    }
-};
-```
-
-Az osztály csak **sablon**: leírja, hogyan nézzen ki az adat, és mit tudjon csinálni. Nem fut le semmi, amíg nem hozunk létre **objektumot**.
-
----
-
-### **Mi az objektum?**
-
-Az objektum az osztály **példánya**, valódi létező példány a memóriában.
-
-```cpp
-int main() {
-    Auto a1;                // példányosítás
-    a1.szin = "piros";
-    a1.evjarat = 2020;
-    a1.dudal();             // "Tü-tüű!"
-    return 0;
-}
-```
-
-Minden objektumnak saját példánya van a mezőkből, de **osztoznak a metódusokon**.
-
----
-
-### **Konstruktorok**
-
-Konstruktor egy **speciális függvény**, ami az objektum létrehozásakor fut le automatikusan.
-
-```cpp
-class Auto {
-public:
-    string szin;
-    int evjarat;
-
-    Auto(string s, int e) {
-        szin = s;
-        evjarat = e;
-    }
-
-    void info() {
-        cout << szin << ", " << evjarat << endl;
-    }
-};
-
-int main() {
-    Auto a("kék", 2022);
-    a.info();  // "kék, 2022"
-}
-```
-
----
-
-### **Destruktor**
-
-Destruktor egy **speciális függvény**, amely az objektum megsemmisítésekor hívódik meg. Jele: `~OsztályNeve()`.
-
-```cpp
-~Auto() {
-    cout << "Auto megsemmisítve!" << endl;
-}
-```
-
----
-
-### **Metódusok típusai:**
-
-* **Tagfüggvény (metódus)** – osztályon belül van
-* **Const metódus** – nem módosíthatja az objektum állapotát
-
-```cpp
-void kiir() const; // garantálja, hogy nem módosít semmit
-```
-
----
-
-### **Statikus tagok**
-
-Az `static` kulcsszóval jelölhetünk **osztályhoz tartozó** tagokat, amelyek minden példányra közösek:
-
-```cpp
-class Szamolo {
-public:
-    static int peldanyokSzama;
-
-    Szamolo() {
-        peldanyokSzama++;
-    }
-};
-
-int Szamolo::peldanyokSzama = 0;
-```
-
----
-
-## **2. Jogosultságok kezelése (Access Specifiers)**
-
-C++ háromféle **hozzáférési módot** biztosít osztálytagokhoz:
-
-| Mód         | Hozzáférés az osztályon kívülről | Öröklés típusa |
-| ----------- | -------------------------------- | -------------- |
-| `public`    | Igen                             | Átöröklődik    |
-| `protected` | Nem, csak leszármazott érheti el | Átöröklődik    |
-| `private`   | Nem                              | Nem öröklődik  |
-
----
-
-### **Public – nyilvános**
-
-Mindenki számára elérhető.
-
-```cpp
-class Ember {
-public:
-    string nev;
-};
-```
-
----
-
-### **Private – privát**
-
-Csak az adott osztály **tagfüggvényei** érhetik el. Alapértelmezett hozzáférés az osztályokban.
-
-```cpp
-class Ember {
-private:
-    string jelszo;
-public:
-    void setJelszo(string j) {
-        jelszo = j;
-    }
-};
-```
-
----
-
-### **Protected – védett**
-
-Nem elérhető kívülről, de az **örökölt osztályból** elérhető.
-
-```cpp
-class Szemely {
-protected:
-    string tajSzam;
-};
-
-class Orvos : public Szemely {
-public:
-    void ellenoriz() {
-        cout << tajSzam;  // működik
-    }
-};
-```
-
----
-
-### **Encapsulation – Adatelrejtés**
-
-Ez az OOP egyik alappillére: az objektum belső állapotát elrejti, és csak meghatározott módon engedi elérni.
-
-* **Privát adattagok**
-* **Publikus setter/getter függvények**
-
-```cpp
-class BankSzamla {
-private:
-    double egyenleg;
-
-public:
-    void befizet(double osszeg) {
-        if (osszeg > 0) egyenleg += osszeg;
-    }
-
-    double getEgyenleg() const {
-        return egyenleg;
-    }
-};
-```
-
----
-
-## **3. Struktúrák és osztályok különbségei**
-
-A C++-ban **struct** és **class** szinte azonos. A különbség **alapértelmezett hozzáférésben** rejlik.
-
-| Tulajdonság                | `struct`                             | `class`                              |
-| -------------------------- | ------------------------------------ | ------------------------------------ |
-| Alapértelmezett hozzáférés | `public`                             | `private`                            |
-| Öröklés                    | `public` öröklés az alapértelmezett  | `private` öröklés az alapértelmezett |
-| Használat célja            | Egyszerű adattípusok, C-kompatibilis | Komplex típusok, OOP                 |
-
-### Példa:
-
-```cpp
-struct Pont {
-    int x, y;
-};
-
-class Pont2D {
-    int x, y;
-};
-```
-
-Mindkettő adattagokat tárol, de:
-
-* `Pont` adattagjai elérhetők kívülről (public)
-* `Pont2D` adattagjai nem (private)
-
----
-
-### Mikor használjunk `struct`-ot?
-
-* Adatszerkezetek reprezentálására (pl. rekordok, DTO-k)
-* Ha nem tartalmaznak viselkedést (nincsenek metódusok)
-
-### Mikor `class`-t?
-
-* OOP esetén, ahol viselkedés és állapot is van
-* Ha öröklődést vagy inkapszulációt használunk
-
----
-
-### Bővített példa – OOP vs. struktúra
-
-```cpp
-// struct példa
-struct Diak {
-    string nev;
-    int jegy;
-};
-
-// class példa
-class Diak2 {
-private:
-    string nev;
-    int jegy;
-
-public:
-    Diak2(string n, int j) : nev(n), jegy(j) {}
-
-    void kiir() const {
-        cout << nev << ": " << jegy << endl;
-    }
-};
-```
-
----
-
-## OOP Elvek összekötése
-
-### Öröklés (Inheritance)
-
-```cpp
-class Allat {
-public:
-    void mozog() {
-        cout << "Mozog" << endl;
-    }
-};
-
-class Kutya : public Allat {
-public:
-    void ugat() {
-        cout << "Vau" << endl;
-    }
-};
-```
-
-### Polimorfizmus
-
-```cpp
-class Allat {
-public:
-    virtual void hang() const {
-        cout << "??" << endl;
-    }
-};
-
-class Macska : public Allat {
-public:
-    void hang() const override {
-        cout << "Miau" << endl;
-    }
-};
-```
-
-### Absztrakció
-
-```cpp
-class Alakzat {
-public:
-    virtual double terulet() const = 0; // Absztrakt metódus
-};
-```
-
----
-
-## Záró gondolatok
-
-A C++ osztályrendszere nagyfokú rugalmasságot biztosít a programozók számára. Az osztályok lehetővé teszik az objektumorientált programozás alapelveinek (encapsulation, inheritance, polymorphism, abstraction) megvalósítását.
-
-A **hozzáférési módok** és **referencia-mechanizmusok** révén a C++ képes egyszerre biztonságos és hatékony programokat létrehozni. A `struct` és `class` közötti különbségek minimálisak, de használatuk stílusbeli különbségeket tükröz.
-
----
-
- Kiváló téma! Az alábbi részletes (kb. 2000 szavas) anyag a **C++ konstruktorok és destruktorok** működését és megvalósítását mutatja be alaposan. A témát az alábbi fő pontok mentén tárgyaljuk:
-
----
-
-### **Tartalomjegyzék**
-
-1. Mi a konstruktor és destruktor?
-2. Konstruktorok típusai
-3. Destruktor szerepe
-4. Többszörös konstruktorok és overloading
-5. Konstruktorok láncolása
-6. Másoló konstruktor
-7. Mozgató konstruktor (C++11)
-8. Alapértelmezett és törölt konstruktor/destruktor
-9. Konstruktor/destruktor viselkedés öröklés esetén
-10. Gyakorlati tanácsok, legjobb gyakorlatok
-
----
-
-## **1. Mi a konstruktor és destruktor?**
-
-### **Konstruktor**
-
-A **konstruktor** egy speciális tagfüggvény, amely automatikusan lefut, amikor egy objektum példányosításra kerül. Fő feladata az **inicializálás**.
-
-```cpp
-class Ember {
-public:
-    string nev;
-    int kor;
-
-    // Konstruktor
-    Ember(string n, int k) {
-        nev = n;
-        kor = k;
-    }
-};
-```
-
-### **Destruktor**
-
-A **destruktor** az objektum **megsemmisítésekor** fut le. Jele: `~OsztályNév()`. Általában erőforrások felszabadítására használjuk.
-
-```cpp
-~Ember() {
-    cout << nev << " objektum törölve." << endl;
-}
-```
-
----
-
-## **2. Konstruktorok típusai**
-
-### **Alapértelmezett konstruktor**
-
-Olyan konstruktor, amely **nem vár paramétert**, vagy minden paraméterének van alapértelmezett értéke.
-
-```cpp
-class Auto {
-public:
-    string marka;
-
-    Auto() {
-        marka = "Ismeretlen";
-    }
-};
-```
-
-Ha nem adunk meg konstruktort, a fordító automatikusan generál egy **default konstruktort** – de csak akkor, ha nincs másik konstruktor.
-
----
-
-### **Paraméteres konstruktor**
-
-Paramétereket vár, amik segítségével az adattagokat inicializálja.
-
-```cpp
-Auto(string m) {
-    marka = m;
-}
-```
-
----
-
-### **Iniciálizáló lista használata**
-
-Hatékonyabb és ajánlott, ha az adattagokat **inicializáló listával** adjuk át:
-
-```cpp
-Auto(string m) : marka(m) {}
-```
-
-Ez különösen fontos `const` adattagok vagy referencia típusok esetén.
-
----
-
-## **3. Destruktor szerepe**
-
-A destruktor **nem vehet fel paramétert**, és **nem lehet túlterhelni**.
-
-```cpp
-class Fajl {
-private:
-    FILE* f;
-public:
-    Fajl(const char* nev) {
-        f = fopen(nev, "r");
-    }
-
-    ~Fajl() {
-        if (f) fclose(f);
-    }
-};
-```
-
-A destruktor gyakori felhasználása:
-
-* fájlok lezárása
-* memória felszabadítása
-* hálózati kapcsolatok bontása
-* `new`-vel lefoglalt objektumok törlése
-
----
-
-## **4. Konstruktorok túlterhelése (Overloading)**
-
-Egy osztály több konstruktort is tartalmazhat, eltérő paraméterlistával.
-
-```cpp
-class Ember {
-public:
-    string nev;
-    int kor;
-
-    Ember() : nev("ismeretlen"), kor(0) {}
-    Ember(string n) : nev(n), kor(0) {}
-    Ember(string n, int k) : nev(n), kor(k) {}
-};
-```
-
-A túlterhelés lehetővé teszi, hogy az objektumokat **különböző módokon** példányosítsuk.
-
----
-
-## **5. Konstruktorok láncolása**
-
-C++11-től lehetőség van **konstruktor delegálásra**:
-
-```cpp
-class Ember {
-public:
-    string nev;
-    int kor;
-
-    Ember() : Ember("Ismeretlen", 0) {}
-    Ember(string n) : Ember(n, 0) {}
-    Ember(string n, int k) : nev(n), kor(k) {}
-};
-```
-
-Ez segít az ismétlődő kód elkerülésében.
-
----
-
-## **6. Másoló konstruktor (Copy Constructor)**
-
-A másoló konstruktor egy meglévő objektumból hoz létre másolatot.
-
-```cpp
-class Ember {
-public:
-    string nev;
-
-    Ember(string n) : nev(n) {}
-
-    // Másoló konstruktor
-    Ember(const Ember& e) {
-        nev = e.nev;
-    }
-};
-```
-
-### Mikor hívódik meg?
-
-* Objektum átadás érték szerint
-* Objektum visszatérés érték szerint
-* Objektum másolása
-
-### Miért fontos?
-
-Ha egy osztály **dinamikus memóriát** használ, akkor **saját másoló konstruktort** kell írni, hogy elkerüljük a **shallow copy** problémát (amikor két objektum ugyanarra a memóriára mutat).
-
----
-
-## **7. Mozgató konstruktor (Move Constructor – C++11)**
-
-A **mozgató konstruktor** akkor hívódik meg, amikor egy **ideiglenes objektumból** (rvalue) hozunk létre egy másikat.
-
-```cpp
-class Adat {
-    int* tomb;
-public:
-    Adat(int meret) {
-        tomb = new int[meret];
-    }
-
-    // Mozgató konstruktor
-    Adat(Adat&& a) noexcept {
-        tomb = a.tomb;
-        a.tomb = nullptr;
-    }
-
-    ~Adat() {
-        delete[] tomb;
-    }
-};
-```
-
-### Előnye:
-
-* Nincs szükség másolásra
-* Hatékony: csak mutatókat cserélünk
-
----
-
-## **8. Alapértelmezett és törölt konstruktor/destruktor**
-
-C++11-ben megadhatjuk, hogy a fordító **generálja** vagy **tiltsa** a konstruktorokat/destruktort.
-
-```cpp
-class A {
-public:
-    A() = default;          // Kérem az alapértelmezettet
-    A(const A&) = delete;   // Tiltom a másolást
-};
-```
-
-Ez segít az API viselkedésének szabályozásában.
-
----
-
-## **9. Öröklés és konstruktorok/destruktorok**
-
-### Bázisosztály konstruktorának hívása:
-
-```cpp
-class Szemely {
-public:
-    string nev;
-    Szemely(string n) : nev(n) {}
-};
-
-class Diak : public Szemely {
-public:
-    int evfolyam;
-    Diak(string n, int e) : Szemely(n), evfolyam(e) {}
-};
-```
-
-A leszármazott osztály **köteles** a bázisosztály konstruktorát meghívni, ha az nem default.
-
----
-
-### Destruktor öröklésnél
-
-Ha a bázisosztályból öröklünk, a destruktort **virtuálissá** kell tenni, hogy a helyes példány destruktora fusson le:
-
-```cpp
-class Alap {
-public:
-    virtual ~Alap() {}  // Fontos!
-};
-
-class Leszarmazott : public Alap {
-    ~Leszarmazott() override {
-        cout << "Leszarmazott destruktor" << endl;
-    }
-};
-```
-
----
-
-## **10. Gyakorlati tanácsok**
-
-### RAII – Resource Acquisition Is Initialization
-
-Használj konstruktort az erőforrások lefoglalására, destruktort a felszabadításra.
-
-```cpp
-class Fajl {
-    FILE* f;
-public:
-    Fajl(const char* fn) {
-        f = fopen(fn, "r");
-    }
-
-    ~Fajl() {
-        if (f) fclose(f);
-    }
-};
-```
-
-### Kerüld a nyers pointereket – használj smart pointert!
-
-```cpp
-#include <memory>
-
-class Adat {
-    std::unique_ptr<int[]> tomb;
-public:
-    Adat(int meret) {
-        tomb = std::make_unique<int[]>(meret);
-    }
-};
-```
-
-### Ha szükséges: írd meg a 3/5 szabály szerinti metódusokat
-
-* Másoló konstruktor
-* Másoló értékadó operátor
-* Destruktor
-  *(+ C++11-től: mozgató konstruktor, mozgató operátor)*
-
----
-
-## **Összegzés**
-
-A C++ konstruktorok és destruktorok kulcsszerepet játszanak az objektumok életciklusának kezelésében. Segítségükkel:
-
-* Biztonságosan lehet inicializálni erőforrásokat
-* Automatizálható a felszabadítás
-* Hatékonyabb működés érhető el (pl. move constructor)
-* Komplex osztályok viselkedése precízen szabályozható
-
-A modern C++ számos új eszközt kínál (default/delete, delegált konstruktorok, move szemantika), amelyek segítségével **robosztusabb és hatékonyabb kód** írható.
-
----
-
-Remek téma! Az alábbi **részletes, kb. 2000 szavas ismertető** a **C++ öröklés** és a hozzá kapcsolódó **jogosultságkezelés** témáját tárgyalja alaposan. Ez az objektumorientált programozás egyik legfontosabb eleme, amely lehetővé teszi az újrafelhasználást, bővíthetőséget és moduláris tervezést.
-
----
-
-## **Tartalomjegyzék**
-
-1. Öröklés fogalma és célja
-2. Alapfogalmak – bázis- és származtatott osztály
-3. Öröklés típusai: public, protected, private
-4. Jogosultságok változása öröklés során
-5. Konstruktorok és destruktorok öröklése
-6. Virtuális függvények és polimorfizmus
-7. Többszörös öröklés
-8. Virtuális öröklés
-9. Legjobb gyakorlatok, tanácsok
-
----
-
-## **1. Öröklés fogalma és célja**
-
-Az **öröklés** (inheritance) lehetővé teszi, hogy egy osztály (a **származtatott osztály**) átvegye egy másik osztály (**bázisosztály**) **tulajdonságait és viselkedését**, és szükség szerint kibővítse vagy módosítsa azokat.
-
-### Példa:
-
-```cpp
-class Allat {
-public:
-    void mozog() {
-        cout << "Az állat mozog." << endl;
-    }
-};
-
-class Kutya : public Allat {
-public:
-    void ugat() {
-        cout << "Vau!" << endl;
-    }
-};
-```
-
-A `Kutya` osztály megörökli a `mozog()` metódust az `Allat` osztályból.
-
----
-
-## **2. Alapfogalmak**
-
-### **Bázisosztály (Base class):**
-
-Az az osztály, amelyet öröklünk. Ő tartalmazza az általános jellemzőket.
-
-### **Származtatott osztály (Derived class):**
-
-Az az osztály, amely örökli a bázisosztály tagjait, és hozzáadhat saját adatokat és metódusokat.
-
-### **Szintaxis:**
-
-```cpp
-class Szarmazott : [öröklési mód] Bázis {};
-```
-
----
-
-## **3. Öröklés típusai**
-
-A C++ háromféle öröklési módot támogat:
-
-| Öröklési mód | Jelentés                                                      |
-| ------------ | ------------------------------------------------------------- |
-| `public`     | „Is-a” kapcsolat: a leszármazott ugyanazt a szerepet tölti be |
-| `protected`  | Öröklés az alosztályokhoz, de nem kívülről                    |
-| `private`    | Teljes rejtés: csak belső újrafelhasználás                    |
-
----
-
-## **4. Jogosultságok változása öröklés során**
-
-A C++ osztálytagokat háromféleképpen lehet elérhetővé tenni:
-
-* **public** – kívülről is elérhető
-* **protected** – csak az osztály és származottai férnek hozzá
-* **private** – kizárólag az osztályon belül elérhető
-
-### Öröklés hatása:
-
-| Bázis tag hozzáférése | `public` öröklés  | `protected` öröklés | `private` öröklés |
-| --------------------- | ----------------- | ------------------- | ----------------- |
-| `public`              | `public`          | `protected`         | `private`         |
-| `protected`           | `protected`       | `protected`         | `private`         |
-| `private`             | **nem öröklődik** | **nem öröklődik**   | **nem öröklődik** |
-
-### Példa:
-
-```cpp
-class B {
-public:
-    int a;
-protected:
-    int b;
-private:
-    int c;
-};
-
-class D : public B {
-public:
-    void f() {
-        a = 1; // OK
-        b = 2; // OK
-        // c = 3; // ERROR – nem öröklődik
-    }
-};
-```
-
----
-
-### **Public öröklés** – Leggyakoribb
-
-A leszármazott ugyanazokat a tagokat biztosítja, mint a bázisosztály.
-
-```cpp
-class Ember {
-public:
-    void beszel() { cout << "Beszélek" << endl; }
-};
-
-class Tanar : public Ember {
-    // beszel() automatikusan public marad
-};
-```
-
----
-
-### **Protected öröklés**
-
-A publikus és protected tagok **protected-ként** öröklődnek, így nem férhetők hozzá kívülről.
-
----
-
-### **Private öröklés**
-
-Minden öröklött tag **private lesz**, így nem látható sem kívülről, sem örökléssel tovább.
-
----
-
-## **5. Konstruktorok és destruktorok öröklése**
-
-### Konstruktor nem öröklődik automatikusan
-
-A leszármazott osztály **nem örökli** a bázisosztály konstruktorait, de meghívhatja őket:
-
-```cpp
-class Szemely {
-public:
-    Szemely(string n) { cout << "Szemely: " << n << endl; }
-};
-
-class Diak : public Szemely {
-public:
-    Diak(string n) : Szemely(n) {}
-};
-```
-
-### Destruktor öröklésnél – legyen **virtuális**!
-
-```cpp
-class B {
-public:
-    virtual ~B() {}
-};
-```
-
-Így biztosítjuk, hogy a helyes destruktor fusson le öröklés esetén.
-
----
-
-## **6. Virtuális függvények és polimorfizmus**
-
-### Dinamikus kötés (runtime binding)
-
-Ha egy függvényt **virtuálissá** teszünk, a hívás futásidőben a tényleges objektumtípus alapján történik.
-
-```cpp
-class Allat {
-public:
-    virtual void hang() {
-        cout << "Általános állathang" << endl;
-    }
-};
-
-class Macska : public Allat {
-public:
-    void hang() override {
-        cout << "Miau" << endl;
-    }
-};
-
-void megszolal(Allat* a) {
-    a->hang();  // dinamikus
-}
-```
-
-### Tiszta virtuális függvény – absztrakt osztály
-
-```cpp
-class Alakzat {
-public:
-    virtual double terulet() const = 0;  // absztrakt függvény
-};
-```
-
----
-
-## **7. Többszörös öröklés**
-
-C++ lehetővé teszi, hogy egy osztály **több osztályból is örököljön**:
-
-```cpp
-class Nyomtathato {
-public:
-    void nyomtat() {
-        cout << "Nyomtatás" << endl;
-    }
-};
-
-class Elmentheto {
-public:
-    void mentes() {
-        cout << "Mentés" << endl;
-    }
-};
-
-class Dokumentum : public Nyomtathato, public Elmentheto {
-    // Mindkettő metódus elérhető
-};
-```
-
-### Probléma: gyémánt öröklés
-
-```cpp
-class A { public: int x; };
-class B : public A {};
-class C : public A {};
-class D : public B, public C {}; // Két példány A-ból → x ellentmondásos
-```
-
-Megoldás: **virtuális öröklés**
-
----
-
-## **8. Virtuális öröklés**
-
-A `virtual` kulcsszó használatával a **gyémántprobléma** megoldható:
-
-```cpp
-class A { public: int x; };
-class B : virtual public A {};
-class C : virtual public A {};
-class D : public B, public C {};  // Csak egy példány A-ból
-```
-
-### Hatása:
-
-* Bázisosztály csak egyszer kerül be az öröklési láncba
-* Elkerüli a többszörös példányokat
-
----
-
-## **9. Legjobb gyakorlatok**
-
-### Mindig legyen a bázisosztály destruktora **virtuális**
-
-```cpp
-class Base {
-public:
-    virtual ~Base() {}
-};
-```
-
-### Az öröklési mód legyen `public`, ha logikailag **„is-a” kapcsolat** van
-
-```cpp
-class Madar : public Allat {};  // A madár egy állat
-```
-
-### Kerüld a többszörös öröklést, ha nem muszáj
-
-Használj inkább **kompozíciót**: egy objektum tartalmazzon egy másikat.
-
----
-
-### Kompozíció vs. Öröklés
-
-* **Öröklés**: „Is-a” kapcsolat (pl. Tanár is egy Ember)
-* **Kompozíció**: „Has-a” kapcsolat (pl. Tanárnak van egy Tanszéke)
-
----
-
-## **Záró gondolatok**
-
-A **C++ öröklés** egy hatékony és erőteljes eszköz, amely lehetővé teszi:
-
-* Kód újrafelhasználást
-* Egységes interfészek létrehozását
-* Polimorf viselkedést futásidőben
-* Összetett rendszerstruktúrák kialakítását
-
-Ugyanakkor a **jogosultságok változása** öröklés során kulcsfontosságú a biztonságos és érthető osztályhierarchiák kialakításában. A megfelelő öröklési mód kiválasztása (`public`, `protected`, `private`) alapjaiban határozza meg az objektumok viselkedését, láthatóságát és újrafelhasználhatóságát.
-
----
-
- 
-Nagyon jó téma – a **virtuális függvények** a **polimorfizmus** központi eszközei a C++ nyelvben. Az alábbi átfogó (\~1500 szavas) ismertető végigvezet a **virtuális függvények** elméletén, működésén, példákon keresztüli alkalmazásán, valamint gyakori hibákon és jó gyakorlatokon.
-
----
-
-## 🧠 **1. Bevezetés a virtuális függvényekbe**
-
-A **virtuális függvény** egy olyan **tagfüggvény**, amelyet a C++ futásidőben – az objektum valódi típusa alapján – dinamikusan köt össze, nem fordításkor.
-
-### Mikor van rá szükség?
-
-Ha öröklést alkalmazol, és azt szeretnéd, hogy a bázisosztály egy függvényét a leszármazott osztály **felülírja**, és ez a felüldefiniált változat fusson le **akkor is**, ha a hivatkozás típusa a bázisosztályé.
-
----
-
-## 🔧 **2. Szintaxis és példa**
-
-### Alap példa:
-
-```cpp
-#include <iostream>
-using namespace std;
-
-class Allat {
-public:
-    virtual void hang() const {
-        cout << "Általános állathang." << endl;
-    }
-};
-
-class Kutya : public Allat {
-public:
-    void hang() const override {
-        cout << "Vau!" << endl;
-    }
-};
-
-void megszolal(const Allat& a) {
-    a.hang(); // Dinamikusan hívódik meg
+# függvény definíció
+hello() {
+  echo "Szia, $1!"
 }
 
-int main() {
-    Allat a;
-    Kutya k;
-    megszolal(a); // "Általános állathang."
-    megszolal(k); // "Vau!"
-}
-```
-
-### Magyarázat:
-
-* `virtual` kulcsszóval jelöljük, hogy a függvény felülírható.
-* A `megszolal()` függvény paramétere `Allat&`, de ha a `Kutya` példányát adjuk át, akkor a `Kutya::hang()` fut le.
-
----
-
-## 🏗️ **3. Hogyan működik: a vtable (virtuális tábla)**
-
-A **vtable** egy olyan belső táblázat, amit a fordító generál a virtuális függvényeket tartalmazó osztályokhoz.
-
-* Minden osztálynak van egy **vtable**, ami a virtuális függvények címeit tartalmazza.
-* Minden objektum tárol egy **vptr-t** (pointer a vtable-re), így tudja, melyik függvényt kell hívni.
-
-### Ezért is csak **pointerekre vagy referenciákra** működik a polimorfizmus:
-
-```cpp
-Kutya k;
-Allat* a = &k;
-a->hang(); // "Vau!"
-```
-
----
-
-## 🧬 **4. Függvény felülírás (Overriding)**
-
-A leszármazott osztály ugyanazzal a névvel és szignatúrával rendelkezik.
-
-### Fontos: pontos egyezés szükséges!
-
-Ha a szignatúra eltér (pl. nem `const`), nem történik felülírás, csak **függvény elrejtés**.
-
-```cpp
-class B {
-public:
-    virtual void f() const;
-};
-
-class D : public B {
-public:
-    void f(); // NEM override! (hiányzik a const)
-};
-```
-
-Ez hibákhoz vezethet.
-
-### Megoldás: C++11-től használjuk az `override` kulcsszót:
-
-```cpp
-void f() override;
-```
-
-Ez kötelezi a fordítót, hogy ellenőrizze: valóban felülírásról van szó.
-
----
-
-## 🧱 **5. Tiszta virtuális függvények – Absztrakt osztályok**
-
-Ha egy osztályban legalább egy **tiszta virtuális függvény** van, akkor az **absztrakt osztály** lesz.
-
-```cpp
-class Alakzat {
-public:
-    virtual double terulet() const = 0; // tiszta virtuális
-};
-```
-
-### Jellemzők:
-
-* Nem lehet példányosítani
-* Kötelező felülírni a leszármazottban
-
-```cpp
-class Kor : public Alakzat {
-    double sugar;
-public:
-    Kor(double s) : sugar(s) {}
-
-    double terulet() const override {
-        return 3.14 * sugar * sugar;
-    }
-};
-```
-
----
-
-## 🧾 **6. Destruktor és virtualitás**
-
-### FONTOS: Ha van legalább egy virtuális függvény, a **destruktor is legyen virtuális**!
-
-Miért? Mert különben a bázisosztály pointerrel való törlés **nem hívja meg** a leszármazott destruktorát:
-
-```cpp
-class B {
-public:
-    ~B() { cout << "B" << endl; }
-};
-
-class D : public B {
-public:
-    ~D() { cout << "D" << endl; }
-};
-
-int main() {
-    B* ptr = new D;
-    delete ptr; // Csak B destruktor fut le – probléma!
-}
-```
-
-### Megoldás:
-
-```cpp
-class B {
-public:
-    virtual ~B() { cout << "B" << endl; }
-};
-```
-
----
-
-## 🌀 **7. Dinamikus típus és polimorfizmus**
-
-A virtuális függvények lehetővé teszik a **futásidejű polimorfizmust** – azaz ugyanazzal a hívással különböző viselkedést érünk el.
-
-```cpp
-vector<Allat*> allatkert = { new Allat(), new Kutya() };
-for (Allat* a : allatkert) {
-    a->hang(); // Futásidőben eldöntve: Allat vagy Kutya hang?
-}
-```
-
----
-
-## ⛔ **8. Gyakori hibák és csapdák**
-
-### 1. Nincs `virtual`, csak elrejtés történik
-
-```cpp
-class B {
-public:
-    void f();
-};
-class D : public B {
-public:
-    void f(); // Nem override – új függvény
-};
-```
-
-Megoldás: ha override-olni akarunk, az ősben legyen `virtual`.
-
----
-
-### 2. Szignatúra eltér
-
-```cpp
-class B {
-public:
-    virtual void f(int);
-};
-class D : public B {
-public:
-    void f(); // más szignatúra – nem override
-};
-```
-
----
-
-### 3. Elfelejtett `virtual` destruktor → memória szivárgás, undefined behavior
-
-Mindig használj **virtuális destruktort**, ha virtuális függvényed van.
-
----
-
-## 🧠 **9. Statikus vs dinamikus kötés**
-
-* **Statikus kötés:** fordításkor eldől, melyik függvény hívódik meg (nem virtuális)
-* **Dinamikus kötés:** futásidőben választott (virtuális)
-
-### Statikus például:
-
-```cpp
-Allat a;
-a.hang(); // mindig Allat::hang()
-```
-
-### Dinamikus:
-
-```cpp
-Allat* ptr = new Kutya;
-ptr->hang(); // dinamikus – futásidőben döntött
-```
-
----
-
-## 🧮 **10. Virtuális öröklési hierarchia**
-
-Akár **többszörösen örökölt** osztályokban is működik a virtuális függvényhívás, ha az öröklési lánc megfelelően van felépítve.
-
----
-
-## ✅ **11. Legjobb gyakorlatok**
-
-| TIPP                                                              | MAGYARÁZAT                             |
-| ----------------------------------------------------------------- | -------------------------------------- |
-| Használj `virtual` kulcsszót a bázisban                           | Jelezd, hogy a függvény felülírható    |
-| Használj `override` a leszármazottban                             | Hibák ellen véd                        |
-| Használj `virtual ~Destructor()`                                  | Biztonságos memóriafelszabadítás       |
-| Ne használd a virtuális függvényeket konstruktorban/destruktorban | Mert ott nem működik a dinamikus kötés |
-
----
-
-## 🧪 **12. Összefoglaló példa**
-
-```cpp
-#include <iostream>
-using namespace std;
-
-class Munkavallalo {
-public:
-    virtual void dolgozik() const {
-        cout << "Általános munka..." << endl;
-    }
-
-    virtual ~Munkavallalo() {}
-};
-
-class Programozo : public Munkavallalo {
-public:
-    void dolgozik() const override {
-        cout << "Kódolok!" << endl;
-    }
-};
-
-void munkaraFel(Munkavallalo* m) {
-    m->dolgozik();
-}
-
-int main() {
-    Munkavallalo* m1 = new Programozo;
-    munkaraFel(m1); // "Kódolok!"
-    delete m1;
-}
-```
-
----
-
-## 🧩 **13. Záró gondolatok**
-
-A **virtuális függvények** C++-ban kulcsfontosságúak az **objektumorientált tervezés** megvalósításához, mivel lehetővé teszik a dinamikus kötést, a valódi polimorf viselkedést. A megfelelő használat:
-
-* **Átláthatóbb kódot** eredményez
-* **Könnyen bővíthető rendszerekhez** vezet
-* Elősegíti az **absztrakció és újrafelhasználás** elvét
-
-Ha figyelünk a **helyes szignatúrákra**, **használjuk az `override` és `virtual` kulcsszavakat**, akkor stabil, bővíthető és robusztus C++ programokat tudunk készíteni.
-
----
-
-Rendben, az alábbi részletes (\~1500 szavas) anyag a **C++ objektumorientált tervezésre (Object-Oriented Design, OOD)** és az **asszociációk implementálására** összpontosít. Áttekintjük az elméletet, példákat adunk, majd bemutatjuk, hogyan valósíthatók meg az asszociációk C++ nyelvben (1:1, 1\:N, N\:M).
-
----
-
-## 🎯 **1. Bevezetés az objektumorientált tervezésbe**
-
-Az objektumorientált tervezés célja, hogy a programozás során a **valós világ entitásait** (objektumok) **modellezni tudjuk**. Az objektumorientált szemlélet segítségével könnyebben érthető, karbantartható és bővíthető szoftver készíthető.
-
----
-
-### 🧱 **Alapelvek (OOP 4 alappillére):**
-
-1. **Encapsulation (Adatelrejtés)**
-   → csak az osztály határozza meg, hogyan férünk hozzá az adataihoz.
-
-2. **Abstraction (Absztrakció)**
-   → csak a lényeges tulajdonságokat jelenítjük meg.
-
-3. **Inheritance (Öröklés)**
-   → új osztály létrehozása meglévő osztály alapján.
-
-4. **Polymorphism (Polimorfizmus)**
-   → ugyanaz a művelet különböző típusokra eltérően viselkedhet.
-
----
-
-## 🏗️ **2. Objektumorientált tervezés C++-ban**
-
-C++-ban az osztály (class) és objektum (object) fogalma központi szerepet tölt be.
-
-```cpp
-class Ember {
-private:
-    string nev;
-    int kor;
-
-public:
-    Ember(string n, int k) : nev(n), kor(k) {}
-
-    void udvozol() const {
-        cout << "Szia, " << nev << " vagyok, " << kor << " éves." << endl;
-    }
-};
-
-int main() {
-    Ember e("Anna", 30);
-    e.udvozol();  // "Szia, Anna vagyok, 30 éves."
-}
-```
-
----
-
-## 🔗 **3. Asszociációk fogalma az OOP-ben**
-
-Az **asszociáció** két osztály közötti **kapcsolatot** jelent. Ez lehet:
-
-* **Egyszerű asszociáció** – két osztály „kapcsolatban áll”
-* **Aggregáció** – „egész-rész” kapcsolat (de a rész külön is létezhet)
-* **Kompozíció** – „egész-rész” kapcsolat, ahol a rész nem létezhet külön
-
----
-
-### 👥 3.1. Egyszerű asszociáció (1:1, 1\:N, N\:M)
-
-#### 1:1 kapcsolat
-
-```cpp
-class Ember;
-
-class SzemelyiIgazolvany {
-private:
-    string azonosito;
-    Ember* tulaj;
-
-public:
-    SzemelyiIgazolvany(string az, Ember* e) : azonosito(az), tulaj(e) {}
-};
-```
-
----
-
-#### 1\:N kapcsolat
-
-```cpp
-class Diak;
-
-class Osztaly {
-private:
-    vector<Diak*> diakok;
-
-public:
-    void hozzad(Diak* d) {
-        diakok.push_back(d);
-    }
-};
-```
-
----
-
-#### N\:M kapcsolat (pl. tanulók és tantárgyak)
-
-```cpp
-class Tantargy;
-
-class Diak {
-private:
-    vector<Tantargy*> tantargyak;
-public:
-    void felvesz(Tantargy* t) {
-        tantargyak.push_back(t);
-    }
-};
-
-class Tantargy {
-private:
-    vector<Diak*> diakok;
-public:
-    void jelentkezik(Diak* d) {
-        diakok.push_back(d);
-    }
-};
-```
-
----
-
-### 🧩 3.2. Aggregáció
-
-Az **aggregáció** „rész-egész” viszonyt fejez ki, ahol a rész **önállóan is létezhet**.
-
-```cpp
-class Ember {
-private:
-    string nev;
-public:
-    Ember(string n) : nev(n) {}
-};
-
-class Auto {
-private:
-    Ember* tulaj;
-public:
-    Auto(Ember* e) : tulaj(e) {}
-};
-```
-
-Az `Ember` objektumot más célra is lehet használni, nem csak az `Auto` részeként.
-
----
-
-### 🧱 3.3. Kompozíció
-
-A **kompozíció** esetén az „alkotóelemek” élettartama **az egészhez kötött**.
-
-```cpp
-class Motor {
-public:
-    Motor() {
-        cout << "Motor létrejött." << endl;
-    }
-    ~Motor() {
-        cout << "Motor megsemmisítve." << endl;
-    }
-};
-
-class Auto {
-private:
-    Motor motor;
-public:
-    Auto() {}
-};
-```
-
-Az `Auto` megsemmisítése automatikusan törli a `Motor` objektumot is.
-
----
-
-## 💡 **4. Tervezési szempontok és jó gyakorlatok**
-
-### 4.1. Hozzáférési szintek
-
-* Adattagokat tegyél **private/protected**-dé
-* Használj **getter/setter** metódusokat
-
-### 4.2. Initializáló lista
-
-Mindig használd:
-
-```cpp
-Diak(string n) : nev(n) {}
-```
-
-### 4.3. Használj konstans referenciákat, ahol lehet
-
-```cpp
-void hozzad(const Ember& e);
-```
-
----
-
-## 🧠 **5. Példa – Könyvtári rendszer (1\:N és N\:M asszociáció)**
-
-### Cél: könyvtár, könyvek, olvasók
-
-* Egy könyvtárnak több könyve van (1\:N)
-* Egy olvasó több könyvet kölcsönözhet (N\:M)
-
-```cpp
-class Konyv;
-
-class Olvaso {
-private:
-    string nev;
-    vector<Konyv*> kolcsonzott;
-
-public:
-    Olvaso(string n) : nev(n) {}
-
-    void kolcsonoz(Konyv* k) {
-        kolcsonzott.push_back(k);
-    }
-
-    void listaz() const {
-        cout << nev << " kölcsönzött könyvei:" << endl;
-        for (auto k : kolcsonzott) {
-            cout << " - " << k->getCim() << endl;
-        }
-    }
-};
-
-class Konyv {
-private:
-    string cim;
-
-public:
-    Konyv(string c) : cim(c) {}
-
-    string getCim() const { return cim; }
-};
-```
-
----
-
-## 🔄 **6. Visszamutatás (bidirectional relationship)**
-
-Ha mindkét irányban tároljuk a kapcsolatot:
-
-```cpp
-class Diak;
-
-class Tantargy {
-    vector<Diak*> hallgatok;
-public:
-    void hozzaad(Diak* d);
-};
-
-class Diak {
-    vector<Tantargy*> tantargyak;
-public:
-    void felvesz(Tantargy* t) {
-        tantargyak.push_back(t);
-        t->hozzaad(this); // visszamutatás
-    }
-};
-
-void Tantargy::hozzaad(Diak* d) {
-    hallgatok.push_back(d);
-}
-```
-
----
-
-## 💡 **7. Kompozíció vs Aggregáció – mikor melyiket?**
-
-| Tulajdonság        | Aggregáció        | Kompozíció          |
-| ------------------ | ----------------- | ------------------- |
-| Részek életciklusa | független         | összekapcsolt       |
-| Használat          | „has-a” kapcsolat | „part-of” kapcsolat |
-| Példa              | Autó tulajdonosa  | Autó motorja        |
-
----
-
-## ✅ **8. Összefoglalás**
-
-| Fogalom             | Magyarázat                         |
-| ------------------- | ---------------------------------- |
-| **Osztály**         | Adatok és műveletek összefoglalása |
-| **Objektum**        | Az osztály példánya futásidőben    |
-| **Asszociáció**     | Osztályok közötti kapcsolat        |
-| **Aggregáció**      | Lazább „egész–rész” kapcsolat      |
-| **Kompozíció**      | Szoros „egész–rész” kapcsolat      |
-| **1:1, 1\:N, N\:M** | Kapcsolattípusok a valós világból  |
-| **Getter/setter**   | Hozzáférési metódusok adatokhoz    |
-
----
-
-## 📌 **Záró gondolatok**
-
-Az **objektumorientált tervezés** és az **asszociációk megvalósítása** központi szerepet játszik a valós világ hatékony és intuitív modellezésében. A C++ nyelv eszközei – osztályok, konstruktorok, inicializáló listák, mutatók és referenciák – lehetővé teszik, hogy pontos kapcsolatokat és viselkedéseket írjunk le programkód formájában.
-
-A jól felépített OOP struktúra:
-
-* **könnyebben karbantartható**
-* **moduláris**
-* **jövőbiztos**.
-
----
-
-Rendben! Az alábbi részletes (\~1500 szavas) tananyag a **C++ öröklés (inheritance)** és a **delegálás (delegation)** fogalmait és gyakorlati különbségeit tárgyalja. A cél, hogy megértsük **mikor, melyiket érdemes alkalmazni**, és hogyan segítik elő a **rugalmas, karbantartható, újrafelhasználható** kód megalkotását.
-
----
-
-## 🧠 1. Bevezetés: Öröklés vs Delegálás
-
-Az objektumorientált programozásban gyakran kell osztályokat úgy összekapcsolnunk, hogy azok **valamilyen viselkedést újrahasznosítsanak** más osztályoktól.
-
-Erre két fő módszer áll rendelkezésre:
-
-| Módszer       | Jelentés                                                                            |
-| ------------- | ----------------------------------------------------------------------------------- |
-| **Öröklés**   | Egy osztály átveszi egy másik osztály adattagjait és metódusait.                    |
-| **Delegálás** | Egy osztály egy másik osztály példányát tartalmazza, és annak metódusait használja. |
-
----
-
-## 🏛️ 2. Öröklés (Inheritance)
-
-### 2.1 Alapfogalom
-
-Az öröklés lehetővé teszi, hogy egy **leszármazott osztály** automatikusan tartalmazza az **ősosztály** publikus és protected tagjait.
-
-```cpp
-class Allat {
-public:
-    void eszik() {
-        cout << "Az állat eszik." << endl;
-    }
-};
-
-class Kutya : public Allat {
-public:
-    void ugat() {
-        cout << "Vau!" << endl;
-    }
-};
-```
-
-A `Kutya` automatikusan tartalmazza az `eszik()` metódust, mert örökölte.
-
----
-
-### 2.2 Előnyök
-
-* **Egyszerű**: nem kell újraírni ugyanazt a kódot
-* **Polimorfizmus**: virtuális függvényeken keresztül dinamikusan viselkedhetnek az objektumok
-* **Kód újrafelhasználás**
-
----
-
-### 2.3 Hátrányok
-
-* **Erős összefüggés** jön létre a bázis és a származtatott osztály között
-* **Nem lehet több bázisosztály** öröklésének konfliktusait egyszerűen kezelni
-* **Bázisosztály módosítása** kockázatos – hatással van minden leszármazottra
-
----
-
-## 🔄 3. Delegálás (Delegation)
-
-### 3.1 Alapfogalom
-
-A delegálás során egy osztály **tartalmaz** egy másik osztály példányát, és annak metódusait hívja meg. Ez egy **"has-a" kapcsolat**, szemben az öröklés "is-a" kapcsolatával.
-
-```cpp
-class Motor {
-public:
-    void indit() {
-        cout << "Motor indul..." << endl;
-    }
-};
-
-class Auto {
-private:
-    Motor motor;
-public:
-    void elindul() {
-        motor.indit();  // delegálás
-    }
-};
-```
-
-Az `Auto` nem örökli a `Motor` metódusát, hanem **delegálja** annak működését.
-
----
-
-### 3.2 Előnyök
-
-* **Lazább kapcsolat** – kevésbé függünk a másik osztály belső működésétől
-* **Jobb karbantarthatóság** – ha változik a delegált osztály, kisebb a mellékhatás
-* **Nagyobb kontroll** – nem örököljük automatikusan az összes metódust
-* **Egyszerűbb tesztelhetőség** – külön is tesztelhetők
-
----
-
-### 3.3 Hátrányok
-
-* Több **kódírást** igényel (wrapper metódusok)
-* Nem támogatja a polimorfizmust úgy, ahogy az öröklés
-
----
-
-## 🧭 4. Mikor használjunk öröklést?
-
-### Használd öröklést, ha:
-
-* A kapcsolat **logikailag "is-a"** kapcsolat
-  Pl. `Kutya is an Allat`
-* Használni akarod a **polimorfizmust**
-* A bázisosztály **viselkedését át akarod örökíteni**
-* El akarod kerülni a dupla implementációt
-
----
-
-### Példa:
-
-```cpp
-class Alkalmazott {
-public:
-    virtual void munkatVegez() const {
-        cout << "Általános munka" << endl;
-    }
-};
-
-class Programozo : public Alkalmazott {
-public:
-    void munkatVegez() const override {
-        cout << "Programozás történik..." << endl;
-    }
-};
-```
-
----
-
-## 🧭 5. Mikor használjunk delegálást?
-
-### Használd delegálást, ha:
-
-* A kapcsolat **"has-a"**
-  Pl. `Auto has a Motor`
-* Több különböző viselkedést szeretnél kombinálni
-* Későbbi cserélhetőség/kompozíció fontos
-* A bázisosztály viselkedését **nem** akarod automatikusan örökölni
-
----
-
-### Példa:
-
-```cpp
-class Nyomtato {
-public:
-    void nyomtat(string szoveg) {
-        cout << "Nyomtatás: " << szoveg << endl;
-    }
-};
-
-class Jelentes {
-private:
-    Nyomtato nyomtato;
-public:
-    void keszit(string tartalom) {
-        cout << "Jelentés készül..." << endl;
-        nyomtato.nyomtat(tartalom); // delegálás
-    }
-};
-```
-
----
-
-## ⚖️ 6. Összehasonlító táblázat
-
-| Szempont             | Öröklés                    | Delegálás                  |
-| -------------------- | -------------------------- | -------------------------- |
-| Kapcsolat típusa     | „is-a”                     | „has-a”                    |
-| Kód újrafelhasználás | Automatikus                | Kézi implementációval      |
-| Polimorfizmus        | Támogatott (virtuális fv.) | Nem automatikus            |
-| Kötöttség            | Erős                       | Lazább                     |
-| Változás hatása      | Erős mellékhatás           | Kisebb hatás               |
-| Flexibilitás         | Kisebb                     | Nagyobb                    |
-| Bonyolultság         | Egyszerű                   | Több kód, de irányítottabb |
-
----
-
-## 🧪 7. Kombináció: Kompozíció + Öröklés
-
-C++-ban gyakran alkalmazzuk **kompozíció és öröklés kombinációját** is. Ez különösen hasznos, ha többféle viselkedést akarunk újrahasznosítani.
-
-### Példa:
-
-```cpp
-class Logger {
-public:
-    void log(string uzenet) {
-        cout << "[LOG]: " << uzenet << endl;
-    }
-};
-
-class Tarolo {
-    Logger logger; // delegálás
-public:
-    void mentes(string adat) {
-        // Adat mentése logikailag itt történne
-        logger.log("Adat mentve: " + adat);
-    }
-};
-```
-
-A `Tarolo` saját viselkedését valósítja meg, de bizonyos funkciókat **delegál** a `Logger` példányára.
-
----
-
-## 🎯 8. SOLID elvek és delegálás
-
-A SOLID elvek egyik fő gondolata a **kompozíció előnyben részesítése az örökléssel szemben**:
-
-* **O**pen/Closed Principle (zárt a módosításra, nyitott a bővítésre)
-* **L**iskov Substitution Principle (helyettesíthetőség örökléssel)
-* **D**ependency Inversion Principle (használjunk interfészeket, ne konkrét típusokat)
-
-A delegálás jobban illeszkedik ezekhez, mert **modulárisabb** és **cserélhetőbb** architektúrákat eredményez.
-
----
-
-## 🧰 9. C++ nyelvi eszközök a delegáláshoz
-
-### 9.1 Referencia tagok
-
-Ha nem akarunk példányt tárolni:
-
-```cpp
-class A {
-public:
-    void hello() { cout << "Szia A!" << endl; }
-};
-
-class B {
-private:
-    A& aRef;
-public:
-    B(A& ref) : aRef(ref) {}
-
-    void koszont() {
-        aRef.hello();
-    }
-};
-```
-
-### 9.2 Smart pointerek
-
-Ha dinamikusan kezeljük:
-
-```cpp
-#include <memory>
-
-class C {
-public:
-    void f() { cout << "C::f" << endl; }
-};
-
-class D {
-    std::shared_ptr<C> c;
-public:
-    D(std::shared_ptr<C> ptr) : c(ptr) {}
-    void hasznal() { c->f(); }
-};
-```
-
----
-
-## 🔚 10. Összefoglalás
-
-| Kulcskérdés                 | Öröklés             | Delegálás         |
-| --------------------------- | ------------------- | ----------------- |
-| „X egy Y”?                  | Használj öröklést   | Nem               |
-| „X használ Y-t”?            | Használj delegálást | Igen              |
-| Szükséges polimorfizmus?    | Igen                | Nem automatikusan |
-| Moduláris, laza kapcsolat?  | Nehezebb elérni     | Kiválóan alkalmas |
-| SOLID elvekhez illeszkedik? | Kevésbé             | Jobban            |
-
----
-
-A **jó tervezés** kulcsa nem az, hogy „öröklés vagy delegálás?”, hanem az, hogy „melyik illik jobban az adott problémára?” A **kompozíció előnyben részesítése** manapság a preferált irány, mert rugalmasabb és jobban skálázható, különösen nagyobb szoftverrendszerek esetén.
-
----
-
- Rendben! Az alábbi részletes (\~1500 szavas) tananyag a **C++ absztrakt osztályok** és **interfészek** működését és használatát mutatja be. Mivel C++ nyelvben nincs beépített „interface” kulcsszó, az absztrakt osztályokon keresztül valósítjuk meg az interfészek funkcionalitását. A cél: megérteni, hogyan tervezhetünk moduláris, skálázható és bővíthető szoftvert C++-ban ezekkel az eszközökkel.
-
----
-
-## 📘 Tartalomjegyzék
-
-1. Mi az absztrakt osztály?
-2. A tiszta virtuális függvény
-3. Interfész fogalma C++-ban
-4. Példák absztrakt osztály és interfész használatára
-5. Öröklés absztrakt osztályból
-6. Többszörös öröklés és interfészek
-7. Mikor használjunk absztrakt osztályt vagy interfészt?
-8. Polimorfizmus absztrakt osztályokon keresztül
-9. Összegzés és gyakorlati tanácsok
-
----
-
-## 🧠 1. Mi az absztrakt osztály?
-
-Az **absztrakt osztály** egy olyan osztály, amely legalább egy **tiszta virtuális függvényt** tartalmaz. Ez egyfajta **sablon**, amit nem lehet példányosítani, csak örökölni lehet belőle.
-
-### Példa:
-
-```cpp
-class Alakzat {
-public:
-    virtual double terulet() const = 0; // tiszta virtuális függvény
-};
-```
-
-Az `Alakzat` nem példányosítható, de leszármaztatott osztályok megvalósíthatják a `terulet()` metódust.
-
----
-
-## 🔧 2. A tiszta virtuális függvény (`= 0`)
-
-A `= 0` szintaxis azt jelenti, hogy a függvény **nem rendelkezik implementációval**, és kötelező felülírni.
-
-```cpp
-virtual void rajzol() const = 0;
-```
-
-Ha legalább egy ilyen függvény van, az osztály **absztrakt** lesz.
-
-### Fontos:
-
-* Nem példányosítható (`Alakzat a;` → HIBA!)
-* Ha a leszármazott nem implementálja a tiszta virtuális függvényt, **maga is absztrakt lesz**
-
----
-
-## 🧾 3. Interfész fogalma C++-ban
-
-A C++ **nem rendelkezik `interface` kulcsszóval**, de **absztrakt osztály segítségével megvalósítható**.
-
-### Feltételek:
-
-* Minden függvény **tiszta virtuális**
-* **Nincsenek adattagok** (kivéve esetleg `static`)
-* Általában **virtuális destruktorral** zárjuk
-
-```cpp
-class Nyomtathato {
-public:
-    virtual void nyomtat() const = 0;
-    virtual ~Nyomtathato() = default;
-};
-```
-
-Ez egy **klasszikus interfész**, amit más osztályok implementálhatnak.
-
----
-
-## 📐 4. Példák absztrakt osztály és interfész használatára
-
-### 4.1 Absztrakt osztály
-
-```cpp
-class Alakzat {
-public:
-    virtual double terulet() const = 0;
-    virtual void rajzol() const = 0;
-    virtual ~Alakzat() = default;
-};
-
-class Kor : public Alakzat {
-private:
-    double sugar;
-public:
-    Kor(double s) : sugar(s) {}
-
-    double terulet() const override {
-        return 3.14 * sugar * sugar;
-    }
-
-    void rajzol() const override {
-        cout << "Kor rajzolva (sugár: " << sugar << ")" << endl;
-    }
-};
-```
-
----
-
-### 4.2 Interfész típusú absztrakt osztály
-
-```cpp
-class Nyomtathato {
-public:
-    virtual void nyomtat() const = 0;
-    virtual ~Nyomtathato() = default;
-};
-
-class Jelentes : public Nyomtathato {
-public:
-    void nyomtat() const override {
-        cout << "Jelentés nyomtatása..." << endl;
-    }
-};
-```
-
-Az interfészek általános szerződéseket határoznak meg.
-
----
-
-## 🔄 5. Öröklés absztrakt osztályból
-
-A leszármazott osztálynak **implementálnia kell minden tiszta virtuális függvényt**, különben maga is absztrakt marad.
-
-```cpp
-class SzogAlakzat : public Alakzat {
-public:
-    void rajzol() const override {
-        cout << "Szögletes alakzat rajzolva" << endl;
-    }
-
-    double terulet() const override {
-        return 0.0; // példaérték
-    }
-};
-```
-
----
-
-## ➕ 6. Többszörös öröklés és interfészek
-
-C++ támogatja a **többszörös öröklést**, ami különösen hasznos, ha **több interfészt** szeretnél megvalósítani.
-
-```cpp
-class Frissitheto {
-public:
-    virtual void frissit() = 0;
-};
-
-class Megjelenitheto {
-public:
-    virtual void kirajzol() = 0;
-};
-
-class Widget : public Frissitheto, public Megjelenitheto {
-public:
-    void frissit() override { cout << "Frissítés..." << endl; }
-    void kirajzol() override { cout << "Kirajzolás..." << endl; }
-};
-```
-
-Ez segít az osztályok **moduláris komponensként** való újrafelhasználásában.
-
----
-
-## 📌 7. Mikor használjunk absztrakt osztályt vagy interfészt?
-
-### Használj absztrakt osztályt, ha:
-
-* Szeretnél **alapértelmezett implementációt** biztosítani bizonyos metódusokhoz
-* Szükség van közös **adattagokra**
-* Később más osztályoknak szeretnéd a **közös funkcionalitást biztosítani**
-
-### Használj interfészt, ha:
-
-* Csak a viselkedést szeretnéd meghatározni
-* Különböző osztályokat akarsz egységes módon kezelni
-* Teljes absztrakcióra van szükséged (pl. plugin-rendszerek, GUI widgetek)
-
----
-
-## 🧬 8. Polimorfizmus absztrakt osztályokon keresztül
-
-Az absztrakt osztályokon keresztül lehetőség nyílik a **polimorf működésre**: az objektumokat **bázisosztály típusán keresztül** kezeljük, de a megfelelő leszármazott viselkedés fut le.
-
-```cpp
-void megjelenit(const Alakzat& a) {
-    a.rajzol();
-}
-
-int main() {
-    Kor k(5);
-    megjelenit(k); // "Kor rajzolva..."
-}
-```
-
-Ilyenkor a függvény **virtuális diszpécser** alapján a `Kor`-osztály `rajzol()` metódusát hívja meg.
-
----
-
-## 📜 9. Összegzés
-
-| Fogalom                        | Jelentés                                                                            |
-| ------------------------------ | ----------------------------------------------------------------------------------- |
-| **Absztrakt osztály**          | Legalább egy tiszta virtuális függvényt tartalmaz                                   |
-| **Interfész (C++-ban)**        | Olyan absztrakt osztály, amelynek minden függvénye tiszta virtuális                 |
-| **Tiszta virtuális függvény**  | `= 0` szintaxis jelzi, hogy nincs implementációja                                   |
-| **Nem példányosítható**        | Az absztrakt osztályból nem lehet példányt létrehozni                               |
-| **Örökléssel implementálható** | A leszármazott osztály megvalósítja a virtuális függvényeket                        |
-| **Polimorfizmust biztosít**    | Bázisosztály referencián/pointeren keresztül a konkrét leszármazott függvény fut le |
-
----
-
-## ✅ Gyakorlati tanácsok
-
-* Használj **virtuális destruktort** absztrakt osztályokban!
-* Ha interfészt tervezel, **ne tegyél bele adattagokat**
-* Törekedj **egyszerű, egyértelmű interfészekre**
-* Alkalmazd a **„Liskov helyettesítési elvet”**: minden leszármazott használható legyen bázisosztályként
-* Használj **tiszta absztrakciót** plugin rendszerekhez, GUI komponensekhez, fájlkezelő modulokhoz stb.
-
- 
- Rendben! Az alábbi részletes (\~1500 szavas) tananyag a **C++ objektumok életciklusáról**, a különböző **objektumtárolókról**, valamint az **automatikusan méreteződő tömbökről** szól. Ez a téma fontos ahhoz, hogy megbízható, hatékony, memóriaszivárgás-mentes kódot írjunk.
-
----
-
-## 📦 1. Objektumok születése és halála (életciklus)
-
-### 1.1 Mi az objektum életciklusa?
-
-Az **objektum életciklusa** az objektum **létrejöttétől a megsemmisüléséig** tart. A ciklus három fő fázisa:
-
-1. **Létrehozás (konstruktor meghívása)**
-2. **Használat (objektum aktív élete)**
-3. **Megsemmisítés (destruktor meghívása)**
-
----
-
-### 1.2 Élettartam típusai
-
-#### a) Automatikus (stack-en lévő) objektum
-
-```cpp
-class Teszt {
-public:
-    Teszt() { cout << "Létrejött!" << endl; }
-    ~Teszt() { cout << "Törölve!" << endl; }
-};
-
-int main() {
-    Teszt obj;  // konstruktor hívódik
-    // használat
-} // automatikusan törlődik (destruktor hívódik)
-```
-
-> Ezeket hívjuk **stack**-en lévő objektumoknak. Az életciklus automatikusan vezérelt.
-
----
-
-#### b) Dinamikus (heap-en lévő) objektum
-
-```cpp
-Teszt* ptr = new Teszt(); // konstruktor
-delete ptr;               // destruktor
-```
-
-> Ezek **heap**-en élnek. Neked kell gondoskodnod a törlésről – különben **memóriaszivárgás** történik.
-
----
-
-#### c) Statikus objektum
-
-Globális vagy `static` kulcsszóval definiált objektum, amely a program egész futása alatt él.
-
-```cpp
-static Teszt globalObj;
-```
-
----
-
-### 1.3 Különleges életciklusok
-
-* **Rövid életű temporális objektum**: `Teszt()` – azonnal létrejön és eltűnik
-* **RAII (Resource Acquisition Is Initialization)**: konstruktorban szerzünk erőforrást, destruktorban elengedjük (fájl, mutex, stb.)
-
----
-
-## 📚 2. Objektum tárolók C++-ban
-
-C++-ban különböző tárolószerkezetek (container-ek) állnak rendelkezésre objektumok rendszerezésére:
-
----
-
-### 2.1 Statikus tömb
-
-```cpp
-Ember tomb[10];
-```
-
-* Fix méretű
-* Nem méretezhető át
-* Egyszerű, de merev
-
----
-
-### 2.2 `std::vector` – automatikusan méreteződő tömb
-
-A `std::vector` a **leggyakoribb és legpraktikusabb** dinamikus tömb.
-
-```cpp
-#include <vector>
-vector<Ember> emberek;
-emberek.push_back(Ember("Anna", 30));
-```
-
-> Automatikusan bővül, ha új elemet adunk hozzá.
-
----
-
-### 2.3 `std::list`, `std::deque`
-
-* `std::list`: láncolt lista (duplán láncolt)
-* `std::deque`: két végű sor
-* Kevésbé hatékony tömbműveleteknél
-
----
-
-### 2.4 `std::array` (C++11-től)
-
-```cpp
-array<int, 5> tomb = {1, 2, 3, 4, 5};
-```
-
-Statikus méret, de típusbiztosabb és kényelmesebb, mint C-stílusú tömb.
-
----
-
-## 🧩 3. Automatikusan méreteződő tömb: `std::vector`
-
-### 3.1 Mi az a `vector`?
-
-A `std::vector` egy **dinamikus tömb**, amely:
-
-* Tetszőleges számú elemet tárolhat
-* Automatikusan átméretezi magát
-* Képes bármilyen objektumtípust kezelni
-* Biztonságos, mert nem kell kézzel memóriát kezelni
-
----
-
-### 3.2 Példák
-
-```cpp
-vector<int> szamok;
-szamok.push_back(10);
-szamok.push_back(20);
-
-cout << szamok[0] << endl; // 10
-cout << szamok.size() << endl; // 2
-```
-
----
-
-### 3.3 Objektumokkal
-
-```cpp
-class Ember {
-    string nev;
-public:
-    Ember(string n) : nev(n) {}
-    void koszont() const {
-        cout << "Szia, " << nev << endl;
-    }
-};
-
-vector<Ember> lista;
-lista.push_back(Ember("Béla"));
-lista.push_back(Ember("Erika"));
-```
-
----
-
-### 3.4 Fontos metódusok
-
-| Metódus       | Funkció                          |
-| ------------- | -------------------------------- |
-| `push_back()` | Elem hozzáadása                  |
-| `pop_back()`  | Utolsó elem eltávolítása         |
-| `size()`      | Méret lekérdezése                |
-| `empty()`     | Üres-e?                          |
-| `clear()`     | Kiüríti a vektort                |
-| `resize(n)`   | Méret állítása                   |
-| `reserve(n)`  | Memória foglalás                 |
-| `at(i)`       | Biztonságos elérés ellenőrzéssel |
-
----
-
-### 3.5 Mi történik háttérben?
-
-A `vector`:
-
-* Kezdetben lefoglal egy kis memóriát
-* Ha betelik, **új memóriát foglal**, a régit átmásolja, a régit felszabadítja
-* Ezért érdemes **előre lefoglalni** a helyet, ha ismert a méret: `reserve(n)`
-
----
-
-### 3.6 Objektumok életciklusa `vector` esetén
-
-```cpp
-vector<Teszt> v;
-v.push_back(Teszt()); // konstruktor → másoló/move konstruktor
-```
-
-Ha a `vector` átméreteződik, a benne lévő objektumok **áthelyeződnek**, és emiatt **másolás/move történik**.
-
----
-
-### 3.7 Érdemes-e pointereket tárolni?
+# A fő program
+echo "Kerem adja meg a nevet:"
+read name
 
-Néha szükség lehet rá (polimorf viselkedés miatt):
+# függvény meghívása
+hello $name
 
-```cpp
-vector<Allat*> allatkert;
-allatkert.push_back(new Kutya());
-```
-
-→ Ne feledd: **kézzel kell törölni** vagy használj smart pointert:
-
-```cpp
-vector<unique_ptr<Allat>> allatkert;
-allatkert.push_back(make_unique<Kutya>());
-```
-
----
-
-## 🧠 4. Objektumkezelés: szabályok és jó gyakorlatok
-
-### 4.1 A "Rule of 3/5"
-
-Ha az osztály:
-
-* **dinamikus memóriát kezel**
-* vagy **nyers pointert tárol**
-
-akkor implementáld:
-
-* Másoló konstruktor
-* Másoló értékadó operátor
-* Destruktor
-  (+ C++11-től: move konstruktor és move értékadó operátor)
-
----
-
-### 4.2 Smart pointer használat
-
-Használj `unique_ptr`, `shared_ptr`, `weak_ptr`:
-
-```cpp
-vector<unique_ptr<Konyv>> konyvtar;
-konyvtar.push_back(make_unique<Konyv>("C++ Primer"));
-```
-
-> Automatikusan felszabadítják a memóriát – **nincs delete!**
-
----
-
-## 📌 5. Összegzés
-
-| Fogalom                  | Lényeg                                              |
-| ------------------------ | --------------------------------------------------- |
-| **Objektum életciklusa** | Konstruktor → használat → destruktor                |
-| **Tárolók**              | `array`, `vector`, `list`, stb.                     |
-| **`vector`**             | Automatikusan bővülő tömb                           |
-| **Stack vs heap**        | Automatikus vs dinamikus kezelés                    |
-| **Smart pointer**        | Automatikus memóriafelszabadítás                    |
-| **RAII**                 | Konstruktorban foglalunk, destruktorban engedünk el |
-
----
-
-## ✅ Záró tanácsok
-
-* **Használj `vector`-t**, ha dinamikus tárolás kell
-* Használj **smart pointereket** a nyers `new`/`delete` helyett
-* Tervezz az **objektumok életciklusa köré**: tudd, ki birtokol mit
-* Tartsd be a **Rule of 3/5** elvét, ha szükséges
-* Kerüld a memóriaszivárgást → RAII, `vector`, `unique_ptr`, `shared_ptr` használata
-
- Rendben! Az alábbi részletes (\~1500 szavas) tananyag a **C++ operátor átdefiniálásáról (operator overloading)** szól. Az operátorok újradefiniálása lehetővé teszi, hogy **osztályainkhoz természetes, olvasható szintaxist biztosítsunk**, mintha beépített típusokkal dolgoznánk. Ez különösen hasznos **matematikai objektumoknál, komplex adatszerkezeteknél, string osztályoknál stb.**
-
----
-
-## 📘 Tartalomjegyzék
-
-1. Mi az operátor túlterhelés (overloading)?
-2. Mely operátorok definiálhatók újra?
-3. Szintaxis és szabályok
-4. Példák: +, ==, \[], <<, ++, =
-5. Barát függvények és operátorok
-6. Elkerülendő hibák
-7. Mikor érdemes újradefiniálni operátort?
-8. Összefoglalás
-
----
-
-## 🧠 1. Mi az operátor túlterhelés?
-
-Az **operátor túlterhelés** (operator overloading) lehetővé teszi, hogy **megváltoztassuk egy operátor működését**, amikor az saját típusainkkal (pl. osztályobjektumokkal) dolgozik.
-
-### Példa: összeadás `+` operátorral
-
-```cpp
-Komplex a(3, 4), b(1, 2);
-Komplex c = a + b;
-```
-
-Ez akkor működik, ha **újradefiniáljuk a `+` operátort** a `Komplex` osztályban.
-
----
-
-## ✔️ 2. Mely operátorok definiálhatók újra?
-
-C++-ban **szinte minden operátor** újradefiniálható, kivéve néhány kulcsfontosságú operátort.
-
-### Újradefiniálható példák:
-
-* Aritmetikai: `+ - * / %`
-* Összehasonlító: `== != < > <= >=`
-* Logikai: `&& || !`
-* Bitműveletek: `& | ^ ~ << >>`
-* Hozzárendelő: `= += -= *= /=`
-* Indexelés: `[]`
-* Hívás: `()`
-* Tagelérés mutatóval: `->`
-* Be- és kimenet: `<< >>`
-
-### Nem definiálhatók újra:
-
-* `.` (pont operátor)
-* `.*` (tagmutató)
-* `::` (névtér, osztály scope)
-* `sizeof`, `typeid`, `alignof`, `decltype`
-* `?:` (ternáris feltétel)
-
----
-
-## 🧱 3. Szintaxis és szabályok
-
-### Tagfüggvényként (member function)
-
-```cpp
-ReturnType operatorOp(const MásikTípus& rhs);
-```
-
-### Külső (globális vagy barát) függvényként
-
-```cpp
-ReturnType operatorOp(const SajátTípus& lhs, const SajátTípus& rhs);
-```
-
-* **Tagfüggvényként**: bal oldali operandus az adott osztály objektuma
-* **Globálisként**: mindkét operandus átadható, akár más sorrendben is
-
----
-
-## ➕ 4. Példák a leggyakoribb operátorokra
-
-### 4.1 `+` – összeadás
-
-```cpp
-class Vektor {
-    int x, y;
-public:
-    Vektor(int a, int b) : x(a), y(b) {}
-
-    Vektor operator+(const Vektor& masik) const {
-        return Vektor(x + masik.x, y + masik.y);
-    }
-
-    void kiir() const {
-        cout << "(" << x << ", " << y << ")" << endl;
-    }
-};
-
-int main() {
-    Vektor a(1, 2), b(3, 4);
-    Vektor c = a + b;
-    c.kiir();  // (4, 6)
-}
-```
-
----
-
-### 4.2 `==` – egyenlőség vizsgálat
-
-```cpp
-bool operator==(const Vektor& masik) const {
-    return x == masik.x && y == masik.y;
-}
-```
-
----
-
-### 4.3 `[]` – indexelés
-
-```cpp
-class Sorozat {
-    vector<int> adatok;
-public:
-    Sorozat(initializer_list<int> l) : adatok(l) {}
-
-    int& operator[](size_t index) {
-        return adatok[index];
-    }
-};
-```
-
----
-
-### 4.4 `<<` – kiírás (stream operátor)
-
-```cpp
-class Pont {
-    int x, y;
-public:
-    Pont(int a, int b) : x(a), y(b) {}
-
-    friend ostream& operator<<(ostream& os, const Pont& p) {
-        os << "(" << p.x << ", " << p.y << ")";
-        return os;
-    }
-};
-```
-
-> A `<<` operátort mindig barátfüggvényként szokás megvalósítani.
-
----
-
-### 4.5 `++` – növelés
-
-```cpp
-class Szamlalo {
-    int ertek;
-public:
-    Szamlalo(int e) : ertek(e) {}
-
-    // Prefix
-    Szamlalo& operator++() {
-        ertek++;
-        return *this;
-    }
-
-    // Postfix
-    Szamlalo operator++(int) {
-        Szamlalo regi = *this;
-        ertek++;
-        return regi;
-    }
-};
-```
-
----
-
-### 4.6 `=` – értékadás
-
-Alapértelmezés szerint generálódik, de ha dinamikus erőforrásokat kezelsz, **muszáj felüldefiniálni**:
-
-```cpp
-Vektor& operator=(const Vektor& rhs) {
-    if (this != &rhs) {
-        x = rhs.x;
-        y = rhs.y;
-    }
-    return *this;
-}
-```
-
----
-
-## 🤝 5. Barát függvények és operátorok
-
-Ha az operátornak hozzá kell férnie a privát adattagokhoz, **barátfüggvényként** deklaráljuk:
-
-```cpp
-class Komplex {
-    double re, im;
-public:
-    Komplex(double r, double i) : re(r), im(i) {}
-
-    friend Komplex operator+(const Komplex& a, const Komplex& b);
-};
-
-Komplex operator+(const Komplex& a, const Komplex& b) {
-    return Komplex(a.re + b.re, a.im + b.im);
-}
-```
-
----
-
-## 🧱 6. Elkerülendő hibák
-
-| Hiba                                | Magyarázat                                      |
-| ----------------------------------- | ----------------------------------------------- |
-| Hiányzó `const`                     | Ha nem jelöljük, hogy az operandus nem változik |
-| Összeadás nem másolatot ad vissza   | Visszatérési értékkel dolgozz, ne referenciával |
-| Hiányzó referencia `operator<<`-nél | `ostream&` és `const T&` legyen                 |
-| Dinamikus memória kezelése nélkül   | Túlcsordulás, memóriaszivárgás                  |
-| Postfix `++` nincs megkülönböztetve | `(int)` kell a szignatúrába                     |
-
----
-
-## 📌 7. Mikor érdemes újradefiniálni operátort?
-
-### Érdemes, ha:
-
-* A művelet **természetesen illeszkedik** az osztály viselkedéséhez
-* Növeli a **kód olvashatóságát**
-* Az osztály **matematikai objektum** (komplex szám, mátrix, vektor)
-
-### Kerüld, ha:
-
-* Az operátor viselkedése **nem egyértelmű** vagy zavaró lehet
-* Az osztály viselkedése nem természetesen illeszkedik a művelethez
-* Bonyolult mellékhatásokat okoz (pl. memória kezelése)
-
----
-
-## 📜 8. Összefoglalás
-
-| Fogalom      | Magyarázat                               |
-| ------------ | ---------------------------------------- |
-| `operator+`  | Összeadás újradefiniálása                |
-| `operator==` | Egyenlőség vizsgálat                     |
-| `operator[]` | Indexelés                                |
-| `operator<<` | Stream kimenet (általában barátfüggvény) |
-| `operator++` | Növelő operátor (prefix/postfix)         |
-| `operator=`  | Értékadás, fontos a mély másolásnál      |
-| `friend`     | Hozzáférés privát tagokhoz kívülről      |
-
----
-
-### 💡 Legjobb gyakorlatok
-
-* Használj `const`-ot ahol lehet
-* Visszatérési érték legyen új objektum (pl. `a + b`)
-* Indexelésnél: `operator[]` → figyelj a határokra
-* Kiírásnál: `operator<<` → barátként definiálva
-* Ne bonyolítsd túl: csak azokat az operátorokat definiáld újra, amiket érdemben tudsz jól megvalósítani
-
----
-
-Rendben! Az alábbi részletes (\~2000 szavas) tananyag a **típuskonverzióról (type conversion)** szól **C++** nyelven, különös tekintettel a két kulcsmechanizmusra:
-
-* **konstruktorral történő típuskonverzió**,
-* **konverziós operátorral (`operator Type()`) történő konverzió**.
-
-Ez a tudás elengedhetetlen a **robosztus, jól olvasható, típusbiztos és bővíthető** C++ kódok írásához – különösen saját osztályokkal dolgozva.
-
----
-
-## 📘 Tartalomjegyzék
-
-1. Bevezetés a típuskonverzióba
-2. Implicit és explicit konverzió
-3. Típuskonverzió **konstruktorral**
-4. Típuskonverzió **konverziós operátorral**
-5. Implicit konverziók veszélyei
-6. `explicit` kulcsszó használata
-7. Kétirányú konverzió – mindkét mechanizmus együtt
-8. Összehasonlítás: konstruktor vs konverziós operátor
-9. Legjobb gyakorlatok
-10. Összefoglalás
-
----
-
-## 🧠 1. Mi az a típuskonverzió?
-
-A **típuskonverzió** (type conversion) azt jelenti, hogy egy értéket **automatikusan vagy szándékosan átalakítunk** egyik típusról a másikra.
-
-### Példa beépített típusokkal:
-
-```cpp
-int i = 10;
-double d = i; // implicit konverzió int → double
-```
-
-A C++ azonban lehetővé teszi, hogy **saját típusok között is konverziókat definiáljunk**, akár automatikusan, akár kézzel.
-
----
+A fő programban bekérünk egy nevet a felhasználótól (read name), majd meghívjuk a hello függvényt ezzel a névvel (hello $name). A függvény meghívásakor a $name változó értéke átadódik a $1 paraméternek, majd végül kiíratásra kerül a köszönést követően.
 
-## 🧾 2. Implicit és explicit konverzió
-
-| Típus        | Magyarázat                                                    |
-| ------------ | ------------------------------------------------------------- |
-| **Implicit** | A fordító automatikusan végrehajtja, ha lehetséges            |
-| **Explicit** | A programozónak kézzel kell meghívnia (cast vagy konstruktor) |
-
-C++-ban a **konstruktor** és az **`operator Type()`** segítségével **implicit vagy explicit** konverziókat valósíthatunk meg **saját osztályokra is**.
-
----
-
-## 🧱 3. Típuskonverzió konstruktorral
-
-Ha egy osztályban létezik **egyetlen paraméteres konstruktor**, akkor azt a fordító **típuskonverzióra használhatja**.
-
-### Példa:
-
-```cpp
-class Komplex {
-    double re, im;
-public:
-    Komplex(double valos) : re(valos), im(0) {}
-
-    void kiir() const {
-        cout << re << " + " << im << "i" << endl;
-    }
-};
-
-void f(Komplex k) {
-    k.kiir();
-}
-
-int main() {
-    f(5.0); // automatikusan Komplex(5.0)
-}
-```
-
-### Hogyan működik?
-
-A `f(5.0)` hívásnál a fordító nem talál pontos illeszkedést, de látja, hogy `Komplex` konstruktorral létrehozható a `double` típusból, tehát automatikusan átalakítja.
-
----
-
-## 🎯 4. Típuskonverzió operátorral (`operator Type()`)
-
-A másik irány: **objektumból beépített vagy más típusra való konvertálás**.
-
-### Példa:
-
-```cpp
-class Komplex {
-    double re, im;
-public:
-    Komplex(double r, double i) : re(r), im(i) {}
-
-    operator double() const {
-        return re;
-    }
-};
-
-int main() {
-    Komplex k(3.5, 2.0);
-    double x = k; // automatikusan double-re konvertálódik
-    cout << x << endl; // 3.5
-}
-```
-
-A `operator double()` egy **implicit konverziós operátor**, amely lehetővé teszi az `object → double` átalakítást.
-
----
-
-## 🔥 5. Implicit konverziók veszélyei
-
-### Probléma:
-
-Az implicit konverziók **váratlan viselkedést okozhatnak** – például rossz függvényválasztásnál vagy összehasonlításnál.
-
-```cpp
-class Pont {
-public:
-    Pont(int x) { cout << "Pont létrehozva " << x << endl; }
-};
-
-void f(Pont p) {}
-
-int main() {
-    f(42); // működik, de meglepő lehet
-}
-```
-
-A `42` automatikusan `Pont(42)`-re konvertálódik – ez **érdekes, de nem mindig kívánt** viselkedés.
-
+sed (stream editor, elsődlegesen cserére használjuk)
 ---
-
-## 🚫 6. `explicit` kulcsszó
+Számos funkcióval rendelkező eszköz a szövegfeldolgozásra. Főként a szövegfájlokban végzett keresésre és helyettesítésre használják.
 
-A **`explicit` kulcsszó** megakadályozza, hogy a konstruktor automatikusan használható legyen **implicit konverzióra**.
+Szintaxis:
+sed 's/hello/goodbye/' file.txt # A file.txt-ben az első előfordulását cseréli a "hello" szövegnek "goodbye" szövegre.
 
-### Példa:
+sed 's/mit/mire/; s/mit/mire/; s/mit/mire/;' file.txt # A file.txt-ben az első három előfordulás esetén cseréli a "hello" szöveget "goodbye" szövegre.
 
-```cpp
-class Komplex {
-    double re, im;
-public:
-    explicit Komplex(double r) : re(r), im(0) {}
-};
+sed 's/mit/mire/g' file.txt # A file.txt-ben minden "mit" szöveget "mire" szövegre cserél.
 
-void f(Komplex c) {}
+sed -i 's/mit/mire/g' file.txt # Az -i kapcsolóval közvetlen a fájlban is elvégzi a cserét
 
-int main() {
-    f(2.5); // ERROR: nem lehet implicit módon konvertálni
-    f(Komplex(2.5)); // OK
-}
-```
-
-### Ugyanez működik konverziós operátorra is (C++11-től):
-
-```cpp
-explicit operator int() const {
-    return 42;
-}
-```
+sed 's/apple/& pie/g' file.txt # Az & reprezentálja az eredeti találatot. Ebben a példában megtartja az eredetit (apple) és kiegészíti a pie-jal.
 
----
+sed 's/[a-z]/\U&/g' file.txt # Minden kisbetűt nagybetűre cserél. [a-z] reprezentálja a kisbetűket, a \U azt jelenti, hogy a találatot nagybetűsítjük.
 
-## 🪞 7. Kétirányú konverzió: Konstruktor + Operátor
-
-Olyan típusoknál, amelyek **mindkét irányba** konvertálhatók, célszerű **mindkét mechanizmust kombinálni**.
-
-### Példa: Celsius ↔ double
-
-```cpp
-class Celsius {
-    double fok;
-public:
-    // double → Celsius
-    explicit Celsius(double f) : fok(f) {}
-
-    // Celsius → double
-    operator double() const {
-        return fok;
-    }
-
-    void kiir() const {
-        cout << fok << " °C" << endl;
-    }
-};
-
-void kiir(Celsius c) {
-    cout << "Hőmérséklet: ";
-    c.kiir();
-}
-
-int main() {
-    Celsius t(25.0);
-    kiir(t);
-    double f = t; // implicit konverzió
-}
-```
+sed 's/[A-Z]/\L&/g' file.txt # Minden nagybetűt kisbetűre cserél. [A-Z] reprezentálja a nagybetűket, a \L azt jelenti, hogy a találatot kisbetűsítjük.
 
-> Az `explicit` kulcsszóval korlátozhatjuk a veszélyes implicit konverziókat, miközben az `operator Type()` lehetővé teszi a kényelmes használatot.
+sed 's/a//g' file.txt # Összes "a" betű törlése.
 
----
+echo AAAAAAlmafaaaaa | sed 's/\([Aa]\)\1*/\1/g' # "A" duplikátumok törlése
+# Magyarázat
+# \([Aa]\) - Egy regexp csoport, amely tartalmazza az "A" és "a" betűket
+# \1* - Sorszámozom az előző mintát, amely nullaszor vagy többször előfordulhat
+# \1 - Visszahivatkozok az eredeti sorszámra
 
-## ⚖️ 8. Konstruktor vs konverziós operátor
+Példa. Cserélje le a hello összes "l" betűjét "L" betűre.
 
-| Jellemző                | Konstruktor                          | `operator Type()`              |
-| ----------------------- | ------------------------------------ | ------------------------------ |
-| Irány                   | másik típusból saját típusba         | saját típusból másikba         |
-| Szintaxis               | `Osztaly(T)`                         | `operator T()`                 |
-| Használat               | paraméterátadásnál, példányosításkor | értékadásnál, függvényhívásnál |
-| Alkalmazás              | értelmes érték-átvétel               | kényelmes visszaváltás         |
-| `explicit` használható? | Igen (C++98-től)                     | Igen (C++11-től)               |
+echo "hello" | sed 's/l/L/g'Old meg bash szkriptekkel:
 
----
+1. Készíts egy bash scriptet, amely összeszámolja a kiindulási könyvtárban lévő összes .txt fájl sorait, amelyet egy változóban tárol el. Írja ki végül az összes sor értékét.
 
-## 💡 9. Legjobb gyakorlatok
+#!/bin/bash
 
-✅ Használj `explicit` kulcsszót, ha:
+total_lines=$(cat *.txt | wc -l)
+echo "Az összes .txt fájlban összesen $total_lines sor található."
 
-* Meg akarod **akadályozni az automatikus konverziót**
-* A konstruktor nem egyértelmű viselkedésű
+2. Írj egy bash szkriptet, ami kiírja a 0-tól 10 a számokat kettesével.
+#!/bin/bash
 
-✅ Definiáld az `operator Type()`-t, ha:
+for i in {0..10..2}
+do
+    echo $i
+done  
 
-* A típus természetesen **visszaalakítható** egy beépített típusra
-* Olvashatóvá teszi a kódot
+3. Írj egy bash szkriptet, ami egy tömbben tárolja néhány kedvenc gyümölcsödet, majd kiírja az összes elemet külön sorba.
+#!/bin/bash
 
-❌ Ne implementálj automatikus konverziót, ha:
+fruits=("alma" "korte" "szolo" "narancs")
+for fruit in "${fruits[@]}"
+do
+    echo $fruit
+done
 
-* Típusvesztéssel járhat
-* Zavart okozhat a túlterhelt függvényválasztásban
-* Nem egyértelmű az átalakítás célja
+4. Írj egy bash szkriptet, amely az "Ellenseges kemhalozat felkutatasa es semlegesítése" szövegben minden "e" karaktert "X" karakterre cserél. Írassa ki az eredményt.
 
----
+#!/bin/bash
+modified_text=$(echo "Ellenseges kemhalozat felkutatasa es semlegesítese" | sed 's/e/X/g')
 
-## 🔄 10. Összefoglalás
+echo "Módosított szöveg: $modified_text"
 
-| Mechanizmus                 | Irány                      | Példa                      |
-| --------------------------- | -------------------------- | -------------------------- |
-| **Konstruktoros konverzió** | másik → saját típus        | `Celsius(double)`          |
-| **Konverziós operátor**     | saját → másik típus        | `operator double()`        |
-| **explicit kulcsszó**       | Implicit konverzió tiltása | `explicit Celsius(double)` |
-| **Kétirányú konverzió**     | Mindkét irány              | `Celsius ↔ double`         |
+5. Írj egy bash szkriptet, amely argomentumban megkap egy fájlnevet. Először ellenőrizze, hogy a megadott fájl létezik-e. Ezt követően írassa ki a kapott fájl utolsó előtti sorát.
 
-A C++ típuskonverziós mechanizmusai **nagyon rugalmasak**, de **felelősséggel kell bánni velük**, különösen nagy projektekben.
+#!/bin/bash
 
----
+if [ ! -f "$1" ]
+then
+    echo "Hiba: A megadott fájl nem létezik."
+    exit 1
+fi
 
-### 🎯 Ajánlott gyakorlat:
+second_last_line=$(tail -n 2 "$1" | head -n 1)
+echo "A(z) '$1' fájl utolsó előtti sora: $second_last_line"
 
-Írj egy `Komplex` osztályt, amely:
+6. Írjon egy bash szkriptet, amely bekér három darab számot. A számok közül keresse meg a legnagyobbat, majd írassa ki.
 
-* implicit módon konvertálható `double` típusra (a valós rész alapján),
-* csak **explicit konstruktorral** konvertálható vissza.
+#!/bin/bash
 
-Majd hasonlítsd össze két `Komplex` típusú változó összeadását, értékadását és kiírását.
+echo "Kérem az első számot:"
+read szam1
 
----
+echo "Kérem a második számot:"
+read szam2
 
-Remek téma! A **C++ sablonok (templates)** lehetővé teszik, hogy típusfüggetlen, újrahasznosítható, generikus kódot írjunk. Az alábbi részletes (\~2000 szavas) tananyag végigvezet a sablonok teljes működésén, szintaxisán, használatán, és gyakorlati példákon. Tartalmazz elméletet, osztály- és függvénysablonokat, specializációt, és a sablonprogramozás előnyeit.
+echo "Kérem a harmadik számot:"
+read szam3
 
----
+if [ $szam1 -gt $szam2 ] && [ $szam1 -gt $szam3 ]; then
+    echo "$szam1 a legnagyobb."
+elif [ $szam2 -gt $szam1 ] && [ $szam2 -gt $szam3 ]; then
+    echo "$szam2 a legnagyobb."
+elif [ $szam3 -gt $szam1 ] && [ $szam3 -gt $szam2 ]; then
+    echo "$szam3 a legnagyobb."
+else
+    echo "Egyenlőség van."
+fi
 
-## 📘 Tartalomjegyzék
-
-1. Bevezetés a sablonokba
-2. Függvénysablonok
-3. Osztálysablonok
-4. Típusparaméterek és nem típusparaméterek
-5. Sablon specializáció
-6. Sablonok használata STL-ben
-7. Sablonok és inline kódgenerálás
-8. `typename` és `template` kulcsszavak
-9. Legjobb gyakorlatok
-10. Összegzés
+7. Írjon olyan bash scriptet, amely a standard inputról bekér egy számot, ezt a számot hozzáfűzi az aktuális mappában lévő azon fájlokhoz, amelyek neve tartalmazza az "vizsga" szót.
 
----
+#!/bin/bash
+echo "Adjon meg egy szamot"
+read number
+for file in ./*vizsga*
+do
+	echo ${number} >> ${file}
+done
 
-## 🧠 1. Bevezetés: Mi az a sablon?
+8. Írjon olyan bash scriptet, amely az aktuális könyvtárban létrehoz egy alma.txt nevű fájlt, amelynek a tartalma az aktuális mappában található fájlok száma.
 
-A **sablon** (template) egy **általánosított kódstruktúra**, amely lehetővé teszi, hogy **különböző típusokra működő, mégis egyetlen** kódot írjunk meg.
+#!/bin/bash
+find . -maxdepth 1 -type f | wc -l > alma.txt
 
-### Előnyök:
+9. Írjon egy bash szkriptet, amely egy bejelentkezési funkciót valósít meg. Ha felhasználói névként az admin2, jelszóként pedig a secret szerepel, akkor írja ki a program, hogy a bejelentkezés sikeres, ellenkező esetben azt, hogy sikertelen a bejelentkezés.
 
-* **Típusfüggetlen** kód (pl. `int`, `double`, `string`)
-* **Karbantarthatóbb** és rövidebb programok
-* **Fordítási időben történik a generálás** – hatékony
+#!/bin/bash
+# Type your Login Information
+read -p 'Felhasznaloi nev: ' username
+read -sp 'Jelszo: ' password
 
----
+if (( $username == "admin2" && $password == "secret" ))
+then
+     echo -e "\nSikeres bejelentkezés"
+else
+     echo -e "\nSikertelen bejelentkezés"
+fi
 
-## 🔧 2. Függvénysablonok
+10. Írjon egy bash szkriptet, amely egy egyszerű játékot valósít meg. A játék, kérjen be egy számot és ha az a szám a 10 vagy az 20, akkor írja ki, hogy megnyerted a játékot, különben pedig azt, hogy elvesztetted a játékot.
+#!/bin/bash
 
-### Szintaxis:
+echo "Gondoltam egy számra! Próbáld meg kitalálni!"
 
-```cpp
-template <typename T>
-T osszead(T a, T b) {
-    return a + b;
-}
-```
+read szam
 
-### Használat:
+if [ "$szam" -eq 10 ] || [ "$szam" -eq 20 ]
+then
+  echo "Gratulalok, nyertel!"
+else
+  echo "Sajnalom, nem nyertel!"
+fi
 
-```cpp
-cout << osszead(3, 4) << endl;       // int → 7
-cout << osszead(2.5, 4.1) << endl;   // double → 6.6
-cout << osszead(string("a"), "b") << endl; // "ab"
-```
+11. Írjon egy bash szkriptet, amely paraméterként nevsor.txt fájl tartalmát soronként kiíratja.
 
-### Megjegyzés:
+#!/bin/bash
+filename=$1
+while read line
+do
+echo $line
+done < $filename
 
-* A fordító **automatikusan kitalálja** a `T` típusát az argumentumok alapján.
-* Típuskiírással is használható: `osszead<double>(2.1, 3.4);`
+12. Írjon olyan bash scriptet, amelynek tetszőleges számú paramétert megadhatunk. Írja ki a megadott paramétereket egymás alá, mindegyiket új sorba!
 
----
+#!/bin/bash
 
-### Több típusparaméter:
+for input in "$@"; do
+    echo "$input"
+done
 
-```cpp
-template <typename T1, typename T2>
-auto osszead(T1 a, T2 b) -> decltype(a + b) {
-    return a + b;
-}
-```
+13. Írjon olyan bash scriptet, amely paraméterként egy fájlt vár. Ha a fájl nem létezik, írja ki, hogy: "Nem megvalosithato.", majd lépjen ki. Ha létezik a fájl, akkor Írja ki a felhasználónak a fájl sorainak és szavainak a szorzatát!
 
----
+#!/bin/bash
 
-## 🧱 3. Osztálysablonok
-
-### Szintaxis:
-
-```cpp
-template <typename T>
-class Tarolo {
-private:
-    T adat;
-public:
-    Tarolo(T a) : adat(a) {}
-    void kiir() const {
-        cout << "Adat: " << adat << endl;
-    }
-};
-```
+if [ -f $1 ]
+then
+        line=$(cat $1 | wc -l)
+        echo "Sorok: $line"
+        word=$(cat $1 | wc -w)
+        echo "Szavak: $word"
+        echo "Összesen: $((line * word))"
+else
+        echo "Nem megvalosithato."
+fi
 
-### Használat:
+14. Írj egy bash szkriptet, ami átmásolja az összes .txt kiterjesztésű fájlt egy új mappába, amelynek neve "txt_files". A szkript először ellenőrizze, hogy létezik-e az adott mappa, ha nem, hakkor hozza létre.
 
-```cpp
-Tarolo<int> szam(42);
-szam.kiir();
+#!/bin/bash
+
+if [ ! -d "txt_files" ]
+then
+    mkdir txt_files
+fi
 
-Tarolo<string> szoveg("Helló");
-szoveg.kiir();
-```
+cp *.txt txt_files/
 
----
+15. Írj egy bash szkriptet, amely kiírja az aktuális könyvtárban található legkisebb és legnagyobb méretű fájl nevét.
 
-### Több típusparaméter:
+#!/bin/bash
 
-```cpp
-template <typename T1, typename T2>
-class Par {
-public:
-    T1 elso;
-    T2 masodik;
+# Legkisebb méretű fájl neve
+smallest_file=$(ls -l | sort -n -k5 | head -n 2 | tail -n 1 | cut -d ' ' -f 9)
 
-    Par(T1 e, T2 m) : elso(e), masodik(m) {}
-};
-```
+# Legnagyobb méretű fájl neve
+largest_file=$(ls -l | sort -nr -k5 | head -n 2 | tail -n 1 | cut -d ' ' -f 9)
 
+echo "A legkisebb méretű fájl neve: $smallest_file"
+echo "A legnagyobb méretű fájl neve: $largest_file"
+OS. gyak 6
 ---
-
-## 🔢 4. Típusparaméterek és nem típusparaméterek
-
-Sablonparaméter lehet **típus** vagy **nem típus** (pl. `int`, `char`, stb.).
-
-### Nem típusparaméter példa:
-
-```cpp
-template <typename T, int MERET>
-class FixTomb {
-    T tomb[MERET];
-public:
-    T& operator[](int index) { return tomb[index]; }
-};
-```
+Reguláris kifejezések, a grep használata
 
-Használat:
+A reguláris kifejezések olyan karakterláncok, amelyek segítségével könnyen és hatékonyan lehet keresni az adatok között. Olyan esetekre ad megoldást, amikor nem tudjuk megnevezni a karakterláncot, hanem csak a karakterláncot leíró "szabályokat" tudjunk megmondani.
 
-```cpp
-FixTomb<int, 5> tomb;
-tomb[0] = 10;
-```
-
----
+Példa: Telefonszámok
 
-## 🎭 5. Sablon specializáció
-
-### Teljes specializáció:
-
-```cpp
-template <>
-class Tarolo<bool> {
-private:
-    bool adat;
-public:
-    Tarolo(bool a) : adat(a) {}
-    void kiir() const {
-        cout << "Logikai érték: " << (adat ? "true" : "false") << endl;
-    }
-};
-```
+Lehetséges formátumok
+06704564453
++3670569678
 
----
+Formátumok eltérő mintákat követnek
+###########
++##########
 
-### Részleges specializáció:
-
-```cpp
-template <typename T>
-class Tarolo<T*> {
-    T* ptr;
-public:
-    Tarolo(T* p) : ptr(p) {}
-    void kiir() const {
-        cout << "Mutatott érték: " << *ptr << endl;
-    }
-};
-```
+Megoldás: reguláris kifejezések használata
+Létre kell hoznunk egy olyan mintát, amely az összes telefonszám formátumra tud biztosítani egyezést
+^(\+36|06)(20|30|70)[0-9]{7}$ - Ez a formátum mind a két telefonszám formátumot azonosítani tudja
 
----
+Példák:
 
-### Függvénysablon specializáció:
-
-```cpp
-template <typename T>
-void kiir(T val) {
-    cout << "Általános: " << val << endl;
-}
-
-template <>
-void kiir<bool>(bool val) {
-    cout << (val ? "IGAZ" : "HAMIS") << endl;
-}
-```
+abc - egyezés az "abc" kifejezésre
+[hjkl] - egyezés a h, j, k vagy l karakterekre
+07-?131 – egyezés "07131" vagy a "07-131" kifejezésekre
+item[1-3] – egyezés az "item1", az "item2" vagy az "item3" kifejezésekre
+codes* - egyezés a "code", a "codes", a "codess", a "codeesss" stb. kifejezésekre
 
----
+Reguláris kifejezés részei
+--
+1. Normál karakterek
+abc - illeszkedés az "abc" kifejezésre
 
-## 📦 6. Sablonok a STL-ben
+2. Kvantifikátorok (mennyiségjelzők)
+repeating* – illeszkedés "repeatin", "repeating", " repeatingggg" stb. kifejezésekre
+Megjegyzés: A * kifejezés az előtte lévő "g" karakterre vonatkozik, amennyiből állhat 0 vagy bármennyi darab a kifejezés végén.
 
-A C++ **standard template library (STL)** teljesen sablonokra épül.
+ab{1,3} – illeszkedés az "ab", az "abb", vagy az "abbb" kifejezésekkel
+Megjegyzés: A {1,3} zárójeles érték az előtte lévő "b" karakterre vonatkozik, amelyből lehet, 1, 2 vagy 3 darab.
 
-### Példák:
+Karakter osztályok
+[hjkl] – illeszkedés a "h", a "j", a "k" és az "l" karakterekre
+\d – illeszkedés egy számjegy karakterre 0 és 9 között
+. – illeszkedés bármilyen karakterre
 
-```cpp
-vector<int> szamok;
-map<string, int> szotar;
-pair<int, double> p(1, 3.14);
-```
+Kvantifikátorok (mennyiségjelzők)
+a? - 0 vagy 1 darab "a" karakter
+a* - 0 vagy több darab "a" karakter
+a+ - 1 vagy több darab "a" karakter
+a{3} - pontosan 3 darab "a" karakter
+a{3,} - 3 vagy több darab "a" karakter
+a{3,6} - 3 és 6 között "a" karakter
 
-Minden STL konténer (pl. `vector`, `list`, `set`) sablonként van megvalósítva.
+Karakter osztályok
+[abc] - a vagy b vagy c
+[^abc] - bármi ami nem a vagy b vagy c
+[a-z] - kisbetű
+[^A-Za-z] - minden ami nem betű
+\s - szóköz
+\d - számjegy
+\b - szóhatár (egy különálló szó keresésére)
+. - bármilyen tetszőleges karakter
 
----
+Speciális szekvenciák
+$ - A string vége
+^ - A string eleje
+| - Vagy operátor
+() - Zárójelek a csoportosításhoz
 
-### STL algoritmusok sablonos használata:
+Az előző telefonszámos példa:
+06704564453
++36205696789
 
-```cpp
-vector<int> v = {1, 2, 3, 4};
-sort(v.begin(), v.end());
-```
+^(\+36|06)(20|30|70)[0-9]{7}$
 
-A `sort` egy sablon, amely bármilyen típusú tartalomra működik, ha van `<` operátor.
+^ - a string eleje
+(\+36|06) - előhívó lehet +36 vagy 06
+(20|30|70) - körzetszám lehet 20, 30, vagy 70
+[0-9]{7} - 7 db számjegy (0-9)
+$ - string vége
 
----
+Mi van akkor, ha kell illesztés vezetékes telefonszámra és mobil telefonszámra is?
 
-## 🧮 7. Sablonok fordítási sajátosságai
+^(06|\+36)((20|30|50)\d{7}|(\d{6}))$
 
-* **Fordítási időben** történik a sablon **kibontása**
-* Ha nem használjuk, nem generálódik a kód
-* Sablonok **egy fájlban** maradjanak (headerben), különben linkelési hiba
+A kifejezés az alábbiak szerint működik:
 
----
+^ jelöli az illeszkedés kezdetét.
+(06|\+36) a telefonszám előtagját illeszti, ami lehet "06" vagy "+36".
+((20|30|50)\d{7}|\d{6}) a telefonszámot illeszti, ami attól függően, hogy a körzetszám 20, 30 vagy 50-e, 7 vagy 6 jegyű lehet. Az első zárójelben az illesztendő körzetszámok találhatók, a második zárójelben pedig a telefonszám 7 vagy 6 jegyűsége van meghatározva. A cső szimbólum a "vagy" műveletet jelenti.
+$ jelöli az illeszkedés végét.
 
-### Inline sablonok:
+Példák az illeszkedő telefonszámokra:
 
-A sablonkódot gyakran **header fájlba tesszük**, nem külön forrásfájlba.
++3612345678
+0612345678
++36301234567
+06301234567
++36501234567
+06123456
 
-```cpp
-// Tarolo.h
-template <typename T>
-class Tarolo {
-    ...
-};
-```
+Használat
+- grep "keresett minta" myfile.txt
+- alapesetben a minta pontos előfordulását keresi
+- a keresés case sensitive
 
-Ne különítsd el `.cpp` fájlba!
+Opciók
+-i: a keresés nem case sensitive
+-v: a minta ne forduljon elő
+-n: ne írja ki az illeszkedő sor számát
+-E: kibővített (egrep) üzemmód
+-o: csak az egyezést adja vissza nem az egész sort
+-q: csendes üzemmód, csak visszatérési értékkel jelzi, hogy van-e találat
 
+Működés
 ---
-
-## 🔍 8. `typename` és `template` kulcsszavak
+Amikor megadunk egy mintát, akkor a minta pontos előfordulását kerestük a fájlban.
+A grep soronkénti feldolgozást végez
+Ha van találat 0 a visszatérési értéke, ha nem talál, akkor 1 lesz a visszatérési értéke
 
-### `typename` kulcsszó
+Literal match 1:1-ben meg kell egyezni a mintának az adott sor mintjával
 
-A `template<typename T>` szintaxisban is, de akkor is kell, ha sablon paraméterben típusnevet használunk:
+Regexp: Mintha kódolást vagy rövidítést szeretnénk használni
 
-```cpp
-template <typename T>
-void f(typename T::value_type val);
-```
-
-### `template` kulcsszó (nested templates)
-
-```cpp
-template <typename T>
-void f(T t) {
-    typename T::iterator it = t.begin();
-}
-```
+grep "az" myfile.txt - soronként megnézzük, hogy szerepel-e az "az" kifejezés
 
----
+^ sor eleji egyezőség
+grep "^Az " myfile.txt - kiír minden "Az" névelővel kezdődő sort
 
-## ✅ 9. Legjobb gyakorlatok
+$ sor végi egyezőség
+grep "\.$" myfile.txt - kiír minden "pontra" végződő sort
 
-* Mindig használd `typename` sablonparaméterekhez
-* Használj `explicit` specializációt csak ha tényleg szükséges
-* Osztálysablonokat és függvénysablonokat külön fájlban (pl. `.h`)
-* Ne bonyolítsd túl a sablonokat – olvasható maradjon
-* Teszteld sablonos kódot több típussal
+. a tetszőleges karakter
+grep "..len" myfile.txt kiírja, hogy közvetlen de nem írja ki, hogy élen, mert ott csak egy karakter van
 
----
+[] karaktercsoport illesztés
+grep " [ea]z " myfile.txt vagy e vagy a betű (ez, az szó)
 
-## 📌 10. Összefoglalás
-
-| Fogalom                | Magyarázat                                    |
-| ---------------------- | --------------------------------------------- |
-| `template<typename T>` | Függvények és osztályok sablonosítása         |
-| `template<int N>`      | Nem típusparaméter                            |
-| Függvénysablon         | Típusfüggetlen logika pl. összeadás           |
-| Osztálysablon          | Típusfüggetlen adatszerkezet                  |
-| Specializáció          | Egyedi viselkedés adott típusokra             |
-| STL sablonok           | Konténerek (vector, map), algoritmusok        |
-| `typename` használat   | Típusnév megkülönböztetése sablonparaméterből |
-| Sablon inline          | Sablon definíciók header fájlban maradjanak   |
+- intervallum illesztés
+grep "^[A-Z]" myfile.txt kiír minden nagybetűvel kezdődő sort
 
----
+* ismétlődés nulla vagy tetszőleges darabszámmal
+grep "([A-Za-z ]*)" myfile.txt visszaad minden olyan sort, amelyben a zárójel között tetszőleges karakterek állnak
 
-## 🔚 Záró gondolatok
+\ escépezés: speciális karakterek illesztése
 
-A **C++ sablonok** lehetővé teszik az **általános programozást** (generic programming), amivel egyszerű, mégis hatékony típusfüggetlen kód írható. Az STL, a `vector`, `sort`, `pair` vagy `map` mind sablonos kód eredménye. Ha elsajátítod a sablonokat, **magabiztosabban fogsz tudni újrahasznosítható könyvtárakat és eszközöket építeni**.
+Azért fontos, mert például a . karakter a reguláris kifejezésekben bármilyen karaktert jelent, kivéve az újsor karaktert (\n). Ez azt jelenti, hogy ha keresni akarunk pontosan egy pontot, akkor a \ karakterrel kell az előző karaktert "escapelnünk", hogy mentesítsük a speciális jelentés elől.
 
+Pl. Kijelentő mondatok keresése a file.txt-ben.
 
-Kiváló téma! Az alábbi részletes (\~2000 szavas) tananyag végigvezet a **C++ objektumok mentésének és betöltésének** folyamatán **JSON formátumban**. Ez a képesség kulcsfontosságú, ha adatok tárolására, konfigurációkra, állapotmentésre, vagy fájl-alapú kommunikációra van szükség.
+grep "^(A |Az )?[A-Z][a-zA-Z]*\.$" file.txt
 
----
+Ez a reguláris kifejezés keresni fog minden olyan sort a file.txt fájlban, amely:
 
-## 📘 Tartalomjegyzék
-
-1. Bevezetés: mi az a JSON?
-2. Miért JSON C++-ban?
-3. JSON feldolgozó könyvtárak
-4. Példa osztály: `Ember`
-5. Objektum mentése JSON-be
-6. Objektum betöltése JSON-ből
-7. Tömbök, listák és összetett objektumok
-8. Fájlba írás és fájlból olvasás
-9. Hibaellenőrzés és robusztusság
-10. Haladó lehetőségek: nested JSON, konvertálás STL konténerekkel
-11. Összegzés és gyakorlati tanácsok
+^ - A sor elején kezdődik
+(A |Az )? - Az opció megjelenik nullaszor vagy egyszer, amely megegyezik az A vagy Az névelővel, utána egy szóközzel
+[A-Z] - Egy nagybetűvel kezdődik
+[a-zA-Z]* - További betűk követik, de csak betűk lehetnek, kisbetűk és nagybetűk egyaránt
+\. - Ponttal végződik
+$ - A sor végén ér véget
 
+grep -E kapcsoló vagy egrep: kibővített szabályrendszer
 ---
+(): csoportosítás
+grep -E "()" myfile.txt egy csoport megadása
 
-## 🧠 1. Bevezetés: Mi az a JSON?
+|: vagy kapcsolat
+grep -E "( ez | az )" myfile.txt vagy " ez " vagy " az "
 
-A **JSON (JavaScript Object Notation)** egy könnyen olvasható, szöveges adatformátum.
+*, +, ?: többszöri illesztés (1x, 2, többször, valahányszor)
 
-### JSON példa:
+grep -E "\([A-Za-z]*\)" sorok.txt: 0 vagy tetszőleges számú előfordulás
+grep -E "\([A-Za-z]?\)" sorok.txt: 0 vagy 1 előfordulás
+grep -E "\([A-Za-z]+\)" sorok.txt: 1 vagy több előfordulás
+grep -E "\([A-Za-z]{2}\)" sorok.txt: 2 előfordulás
+grep -E "\([A-Za-z]{1,2}\)" sorok.txt: 1 vagy 2 előfordulás
+grep -E " [a-z]{4} " sorok.txt: 4 betűs szavak kiíratása
 
-```json
-{
-  "nev": "Anna",
-  "kor": 28,
-  "hobbik": ["futás", "olvasás"]
-}
-```
-
-* Kulcs–érték párokból áll
-* Beágyazható (nested)
-* Nyelvfüggetlen
-
----
-
-## 💬 2. Miért JSON C++-ban?
-
-* Emberi olvashatóság
-* Széles körű támogatás (web, hálózat)
-* Platformfüggetlen
-* Könnyű integráció más nyelvekkel (pl. Python, JavaScript)
-
+Szóhatárok szűrése
 ---
+A \b szóhatár egy speciális karakter a reguláris kifejezésekben (regexekben), amely a szóhatárt jelöli. A szóhatár azt jelzi, hogy a keresett minta csak akkor egyezik meg, ha az előtte vagy utána levő karakter nem betűkarakter (pl. szóköz, tabulátor, írásjelek stb.), vagy a sor eleje vagy vége. Ez hasznos lehet, ha pontosan meghatározott szavakat vagy szóösszetételeket szeretnénk keresni a szövegben.
 
-## 🔧 3. JSON feldolgozó könyvtárak C++-hoz
+Például, ha megszeretnénk találni az "apple" szót egy szövegfájlban, de csak akkor, ha ez a szó önállóan áll egy sorban (tehát nem része más szónak vagy szóösszetételnek), akkor ezt a \b szóhatárral érhetjük el:
 
-### Népszerű JSON könyvtárak:
+grep "\bapple\b" myfile.txt
 
-| Könyvtár            | Előnyök                                    |
-| ------------------- | ------------------------------------------ |
-| **nlohmann/json**   | Modern, könnyű használat, STL-kompatibilis |
-| RapidJSON           | Nagyon gyors, alacsony szintű              |
-| JSON for Modern C++ | = `nlohmann/json` más néven                |
+Ez a parancs az "apple" szót csak akkor találja meg, ha az egy önálló szóként szerepel a sorban, és nem része más szónak, például "pineapple"-nek.
 
-Mi a **nlohmann/json** könyvtárat fogjuk használni, mert:
+--
+Fájlbeolvasás (ismétlés)
 
-* Fejlesztőbarát szintaxis
-* Header-only (nincs fordítás)
-* STL típusokkal kompatibilis
+while read line
+do
+# echo $line | grep ... (ciklusmag)
+done < file.txtOld meg reguláris kifejezésekkel:
 
-### Telepítés:
+1. Adott egy gyumolcs.txt szöveges állomány, amelyben minden sor egy szó vagy mondat. Írj egy reguláris kifejezést, amely csak azokat a sorokat adja vissza, amelyek "apple", "banana" vagy "orange" szavakat tartalmaznak!
 
-1. `vcpkg install nlohmann-json`
-2. vagy: [Letöltés GitHubról](https://github.com/nlohmann/json)
+Példa adatok
+I like apples.
+I hate tomatoes.
+Bananas are my favorite fruit.
+Oranges are rich in vitamin C.
+I eat an apple a day.
+I don't like bananas.
 
-Használat:
+grep -E "( apple | banana | orange )" gyumolcs.txt
+grep -E "(\bapple\b|\bbanana\b|\borange\b)" gyumolcs.txt
 
-```cpp
-#include <nlohmann/json.hpp>
-using json = nlohmann::json;
-```
+2. Adott egy nevek.txt szöveges fájl, amely tartalmazza az emberek nevét és életkorát, minden sorban egy személy. Írj egy reguláris kifejezést, amely csak azokat a sorokat adja vissza, amelyekben az életkor 18 és 25 év között van!
 
----
+Példa adatok:
+Anna, 20
+Bela, 30
+Csilla, 22
+David, 16
+Eszter, 27
 
-## 👤 4. Példa osztály: `Ember`
+grep -E "(1[89]|2[0-5])" nevek.txt
 
-```cpp
-#include <string>
-using namespace std;
+3. Adott egy emailcimek.txt szöveges állomány, amelyben minden sor egy e-mail címet tartalmaz. Írj egy reguláris kifejezést, amely csak azokat a sorokat adja vissza, amelyek gmail.com vagy yahoo.com e-mail címeket tartalmaznak!
 
-class Ember {
-public:
-    string nev;
-    int kor;
+Példa adatok:
+johndoe@gmail.com
+janedoe@yahoo.com
+mike.smith@outlook.com
+sarahjones@gmail.com
+peterparker@yahoo.com
+bobdoe@gmail.com
 
-    Ember() = default;
-    Ember(string n, int k) : nev(n), kor(k) {}
-};
-```
+grep -E "(@gmail\.com|@yahoo\.com)$" emailcimek.txt
 
----
+4. Adott egy ipcimek.txt szöveges állomány, amelyben minden sor egy IP-címet tartalmaz. Írj egy reguláris kifejezést, amely csak azokat a sorokat adja vissza, amelyek 192.168.x.x vagy 10.x.x.x IP-címeket tartalmaznak!
 
-## 💾 5. Objektum mentése JSON-be
+Példa adatok:
+192.168.1.1
+192.168.2.1
+10.0.0.1
+10.0.0.2
+192.168.1.10
+172.16.0.1
 
-A `nlohmann::json` könyvtárban operátorokat (`to_json`, `from_json`) definiálunk:
+grep -E "^(192\.168\.|10\.)" ipcimek.txt
 
-```cpp
-void to_json(json& j, const Ember& e) {
-    j = json{{"nev", e.nev}, {"kor", e.kor}};
-}
-```
+5. Adott egy evszamok.txt szöveges állomány, amelyben minden sor egy dátumot tartalmaz a következő formátumban: "éééé-hh-nn". Írj egy reguláris kifejezést, amely csak azokat a sorokat adja vissza, amelyek 2022. év április hónapban történt eseményekre utalnak!
 
-### Használat:
+Példa adatok:
+2022-03-29
+2022-04-01
+2022-04-12
+2022-05-15
+2022-04-30
+2021-04-15
 
-```cpp
-Ember e("Béla", 42);
-json j = e;
+grep -E '^2022-04-' evszamok.txt
 
-cout << j.dump(4) << endl; // pretty print
-```
+6. Bash script. Adott egy adatok.txt szöveges állomány, amelyben minden sor egy e-mail cím. Írj egy reguláris kifejezést, amely csak azokat a sorokat adja vissza, amelyek domain névként "example.com"-ot használnak, és az e-mail cím felhasználói neve legalább 5 karakter hosszú!
 
-Kimenet:
+Példa adatok:
+john@example.com
+jane@example.com
+joe@example.com
+mary@example.com
+jack@example.org
+alice@example.com
 
-```json
-{
-    "kor": 42,
-    "nev": "Béla"
-}
-```
+grep -E "^.{5,}@example\.com$" adatok.txt
 
----
+7. Adott egy fontos.txt szöveges állomány, amelyben minden sor egy URL címet tartalmaz. Írj egy reguláris kifejezést, amely csak azokat a sorokat adja vissza, amelyek "http://" vagy "https://" protokollal kezdődnek, és ".com" vagy ".hu" végződéssel rendelkeznek!
 
-## 📥 6. Objektum betöltése JSON-ből
+Példa adatok:
+http://example.com
+https://openai.org
+https://stackoverflow.com
+http://google.hu
+https://github.com
 
-Definiáljuk a `from_json` függvényt:
+grep -E '^(http:\/\/|https:\/\/).*\.(com|hu)$' fontos.txt
 
-```cpp
-void from_json(const json& j, Ember& e) {
-    j.at("nev").get_to(e.nev);
-    j.at("kor").get_to(e.kor);
-}
-```
+8. Írj egy bash scriptet a grep és reguláris kifejezések használatával, amely beolvassa az allomasok.txt fájl tartalmát egy ciklus segítségével, majd egymás alá írassa ki a városok neveit.
 
-### Használat:
+Példa adatok:
+Budapest, Moricz Zsigmond korter: 5 busz, 7 villamos, 2 metro all meg.
+Szeged, Dom ter: 1 villamos, 3 busz, 2 trolibusz indul el.
+Debrecen, Nagyerdei korut: 4 busz, 1 villamos, 1 metro halad el.
+Pecs, Szechenyi ter: 2 trolibusz, 6 busz érkezik.
+Gyor, Baross Gabor ter: 3 trolibusz, 4 villamos, 1 busz all meg.
+Szekesfehervar, Bory-var: 2 busz, 1 trolibusz, 1 villamos indul el
 
-```cpp
-string szoveg = R"({"nev": "Anna", "kor": 30})";
-json j = json::parse(szoveg);
+#!/bin/bash
 
-Ember e = j.get<Ember>();
-cout << e.nev << ", " << e.kor << endl;
-```
+while read line
+do
+  city=$(echo "$line" | grep -oE "^[A-Z][a-z]+")
+  echo "$city"
+done < allomasok.txt
 
 ---
+#!/bin/bash
 
-## 📚 7. Tömbök, listák és összetett objektumok
+while read line
+do
+  city=$(echo "$line" | grep -oE "^[^,]+")
+  echo "$city"
+done < allomasok.txt
 
-### Tömb mentése:
+9. Írj egy bash scriptet a grep és reguláris kifejezések használatával, amely beolvassa az allomasok.txt fájl tartalmát egy ciklus segítségével, majd egymás alá írassa ki a vilamosok számát. 
 
-```cpp
-vector<Ember> lista = {
-    {"Anna", 25},
-    {"Gábor", 40}
-};
+Példakimenet:
+7 villamos
+4 villamos
+2 villamos
 
-json j = lista;
-```
+Példa adatok:
+Budapest, Moricz Zsigmond korter: 5 busz, 7 villamos, 2 metro all meg.
+Szeged, Dom ter: 1 villamos, 3 busz, 2 trolibusz indul el.
+Debrecen, Nagyerdei korut: 4 busz, 1 villamos, 1 metro halad el.
+Pecs, Szechenyi ter: 2 trolibusz, 6 busz érkezik.
+Gyor, Baross Gabor ter: 3 trolibusz, 4 villamos, 1 busz all meg.
+Szekesfehervar, Bory-var: 2 busz, 1 trolibusz, 1 villamos indul el
 
-### JSON-ből lista:
+#!/bin/bash
 
-```cpp
-vector<Ember> betoltott = j.get<vector<Ember>>();
-```
+# beolvassuk a fájlt és kiírjuk a villamosok számát
+while read line
+do
+    tram_count=$(echo $line | grep -oE "[0-9]+ villamos")
+        if [ -n "$tram_count" ]
+                then
+                        echo $tram_count
+        fi
+done < allomasok.txt
 
-Ez akkor működik, ha `to_json` és `from_json` definiálva van az `Ember` típusra.
+10. Írj egy bash scriptet a grep és reguláris kifejezések használatával, amely beolvassa az allomasok.txt fájl tartalmát egy ciklus segítségével, majd összeadja a buszok számát, amelyet végül kiírat.
 
----
+Példa adatok:
+Budapest, Moricz Zsigmond korter: 5 busz, 7 villamos, 2 metro all meg.
+Szeged, Dom ter: 1 villamos, 3 busz, 2 trolibusz indul el.
+Debrecen, Nagyerdei korut: 4 busz, 1 villamos, 1 metro halad el.
+Pecs, Szechenyi ter: 2 trolibusz, 6 busz érkezik.
+Gyor, Baross Gabor ter: 3 trolibusz, 4 villamos, 1 busz all meg.
+Szekesfehervar, Bory-var: 2 busz, 1 trolibusz, 1 villamos indul el
 
-## 📁 8. Fájlba írás és fájlból olvasás
-
-```cpp
-#include <fstream>
-
-void mentesFajlba(const Ember& e, const string& fajlnev) {
-    json j = e;
-    ofstream f(fajlnev);
-    f << j.dump(4);
-}
-
-Ember betoltesFajlbol(const string& fajlnev) {
-    ifstream f(fajlnev);
-    json j;
-    f >> j;
-    return j.get<Ember>();
-}
-```
+#!/bin/bash
 
----
+bus_count=0
 
-## 🛡️ 9. Hibaellenőrzés és robusztusság
+while read line
+do
+        bus_number=$(echo "$line" | grep -oE "\b[0-9]+ busz\b" | grep -oE "[0-9]+")
+        if [ -n "$bus_number" ]
+                then
+                        ((bus_count+=bus_number))
+        fi
+done < allomasok.txt
 
-Mindig ellenőrizzünk:
+echo "A varosokban levo osszes busz szama: $bus_count"1. Belső tördelődésnél a folyamatok nem használják ki a rendelkezésre bocsátott partíciót.
+Igaz/Hamis
 
-```cpp
-try {
-    json j = json::parse(szoveg);
-    Ember e = j.get<Ember>();
-} catch (json::exception& e) {
-    cerr << "JSON hiba: " << e.what() << endl;
-}
-```
+2. Fix partíciós rendszereknél szükség lehet a szabad területek tömörítésére.
+Igaz/Hamis
 
----
+3. A FIFO lapcsere stratégia gyakran használt lapot is kitehet.
+Igaz/Hamis
 
-## 🧩 10. Haladó lehetőségek
-
-### Beágyazott objektumok:
-
-```cpp
-class Cim {
-public:
-    string varos;
-    int iranyitoszam;
-};
-
-class Ember {
-public:
-    string nev;
-    int kor;
-    Cim cim;
-};
-```
+4. A demand paging (igény szerinti lapozás) esetén ritkán van laphiba.
+Igaz/Hamis
 
-Kell `to_json` és `from_json` mindkét osztályra.
+5. A háttértárak foglalt területeinek nyilvántartására használt indexelt tárolás jó, mert gyors és közvetlen hozzáférést is lehetővé tesz.
+Igaz/Hamis
 
----
+6. Ami a memóriában a (szektor, blokk, szegmens, lap), az a háttértáron a (szektor, blokk, szegmens, lap).
 
-### STL konténerek konvertálása:
+7. Mik a skálázhatósággal kapcsolatos követelmények? Válasszon ki egyet vagy többet:
+a. A rendszert egy központi helyről lehessen felügyelni.
+b. Növekvő terhelésnél a rendszer ne törjön le hirtelen.
+c. A rendszer növekedésével ne kelljen az architektúrát megáltoztatni.
+d. Minden felhasználó egységesen lássa az összes csomópontot, munkája szempontjából mindegy legyen, hogy melyikre lép be.
+e. További csomópontok üzembe állításánál a teljesítmény ne romoljon.
 
-```cpp
-map<string, int> szotar = {{"alma", 2}, {"banán", 3}};
-json j = szotar;
-```
+8. Az elosztott állományoknál használt helyi átmeneti tárakon végzett műveleteknél mit jelent az átmeneti tár konzisztenciája? Válasszon ki egyet:
+a. A helyi tár tartalma érvénytelen.
+b. A távoli tár tartalma érvénytelen.
+c. A helyi tár tartalma és a távoli tár tartalma különböző.
 
-### Automatikus típuskonverziók:
+9. Az elosztott állományoknál használt távoli eljárás hívás során a kommunikáció. Válasszon ki egyet:
+a. szimmetrikus
+b. asszimetrikus
 
-```cpp
-int x = j.value("kor", 0); // ha nincs „kor” kulcs, akkor 0
+10. Az elosztott állománykezelésnél hasznát távoli eljáráshívás során az adatok a helyi csomópontba másolódnak.
+Igaz/Hamis
 ```
-
----
-
-## 📌 11. Összegzés
-
-| Művelet              | Példa C++ kóddal                       |
-| -------------------- | -------------------------------------- |
-| JSON írás            | `json j = e;`                          |
-| JSON olvasás         | `e = j.get<Ember>();`                  |
-| Tömb mentése         | `json j = vector<Ember>;`              |
-| JSON fájlba írás     | `ofstream f("f.json"); f << j;`        |
-| JSON fájlból olvasás | `ifstream f("f.json"); f >> j;`        |
-| Hibaellenőrzés       | `try { ... } catch (json::exception&)` |
-
----
-
-## ✅ Legjobb gyakorlatok
-
-* Használj `nlohmann/json` könyvtárat olvashatóság és egyszerűség miatt
-* Különítsd el a `to_json` / `from_json` definíciókat a `model.h` fájlban
-* Gondoskodj hibaellenőrzésről fájlkezelésnél
-* Preferáld `dump(4)` használatát fejlesztés alatt (formázott JSON)
-* Használj `json::value("kulcs", alap)` a biztonságos kulcslekéréshez
-
----
-
-## 🎯 Következő lépések
-
-Ha szeretnéd:
-
-* írok egy teljes **minta projektet** (JSON mentés + betöltés + fájlkezelés)
-* vagy készítek gyakorlófeladatokat a `json` használatára STL konténerekkel
-
- 
