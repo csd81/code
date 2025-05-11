@@ -1,0 +1,1 @@
+/usr/bin/g++ -DQT_QML_DEBUG -g CMakeFiles/transport_solver.dir/main.cpp.o CMakeFiles/transport_solver.dir/withinput.cpp.o -o transport_solver 
