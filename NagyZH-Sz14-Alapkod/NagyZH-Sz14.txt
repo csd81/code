@@ -1,0 +1,18 @@
+
+
+Innentől kezdve (az előbb említett beolvasást leszámítva) a teljes pontszámhoz a Tavern osztály nem hivatkozhat a konkrét gyerekosztályokra, csak az ősosztályra.
+
+Vagyis, a gyerekosztályok szerinti esetszétválasztásokat ajánlott virtuális metódusokkal megoldani. Legyen a Tavern osztályban printAll metódus, ami kiírja a szereplők adatait. A Party osztály reprezentálja a felbérelt csapatot. Konstruktorban kapja meg egy szövegfájl nevét, és a Tavern-t, ahol a harcosok vannak tárolva. A fájlban a felbérlendő harcosok azonosítói vannak felsorolva, az azonosítók nem tartalmaznak whitespace-t és mind különbözők. A konstruktor töltse is be az adatokat. A csapaton belül a sorrend lényeges. (Tipp: célszerű a Tavern-ből a megfelelő harcosok mutatóit lekérdezni, és a Party-ban ezeket a mutatókat eltárolni.) A Party osztályban is legyen printAll metódus, ami a csapat tagjait írja ki.
+
+Legyen a Party osztályban egy getTotalCost metódus is, ami visszaadja a csapat teljes zsoldját. A Dragon osztály reprezentál egy sárkányt. Van neki életereje és páncélja. A Dragon osztály kódját nem szabad módosítani. Legyen egy virtuális metódus a harcosokat reprezentáló ősosztályban, ami paraméterben várja a sárkányt, és csökkenti a sárkány életerejét a harcostól függően:   A lovag annyi sérülést okoz a sárkánynak, amennyi a lovag ereje. Ezt a sérülést viszont csökkenti a sárkány páncélja, de soha nem 1 alá. A sárkány életereje a sérülés mértékével csökken.   A lövész annyival csökkenti a sárkány életerejét, amennyi a lövész ügyessége. A sárkány páncélja ilyenkor hatástalan.  A mágus támadásának hatására a sárkány megmaradt életerejének arányosan akkora részét veszíti el, amennyi a mágus varázsereje. A sárkány páncélja ilyenkor is hatástalan. Konkrétan, ha 𝐻𝑃𝑒𝑙𝑜𝑡𝑡𝑒 a sárkány megmaradt életereje a támadás előtt és 𝑀 a mágus varázsereje, akkor a támadás után a sárkány életereje az alábbi képlet szerint alakul (egészekre lefelé kerekítve, vagyis nem szükséges külön konvertáló vagy kerekítő műveletet végezni):  𝐻𝑃𝑢𝑡𝑎𝑛𝑎 = 𝐻𝑃𝑒𝑙𝑜𝑡𝑡𝑒 ⋅ (1 − 𝑀)  Legyen a Party osztályban egy raid metódus, ez szimulálja a csatát a csapat és egy sárkány között (ez utóbbit paraméterként kell átadni), és közben ki is írja, hogy éppen mi történik, és hogy végül a csapat vagy a sárkány nyert. A csata az alábbi algoritmus szerint zajlik.   A csapatból mindenki egyenként, a csapat sorrendjében megtámadja a sárkányt. A támadás módja a harcostól függ (lásd később). Ha bárkinek a támadását követően a sárkány életereje 0-ra vagy az alá csökken, a csata azonnal véget ér a csapat győzelmével, a többiek nem kerülnek sorra. Ha minden csapattag támadott, akkor a sárkány felfal 1 csapattagot. Ezt követően a csapat újra támad, a sárkány újra felfal 1 csapattagot, és így tovább. A felfalt csapattagok többé nem támadnak. A sárkány mindig a sorban következő csapattagot falja fel, és a sor elejéről indul. Ha a sárkány mindenkit felfalt, a csata a csapat vereségével ér véget.
+
+
+
+Tavern, beolvasás JSON fájlból
+Tavern, printAll metódus
+Party, beolvasás szövegfájlból
+Party, printAll metódus
+getTotalCost metódus
+Virtuális metódus a háromféle támadási módra
+Party, raid metódus, a csata algoritmusa
+
