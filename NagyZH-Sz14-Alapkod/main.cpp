@@ -3,14 +3,14 @@ using namespace std;
 
 // sajat include-ok (osztalyok szabadon atnevezhetok)
 #include "tavern.h"
-// #include "party.h"
+#include "party.h"
 
 #define PART1 // Tavern, beolvas JSON fajlokbol
-// #define PART2 // Tavern, printAll()
-// #define PART3 // Party, beolvasas szovegfajlbol
-// #define PART4 // Party, printAll()
-// #define PART5 // Party, getTotalCost()
-// #define PART6 // Party, raid()
+#define PART2 // Tavern, printAll()
+#define PART3 // Party, beolvasas szovegfajlbol
+#define PART4 // Party, printAll()
+#define PART5 // Party, getTotalCost()
+#define PART6 // Party, raid()
 
 int main()
 {

@@ -19,5 +19,6 @@ void Ranger::print() const
 
 void Ranger::attack(Dragon &dragon) const
 {
+    std::cout << id << " attacks dragon with agility: " << agility << "\n";
     dragon.reduceHealth(agility);
 }

@@ -7,16 +7,17 @@
 #include <fstream>
 #include <sstream>
 #include "json.hpp"
+using json = nlohmann::json;
 
 class Tavern
 {
-    std::vector<Warrior*> warriors;
+    vector<std::shared_ptr<Warrior>> warriors;
 public:
     void loadAll(const std::string& knightsFile,
                  const std::string& rangersFile,
                  const std::string& magesFile);
     void printAll() const;
-    Warrior* getWarriorById(const std::string& id) const;
+    std::shared_ptr<Warrior> getWarriorById(const std::string& id) const;
 };
 
 #endif // TAVERN_H

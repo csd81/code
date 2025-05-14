@@ -15,7 +15,7 @@ void Tavern::loadAll(const string &knightsFile, const string &rangersFile, const
     json kjson;
     kfile >>  kjson;
     for (const auto& k : kjson) {
-        warriors.push_back(new Knight(k["Id"], k["Price"], k["Strength"]));
+        warriors.push_back(std::make_shared<Knight>(k["Id"], k["Price"], k["Strength"]));
     }
 
 
@@ -23,14 +23,14 @@ void Tavern::loadAll(const string &knightsFile, const string &rangersFile, const
     json rjson;
     rfile >>  rjson;
     for (const auto& r : rjson) {
-        warriors.push_back(new Ranger(r["Id"], r["Price"], r["Agility"]));
+        warriors.push_back(std::make_shared<Ranger>(r["Id"], r["Price"], r["Agility"]));
     }
 
     std::ifstream mfile(magesFile);
     json mjson;
     mfile >>  mjson;
     for (const auto& m : mjson) {
-        warriors.push_back(new Mage(m["Id"], m["Price"], m["Magic"]));
+        warriors.push_back(std::make_shared<Mage>(m["Id"], m["Price"], m["Magic"]));
     }
 
 
@@ -44,7 +44,7 @@ void Tavern::printAll() const
 }
 
 
-Warrior *Tavern::getWarriorById(const string &id) const
+std::shared_ptr<Warrior> Tavern::getWarriorById(const string &id) const
 {
     for (const auto& w : warriors) {
         if (w->getId() == id)

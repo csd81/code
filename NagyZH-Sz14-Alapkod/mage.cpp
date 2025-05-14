@@ -18,5 +18,6 @@ void Mage::print() const
 
 void Mage::attack(Dragon &dragon) const
 {
+    std::cout << id << " casts magic: " << magic << "\n";
     dragon.reduceHealthByMagic(magic);
 }

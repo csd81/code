@@ -21,5 +21,6 @@ void Knight::attack(Dragon &dragon) const
 {
     int damage = strength - dragon.getArmor();
     if (damage < 1) damage  = 1;
+    std::cout << id << " attacks dragon with damage: " << damage << "\n";
     dragon.reduceHealth(damage);
 }
