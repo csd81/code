@@ -1,213 +1,102 @@
+// c++11
 // 7.7.1. Valósítsa meg a Kruskal algoritmust! Tárolja halmazban az épülő feszítőfa csúcsait! Használja az UNIÓ, HOLVAN halmazműveleteket annak eldöntésére, hogy egy új él felvétele okoz-e kört a feszítőfában! Ötlet: Az algoritmus elején a gráf minden pontja egy önálló halmazt jelent. A HOLVAN művelet megadja, hogy egy elem, melyik halmazban található, az UNIÓ művelet két halmazt egyesít. Ha egy élet akarunk hozzáadni a feszítőfához, akkor meg kell vizsgálni, hogy az él két pontja ugyanabba a halmazba tartozik-e. Ha igen, akkor az él felvétele kört okozna, így a következő legkisebb súlyú élt kell vizsgálni. A halmazokat (nem bináris) fákkal reprezentáljuk. Az UNIÓ művelet két ilyen fát egyesít oly módon, hogy az első fa a gyökere a második fa gyökerének egy új gyereke lesz. A HOLVAN művelet megadja a fa gyökerét. 
 
-7.7.1.
-#include <stdio.h>
-#include <stdlib.h> #define SIZE 5 struct edges { int current_node;
-struct edges* next;
+
+
+// C++11
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+// Disjoint Set Union (Union-Find) with path compression and union by rank
+struct DSU {
+    std::vector<int> parent, rank;
+    DSU(int n): parent(n), rank(n, 0) {
+        for(int i = 0; i < n; ++i) parent[i] = i;
+    }
+    int find(int x) {
+        return parent[x] == x
+             ? x
+             : parent[x] = find(parent[x]);
+    }
+    bool unite(int a, int b) {
+        a = find(a);
+        b = find(b);
+        if (a == b) return false;
+        if (rank[a] < rank[b]) std::swap(a,b);
+        parent[b] = a;
+        if (rank[a] == rank[b]) ++rank[a];
+        return true;
+    }
 };
-struct node { int parent;
-int current_node;
-struct edges* current_node_edges;
-struct node* next;
+
+// Edge structure
+struct Edge {
+    int u, v;
+    int weight;
+    bool operator<(Edge const& other) const {
+        return weight < other.weight;
+    }
 };
-struct edge_list { int u;
-int v;
-int weight;
-struct edge_list* next;
-};
-void Union(int, int, int, struct node*, struct node*);
-int Where(int, int, int, struct node*, struct node*);
-void CreateDisjunctGraphs(struct node*, int);
-void FreeGraph(struct node*);
-void FreeGraphList(struct node*);
-void SortByWeight(struct edge_list**);
-void FreeEdgeList(struct edge_list*);
-int main() { int temp_num, i, j, k;
-int source, destiny;
-int destiny_disjunct_graph_root, source_disjunct_graph_root;
-struct node my_disjunct_graph;
-struct node nodes_in_row, *nodes_in_row_temp;
-struct edge_list* my_edge_list = NULL;
-struct edge_list *edge_list_temp;
-struct edges* edges_temp;
-struct edge_list* my_sorted_edge_list;
-int adjacenci_matrix[SIZE][SIZE] = { {0, 3, 1, 0, 9}, {0, 4, 2, 4, 0}, {0, 4, 0, 1, 7}, {2, 0, 5, 0, 0}, {1, 0, 3, 0, 4} };
-printf("The adjacenci matrix:\n");
-for (i = 0;
-i < SIZE;
-++i) { for (k = 0;
-k < i;
-++k) printf("0 ");
-for (j = i;
-j < SIZE;
-++j) { printf("%d ", adjacenci_matrix[i][j]);
-if (adjacenci_matrix[i][j] != 0) { if (!my_edge_list) { my_edge_list = (struct edge_list*)malloc(sizeof(struct edge_list));
-edge_list_temp = my_edge_list;
-edge_list_temp->next = NULL;
-edge_list_temp->u = i+1;
-edge_list_temp->v = j+1;
-edge_list_temp->weight = adjacenci_matrix[i][j];
-} else { edge_list_temp->next = (struct edge_list*)malloc(sizeof(struct edge_list));
-edge_list_temp = edge_list_temp->next;
-edge_list_temp->next = NULL;
-} } edge_list_temp->u = i+1;
-edge_list_temp->v = j+1;
-edge_list_temp->weight = adjacenci_matrix[i][j];
-} printf("\n");
-} SortByWeight(&my_edge_list);
-my_sorted_edge_list = my_edge_list;
-edge_list_temp = my_sorted_edge_list;
-my_edge_list = my_edge_list->next;
-while (my_edge_list) { SortByWeight(&my_edge_list);
-edge_list_temp->next = my_edge_list;
-edge_list_temp = edge_list_temp->next;
-my_edge_list = my_edge_list->next;
-} edge_list_temp = my_sorted_edge_list;
-printf("\nList of the links from the biggest:\n");
-while (edge_list_temp) { printf("Link (%d-%d), weight: %d\n", edge_list_temp->u, edge_list_temp->v, edge_list_temp->weight );
-edge_list_temp = edge_list_temp->next;
-} CreateDisjunctGraphs(&my_disjunct_graph, SIZE);
-CreateDisjunctGraphs(&nodes_in_row, SIZE);
-edge_list_temp = my_sorted_edge_list;
-while (edge_list_temp) { printf("\nDisjunct graphs, before analyse link (%d-%d) with weight %d:\n", edge_list_temp->u, edge_list_temp->v, edge_list_temp->weight);
-nodes_in_row_temp = &my_disjunct_graph;
-while (nodes_in_row_temp) { printf("Root nood: %d the link(s): ", nodes_in_row_temp>current_node);
-edges_temp = nodes_in_row_temp->current_node_edges;
-while(edges_temp) { printf("%d ", edges_temp->current_node);
-edges_temp = edges_temp->next;
-} printf("\n");
-nodes_in_row_temp = nodes_in_row_temp->next;
-} destiny = edge_list_temp->u;
-source = edge_list_temp->v;
-destiny_disjunct_graph_root = Where(0, 0, destiny, &my_disjunct_graph, &nodes_in_row);
-source_disjunct_graph_root = Where(0, 0, source, &my_disjunct_graph, &nodes_in_row);
-if (destiny_disjunct_graph_root > source_disjunct_graph_root) { temp_num = destiny_disjunct_graph_root;
-destiny_disjunct_graph_root = source_disjunct_graph_root;
-source_disjunct_graph_root = temp_num;
-} if (destiny_disjunct_graph_root != source_disjunct_graph_root) { Union(SIZE, destiny_disjunct_graph_root, source_disjunct_graph_root, &my_disjunct_graph, &nodes_in_row);
-} else { printf("The nodes are in the same graph!\n");
-} if (!my_disjunct_graph.next) { printf("\nPerfect, only one graph remain.\n");
-printf("The minimum spanning tree has been created, the last link weight is: %d\n", edge_list_temp->weight);
-break;
-} edge_list_temp = edge_list_temp->next;
-} if (my_disjunct_graph.next) { printf("\nSorry, more than one graph remain.\n");
-printf("Cannot create minimum spanning tree!\n");
-} } FreeGraph(&my_disjunct_graph);
-FreeGraphList(&nodes_in_row);
-FreeEdgeList(my_sorted_edge_list);
-return 0;
-void CreateDisjunctGraphs(struct node* my_node, int size) { int i;
-my_node->parent = 1;
-my_node->current_node = 1;
-my_node->current_node_edges = NULL;
-my_node->next = NULL;
-for(i = 2;
-i <= size;
-++i) { my_node->next = (struct node*)malloc(sizeof(struct node));
-my_node = my_node->next;
-my_node->parent = i;
-my_node->current_node = i;
-my_node->current_node_edges = NULL;
-my_node->next = NULL;
-} } int Where(int recursion, int temp_parent, int u, struct node* actual, struct node* original) { int i = 0;
-struct node* temp;
-struct edges* temp_edge;
-while (actual) { if (u == actual->current_node || temp_parent) return actual->parent;
-else { temp_edge = actual->current_node_edges;
-while (temp_edge) { temp = original;
-while(temp_edge->current_node != temp->current_node) temp = temp->next;
-temp_parent = Where(1, temp_parent, u, temp, original);
-if (temp_parent) return actual->parent;
-temp_edge = temp_edge->next;
-} } if (recursion) return 0;
-actual = actual->next;
-} return 0;
-} void Union(int size, int destiny, int source, struct node* my_dijunct_graphs , struct node* original) { struct node* temp_node, *source_node, *source_node_prev, *destiny_node;
-struct edges* temp_edge;
-source_node = my_dijunct_graphs;
-destiny_node = my_dijunct_graphs;
-while (source_node->current_node != source) { source_node_prev = source_node;
-source_node = source_node->next;
-} while (destiny_node->current_node != destiny) destiny_node = destiny_node->next;
-if (destiny_node->next->current_node == source) { destiny_node->next = source_node->next;
-source_node->next = NULL;
-konzisztens lesz source_node->parent = destiny_node->parent;
-temp_node = original;
-while(temp_node->current_node != source) temp_node = temp_node->next;
-temp_node->parent = destiny_node->parent;
-if (!destiny_node->current_node_edges) { destiny_node->current_node_edges = (struct edges*)malloc(sizeof(struct edges));
-destiny_node->current_node_edges->next = NULL;
-destiny_node->current_node_edges->current_node = source_node>current_node;
-temp_node = original;
-while (temp_node->current_node != destiny_node->current_node) temp_node = temp_node->next;
-temp_node->current_node_edges = destiny_node>current_node_edges;
-} else { temp_edge = destiny_node->current_node_edges;
-while (temp_edge->next) temp_edge = temp_edge->next;
-temp_edge->next = (struct edges*)malloc(sizeof(struct edges));
-temp_edge = temp_edge->next;
-temp_edge->current_node = source;
-temp_edge->next = NULL;
-} } else { source_node_prev->next = source_node->next;
-source_node->next = NULL;
-source_node->parent = destiny_node->parent;
-temp_node = original;
-while(temp_node->current_node != source) temp_node = temp_node->next;
-temp_node->parent = destiny_node->parent;
-temp_edge = destiny_node->current_node_edges;
-if (!destiny_node->current_node_edges) { destiny_node->current_node_edges = (struct edges*)malloc(sizeof(struct edges));
-destiny_node->current_node_edges->next = NULL;
-destiny_node->current_node_edges->current_node = source_node>current_node;
-temp_node = original;
-while (temp_node->current_node != destiny_node->current_node) temp_node = temp_node->next;
-temp_node->current_node_edges = destiny_node>current_node_edges;
-} else { temp_edge = destiny_node->current_node_edges;
-while (temp_edge->next) temp_edge = temp_edge->next;
-temp_edge->next = (struct edges*)malloc(sizeof(struct edges));
-temp_edge = temp_edge->next;
-temp_edge->current_node = source;
-temp_edge->next = NULL;
-} } } void SortByWeight(struct edge_list** root) { int min;
-struct edge_list* temp, *temp_prev, *min_weight, *min_weight_prev;
-temp_prev = *root;
-temp = temp_prev->next;
-min_weight = *root;
-min_weight_prev = NULL;
-min = (*root)->weight;
-while (temp) { if (temp->weight < min) { min = temp->weight;
-min_weight = temp;
-min_weight_prev = temp_prev;
-temp_prev = temp;
-temp = temp->next;
-} else { temp_prev = temp;
-temp = temp->next;
-} } if (!min_weight_prev) ;
-else if (min_weight_prev == (*root)) { (*root)->next = min_weight->next;
-min_weight->next = min_weight_prev;
-(*root) = min_weight;
-} else { min_weight_prev->next = min_weight->next;
-min_weight->next = (*root);
-(*root) = min_weight;
-} } void FreeGraph(struct node* root) { struct edges* temp_edge1, *temp_edge2;
-struct node* temp_node1, *temp_node2;
-temp_edge1 = root->current_node_edges;
-while (temp_edge1) { temp_edge2 = temp_edge1;
-temp_edge1 = temp_edge1->next;
-free(temp_edge2);
-} temp_node1 = root->next;
-while (temp_node1) { temp_edge1 = temp_node1->current_node_edges;
-while (temp_edge1) { temp_edge2 = temp_edge1;
-temp_edge1 = temp_edge1->next;
-free(temp_edge2);
-} temp_node2 = temp_node1;
-temp_node1 = temp_node1->next;
-free(temp_node2);
-} } void FreeGraphList(struct node* root) { struct node* temp_node1, *temp_node2;
-temp_node1 = root->next;
-while (temp_node1) { temp_node2 = temp_node1;
-temp_node1 = temp_node1->next;
-free(temp_node2);
-} } void FreeEdgeList(struct edge_list* temp1) { struct edge_list* temp2;
-} while(temp1) { temp2 = temp1;
-temp1 = temp1->next;
-free(temp2);
-} 
+
+int main() {
+    std::ios::sync_with_stdio(false);
+    std::cin.tie(nullptr);
+
+    // 1) Beolvassuk a gráf csúcs- és élsúlymátrixát
+    int N;
+    std::cout << "Add meg a csucsok szamat (N): ";
+    std::cin >> N;
+
+    std::vector<std::vector<int>> adj(N, std::vector<int>(N));
+    std::cout << "Add meg az " << N << "x" << N 
+              << " adjacencia-matrixot (0 = nincs el, mas szam = sully):\n";
+    for(int i = 0; i < N; ++i) {
+        for(int j = 0; j < N; ++j) {
+            std::cin >> adj[i][j];
+        }
+    }
+
+    // 2) Éllista összeállítása (csak egyszer – ha irányítatlan, i<j)
+    std::vector<Edge> edges;
+    for(int i = 0; i < N; ++i) {
+        for(int j = i+1; j < N; ++j) {
+            if (adj[i][j] != 0) {
+                edges.push_back(Edge{i, j, adj[i][j]});
+            }
+        }
+    }
+
+    // 3) Élek súly szerinti rendezése
+    std::sort(edges.begin(), edges.end());
+
+    // 4) DSU inicializálása
+    DSU dsu(N);
+
+    // 5) Kruskal: végig az éleken, ha két végpont külön halmazban, hozzáadjuk az MST-hez és egyesítjük őket
+    std::vector<Edge> mst;
+    int totalWeight = 0;
+    for(auto &e : edges) {
+        if (dsu.unite(e.u, e.v)) {
+            mst.push_back(e);
+            totalWeight += e.weight;
+            if ((int)mst.size() == N-1) break;
+        }
+    }
+
+    // 6) Eredmény kiírása
+    if ((int)mst.size() != N-1) {
+        std::cout << "A graf nem osszefuggo, nem lehet MST-t epiteni.\n";
+    } else {
+        std::cout << "\nKruskal-algoritmus eredmenye:\n";
+        std::cout << "MST osszsuly: " << totalWeight << "\n";
+        std::cout << "MST elemei (u, v : suly):\n";
+        for(auto &e : mst) {
+            std::cout << "  (" << e.u << ", " << e.v 
+                      << ") : " << e.weight << "\n";
+        }
+    }
+
+    return 0;
+}
+

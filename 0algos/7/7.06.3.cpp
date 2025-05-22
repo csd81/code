@@ -1,47 +1,92 @@
-7.6.3. Adott egy valuta átváltási táblázat (adjacencia mátrix). x valutát y-ra szeretnénk váltani, keressük meg azt az átváltási sorozatot, amelyben a legtöbb y valutát kapjuk. Nem biztos, hogy a direkt átváltás a legjobb. Pl.: 1 dollárért kapunk 2 eurót, azonban 1 dollárért kaphatunk 6 frankot is, 1 frankért fél dollárt, így a dollár – frank - euró lesz a legjobb átváltás. Az átváltási táblázat főátlója csupa egyes, hiszen 1 dollár átváltva dollárra 1 dollárt kapunk. A főátlóra szimmetrikusan pedig egymás reciprokjai kell, hogy szerepeljenek, mert ha 1 euró = 2 dollár, akkor 1 dollár = 1/2 euró. 7.7. Kruskal algoritmus
-7.6.3.
-#include <stdio.h> typedef struct { int u, v;
-float weight;
-}Edge;
-#define INFINITY 10000 #define SIZE 3 void ModifiedBellmanFord(int, int, int, float*, Edge*);
-void PrintMaxMoney(int, float[]);
-int main() { Edge edges[1024];
-int i, j;
-int edges_num = 0, source_node = 0;
-float distances_from_source[SIZE];
-float adjacenci_matrix[SIZE][SIZE] = { {1, 2, 3}, {1./2, 1, 1./4}, {1./3, 4, 1} };
-printf("Adjacenci matrix for exchange table:\n");
-for (i = 0;
-i < SIZE;
-++i) { for (j = 0;
-j < SIZE;
-++j) { printf("%f ", adjacenci_matrix[i][j]);
-if (adjacenci_matrix[i][j] != 0) { edges[edges_num].u = i;
-edges[edges_num].v = j;
-edges[edges_num].weight = adjacenci_matrix[i][j];
-edges_num++;
-} } printf("\n");
-} ModifiedBellmanFord(source_node, SIZE, edges_num, distances_from_source, edges);
-} PrintMaxMoney(SIZE, distances_from_source);
-return 0;
-void PrintMaxMoney(int size, float* distances_from_source) { int i;
-printf("\nMax money at current currancys:\n");
-for (i = 0;
-i < size;
-++i) printf("at %d\t\t", i + 1);
-printf("\n");
-for (i = 0;
-i < size;
-++i) printf("%f\t", distances_from_source[i]);
-printf("\n");
-} void ModifiedBellmanFord(int source, int size, int edges_num, float* distances_from_source, Edge* edges) { int i, j;
-for (i = 0;
-i < size;
-++i) distances_from_source[i] = 0;
-distances_from_source[source] = 1;
-for (i = 0;
-i < size - 1;
-++i) { for (j = 0;
-j < edges_num;
-++j) { if (distances_from_source[edges[j].u] * edges[j].weight > distances_from_source[edges[j].v]) { distances_from_source[edges[j].v] = distances_from_source[edges[j].u] * edges[j].weight;
-} } } } 
+// c++11
+// 7.6.3. Adott egy valuta átváltási táblázat (adjacencia mátrix). x valutát y-ra szeretnénk váltani, keressük meg azt az átváltási sorozatot, amelyben a legtöbb y valutát kapjuk. Nem biztos, hogy a direkt átváltás a legjobb. Pl.: 1 dollárért kapunk 2 eurót, azonban 1 dollárért kaphatunk 6 frankot is, 1 frankért fél dollárt, így a dollár – frank - euró lesz a legjobb átváltás. Az átváltási táblázat főátlója csupa egyes, hiszen 1 dollár átváltva dollárra 1 dollárt kapunk. A főátlóra szimmetrikusan pedig egymás reciprokjai kell, hogy szerepeljenek, mert ha 1 euró = 2 dollár, akkor 1 dollár = 1/2 euró. 7.7. Kruskal algoritmus
+
+// C++11
+#include <iostream>
+#include <vector>
+#include <limits>
+#include <iomanip>
+#include <algorithm>
+
+
+int main() {
+    std::ios::sync_with_stdio(false);
+//    std::cin.tie(nullptr);
+
+    int N;
+    std::cout << "Add meg a valutak szamat (N): ";
+    std::cin >> N;
+
+    // Beolvassuk az NxN atvaltas rate matrixot
+    std::vector<std::vector<double>> rate(N, std::vector<double>(N));
+    std::cout << "Add meg az " << N << "x" << N
+              << " atvaltas aranyokat (fopartra 1.0):\n";
+    for (int i = 0; i < N; ++i) {
+        for (int j = 0; j < N; ++j) {
+            std::cin >> rate[i][j];
+        }
+    }
+
+    int src, dst;
+    std::cout << "Melyik a kezdo valuta (0–" << N-1 << "): ";
+    std::cin >> src;
+    std::cout << "Melyik a cel valuta   (0–" << N-1 << "): ";
+    std::cin >> dst;
+
+    // edges list
+    struct Edge { int u, v; double w; };
+    std::vector<Edge> edges;
+    edges.reserve(N*N);
+    for (int u = 0; u < N; ++u) {
+        for (int v = 0; v < N; ++v) {
+            if (u != v && rate[u][v] > 0) {
+                edges.push_back({u, v, rate[u][v]});
+            }
+        }
+    }
+
+    // Modified Bellman-Ford to maximize product
+    const double NEG_INF = 0.0;
+    std::vector<double> best(N, NEG_INF);
+    std::vector<int> prev(N, -1);
+
+    best[src] = 1.0;
+    // Relax edges up to N-1 times
+    for (int iter = 0; iter < N-1; ++iter) {
+        bool updated = false;
+        for (auto &e : edges) {
+            if (best[e.u] > 0 && best[e.u] * e.w > best[e.v]) {
+                best[e.v] = best[e.u] * e.w;
+                prev[e.v] = e.u;
+                updated = true;
+            }
+        }
+        if (!updated) break;
+    }
+
+    if (best[dst] <= 0) {
+        std::cout << "\nNem lehet atvaltani a " << src
+                  << " valutat a " << dst << " valutara.\n";
+        return 0;
+    }
+
+    // Útvonal visszaépítése
+    std::vector<int> path;
+    for (int cur = dst; cur != -1; cur = prev[cur]) {
+        path.push_back(cur);
+    }
+    std::reverse(path.begin(), path.end());
+
+    // Eredmény kiírása
+    std::cout << "\nLegjobb atvaltas: ";
+    std::cout << std::fixed << std::setprecision(6)
+              << "1 unit " << src << " -> " << best[dst]
+              << " unit " << dst << "\n";
+    std::cout << "Atvaltasi sorozat: ";
+    for (size_t i = 0; i < path.size(); ++i) {
+        std::cout << path[i] << (i+1<path.size() ? " -> " : "\n");
+    }
+
+    return 0;
+}
+

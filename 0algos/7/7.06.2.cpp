@@ -1,57 +1,69 @@
 // 7.6.2. Számítsuk ki egy fa átmérőjét! Egy fa átmérője alatt a fa bármely két csúcsa között futó legrövidebb utak közül a leghosszabbat értjük. Ötlet: Ha lefuttatjuk a fa minden pontjára a Belmann-Ford algoritmust, akkor ebből már csak a legkisebb elemet kell kiválasztani. 
 
+// C++11
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <limits>
 
-#include <stdio.h> typedef struct { int u, v, weight;
-}Edge;
-#define INFINITY 10000 #define SIZE 8 int BellmanFord(int, int, int, int*, Edge*);
-void PrintDistances(int, int[]);
-int main() { Edge edges[1024];
-int i, j, max_distance = 0, temp_max_distance;
-int edges_num = 0;
-int distances_from_source[SIZE];
-int adjacenci_matrix[SIZE][SIZE] = { {0, 1, 1, 0, 0, 0, 0, 0}, {1, 0, 0, 1, 0, 0, 0, 0}, {1, 0, 0, 0, 1, 1, 0, 0}, {0, 1, 0, 0, 0, 0, 1, 0}, {0, 0, 1, 0, 0, 0, 0, 0}, {0, 0, 1, 0, 0, 0, 0, 1}, {0, 0, 0, 1, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 1, 0, 0}, };
-printf("Adjacenci matrix:\n");
-for (i = 0;
-i < SIZE;
-++i) { for (j = 0;
-j < SIZE;
-++j) { printf("%d ", adjacenci_matrix[i][j]);
-if (adjacenci_matrix[i][j] != 0) { edges[edges_num].u = i;
-edges[edges_num].v = j;
-edges[edges_num].weight = adjacenci_matrix[i][j];
-edges_num++;
-} } printf("\n");
-} for (i = 0;i < SIZE;
-++i) { temp_max_distance = BellmanFord(i, SIZE, edges_num, distances_from_source, edges);
-PrintDistances(SIZE, distances_from_source);
-if (temp_max_distance > max_distance) max_distance = temp_max_distance;
-} printf("\nThe tree's diameter is: %d\n", max_distance);
-return 0;
-} void PrintDistances(int size, int* distances_from_source) { int i;
-} printf("Distances from ");
-for (i = 0;
-i < size;
-++i) { if (distances_from_source[i] == 0) printf("%d:\n", i+1);
-} for (i = 0;
-i < size;
-++i) printf("to %d\t", i + 1);
-printf("\n");
-for (i = 0;
-i < size;
-++i) printf("%d\t", distances_from_source[i]);
-printf("\n");
-int BellmanFord(int source, int size, int edges_num, int* distances_from_source, Edge* edges) { int i, j, max = 0;
-for (i = 0;
-i < size;
-++i) distances_from_source[i] = INFINITY;
-distances_from_source[source] = 0;
-for (i = 0;
-i < size - 1;
-++i) { for (j = 0;
-j < edges_num;
-++j) { if (distances_from_source[edges[j].u] + edges[j].weight < distances_from_source[edges[j].v]) { distances_from_source[edges[j].v] = distances_from_source[edges[j].u] + edges[j].weight;
-} } } for (i = 0;
-i < size;
-++i) { if (distances_from_source[i] > max) max = distances_from_source[i];
-} return max;
-} 
+// BFS returns the farthest distance from src to any other node
+int bfs_max_dist(int src,
+                 const std::vector<std::vector<int>>& adj_list)
+{
+    int N = adj_list.size();
+    std::vector<int> dist(N, -1);
+    std::queue<int> q;
+
+    dist[src] = 0;
+    q.push(src);
+
+    int maxd = 0;
+    while (!q.empty()) {
+        int u = q.front(); q.pop();
+        for (int v : adj_list[u]) {
+            if (dist[v] == -1) {
+                dist[v] = dist[u] + 1;
+                maxd = std::max(maxd, dist[v]);
+                q.push(v);
+            }
+        }
+    }
+    return maxd;
+}
+
+int main() {
+    std::ios::sync_with_stdio(false);
+    std::cin.tie(nullptr);
+
+    int N;
+    std::cout << "Add meg a csucsok szamat (N): ";
+    std::cin >> N;
+
+    std::vector<std::vector<int>> adj_mat(N, std::vector<int>(N));
+    std::cout << "Add meg az " << N << "x" << N
+              << " adjacencia-matrixot (0 = nincs el, 1 = van el):\n";
+    for (int i = 0; i < N; ++i)
+        for (int j = 0; j < N; ++j)
+            std::cin >> adj_mat[i][j];
+
+    // Alakítsuk at szomszédsági listára
+    std::vector<std::vector<int>> adj_list(N);
+    for (int i = 0; i < N; ++i) {
+        for (int j = 0; j < N; ++j) {
+            if (adj_mat[i][j] != 0) {
+                adj_list[i].push_back(j);
+            }
+        }
+    }
+
+    // 7.6.2. Fa átmérője: minden pontból BFS, vesszük a legnagyobb távolságot
+    int diameter = 0;
+    for (int i = 0; i < N; ++i) {
+        int d = bfs_max_dist(i, adj_list);
+        diameter = std::max(diameter, d);
+    }
+
+    std::cout << "\nA fa atmeroje: " << diameter << "\n";
+    return 0;
+}
+
