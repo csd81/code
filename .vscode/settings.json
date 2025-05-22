@@ -59,7 +59,9 @@
         "streambuf": "cpp",
         "typeinfo": "cpp",
         "valarray": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "math.h": "c",
+        "stdio.h": "c"
     },
     "github.copilot.enable": {
         "*": true,
