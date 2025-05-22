@@ -57,7 +57,7 @@ int main() {
     cout << endl;
 
     minSort(myArray, size);
-    cout << "Min‐sorted myArray: ";
+    cout << "Min-sorted myArray: ";
     print(myArray, size);
     cout << endl << endl;
 
@@ -66,7 +66,7 @@ int main() {
     cout << endl;
 
     bubbleSort(myArray2, size);
-    cout << "Bubble‐sorted myArray2: ";
+    cout << "Bubble-sorted myArray2: ";
     print(myArray2, size);
     cout << endl;
 
