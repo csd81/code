@@ -28,7 +28,7 @@ bool searchFor(const double* arr, int size, double value);
 #endif // INC_HPP_
 ```
 
-----
+---
 
 **functions.cpp**
 

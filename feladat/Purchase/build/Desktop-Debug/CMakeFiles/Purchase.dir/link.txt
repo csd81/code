@@ -1,1 +1,0 @@
-/usr/bin/g++ -DQT_QML_DEBUG -g CMakeFiles/Purchase.dir/main.cpp.o CMakeFiles/Purchase.dir/product.cpp.o CMakeFiles/Purchase.dir/singleproduct.cpp.o CMakeFiles/Purchase.dir/multiproduct.cpp.o CMakeFiles/Purchase.dir/packagedproduct.cpp.o -o Purchase 
