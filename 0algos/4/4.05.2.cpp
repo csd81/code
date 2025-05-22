@@ -2,97 +2,191 @@
 // 4.5.2. Írjon metódust az aktuális mutató abszolút mozgatására, adott sorszámú elem törlésére, adott objektum törlésére, a teljes lista törlésére, aktuális mutató utáni beszúrásra! 4.6. Lista
 
 
+
+// c++11
 #include <iostream>
-#include <cstring> using namespace std;
-class airplane { public: int id;
-int passengers;
-airplane(int p1=0, int p2=0) : id(p1), passengers(p2), next(0), prev(0) {} bool operator==(const airplane& para) const;
-airplane *next, *prev;
+#include <string>
+
+template<typename T>
+class DoublyLinkedList {
+    struct Node {
+        T data;
+        Node* prev;
+        Node* next;
+        Node(const T& v): data(v), prev(nullptr), next(nullptr) {}
+    };
+    Node *head, *tail, *act;
+    int sz;
+
+public:
+    DoublyLinkedList(): head(nullptr), tail(nullptr), act(nullptr), sz(0) {}
+    ~DoublyLinkedList() { clear(); }
+
+    // Delete the entire list
+    void clear() {
+        Node* p = head;
+        while (p) {
+            Node* nxt = p->next;
+            delete p;
+            p = nxt;
+        }
+        head = tail = act = nullptr;
+        sz = 0;
+    }
+
+    // Return number of elements
+    int size() const { return sz; }
+
+    // Search for first element == value
+    T* search(const T& value) const {
+        for (Node* p = head; p; p = p->next)
+            if (p->data == value)
+                return &p->data;
+        return nullptr;
+    }
+
+    // Move current pointer by offset (positive = forward, negative = back)
+    void moveAct(int offset) {
+        if (!act) return;
+        while (offset > 0 && act->next) { act = act->next; --offset; }
+        while (offset < 0 && act->prev) { act = act->prev; ++offset; }
+    }
+
+    // Move current pointer to absolute 1-based index
+    void moveAbs(int index) {
+        if (index < 1 || index > sz) return;
+        act = head;
+        for (int i = 1; i < index; ++i) 
+            act = act->next;
+    }
+
+    // Insert newValue *after* the current pointer
+    // If list is empty, becomes sole element; if act==nullptr, appends at end
+    void insertAfterAct(const T& newValue) {
+        Node* node = new Node(newValue);
+        ++sz;
+        if (!head) {
+            head = tail = act = node;
+            return;
+        }
+        if (!act) {
+            // no current: append
+            tail->next = node;
+            node->prev = tail;
+            tail = node;
+            act = node;
+            return;
+        }
+        Node* nxt = act->next;
+        act->next = node;
+        node->prev = act;
+        node->next = nxt;
+        if (nxt) 
+            nxt->prev = node;
+        else 
+            tail = node;
+        act = node;
+    }
+
+    // Delete the current element
+    void delAct() {
+        if (!act) return;
+        Node* toDel = act;
+        Node* before = act->prev;
+        Node* after  = act->next;
+        if (before) before->next = after; else head = after;
+        if (after ) after->prev = before; else tail = before;
+        act = after ? after : before;
+        delete toDel;
+        --sz;
+    }
+
+    // Delete element at 1-based index
+    void delAbs(int index) {
+        if (index < 1 || index > sz) return;
+        moveAbs(index);
+        delAct();
+    }
+
+    // Delete all elements equal to value
+    void delObject(const T& value) {
+        Node* p = head;
+        while (p) {
+            Node* nxt = p->next;
+            if (p->data == value) {
+                if (act == p) act = nxt;
+                if (p->prev) p->prev->next = p->next; else head = p->next;
+                if (p->next) p->next->prev = p->prev; else tail = p->prev;
+                delete p;
+                --sz;
+            }
+            p = nxt;
+        }
+    }
+
+    // Access current element
+    T* getElem() const { 
+        return act ? &act->data : nullptr; 
+    }
+
+    // Print entire list
+    friend std::ostream& operator<<(std::ostream& os, const DoublyLinkedList& L) {
+        for (Node* p = L.head; p; p = p->next) {
+            os << p->data;
+            if (p->next) os << " -> ";
+        }
+        return os;
+    }
 };
-ostream& operator<<(ostream& os, const airplane& para) { os << "(id:" << para.id << ", passengers: " << para.passengers << ")";
-return os;
-} bool airplane::operator==(const airplane& para) const { bool result=false;
-if (id==para.id && passengers==para.passengers) result=true;
-return result;
-} template <typename T1> class list { T1 *head, *tail, *act;
-int elemNum;
-public: list() : head(0), tail(0), act(0), elemNum(0) {} ~list();
-T1* search(const T1& para) const;
-void insert(const T1& para);
-void delAct();
-void delAbs(int para);
-void moveAct(int para);
-void moveAbs(int para);
-T1& getElem() const {return *act;} int getElemNum() const {return elemNum;} template <typename U1> friend ostream& operator<<(ostream&, const list<U1>&);
+
+// Example element class
+class Airplane {
+public:
+    int id;
+    int passengers;
+    Airplane(int i = 0, int p = 0): id(i), passengers(p) {}
+    bool operator==(const Airplane& o) const {
+        return id == o.id && passengers == o.passengers;
+    }
+    friend std::ostream& operator<<(std::ostream& os, const Airplane& a) {
+        return os << "(id:" << a.id << ", pass:" << a.passengers << ")";
+    }
 };
-template <typename T1> list<T1>::~list() { T1 *temp=head, *prev;
-while (temp) { prev=temp;
-temp=temp->next;
-delete prev;
-} } template <typename T1> T1* list<T1>::search(const T1& para) const { T1* temp=head;
-while (temp) { if (*temp==para) return temp;
-temp=temp->next;
-} } return 0;
-template <typename T1> void list<T1>::insert(const T1& para) { elemNum++;
-T1 *temp=new T1(para), *before;
-if (head==0) { head=tail=act=temp;
-return;
-} before=act->prev;
-if (before==0) head=temp;
-else before->next=temp;
-temp->next=act;
-act->prev=temp;
-temp->prev=before;
-act=temp;
-} template <typename T1> void list<T1>::delAbs(int para) { moveAbs(para);
-delAct();
-} template <typename T1> void list<T1>::delAct() { T1 *after, *before;
-if (act==0) return;
-before=act->prev;
-after=act->next;
-if (before==0) act=head=after;
-else { before->next=after;
-act=before;
-} if (after==0) tail=before;
-else after->prev=before;
-elemNum--;
-} template <typename T1> void list<T1>::moveAct(int para) { if (para>0) while (act->next && para) { act=act->next;
-para--;
-} else while (act->prev && para) { act=act->prev;
-para++;
-} } template <typename T1> void list<T1>::moveAbs(int para) { act=head;
-for (int i=para;i>0;i--) { act=act->next;
-} } template <typename U1> ostream& operator<< (ostream& os, const list<U1>& para) { U1* temp=para.head;
-if (!temp) os << "empty";
-while (temp) { os << *temp << ", ";
-temp=temp->next;
-} os << endl;
-return os;
-} int main() { airplane a(1, 500), b(2, 450), c(3, 220), d(4, 260);
-list<airplane> myList;
-cout << myList;
-myList.insert(a);
-cout << myList;
-myList.insert(b);
-cout << myList;
-myList.insert(c);
-cout << myList;
-myList.insert(d);
-cout << myList;
-cout << "ElemNum:" << myList.getElemNum() << endl;
-cout << "act elem: " << myList.getElem() << endl;
-cout << "moveAct(2)" << endl;
-myList.moveAct(2);
-cout << "act elem: " << myList.getElem() << endl;
-cout << "delAct()" << endl;
-myList.delAct();
-cout << myList;
-cout << "moveAct(-2)" << endl;
-myList.moveAct(-2);
-cout << "act elem: " << myList.getElem() << endl;
-cout << "delAct()" << endl;
-myList.delAct();
-cout << "act elem: " << myList.getElem() << endl;
-cout << myList;
-return 0;
-} 
+
+int main() {
+    DoublyLinkedList<Airplane> list;
+    // Insert some airplanes
+    list.insertAfterAct({1, 100});
+    list.insertAfterAct({2, 150});
+    list.insertAfterAct({3, 200});
+    list.insertAfterAct({4, 250});
+    std::cout << "After inserts:\n" << list << "\n";
+
+    // Move absolute to 2nd element
+    list.moveAbs(2);
+    std::cout << "Current at 2: " << *list.getElem() << "\n";
+
+    // Delete by absolute index
+    list.delAbs(3);
+    std::cout << "After delAbs(3):\n" << list << "\n";
+
+    // Search for id==2
+    Airplane key(2,150);
+    auto found = list.search(key);
+    if (found) std::cout << "Found: " << *found << "\n";
+
+    // Delete object matching key
+    list.delObject(key);
+    std::cout << "After delObject(id=2):\n" << list << "\n";
+
+    // Insert after current pointer
+    list.moveAbs(1);
+    list.insertAfterAct({5,300});
+    std::cout << "After insertAfterAct at pos 1:\n" << list << "\n";
+
+    // Clear all
+    list.clear();
+    std::cout << "After clear:\n" << list << "\n";
+
+    return 0;
+}
