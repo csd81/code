@@ -35,5 +35,9 @@ PrintBinom(a);
 printf("\n");
 return 0;
 } 
-2.53.1. Írjon programot, amely beolvas egy n értéket a billentyűzetről, majd a binomiális tétel jobb oldalának kifejtett alakját kiírja a képernyőre! n ne legyen nagyobb 10-nél! A binomiális tétel szerint: (a + b)n = ahol n pozitív egész szám, és (a + b)n = Példa bemenet: n=3 Kimenet: ( a + b )^3 = a^3 + 3ba^2 + 3b^2a + b^3 2.54. Hazárdjáték
+2.53.1. Írjon programot, amely beolvas egy n értéket a billentyűzetről, 
+majd a binomiális tétel jobb oldalának kifejtett alakját kiírja a 
+képernyőre! n ne legyen nagyobb 10-nél! A binomiális tétel szerint: (a + 
+b)n = ahol n pozitív egész szám, és (a + b)n = Példa bemenet: n=3 Kimenet: 
+( a + b )^3 = a^3 + 3ba^2 + 3b^2a + b^3 2.54. Hazárdjáték
 

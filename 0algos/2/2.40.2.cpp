@@ -38,8 +38,10 @@ printHalfTag(file, 2, "/Car");
 printHalfTag(file, 0, "/Person");
 int main() { const int buddyNumber = 3;
 int idxI;
-Car init[3][3] = { { { 0, 50 }, { 2, 12.369 }, { 21, 0.569 } }, { { 6, 21 }, { 1, 15.4 } }, { { 3, 5.7 } }, };
-Person buddies[3] = { { "Jani", 22, 3, init[0] }, { "Evi", 36, 2, init[1] }, { "Zotya", 25, 1, init[2] } };
+Car init[3][3] = { { { 0, 50 }, { 2, 12.369 }, { 21, 0.569 } }, { { 6, 21 }, { 
+1, 15.4 } }, { { 3, 5.7 } }, };
+Person buddies[3] = { { "Jani", 22, 3, init[0] }, { "Evi", 36, 2, init[1] }, { 
+"Zotya", 25, 1, init[2] } };
 FILE *file = NULL;
 char fileName[200] = "car.txt";
 } file = fopen(fileName, "w");
@@ -51,5 +53,7 @@ file = NULL;
 printf("XML file created in car.txt.\n");
 return 0;
 
-2.40.2. Módosítsa úgy az XML fájlt, hogy Car tag-k egy Cars tag-on belül legyenek! Ahol lehet, az adatok a tagok tulajdonságaiban szerepeljenek! Például: <name value="Jani"/> 
+2.40.2. Módosítsa úgy az XML fájlt, hogy Car tag-k egy Cars tag-on belül 
+legyenek! Ahol lehet, az adatok a tagok tulajdonságaiban szerepeljenek! 
+Például: <name value="Jani"/> 
 

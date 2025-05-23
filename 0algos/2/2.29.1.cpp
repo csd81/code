@@ -34,4 +34,7 @@ ld2=NULL;
 break;
 } return 0;
 } 
-2.29.1. Írjon programot, amelyben bekéri, hogy rövid egész vagy hosszú lebegőpontos típussal akar dolgozni. Hozzon létre két dinamikus változót a megfelelő típusból! Kérje be a változók értékeit és az első változó értékét növelje meg a másodikéval! 2.30. Struktúra kezelés
+2.29.1. Írjon programot, amelyben bekéri, hogy rövid egész vagy hosszú 
+lebegőpontos típussal akar dolgozni. Hozzon létre két dinamikus változót 
+a megfelelő típusból! Kérje be a változók értékeit és az első 
+változó értékét növelje meg a másodikéval! 2.30. Struktúra kezelés

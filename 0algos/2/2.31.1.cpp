@@ -39,12 +39,19 @@ printPerson(myWedding.guests[idxI]);
 printf(",");
 } printf("\n\t}\n}");
 } int main() { const int friendNumber=3;
-Person friends[friendNumber]={{"Jani", 28, 12345}, {"Emese", 29, 66666}, {"Zoli", 32, 222222}};
-Wedding brotherWedding={ {"Arpi", 32, 23332}, {"Panna", 29, 22222}, {16, 60000, 0}, {24, 200000, 3}, friendNumber, friends };
+Person friends[friendNumber]={{"Jani", 28, 12345}, {"Emese", 29, 66666}, 
+{"Zoli", 32, 222222}};
+Wedding brotherWedding={ {"Arpi", 32, 23332}, {"Panna", 29, 22222}, {16, 60000, 
+0}, {24, 200000, 3}, friendNumber, friends };
 printf("brotherWedding=");
 printWedding(brotherWedding);
 return 0;
 } 
-2.31.1. Készítsen programot, amely tartalmazza a következő adatszerkezeteket: ember típus: név, életkor, azonosító;
+2.31.1. Készítsen programot, amely tartalmazza a következő 
+adatszerkezeteket: ember típus: név, életkor, azonosító;
 gyűrű típus: karát, érték, kövek száma;
-esküvő típus: férj, feleség, eljegyzési gyűrű, esküvői gyűrű, vendégek (dinamikus tömb), vendégek száma. Inicializáljon egy esküvő típusú változót, írja ki a változó értékét szépen tördelve úgy, hogy minden struktúra kiíráshoz külön függvényt hoz létre! 2.32. Ventilátor
+esküvő típus: férj, feleség, eljegyzési gyűrű, esküvői gyűrű, 
+vendégek (dinamikus tömb), vendégek száma. Inicializáljon egy esküvő 
+típusú változót, írja ki a változó értékét szépen tördelve úgy, 
+hogy minden struktúra kiíráshoz külön függvényt hoz létre! 2.32. 
+Ventilátor

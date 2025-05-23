@@ -1,5 +1,8 @@
-
-// 3.2.2. Továbbra is meg kell tippelni a megoldást, de az operandusokat generálja véletlenszerűen -10 és 10 között! Véletlenszerűen döntse el azt is, hogy egész vagy lebegőpontos osztást végez! Utóbbinál függvényt kell használni a maradékképzésre. Lebegőpontos osztásnál mindig írja ki a tizedes pontot az operandusoknál! 3.3. Sztring konvertálás
+3.2.2. Továbbra is meg kell tippelni a megoldást, de az operandusokat 
+generálja véletlenszerűen -10 és 10 között! Véletlenszerűen döntse el 
+azt is, hogy egész vagy lebegőpontos osztást végez! Utóbbinál függvényt 
+kell használni a maradékképzésre. Lebegőpontos osztásnál mindig írja ki 
+a tizedes pontot az operandusoknál! 
 
 3.2.2.
 #include <stdio.h>

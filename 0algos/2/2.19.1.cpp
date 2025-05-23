@@ -9,4 +9,6 @@ idxJ++) { printf("*");
 } printf("\n");
 } return 0;
 } 
-2.19.1. Rajzoljon ki a karakteres képernyőre egy derékszögű, egyenlő szárú háromszöget csillagokból dupla for ciklus segítségével! 2.1. ábra: Lehetséges képernyőkép
+2.19.1. Rajzoljon ki a karakteres képernyőre egy derékszögű, egyenlő 
+szárú háromszöget csillagokból dupla for ciklus segítségével! 2.1. 
+ábra: Lehetséges képernyőkép

@@ -1,8 +1,33 @@
-2.58.1. A Hanoi tornyai játék 3 rudat tartalmaz (start, segéd, cél). Az első rúdon N db korong van egymás fölött, amelyek különböző méretűek. A korongok fentről lefelé növekvő sorrendben következnek, legnagyobb van legalul, a legkisebb legfelül, ahogyan az ábrán látható. A feladat a következő: a korongokat át kell rakni a start rúdról a célra, a segédrúd segítségével. Az átrakás szabálya, hogy nagyobb korongot kisebbre nem rakhatunk rá. Írjon programot ennek a feladatnak a szimulálására! A program argumentumként megkapja N értékét. Kezdetben minden korong a start rúdon van. Minden lépésben kérdezze meg, melyik rúdról melyikre tegyük át a legfelső korongot! Ha ez nem ellenkezik a szabályokkal, helyezzük át a korongot! Minden mozgatás után írja ki a képernyőre a korongok helyzetét, a példában látható módon! Ha a felhasználó 0-t gépel, vagy minden korong a cél rúdon van, a program véget ér. Használjon dinamikus tömböket és struktúrákat a korongok helyének tárolására! 2.4. ábra: Hanoi tornyai szemléltetése Példa bemenet: ************************************* Source: 3, 2, 1 Auxiliary: 0 Destination: 0 From: aux To: src Incorrect step! ************************************* Source: 3, 2, 1 Auxiliary: 0 Destination: 0 From: src To: aux ************************************* Source: 3, 2 Auxiliary: 1 Destination: 0 From: src To: dst ************************************* Source: 3 Auxiliary: 1 Destination: 2 From: aux To: dst ************************************* Source: 3 Auxiliary: 0 Destination: 2, 1 From: 0 The disks are not on the destination! ************************************* Source: 3 Auxiliary: 0 Destination: 2, 1 2.59. Törtek összeadása
+2.58.1. A Hanoi tornyai játék 3 rudat tartalmaz (start, segéd, cél). Az 
+első rúdon N db korong van egymás fölött, amelyek különböző 
+méretűek. A korongok fentről lefelé növekvő sorrendben következnek, 
+legnagyobb van legalul, a legkisebb legfelül, ahogyan az ábrán látható. A 
+feladat a következő: a korongokat át kell rakni a start rúdról a célra, a 
+segédrúd segítségével. Az átrakás szabálya, hogy nagyobb korongot 
+kisebbre nem rakhatunk rá. Írjon programot ennek a feladatnak a 
+szimulálására! A program argumentumként megkapja N értékét. Kezdetben 
+minden korong a start rúdon van. Minden lépésben kérdezze meg, melyik 
+rúdról melyikre tegyük át a legfelső korongot! Ha ez nem ellenkezik a 
+szabályokkal, helyezzük át a korongot! Minden mozgatás után írja ki a 
+képernyőre a korongok helyzetét, a példában látható módon! Ha a 
+felhasználó 0-t gépel, vagy minden korong a cél rúdon van, a program 
+véget ér. Használjon dinamikus tömböket és struktúrákat a korongok 
+helyének tárolására! 2.4. ábra: Hanoi tornyai szemléltetése Példa 
+bemenet: ************************************* Source: 3, 2, 1 Auxiliary: 0 
+Destination: 0 From: aux To: src Incorrect step! 
+************************************* Source: 3, 2, 1 Auxiliary: 0 Destination: 
+0 From: src To: aux ************************************* Source: 3, 2 
+Auxiliary: 1 Destination: 0 From: src To: dst 
+************************************* Source: 3 Auxiliary: 1 Destination: 2 
+From: aux To: dst ************************************* Source: 3 Auxiliary: 0 
+Destination: 2, 1 From: 0 The disks are not on the destination! 
+************************************* Source: 3 Auxiliary: 0 Destination: 2, 1 
+2.59. Törtek összeadása
 2.58.1.
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h> #define DEFAULT_RINGNUM 3 #define TRUE 1 #define FALSE 0 #define NAMELEN 12 struct TTower { int MaxHeight;
+#include <string.h> #define DEFAULT_RINGNUM 3 #define TRUE 1 #define FALSE 0 
+#define NAMELEN 12 struct TTower { int MaxHeight;
 int Height;
 int * Disks;
 char Name[NAMELEN];
@@ -32,10 +57,12 @@ printf("%d\n", T->Disks[i]);
 if (strcmp(S, "aux") == 0) return 1;
 if (strcmp(S, "dst") == 0) return 2;
 return -1;
-} int IsCorrect(int f, int t, struct TTower * Towers) { if ((f == -1) || (t == -1)) return FALSE;
+} int IsCorrect(int f, int t, struct TTower * Towers) { if ((f == -1) || (t == 
+-1)) return FALSE;
 if (f == t) return FALSE;
 if (Towers[f].Height == 0) return FALSE;
-if (Towers[f].Disks[Towers[f].Height - 1] > Towers[t].Disks[Towers[t].Height - 1]) return FALSE;
+if (Towers[f].Disks[Towers[f].Height - 1] > Towers[t].Disks[Towers[t].Height - 
+1]) return FALSE;
 return TRUE;
 } int isComplete(struct TTower * T) { int i;
 for (i = T->MaxHeight;
@@ -62,7 +89,8 @@ scanf("%s", To);
 } giveup = ((From[0] == '0') || (To[0] == '0'));
 if (!giveup) { f = GetIndex(From);
 t = GetIndex(To);
-if (IsCorrect(f, t, Towers)) { Towers[t].Disks[Towers[t].Height++] = Towers[f].Disks[Towers[f].Height - 1];
+if (IsCorrect(f, t, Towers)) { Towers[t].Disks[Towers[t].Height++] = 
+Towers[f].Disks[Towers[f].Height - 1];
 Towers[f].Disks[--Towers[f].Height] = 0;
 } else printf("Incorrect step!\n");
 } } while ((!giveup) && !isComplete(Towers + 2));

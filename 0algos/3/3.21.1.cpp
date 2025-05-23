@@ -1,9 +1,19 @@
 
-// 3.21.1. Írjon programot, amely számokat olvas be fájlból, majd kiszámítja ezek átlagát és mediánját! A program írja ki a képernyőre a számokat, az átlagot, és a mediánt is! A medián kiszámításához először sorba kell rendeznie a számokat. Páratlan számú adat esetén a medián ebben a sorban a középső elem, páros számú adat esetén a két középső elem átlaga. Az input fájl formátuma: Első sor: Az adatok száma. Második sor: A számok, egy-egy szóköz karakterrel elválasztva. Példa bemenet: 4 2 5 3 4 2 5 1 3 5 1 5 5 5 4 4 3 4 4 2 5 5 1 5 5 3 2 5 2 5 Kimenet: 30 numbers: 4 2 5 3 4 2 5 1 3 5 1 5 5 5 4 4 3 4 4 2 5 5 1 5 5 3 2 5 2 5 The average is 3.63333 The median is: 4 3.22. Ösztöndíj
+// 3.21.1. Írjon programot, amely számokat olvas be fájlból, majd 
+kiszámítja ezek átlagát és mediánját! A program írja ki a képernyőre 
+a számokat, az átlagot, és a mediánt is! A medián kiszámításához 
+először sorba kell rendeznie a számokat. Páratlan számú adat esetén a 
+medián ebben a sorban a középső elem, páros számú adat esetén a két 
+középső elem átlaga. Az input fájl formátuma: Első sor: Az adatok 
+száma. Második sor: A számok, egy-egy szóköz karakterrel elválasztva. 
+Példa bemenet: 4 2 5 3 4 2 5 1 3 5 1 5 5 5 4 4 3 4 4 2 5 5 1 5 5 3 2 5 2 5 
+Kimenet: 30 numbers: 4 2 5 3 4 2 5 1 3 5 1 5 5 5 4 4 3 4 4 2 5 5 1 5 5 3 2 5 2 
+5 The average is 3.63333 The median is: 4 
 
 3.21.1.
 #include <stdio.h>
-#include <stdlib.h> #define DEFAULT_INPUT "datas.txt" int Read(FILE * fd, int ** nums) { int count, i;
+#include <stdlib.h> #define DEFAULT_INPUT "datas.txt" int Read(FILE * fd, int 
+** nums) { int count, i;
 fscanf(fd, "%d", &count);
 printf("%d numbers:\n", count);
 *nums = (int *)malloc(sizeof(int) * count);

@@ -13,5 +13,7 @@ printf("\n%.8s.%hu", &timeline[11], timebuffer.millitm);
 } while (act-start < 10);
 return 0;
 } 
-2.42.1. Írjon programot, amely 10 másodpercen keresztül folytonosan kiírja az aktuális időt ezredmásodperc pontossággal! Használja az _ftime és ctime függvényeket! 2.43. Tippelés
+2.42.1. Írjon programot, amely 10 másodpercen keresztül folytonosan kiírja 
+az aktuális időt ezredmásodperc pontossággal! Használja az _ftime és 
+ctime függvényeket! 2.43. Tippelés
 

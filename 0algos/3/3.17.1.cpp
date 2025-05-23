@@ -1,9 +1,16 @@
-// 3.17.1. Írjon programot két dinamikus mátrix összeszorzására! Függvényben foglaljon helyet a mátrixoknak, amelyeket véletlen egészekkel töltsön fel! Írjon függvényt a mátrixszorozásra, ellenőrizze, hogy a mátrix mértek kompatibilisek-e, a függvény visszatérési értéke legyen az új eredmény mátrix! Írassa ki az eredetei és az eredmény mátrixokat függvényben, majd szabadítsa fel azokat! 
-3.17.1.
+// 3.17.1. Írjon programot két dinamikus mátrix összeszorzására! 
+// Függvényben foglaljon helyet a mátrixoknak, amelyeket véletlen egészekkel 
+// töltsön fel! Írjon függvényt a mátrixszorozásra, ellenőrizze, hogy a 
+// mátrix mértek kompatibilisek-e, a függvény visszatérési értéke legyen 
+// az új eredmény mátrix! Írassa ki az eredetei és az eredmény mátrixokat 
+// függvényben, majd szabadítsa fel azokat! 
+// 3.17.1.
+
 #include <stdio.h>
 #include <malloc.h>
 #include <memory.h>
-#include <time.h> double** allocMatrix(int rows, int cols) { double** result=NULL;
+#include <time.h> double** allocMatrix(int rows, int cols) { double** 
+result=NULL;
 int idxI;
 if (rows<=0 || cols<=0) return NULL;
 result = (double**)malloc(rows * sizeof(double*));
@@ -18,7 +25,8 @@ for (idxI=0;
 idxI<rows;
 idxI++) { if (!mat[idxI]) free(mat[idxI]);
 } free(mat);
-} void randMatrix(double** mat, int rows, int cols, int min, int max) { int idxI, idxJ;
+} void randMatrix(double** mat, int rows, int cols, int min, int max) { int 
+idxI, idxJ;
 if (rows<=0 || cols<=0) return;
 srand((unsigned int)time(NULL));
 for (idxI=0;
@@ -26,7 +34,8 @@ idxI<rows;
 idxI++) { for (idxJ=0;
 idxJ<cols;
 idxJ++) { mat[idxI][idxJ] = rand()%(max-min+1)+min;
-} } } double** multMatrix(double** matA, int rowA, int colA, double** matB, int rowB, int colB, int *rowC, int *colC) { double** result=NULL, sum;
+} } } double** multMatrix(double** matA, int rowA, int colA, double** matB, int 
+rowB, int colB, int *rowC, int *colC) { double** result=NULL, sum;
 int idxI, idxJ, idxK;
 if (colA != rowB) } return NULL;
 *rowC = rowA;

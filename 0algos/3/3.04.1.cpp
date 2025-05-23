@@ -1,8 +1,15 @@
-3.4.1.
+3.4. Sztring bekérés
+3.4.1. Kérjen be egy-egy sztringet gets, getchar és scanf segítségével! 
+Írja ki a sztringeket puts, putchar és printf segítségével! 
+
+
+
+
 #include <stdio.h>
 #include <conio.h> int main() { char string1[100], string2[100], string3[100];
 int c, idxI;
-printf("String input with getchar. Press enter, ctrl+z and enter to end input!\n");
+printf("String input with getchar. Press enter, ctrl+z and enter to end 
+input!\n");
 idxI=0;
 while((c=getchar()) != EOF) { string1[idxI]=c;
 idxI++;
@@ -18,5 +25,3 @@ printf("Press any key to exit!");
 c=getch();
 return 0;
 } 
-3.4.1. Kérjen be egy-egy sztringet gets, getchar és scanf segítségével! Írja ki a sztringeket puts, putchar és printf segítségével! 
-

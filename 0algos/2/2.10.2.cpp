@@ -1,4 +1,6 @@
-// 2.10.2. A szorzótáblához hasonló módon valósítsuk meg az egyedi összeadó táblát! Az első sor és az első oszlop értékeit szöveg fájlból olvassuk be! 
+// 2.10.2. A szorzótáblához hasonló módon valósítsuk meg az egyedi 
+összeadó táblát! Az első sor és az első oszlop értékeit szöveg 
+fájlból olvassuk be! 
 
 
 #include <iostream>

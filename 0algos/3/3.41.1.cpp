@@ -1,42 +1,73 @@
-3.41.1. Egy fájlban egy legfeljebb 1000 karakter hosszú sztring található. Írjon programot, amely beolvassa ezt a fájlt, majd bekér a felhasználótól két szót! A második szó nem lehet hosszabb az elsőnél. A program keresse meg az első szó minden előfordulását a szövegben, és cserélje ki a második szóra. Írja ki a képernyőre az új szöveget, és a találatok számát! Példa: The original text: "This is a very simple text that can help for you to understand the task. " Type a word: simple Type the new word: easy 1 hits The new text: "This is a very easy text that can help for you to understand the task. " 3.42. Ellenőrző összeg
-3.41.1.
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h> #define DEFAULT_INPUTFILE "text.txt" #define MAX_TEXT_LENGTH 1001 #define MAX_WORD_LENGTH 21 #define TRUE 1 #define FALSE 0 void Change(char * t, char * w1, char * w2) { int i = 0;
-int j;
-int lent = strlen(t);
-int lenw = strlen(w1);
-int lenw2 = strlen(w2);
-char tmp;
-int hits = 0;
-for (i = 0;
-i < lent - lenw;
-i++) { if (strncmp(t + i, w1, lenw) == 0) { tmp = t[i + lenw2];
-strcpy(t + i, w2);
-t[i + lenw2] = tmp;
-for (j = i + lenw2;
-j < lent - (lenw - lenw2);
-j++) t[j] = t[j + lenw - lenw2];
-t[j] = 0;
-lent = strlen(t);
-hits++;
-} } } printf("\n%d hits\n", hits);
-int main(int argc, char * argv[]) { char text[MAX_TEXT_LENGTH];
-char word1[MAX_WORD_LENGTH];
-char word2[MAX_WORD_LENGTH];
-FILE * fd = fopen(argc > 1? argv[1] : DEFAULT_INPUTFILE, "r");
-if (fd == NULL) { perror("Error");
-return 0;
-} if (fgets(text, MAX_TEXT_LENGTH - 1, fd) == NULL) { perror("Error");
-fclose(fd);
-return 0;
-} fclose(fd);
-printf("\nThe original text: \"%s\"\n\n", text);
-printf("Type a word: ");
-scanf("%s", word1);
-printf("Type the new word: ");
-scanf("%s", word2);
-Change(text, word1, word2);
-printf("\nThe new text: \"%s\"\n\n", text);
-return 0;
-} 
+// 3.41. Szavak kicserélése
+
+// 3.41.1. Egy fájlban egy legfeljebb 1000 karakter hosszú sztring található. 
+// Írjon programot, amely beolvassa ezt a fájlt, majd bekér a felhasználótól 
+// két szót! A második szó nem lehet hosszabb az elsőnél. A program keresse 
+// meg az első szó minden előfordulását a szövegben, és cserélje ki a 
+// második szóra. Írja ki a képernyőre az új szöveget, és a találatok 
+// számát! 
+
+// Példa: 
+// The original text: "This is a very simple text that can help 
+// for you to understand the task. " 
+// Type a word: simple 
+// Type the new word: easy 1 hits 
+// The new text: "This is a very easy text that can help for you to 
+// understand the task. " 
+
+// 3.41.1.
+
+#include <iostream>
+#include <fstream>
+#include <string>
+
+int replaceWords(std::string& text, const std::string& from, const std::string& to) {
+    if (to.size() > from.size()) {
+        std::cerr << "Hiba: a csere szó nem lehet hosszabb, mint az eredeti!\n";
+        return -1;
+    }
+
+    int hits = 0;
+    size_t pos = 0;
+    while ((pos = text.find(from, pos)) != std::string::npos) {
+        text.replace(pos, to.length(), to);
+        // ha rövidebb lett a szó, a szöveget igazítjuk
+        if (to.length() < from.length()) {
+            text.erase(pos + to.length(), from.length() - to.length());
+        }
+        ++hits;
+        pos += to.length(); // lépés a következő lehetséges találatra
+    }
+    return hits;
+}
+
+int main(int argc, char* argv[]) {
+    const std::string filename = (argc > 1) ? argv[1] : "text.txt";
+    std::ifstream file(filename);
+
+    if (!file) {
+        std::cerr << "Nem sikerült megnyitni a fájlt: " << filename << '\n';
+        return 1;
+    }
+
+    std::string text((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+    file.close();
+
+    std::cout << "The original text: \"" << text << "\"\n\n";
+
+    std::string word1, word2;
+    std::cout << "Type a word: ";
+    std::cin >> word1;
+
+    std::cout << "Type the new word: ";
+    std::cin >> word2;
+
+    int hits = replaceWords(text, word1, word2);
+    if (hits >= 0) {
+        std::cout << "\n" << hits << " hits\n";
+        std::cout << "The new text: \"" << text << "\"\n";
+    }
+
+    return 0;
+}
+

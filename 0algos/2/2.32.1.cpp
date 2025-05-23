@@ -35,4 +35,8 @@ free(myFan.description);
 myFan.description=NULL;
 return 0;
 } 
-2.32.1. Írjon programot, amelyben létrehoz egy ventilátor típust: gyártó (statikus tömb), termékszám, leírás (dinamikus tömb), ár! Írjon függvényt, amely bekéri az adattagok értékét és a rekordot visszatérési értékként adja vissza! Szintén írjon függvényt a struktúra kiírásához!
+2.32.1. Írjon programot, amelyben létrehoz egy ventilátor típust: gyártó 
+(statikus tömb), termékszám, leírás (dinamikus tömb), ár! Írjon 
+függvényt, amely bekéri az adattagok értékét és a rekordot 
+visszatérési értékként adja vissza! Szintén írjon függvényt a 
+struktúra kiírásához!

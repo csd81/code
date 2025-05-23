@@ -1,4 +1,5 @@
-3.9.2. 3 változó helyett egy 3 elemű tömbön végezze el az elcsúsztatást! 
+3.9.2. 3 változó helyett egy 3 elemű tömbön végezze el az 
+elcsúsztatást! 
 3.9.2.
 #include <stdio.h> void print(float a[], int size) { int i;
 for(i = 0;

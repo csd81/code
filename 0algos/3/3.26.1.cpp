@@ -1,68 +1,109 @@
-3.26.1.
-#include <stdio.h>
-#include <stdlib.h> #define DEFAULT_INPUTFILE "polynoms.txt" #define TRUE 1 #define FALSE 0 struct TPolynom { int Degree;
-int * A;
+// 3.26. Polinomok összeadása
+// 3.26.1. Írjon programot, amely polinomokat ad össze! Olvasson be fájlból 
+// két polinomot! Írja ki a képernyőre a két polinomot, illetve ezek 
+// összegét! A polinomok tárolására használjon dinamikus tömböket és 
+// struktúrákat. Az input fájl formátuma: Első sor: Number1 - az első 
+// polinom foka Második sor: Number1 + 1 egész szám, az első polinom 
+// együtthatói (az utolsó szám a konstans). Harmadik sor: Number2 - a második 
+// polinom foka Negyedik sor: Number2 + 1 egész szám, a második polinom (az 
+// utolsó szám a konstans). A számok egy-egy szóköz karakterrel vannak 
+// elválasztva Példa bemenet: 5 -3 5 -4 0 4 2 4 5 4 5 -1 0 Kimenet: - 3x^5 + 
+// 5x^4 - 4x^3 + 4x + 2 + 5x^4 + 4x^3 + 5x^2 - x = - 3x^5 + 10x^4 + 5x^2 + 3x + 2 
+// 3.26.1.
+
+
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+#include <sstream>
+#include <cstdlib>
+#include <cmath>
+
+struct Polynomial {
+    int degree;
+    std::vector<int> coeffs; // coeffs[0] is highest degree term
+
+    void read(std::ifstream& in) {
+        in >> degree;
+        coeffs.resize(degree + 1);
+        for (int i = 0; i <= degree; ++i)
+            in >> coeffs[i];
+    }
+
+    void print() const {
+        bool firstTerm = true;
+        for (int i = 0; i <= degree; ++i) {
+            int exp = degree - i;
+            int coeff = coeffs[i];
+            if (coeff == 0) continue;
+
+            if (!firstTerm) std::cout << (coeff > 0 ? " + " : " - ");
+            else if (coeff < 0) std::cout << "-";
+
+            if (std::abs(coeff) != 1 || exp == 0)
+                std::cout << std::abs(coeff);
+            else if (exp == 0 && std::abs(coeff) == 1)
+                std::cout << "1";
+
+            if (exp > 0) {
+                std::cout << "x";
+                if (exp > 1)
+                    std::cout << "^" << exp;
+            }
+
+            firstTerm = false;
+        }
+        if (firstTerm) std::cout << "0"; // if all coefficients were 0
+    }
 };
-void InitPolynom(struct TPolynom * P) { P->Degree = 0;
-P->A = NULL;
-} void FreePolynom(struct TPolynom * P) { free(P->A);
-P->A = NULL;
-P->Degree = 0;
-} void ReadPolynom(FILE * fd, struct TPolynom * P) { int i;
-fscanf(fd, "%d", &(P->Degree));
-printf("Degree: %d\n", P->Degree);
-P->A = (int *)malloc(sizeof(int) * (P->Degree + 1));
-for (i = 0;
-i <= P->Degree;
-i++) fscanf(fd, "%d", P->A + i);
-} void PrintPolynom(struct TPolynom * P) { int first = TRUE;
-int i;
-for (i = 0;
-i < P->Degree;
-i++) { if (P->A[i] != 0) { if (!first) { first = TRUE;
-if (P->A[i] > 0) printf(" + ");
-} if (P->A[i] < 0) printf(" - ");
-first = FALSE;
-if (abs(P->A[i]) == 1) printf("x");
-else printf("%dx", abs(P->A[i]));
-if (i < P->Degree - 1) printf("^%d", P->Degree - i);
-} } if (P->A[ P->Degree ] != 0) { if (first) { } } printf("%d", P->A[ P->Degree ]);
-} else { if (P->A[ P->Degree ] < 0) printf(" - %d", abs(P->A[ P->Degree ]));
-else printf(" + %d", abs(P->A[ P->Degree ]));
-} void AddPolynom(struct TPolynom * A, struct TPolynom * B, struct TPolynom * C) { int i;
-if (C->A != NULL) { free(C->A);
-InitPolynom(C);
-} int * Max = A->Degree > B->Degree ? A->A : B->A;
-int * Min = A->Degree > B->Degree ? B->A : A->A;
-int min = A->Degree > B->Degree ? B->Degree : A->Degree;
-C->Degree = A->Degree > B->Degree ? A->Degree : B->Degree;
-C->A = (int*)malloc(sizeof(int) * (C->Degree + 1));
-for (i = 0;
-i <= C->Degree;
-i++) C->A[i] = Max[i];
-for (i = 0;
-i <= min;
-i++) C->A[i + ( C->Degree - min ) ] += Min[i];
-} int main(int argc, char *argv[]) { struct TPolynom A, B, C;
-InitPolynom(&A);
-InitPolynom(&B);
-InitPolynom(&C);
-FILE * fd = fopen(argc > 1 ? argv[1] : DEFAULT_INPUTFILE, "r");
-if (fd == NULL) { perror("Error");
-return 0;
-} ReadPolynom(fd, &A);
-ReadPolynom(fd, &B);
-fclose(fd);
-PrintPolynom(&A);
-printf(" +\n");
-PrintPolynom(&B);
-printf(" =\n");
-AddPolynom(&A, &B, &C);
-PrintPolynom(&C);
-printf("\n");
-FreePolynom(&A);
-FreePolynom(&B);
-FreePolynom(&C);
-return 0;
-} 
-3.26.1. Írjon programot, amely polinomokat ad össze! Olvasson be fájlból két polinomot! Írja ki a képernyőre a két polinomot, illetve ezek összegét! A polinomok tárolására használjon dinamikus tömböket és struktúrákat. Az input fájl formátuma: Első sor: Number1 - az első polinom foka Második sor: Number1 + 1 egész szám, az első polinom együtthatói (az utolsó szám a konstans). Harmadik sor: Number2 - a második polinom foka Negyedik sor: Number2 + 1 egész szám, a második polinom (az utolsó szám a konstans). A számok egy-egy szóköz karakterrel vannak elválasztva Példa bemenet: 5 -3 5 -4 0 4 2 4 5 4 5 -1 0 Kimenet: - 3x^5 + 5x^4 - 4x^3 + 4x + 2 + 5x^4 + 4x^3 + 5x^2 - x = - 3x^5 + 10x^4 + 5x^2 + 3x + 2 3.27. Caesar dekódoló
+
+Polynomial add(const Polynomial& A, const Polynomial& B) {
+    int maxDegree = std::max(A.degree, B.degree);
+    int minDegree = std::min(A.degree, B.degree);
+
+    Polynomial result;
+    result.degree = maxDegree;
+    result.coeffs.resize(maxDegree + 1, 0);
+
+    int offsetA = maxDegree - A.degree;
+    int offsetB = maxDegree - B.degree;
+
+    for (int i = 0; i <= A.degree; ++i)
+        result.coeffs[i + offsetA] += A.coeffs[i];
+    for (int i = 0; i <= B.degree; ++i)
+        result.coeffs[i + offsetB] += B.coeffs[i];
+
+    // Trim leading zeros
+    while (result.degree > 0 && result.coeffs[0] == 0) {
+        result.coeffs.erase(result.coeffs.begin());
+        result.degree--;
+    }
+
+    return result;
+}
+
+int main(int argc, char* argv[]) {
+    const std::string filename = (argc > 1) ? argv[1] : "polynoms.txt";
+    std::ifstream in(filename);
+    if (!in) {
+        std::cerr << "Error opening file: " << filename << "\n";
+        return 1;
+    }
+
+    Polynomial A, B;
+    A.read(in);
+    B.read(in);
+
+    std::cout << "First polynomial: ";
+    A.print();
+    std::cout << "\nSecond polynomial: ";
+    B.print();
+
+    Polynomial C = add(A, B);
+    std::cout << "\nSum: ";
+    C.print();
+    std::cout << "\n";
+
+    return 0;
+}

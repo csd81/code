@@ -1,52 +1,51 @@
-3.40.1.
-#include <stdio.h>
-#include <stdlib.h> #define MAXLEN 101 int Count(char * str) { int szokozs = 0;
-int i;
-for (i = 0;
-str[i] != 0;
-i++) szokozs += (str[i] == ' ');
-return ++szokozs;
-} char * GetToken(char * s, int * len) { int i = 0;
-char * w;
-*len = 0;
-while ((s[ *len ] != 0) && (s[ *len ] != ' ')) (*len)++;
-(*len)++;
-w = (char*)malloc(sizeof(char) * (*len));
-for (i = 0;
-i < (*len) - 1;
-i++) w[i] = s[i];
-w[(*len) - 1] = 0;
-return w;
-} char ** Tokenizer(char * str, int * s) { int i;
-int size = Count(str);
-int len;
-char ** t = (char **)malloc(size * sizeof(char*));
-for (i = 0;
-i < size;
-i++) { t[i] = GetToken(str, &len);
-str += len;
-} *s = size;
-return t;
-} void Print(char ** t, int size) { int i;
-for (i = 0;
-i < size;
-i++) printf("%d.: \"%s\"\n", i + 1, t[i]);
-} void Free(char *** t, int size) { int i;
-} char ** t2 = *t;
-for (i = 0;
-i < size;
-i++) { free(t2[i]);
-t2[i] = NULL;
-} *t = NULL;
-int main() { char str[MAXLEN];
-char ** t = NULL;
-int size;
-if (gets(str) == NULL) { printf("Error!\n");
-return 0;
-} printf("The typed text: \"%s\"\n", str);
-t = Tokenizer(str, &size);
-Print(t, size);
-Free(&t, size);
-} return 0;
 
-3.40.1. Írjon sztring tokenizáló programot! A felhasználó egy sztringet gépel be, amely több szóból állhat, a szavakat egy vagy több szóköz karakter választja el. Ezután a program számolja meg a sztringben lévő szavakat, foglaljon le dinamikus tömböket a szavak számára, és másolja be az egyes szavakat a lefoglalt karaktertömbökbe! Írja ki a program a képernyőre az eredeti sztringet, és az egyes szavakat! Példa bemenet: This is a simple example. The typed text: "This is a 1.: "This" 2.: "is" 3.: "a" 4.: "simple" 5.: "example." simple example." 3.41. Szavak kicserélése
+// 3.40. Sztring tokenizáló
+
+// 3.40.1. Írjon sztring tokenizáló programot! A felhasználó egy sztringet 
+// gépel be, amely több szóból állhat, a szavakat egy vagy több szóköz 
+// karakter választja el. Ezután a program számolja meg a sztringben lévő 
+// szavakat, foglaljon le dinamikus tömböket a szavak számára, és másolja be 
+// az egyes szavakat a lefoglalt karaktertömbökbe! Írja ki a program a 
+// képernyőre az eredeti sztringet, és az egyes szavakat! 
+// Példa bemenet: 
+// This is a simple example. 
+// The typed text: "This is a 
+// 1.: "This" 
+// 2.: "is" 
+// 3.: "a" 
+// 4.: "simple" 
+// 5.: "example." simple example." 
+
+// 3.40.1.
+
+
+#include <iostream>
+#include <sstream>
+#include <vector>
+#include <string>
+
+int main() {
+    std::string line;
+
+    std::cout << "Enter a sentence: ";
+    if (!std::getline(std::cin, line)) {
+        std::cerr << "Input error!\n";
+        return 1;
+    }
+
+    std::cout << "The typed text: \"" << line << "\"\n";
+
+    std::istringstream iss(line);
+    std::vector<std::string> tokens;
+    std::string word;
+
+    while (iss >> word) {
+        tokens.push_back(word);
+    }
+
+    for (size_t i = 0; i < tokens.size(); ++i) {
+        std::cout << (i + 1) << ".: \"" << tokens[i] << "\"\n";
+    }
+
+    return 0;
+}

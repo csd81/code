@@ -1,6 +1,7 @@
 
 
-2.17.2. Alakítsa át a programot, hogy ne Celsius fokot, hanem Farenheit-t kér be. Külön függvény végezze el a konvertálást! 2.18. Római számok
+2.17.2. Alakítsa át a programot, hogy ne Celsius fokot, hanem Farenheit-t 
+kér be. Külön függvény végezze el a konvertálást! 2.18. Római számok
 2.17.2.
 #include <stdio.h> float changer(float);
 int main() { float celsius;

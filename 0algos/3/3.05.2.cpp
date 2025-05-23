@@ -16,4 +16,6 @@ else printf("\n");
 } free(tomb);
 return 0;
 } 
-3.5.2. Oldja meg, hogy az utolsó szám után ne jelenjen meg vessző a kiírásnál és hogy a tömb nagyságát szabadon lehessen meghatározni! 3.6. Tömb reprezentálása
+3.5.2. Oldja meg, hogy az utolsó szám után ne jelenjen meg vessző a 
+kiírásnál és hogy a tömb nagyságát szabadon lehessen meghatározni! 3.6. 
+Tömb reprezentálása

@@ -10,4 +10,7 @@ printf("string a=%s\n", a);
 printf("unsigned long int a=%lu\n", a);
 } return 0;
 } 
-2.6.2. Kérje be majd írassa ki egy autó tulajdonságait! A tulajdonságok a következőek: márka - char[200], végsebesség - float, regisztrációs szám - hexa, tömeg double, típus név - char[300], utas szám - int, műholdas navigáció - char. 2.7. Blokkon belüli változók
+2.6.2. Kérje be majd írassa ki egy autó tulajdonságait! A tulajdonságok a 
+következőek: márka - char[200], végsebesség - float, regisztrációs szám 
+- hexa, tömeg double, típus név - char[300], utas szám - int, műholdas 
+navigáció - char. 2.7. Blokkon belüli változók

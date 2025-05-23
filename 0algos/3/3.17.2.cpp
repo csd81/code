@@ -1,10 +1,16 @@
 
-// 3.17.2. Készítse el az újraméretez függvényt, amely vagy levág a mátrixból egy darabot, és/vagy a mátrix jobb oldalához illetve aljához hozzáfűz egy új részt! Az új rész egységmátrix szerűen tartalmazzon 0-kat és 1-ket, ha az új rész nem négyzet alakú, akkor az egyesek fűrészfog szerűen helyezkedjenek el! 1 1 1 1 1 1 1 3.3. ábra: Téglalap alakú egységmátrix 3.18. Virtuális memória
+// 3.17.2. Készítse el az újraméretez függvényt, amely vagy levág a 
+mátrixból egy darabot, és/vagy a mátrix jobb oldalához illetve aljához 
+hozzáfűz egy új részt! Az új rész egységmátrix szerűen tartalmazzon 
+0-kat és 1-ket, ha az új rész nem négyzet alakú, akkor az egyesek 
+fűrészfog szerűen helyezkedjenek el! 1 1 1 1 1 1 1 3.3. ábra: Téglalap 
+alakú egységmátrix 3.18. Virtuális memória
 3.17.2.
 #include <stdio.h>
 #include <malloc.h>
 #include <memory.h>
-#include <time.h> double** allocMatrix(int rows, int cols) { double** result = NULL;
+#include <time.h> double** allocMatrix(int rows, int cols) { double** result = 
+NULL;
 int idxI;
 if (rows <= 0 || cols <= 0) return NULL;
 result = (double**) malloc(rows * sizeof(double*));
@@ -19,7 +25,8 @@ for (idxI = 0;
 idxI < rows;
 idxI++) { free(mat[idxI]);
 } free(mat);
-} void randMatrix(double** mat, int rows, int cols, int min, int max) { int idxI, idxJ;
+} void randMatrix(double** mat, int rows, int cols, int min, int max) { int 
+idxI, idxJ;
 if (rows <= 0 || cols <= 0) return;
 srand((unsigned int) time(NULL));
 for (idxI = 0;
@@ -62,7 +69,8 @@ i++) { if ((i + 1) % (newrows) == 0) { db++;
 i < newcols;
 i++) { for (j = 0;
 j < newrows;
-j++) { if ((((i + 1) - (newrows * db)) / (j + 1)) == 1 && (((i + - (newrows * db)) % (j + 1)) == 0) { result[j][i] = 1;
+j++) { if ((((i + 1) - (newrows * db)) / (j + 1)) == 1 && (((i + - (newrows * 
+db)) % (j + 1)) == 0) { result[j][i] = 1;
 } else { result[j][i] = 0;
 } } if ((i + 1) % (newrows) == 0) { db++;
 } } break;
@@ -95,7 +103,8 @@ i++) { if ((i + 1) % (newrows) == 0) { db++;
 i < newcols;
 i++) { for (j = 0;
 j < newrows;
-j++) { if ((((i + 1) - (newrows * db)) / (j + 1)) == 1 && (((i + - (newrows * db)) % (j + 1)) == 0) { result[j][i] = 1;
+j++) { if ((((i + 1) - (newrows * db)) / (j + 1)) == 1 && (((i + - (newrows * 
+db)) % (j + 1)) == 0) { result[j][i] = 1;
 } else { result[j][i] = 0;
 } } if ((i + 1) % (newrows) == 0) { db++;
 } } break;

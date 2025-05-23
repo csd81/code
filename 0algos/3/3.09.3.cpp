@@ -1,4 +1,5 @@
-3.9.3. Egy plusz változó jelezze, hogy melyik irányba történik a csúsztatás! A tömb mérete legyen megadható! 3.10. Műveletek tömbökön
+3.9.3. Egy plusz változó jelezze, hogy melyik irányba történik a 
+csúsztatás! A tömb mérete legyen megadható! 3.10. Műveletek tömbökön
 3.9.3.
 #include <stdio.h>
 #include <malloc.h> void print(float a[], int size) { int idxI;
@@ -6,7 +7,8 @@ for(idxI = 0;
 idxI < size;
 ++idxI) printf("myArray[%d]= %f ", idxI, a[idxI]);
 printf("\n");
-} void shift(float* a, char direction, int cyclic, int size) { float temp = (direction=='r')?a[size-1]:a[0];
+} void shift(float* a, char direction, int cyclic, int size) { float temp = 
+(direction=='r')?a[size-1]:a[0];
 int idxI;
 if(direction == 'r') { for(idxI = size-1;
 idxI > 0;

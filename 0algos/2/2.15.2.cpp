@@ -1,5 +1,6 @@
 
-2.15.2. Határozza meg az eredeti és a konvertált értékek közötti különbségeket! 2.16. DeMorgan
+2.15.2. Határozza meg az eredeti és a konvertált értékek közötti 
+különbségeket! 2.16. DeMorgan
 
 
 #include <stdio.h> int main() { double number;

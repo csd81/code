@@ -23,8 +23,10 @@ lineCount++;
 } int Counter::lineCount=0;
 // int Counter::wordCount=0;
 // int Counter::charCount=0;
-// class variable def. class variable def. class variable def. int main() { Counter obj1, obj2;
-cout << "The number of lines have written till now:" << Counter::lineCount << endl;
+// class variable def. class variable def. class variable def. int main() { 
+Counter obj1, obj2;
+cout << "The number of lines have written till now:" << Counter::lineCount << 
+endl;
 obj1.init("file1.txt");
 obj1.write("The first line");
 obj1.write("and the second");
@@ -39,4 +41,5 @@ obj1.close();
 obj2.close();
 return 0;
 } 
-2.47.2. Módosítsa az előző programot úgy, hogy számolja a szavak és karakterek számát is! 2.48. Komplex számok
+2.47.2. Módosítsa az előző programot úgy, hogy számolja a szavak és 
+karakterek számát is! 2.48. Komplex számok

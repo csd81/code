@@ -1,4 +1,8 @@
-// 2.10.1. Készítsünk 5*5-ös egyedi szorzótáblát, amelyet a karakteres képernyőn jelenítünk meg! Az első sor és oszlop értékeit, amelyek mutatják, hogy mit mivel kell összeszorozni, vonalakkal különítsük el a szorzatoktól! Az első sor és az első oszlop értékeit a billentyűzetről kérjük be! 
+// 2.10.1. Készítsünk 5*5-ös egyedi szorzótáblát, amelyet a karakteres 
+képernyőn jelenítünk meg! Az első sor és oszlop értékeit, amelyek 
+mutatják, hogy mit mivel kell összeszorozni, vonalakkal különítsük el a 
+szorzatoktól! Az első sor és az első oszlop értékeit a billentyűzetről 
+kérjük be! 
 
 
 

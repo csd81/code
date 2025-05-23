@@ -1,4 +1,7 @@
-2.2.3. Egy adott sor kirajzolásához is használjon ciklust! Keresse meg egy sor ismétlődő mintáját és az kerüljön a ciklus magjába! Figyeljen különösen a fejlécek helyes megjelenítésére. 2.3. Terület és kerületszámítás
+2.2.3. Egy adott sor kirajzolásához is használjon ciklust! Keresse meg egy 
+sor ismétlődő mintáját és az kerüljön a ciklus magjába! Figyeljen 
+különösen a fejlécek helyes megjelenítésére. 2.3. Terület és 
+kerületszámítás
 2.2.3.
 #include <stdio.h> #define SIZE 8 int main() { int id1, id2;
 printf(" |");

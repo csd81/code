@@ -8,7 +8,8 @@ break;
 case 3: result = 18;
 break;
 default: result = 0;
-printf("\nFirst parameter (%d) is wrong, it should be in 1, 2, or 3\n", whichDerivate);
+printf("\nFirst parameter (%d) is wrong, it should be in 1, 2, or 3\n", 
+whichDerivate);
 break;
 } return result;
 } int main() { int idxI;
@@ -21,4 +22,8 @@ idxI++) { rez=deriv(idxI, where);
 printf("The %d. derivative of 9x^2-4x+6 at %f is: %f\n", idxI, where, rez);
 } return 0;
 } 
-2.24.1. Írjon függvényt és hozzá tartozó programot, amely a 3x3-2x2+6x-1 függvénynek megadja az 1., 2. vagy 3. deriváltjának az értékét egy adott pontban! A függvény paraméterei: hányadik deriváltról van szó, milyen pontban tekintjük a deriváltat. A függvény visszatérési értéke: a derivált értéke. 
+2.24.1. Írjon függvényt és hozzá tartozó programot, amely a 3x3-2x2+6x-1 
+függvénynek megadja az 1., 2. vagy 3. deriváltjának az értékét egy adott 
+pontban! A függvény paraméterei: hányadik deriváltról van szó, milyen 
+pontban tekintjük a deriváltat. A függvény visszatérési értéke: a 
+derivált értéke. 

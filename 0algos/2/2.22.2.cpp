@@ -5,4 +5,5 @@ idxI--;
 } while (idxI>=0);
 return 0;
 } 
-2.22.2. Írja át úgy a programot, hogy elől tesztelős ciklust használ és a program nevét nem írja ki! 2.23. continue, break
+2.22.2. Írja át úgy a programot, hogy elől tesztelős ciklust használ és 
+a program nevét nem írja ki! 2.23. continue, break

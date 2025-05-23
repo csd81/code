@@ -1,4 +1,8 @@
-3.6.1. A karakteres képernyőn reprezentáljon egy 4 hosszú egész tömböt! Kérje be a tömb elemeit és írja ki az értékeket '*' szimbólumokból készített négyzetekbe! Adja meg az egyes elemek indexeit és címeit! Írja ki a tömb mint mutató értékét és annak a címét! 3.2. ábra: Lehetséges képernyőkép
+3.6.1. A karakteres képernyőn reprezentáljon egy 4 hosszú egész tömböt! 
+Kérje be a tömb elemeit és írja ki az értékeket '*' szimbólumokból 
+készített négyzetekbe! Adja meg az egyes elemek indexeit és címeit! Írja 
+ki a tömb mint mutató értékét és annak a címét! 3.2. ábra: Lehetséges 
+képernyőkép
 3.6.1.
 #include <stdio.h>
 #include <math.h> int main() { const int size=4;

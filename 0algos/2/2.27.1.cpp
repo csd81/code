@@ -14,8 +14,14 @@ scanf("%p", &changedAddress);
 printf("Provide the 2nd key: ");
 scanf("%d", &code);
 tryAddress = changedAddress + code;
-} if (tryAddress==realAddress) printf("Access granted, the data is: %d\n", *tryAddress);
+} if (tryAddress==realAddress) printf("Access granted, the data is: %d\n", 
+*tryAddress);
 else printf("Access denied!\n");
 return 0;
 
-2.27.1. Írjon programot, amely egy titkos adatnak (változónak) a címét egy mutatóba és egy egészbe kódolja úgy, hogy a mutató és az egész összege a változó címét eredményezi! A program adja meg a két adatot két embernek egyenként. Később kérje be a mutatót és az egészet és ha őket összeadva visszakapjuk a változó címét, akkor írja ki a változó értékét. 2.28. Többszörös indirekció
+2.27.1. Írjon programot, amely egy titkos adatnak (változónak) a címét egy 
+mutatóba és egy egészbe kódolja úgy, hogy a mutató és az egész összege 
+a változó címét eredményezi! A program adja meg a két adatot két 
+embernek egyenként. Később kérje be a mutatót és az egészet és ha őket 
+összeadva visszakapjuk a változó címét, akkor írja ki a változó 
+értékét. 2.28. Többszörös indirekció

@@ -44,4 +44,9 @@ free(copy);
 copy=NULL;
 return 0;
 } 
-2.30.2. Módosítsa az előző programot úgy, hogy létrehoz új típusnevet a struktúrának és ezt használja a továbbiakban! Külön függvényben valósítsa meg a struktúra bekérő és kiíró részt! Hozzon létre egy dinamikus struktúrát, amit tegyen egyenlővé a bekért struktúrával! Módosítsa a dinamikus struktúrán keresztül az egész mutató által mutatott értéket! 2.31. Esküvő
+2.30.2. Módosítsa az előző programot úgy, hogy létrehoz új típusnevet a 
+struktúrának és ezt használja a továbbiakban! Külön függvényben 
+valósítsa meg a struktúra bekérő és kiíró részt! Hozzon létre egy 
+dinamikus struktúrát, amit tegyen egyenlővé a bekért struktúrával! 
+Módosítsa a dinamikus struktúrán keresztül az egész mutató által 
+mutatott értéket! 2.31. Esküvő

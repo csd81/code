@@ -1,5 +1,7 @@
 
-2.24.2. A sin(x) függvénynek határozza meg az 1., 2. vagy 3. deriváltjának az értékét egy adott pontban! Használja fel, hogy sin'(x) = cos(x), cos'(x) = -sin(x). 
+2.24.2. A sin(x) függvénynek határozza meg az 1., 2. vagy 3. deriváltjának 
+az értékét egy adott pontban! Használja fel, hogy sin'(x) = cos(x), cos'(x) 
+= -sin(x). 
 2.24.2.
 #include <stdio.h>
 #include <math.h> float deriv(int whichDerivate, float posX) { float result;

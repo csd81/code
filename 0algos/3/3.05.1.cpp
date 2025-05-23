@@ -10,4 +10,7 @@ idxI<5;
 idxI++) { printf("%f, ", tomb[idxI]);
 } return 0;
 
-3.5.1. Írjon programot, amelyben egy 5 hosszú statikus float tömb minden elemébe a hozzátartozó index gyökét írja be! Használjon for ciklust az egyes elemek eléréséhez és az eredmény kiírásához! Az egyes értékek vesszővel legyenek elválasztva! 
+3.5.1. Írjon programot, amelyben egy 5 hosszú statikus float tömb minden 
+elemébe a hozzátartozó index gyökét írja be! Használjon for ciklust az 
+egyes elemek eléréséhez és az eredmény kiírásához! Az egyes értékek 
+vesszővel legyenek elválasztva! 

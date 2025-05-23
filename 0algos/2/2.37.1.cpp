@@ -1,5 +1,9 @@
 
-2.37.1. Feladat: Írjon programot fájlok átnevezésére! A régi és az új fájlnév a program paraméterében legyen adott! Ha valamelyik paraméter hiányzik, akkor írja ki a helyes használatot! Ha hiba történik átnevezés közben, akkor írja ki a megfelelő hibaüzenetet a hibakód alapján! 2.38. Szövegfájl
+2.37.1. Feladat: Írjon programot fájlok átnevezésére! A régi és az új 
+fájlnév a program paraméterében legyen adott! Ha valamelyik paraméter 
+hiányzik, akkor írja ki a helyes használatot! Ha hiba történik átnevezés 
+közben, akkor írja ki a megfelelő hibaüzenetet a hibakód alapján! 2.38. 
+Szövegfájl
 2.37.1.
 #include <stdio.h>
 #include <stdlib.h>

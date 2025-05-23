@@ -1,10 +1,18 @@
 
-// 3.19.1. Készítsen gépelést tanító programot! Sztring tömbben tároljon 20 különféle szót! Kérje be, hogy hány szót akar gépelni, véletlenszerűen válasszon ki egyet, amit megjelenít, és aztán várja azt bemenetként! Hibás bevitel esetén kérje be újból a szót! A gyakorlás végén írja ki az eltelt időt és a helyes és elrontott szavak számát! 3.20. Nagy számok összeadása
+// 3.19.1. Készítsen gépelést tanító programot! Sztring tömbben 
+tároljon 20 különféle szót! Kérje be, hogy hány szót akar gépelni, 
+véletlenszerűen válasszon ki egyet, amit megjelenít, és aztán várja azt 
+bemenetként! Hibás bevitel esetén kérje be újból a szót! A gyakorlás 
+végén írja ki az eltelt időt és a helyes és elrontott szavak számát! 
+3.20. Nagy számok összeadása
 3.19.1.
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <string.h> int main() { char words[][50]={"element", "size", "love", "ball", "toy", "gambit", "cruiser", "shadow", "console", "Atlantis", "port", "staple", "Leonardo", "bug", "hope", "vanity", "time", "issue", "fan", "strength"};
+#include <string.h> int main() { char words[][50]={"element", "size", "love", 
+"ball", "toy", "gambit", "cruiser", "shadow", "console", "Atlantis", "port", 
+"staple", "Leonardo", "bug", "hope", "vanity", "time", "issue", "fan", 
+"strength"};
 char temp[50];
 int size=sizeof(words)/sizeof(*words);
 int trial, idxI, randIndex, errors=0;

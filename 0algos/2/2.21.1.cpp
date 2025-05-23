@@ -9,4 +9,6 @@ else y=y-x;
 } printf("The biggest common denominator: %d\n", x);
 return 0;
 } 
-2.21.1. Írjon programot, amely kiszámolja két szám legnagyobb közös osztóját a következő algoritmus segítségével! ciklus amíg a két szám nem egyenlő a nagyobb szám értékét csökkentsük a kisebb számmal 
+2.21.1. Írjon programot, amely kiszámolja két szám legnagyobb közös 
+osztóját a következő algoritmus segítségével! ciklus amíg a két szám 
+nem egyenlő a nagyobb szám értékét csökkentsük a kisebb számmal 

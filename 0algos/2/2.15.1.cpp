@@ -1,8 +1,12 @@
 
-2.15.1. Írjon programot, amely bekér egy double értéket kiírja az eredeti értéket a float, int, short int, char típussá konvertált változatok nagyságát és értékeit! A változók méretei jobbra legyenek rendezve és az értékek kiírása azonos oszlopban kezdődjön! 
+2.15.1. Írjon programot, amely bekér egy double értéket kiírja az eredeti 
+értéket a float, int, short int, char típussá konvertált változatok 
+nagyságát és értékeit! A változók méretei jobbra legyenek rendezve és 
+az értékek kiírása azonos oszlopban kezdődjön! 
 
 #include <math.h>
-#include <stdio.h> int main() { double doubleValue=1.12345678912346789123456789e5;
+#include <stdio.h> int main() { double 
+doubleValue=1.12345678912346789123456789e5;
 printf("%20.20s”, „doubleValue=");
 scanf("%lf", &doubleValue);
 float floatValue=(float)doubleValue;

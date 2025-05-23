@@ -1,50 +1,91 @@
-3.27.2.
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h> #define DEFAULT_INPUTFILE "codedmsg.txt" #define MAX_WORD_LEN 15 char WORD[500];
-typedef char TWord[MAX_WORD_LEN];
-int ReadMessage(FILE * fd, TWord ** M) { int num, i;
-fscanf(fd, "%d", &num);
-(*M) = (TWord*)malloc(sizeof(TWord) * num);
-for (i = 0;
-i < num;
-i++) fscanf(fd, "%s", (*M)[i]);
-return num;
-} void PrintMessage(TWord * M, int num) { int i;
-for (i = 0;
-i < num;
-i++) printf("%s ", M[i]);
-printf("\n");
-} void Offset(TWord * M, int num, int offs) { int i, j, len;
-for (i = 0;
-i < num;
-i++) { len = strlen(M[i]);
-for (j = 0;
-j < len;
-j++) { M[i][j] += offs;
-if (M[i][j] > 'Z') M[i][j] -= ('Z' - 'A' + 1 );
-} } } void Decoding(TWord * M, int num) { int i = 0;
-int j = num;
-while ((i <= 'Z' - 'A') && (j >= num)) { Offset(M, num, 1);
-j = 0;
-while ((j < num) && (strcmp(M[j], WORD) != 0)) j++;
-} } int main(int argc, char * argv[]) { int num;
-TWord * Message;
-FILE * fd = fopen(argc > 1 ? argv[1] : DEFAULT_INPUTFILE, "r");
-if (fd == NULL) { perror("Error");
-return 0;
-} num = ReadMessage(fd, &Message);
-fclose(fd);
-printf("\nKnown word: ");
-scanf("%s", WORD);
-printf("\nThe coded message: ");
-PrintMessage(Message, num);
-Decoding(Message, num);
-printf("The original message: ");
-PrintMessage(Message, num);
-printf("\n");
-free(Message);
-Message = NULL;
-return 0;
-} WKH TXLFN IRA 
-3.27.2. Legyen a tartalmazott szó, a mostani „THE” is bemenet! Ha több lehetséges visszakódolás van, akkor jelenítse meg az összest! 3.28. CD katalógus
+// 3.27.2. Legyen a tartalmazott szó, a mostani „THE” is bemenet! Ha több 
+// lehetséges visszakódolás van, akkor jelenítse meg az összest! 
+// 3.27.2.
+
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+#include <algorithm>
+
+const std::string DEFAULT_INPUTFILE = "codedmsg.txt";
+const int MAX_WORD_LEN = 15;
+const int ALPHABET_LEN = 26;
+
+using Message = std::vector<std::string>;
+
+int readMessage(const std::string& filename, Message& msg) {
+    std::ifstream file(filename);
+    if (!file) {
+        std::cerr << "Cannot open file!\n";
+        return 0;
+    }
+
+    int num;
+    file >> num;
+    msg.resize(num);
+    for (int i = 0; i < num; ++i) {
+        file >> msg[i];
+    }
+
+    return num;
+}
+
+std::string shiftChar(char c, int shift) {
+    return std::string(1, static_cast<char>('A' + (c - 'A' + shift + ALPHABET_LEN) % ALPHABET_LEN));
+}
+
+Message shiftMessage(const Message& msg, int shift) {
+    Message shifted = msg;
+    for (std::string& word : shifted) {
+        for (char& ch : word) {
+            ch = 'A' + (ch - 'A' + shift + ALPHABET_LEN) % ALPHABET_LEN;
+        }
+    }
+    return shifted;
+}
+
+bool containsKnownWord(const Message& msg, const std::string& knownWord) {
+    for (const auto& word : msg) {
+        if (word.find(knownWord) != std::string::npos) {
+            return true;
+        }
+    }
+    return false;
+}
+
+void printMessage(const Message& msg) {
+    for (const auto& word : msg)
+        std::cout << word << " ";
+    std::cout << '\n';
+}
+
+int main(int argc, char* argv[]) {
+    std::string filename = (argc > 1) ? argv[1] : DEFAULT_INPUTFILE;
+    Message codedMessage;
+
+    if (readMessage(filename, codedMessage) == 0)
+        return 1;
+
+    std::string knownWord;
+    std::cout << "Known word: ";
+    std::cin >> knownWord;
+
+    // Convert known word to uppercase for consistency
+    std::transform(knownWord.begin(), knownWord.end(), knownWord.begin(), ::toupper);
+
+    std::cout << "\nThe coded message:\n";
+    printMessage(codedMessage);
+
+    std::cout << "\nPossible decodings containing \"" << knownWord << "\":\n";
+    for (int shift = 1; shift < ALPHABET_LEN; ++shift) {
+        Message decoded = shiftMessage(codedMessage, shift);
+        if (containsKnownWord(decoded, knownWord)) {
+            std::cout << "Shift " << shift << ": ";
+            printMessage(decoded);
+        }
+    }
+
+    return 0;
+}
+

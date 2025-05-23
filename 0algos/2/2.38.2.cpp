@@ -6,7 +6,8 @@
 int idxI, data, min, max, db = 0;
 char fileName[200];
 int num;
-printf("This program will save certain ammount number random number in a file.\n");
+printf("This program will save certain ammount number random number in a 
+file.\n");
 printf("file name=");
 scanf("%s", fileName);
 printf("min number=");
@@ -31,4 +32,7 @@ db = 0;
 tf = NULL;
 return 0;
 } 
-2.38.2. Módosítsa úgy a programot, hogy az első sorba írja ki az adatok számát! Szóközökkel válassza el az egyes értékeket és minden számot fix hosszan írjon ki! 100 számonként szúrjon be egy üres sort! 2.39. Hamupipőke
+2.38.2. Módosítsa úgy a programot, hogy az első sorba írja ki az adatok 
+számát! Szóközökkel válassza el az egyes értékeket és minden számot 
+fix hosszan írjon ki! 100 számonként szúrjon be egy üres sort! 2.39. 
+Hamupipőke

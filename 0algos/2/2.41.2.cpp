@@ -11,5 +11,6 @@ if (intActSec>intOldSec) { printf("\n%d", intActSec);
 intOldSec = intActSec;
 } } return 0;
 } 
-2.41.2. Módosítsa a programot úgy, hogy csak minden egész másodpercben írja ki az eltelt időt! 2.42. Időpont formázása
+2.41.2. Módosítsa a programot úgy, hogy csak minden egész másodpercben 
+írja ki az eltelt időt! 2.42. Időpont formázása
 

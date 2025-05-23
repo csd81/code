@@ -3,14 +3,17 @@
 #include <cstring> using namespace std;
 class Complex { float real, im;
 Complex multiply(const Complex&) const;
-public: void setReal(float para) {real=para;} void setIm(float para) {im=para;} float getReal() const {return real;} float getIm() const {return im;} void display() const;
+public: void setReal(float para) {real=para;} void setIm(float para) {im=para;} 
+float getReal() const {return real;} float getIm() const {return im;} void 
+display() const;
 Complex sum(const Complex&) const;
 Complex sub(const Complex&) const;
 Complex mul(const Complex&) const;
 Complex div(const Complex&) const;
 friend ostream& operator <<(ostream &os,const Complex &obj);
 };
-ostream& operator <<(ostream &os,const Complex &obj) { os<< "(" << obj.real << " + " << obj.im << "i)";
+ostream& operator <<(ostream &os,const Complex &obj) { os<< "(" << obj.real << 
+" + " << obj.im << "i)";
 return os;
 } Complex Complex::sum(const Complex& para) const { float resultReal, resultIm;
 Complex result;
@@ -33,7 +36,8 @@ resultIm=im*para.real+real*para.im;
 result.real=resultReal;
 result.setIm(resultIm);
 return result;
-} Complex Complex::multiply(const Complex& para) const { float resultReal, resultIm;
+} Complex Complex::multiply(const Complex& para) const { float resultReal, 
+resultIm;
 Complex result;
 resultReal=real*para.real - im*para.im;
 resultIm=im*para.real+real*para.im;
@@ -63,4 +67,6 @@ cout << a << " * " << b << "=" << a.mul(b) << endl;
 cout << a << " / " << b << "=" << a.div(b) << endl;
 return 0;
 
-2.48.2. Módosítsa úgy a programot, hogy a metódusok ne végezzenek kiírást, hanem adják vissza az eredményt objektumként! Valósítsa meg kiíró operátort a komplex osztályra! 
+2.48.2. Módosítsa úgy a programot, hogy a metódusok ne végezzenek 
+kiírást, hanem adják vissza az eredményt objektumként! Valósítsa meg 
+kiíró operátort a komplex osztályra! 

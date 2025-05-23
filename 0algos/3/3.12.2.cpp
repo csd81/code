@@ -1,5 +1,6 @@
 
-// 3.12.2. Készítsen statisztikát egy szövegben lévő szavak és mondatok számáról! 3.13. Kódolt beszéd
+// 3.12.2. Készítsen statisztikát egy szövegben lévő szavak és mondatok 
+számáról! 3.13. Kódolt beszéd
 3.12.2.
 #include <stdio.h>
 #include <string.h> int main() { char text[80];

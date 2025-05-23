@@ -26,4 +26,5 @@ if (direction) row++;
 else row--;
 } return 0;
 } 
-2.20.3. Módosítsa úgy a programot, hogy négyzet helyett háromszög jelenjen meg, ami alulról pattanjon vissza! 
+2.20.3. Módosítsa úgy a programot, hogy négyzet helyett háromszög 
+jelenjen meg, ami alulról pattanjon vissza! 

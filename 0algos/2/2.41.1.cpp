@@ -8,4 +8,5 @@ actSec = (double)actClock / CLOCKS_PER_SEC;
 printf("\n%lf", actSec);
 } return 0;
 } 
-2.41.1. Készítsünk stopperórát, amely a program indításától eltelt időt írja ki folyamatosan! A program 11 másodperc után álljon meg! 
+2.41.1. Készítsünk stopperórát, amely a program indításától eltelt 
+időt írja ki folyamatosan! A program 11 másodperc után álljon meg! 

@@ -1,7 +1,9 @@
 
 
 
-//3.10.2. Egészítse ki az előző programot a következő feladatokat ellátó függvényekkel! Maximális eleme indexének a meghatározása, szórás kiszámítása, két tömb elemeinek a felcserélése! 
+//3.10.2. Egészítse ki az előző programot a következő feladatokat 
+ellátó függvényekkel! Maximális eleme indexének a meghatározása, 
+szórás kiszámítása, két tömb elemeinek a felcserélése! 
 
 Below is a C++11 solution split into three files. It adds:
 
@@ -147,7 +149,8 @@ int main() {
                  << " (value " << A[iMin] << ")\n"
               << "Max index: " << iMax
                  << " (value " << A[iMax] << ")\n"
-              << "Std Dev:   " << std::fixed << std::setprecision(4) << sd << "\n";
+              << "Std Dev:   " << std::fixed << std::setprecision(4) << sd << 
+"\n";
 
     std::cout << "\n-- Swapping A and B --\n";
     change(A, B, size);

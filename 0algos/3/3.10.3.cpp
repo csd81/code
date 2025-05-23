@@ -1,4 +1,8 @@
-//3.10.3. Egészítse ki az előző programot a következő feladatokat ellátó függvényekkel! Adott elem első előfordulásának meghatározása, utolsó előfordulásának meghatározása, két tömb között az alapműveletek elvégzése az azonos indexű elemek között, skaláris szorzat meghatározása.  
+//3.10.3. Egészítse ki az előző programot a következő feladatokat 
+ellátó függvényekkel! Adott elem első előfordulásának meghatározása, 
+utolsó előfordulásának meghatározása, két tömb között az 
+alapműveletek elvégzése az azonos indexű elemek között, skaláris szorzat 
+meghatározása.  
 
 Below is a clean C++11 solution, organized into three files:
 
@@ -28,7 +32,8 @@ int maxIndex(const double* arr, int size);
 // Swap the contents of a1 and a2 (both length size)
 void change(double* a1, double* a2, int size);
 
-// Element-wise basic operations (+, –, *, /) between a1 and a2, printed to stdout
+// Element-wise basic operations (+, –, *, /) between a1 and a2, printed to 
+stdout
 void elementWiseOps(const double* a1, const double* a2, int size);
 
 // Scalar (dot) product of a1 and a2

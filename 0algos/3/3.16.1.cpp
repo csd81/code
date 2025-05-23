@@ -1,4 +1,7 @@
-// 3.16.1. Írjon programot, amely bekéri egy tömb méretét, lefoglalja a helyet a tömb számára és feltölti elemekkel! Növelje meg a tömb méretét duplájára úgy, hogy létrehoz egy új tömböt, és belemásolja a régi tömböt! Töltse fel a maradék helyet is új értékekkel! 
+// 3.16.1. Írjon programot, amely bekéri egy tömb méretét, lefoglalja a 
+helyet a tömb számára és feltölti elemekkel! Növelje meg a tömb 
+méretét duplájára úgy, hogy létrehoz egy új tömböt, és belemásolja a 
+régi tömböt! Töltse fel a maradék helyet is új értékekkel! 
 
 3.16.1.
 #include <malloc.h>

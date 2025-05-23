@@ -15,4 +15,6 @@ remove(buffer);
 printf("File deleted\n");
 } return 0;
 } 
-2.36.2. Írja meg a tuti törlés programot! A program először törli a csak olvasható tulajdonságot és utána DOS parancs segítségével törli a fájlt. 2.37. Átnevezés
+2.36.2. Írja meg a tuti törlés programot! A program először törli a csak 
+olvasható tulajdonságot és utána DOS parancs segítségével törli a 
+fájlt. 2.37. Átnevezés

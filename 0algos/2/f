@@ -1,0 +1,13 @@
+#!/bin/bash
+
+for file in *.cpp; do
+  # Check if it's a regular file
+  if [[ -f "$file" ]]; then
+    echo "Folding $file ..."
+    cp -- "$file" "$file.bak"           # Backup original
+    fold -s -w 80 "$file.bak" > "$file" # Fold from backup to original
+  fi
+done
+
+echo "Done folding all files in current directory."
+

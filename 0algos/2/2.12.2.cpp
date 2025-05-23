@@ -1,7 +1,8 @@
 
 
 
-2.12.2. Írjon programot a logikai és bitenkénti operátorok használatának a szemléltetésére! 
+2.12.2. Írjon programot a logikai és bitenkénti operátorok használatának 
+a szemléltetésére! 
 2.12.2.
 #include <stdio.h>
 #include <math.h> int main() { int op1, op2;
@@ -29,7 +30,8 @@ int main() {
     int op1, op2;
     char more = 'y';
 
-    std::cout << "Demonstrate logical and bitwise operators on two integers\n\n";
+    std::cout << "Demonstrate logical and bitwise operators on two 
+integers\n\n";
 
     while (more == 'y' || more == 'Y') {
         // Read first integer
@@ -57,9 +59,12 @@ int main() {
         std::cout << "~"  << op2 << "       = " << (~op2) << "\n";
 
         // Logical operations
-        std::cout << "\nLogical operations (treating 0 as false, non-zero as true):\n";
-        std::cout << op1 << " && " << op2 << " = " << ( (op1 && op2) ? 1 : 0 ) << "\n";
-        std::cout << op1 << " || " << op2 << " = " << ( (op1 || op2) ? 1 : 0 ) << "\n";
+        std::cout << "\nLogical operations (treating 0 as false, non-zero as 
+true):\n";
+        std::cout << op1 << " && " << op2 << " = " << ( (op1 && op2) ? 1 : 0 ) 
+<< "\n";
+        std::cout << op1 << " || " << op2 << " = " << ( (op1 || op2) ? 1 : 0 ) 
+<< "\n";
         std::cout << "!"  << op1 << "       = " << ( (!op1) ? 1 : 0 ) << "\n";
         std::cout << "!"  << op2 << "       = " << ( (!op2) ? 1 : 0 ) << "\n";
 
@@ -77,7 +82,8 @@ int main() {
 
 **How it works**
 
-* We read two integers `op1` and `op2`, validating input to ensure they’re integers.
+* We read two integers `op1` and `op2`, validating input to ensure they’re 
+integers.
 * **Bitwise operators**
 
   * `&` (AND), `|` (OR), `^` (XOR), `~` (NOT).
@@ -85,8 +91,10 @@ int main() {
 
   * `&&` (logical AND), `||` (logical OR), `!` (logical NOT).
     Results are normalized to `1` (true) or `0` (false) in the output.
-* After displaying all results, the program asks if you’d like to repeat; entering `y` or `Y` continues the loop.
-* We use `std::numeric_limits<std::streamsize>::max()` with `ignore()` to clear any leftover input and keep the stream in a good state.
+* After displaying all results, the program asks if you’d like to repeat; 
+entering `y` or `Y` continues the loop.
+* We use `std::numeric_limits<std::streamsize>::max()` with `ignore()` to clear 
+any leftover input and keep the stream in a good state.
 
 
 

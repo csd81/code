@@ -23,4 +23,9 @@ actWait = (double)(end - start) / CLOCKS_PER_SEC;
 printf("You have waited %6.2lf seconds instead of %d. ", actWait, wait);
 } return 0;
 } 
-2.43.1. Írjon időtippelő programot! A program állítson elő egy véletlen számot 1 és 5 között és ezt írja ki a képernyőre! Ennyi időt kell majd várni a felhasználónak. Ezután kérjen be két sztringet úgy, hogy méri a bekérések között eltelt időt! Írja ki, hogy ténylegesen mennyi idő telt el a két bekérés között! Ha a bemenet a „quit” sztring, akkor lépjen ki a programból! 2.44. Milyen nap?
+2.43.1. Írjon időtippelő programot! A program állítson elő egy véletlen 
+számot 1 és 5 között és ezt írja ki a képernyőre! Ennyi időt kell majd 
+várni a felhasználónak. Ezután kérjen be két sztringet úgy, hogy méri a 
+bekérések között eltelt időt! Írja ki, hogy ténylegesen mennyi idő telt 
+el a két bekérés között! Ha a bemenet a „quit” sztring, akkor lépjen 
+ki a programból! 2.44. Milyen nap?

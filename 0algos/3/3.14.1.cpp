@@ -1,4 +1,6 @@
-// 3.14.1. Írjon programot, amely egy sztringből kivon egy másikat! Például: almafavirág - fa = almavirág. Ha a második paraméter nincs az elsőben, akkor ne változzon az első paraméter érétke! 
+// 3.14.1. Írjon programot, amely egy sztringből kivon egy másikat! 
+Például: almafavirág - fa = almavirág. Ha a második paraméter nincs az 
+elsőben, akkor ne változzon az első paraméter érétke! 
 3.14.1.
 #include <stdio.h>
 #include <string.h> void substract(char* from, char* what) { char* subString=0;

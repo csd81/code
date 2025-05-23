@@ -11,7 +11,8 @@ idxI < size;
 idxI++) { roman[idxI] = toupper(roman[idxI]);
 } for (idxI = 0;
 idxI < size;
-idxI++) { switch (roman[idxI]) { case 'I': if (roman[idxI + 1] == 'X') { arabian += 9;
+idxI++) { switch (roman[idxI]) { case 'I': if (roman[idxI + 1] == 'X') { 
+arabian += 9;
 idxI += 1;
 } else { if (roman[idxI + 1] == 'V') { arabian += 4;
 idxI += 1;
@@ -40,4 +41,5 @@ break;
 } } } printf("%d\n", arabian);
 return 0;
 
-2.18.2. Ne csak egy darab számjegyet, hanem egy több karakterből álló számot alakítson át! 
+2.18.2. Ne csak egy darab számjegyet, hanem egy több karakterből álló 
+számot alakítson át! 

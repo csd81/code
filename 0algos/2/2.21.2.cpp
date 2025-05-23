@@ -11,10 +11,12 @@ printf("Give me the third number: ");
 scanf("%d", &z);
 first = biggest_denominator(x, y);
 second = biggest_denominator(y, z);
-printf("The biggest common denominator: %d\n", biggest_denominator(first, second));
+printf("The biggest common denominator: %d\n", biggest_denominator(first, 
+second));
 and second denominations return 0;
 } int biggest_denominator(int x, int y) { while (x!=y) { if (x>y) x=x-y;
 else y=y-x;
 } return x;
 } 
-2.21.2. Módosítsa úgy a programot, hogy az három szám legnagyobb közös osztóját számolja ki! 2.22. main paraméterek
+2.21.2. Módosítsa úgy a programot, hogy az három szám legnagyobb közös 
+osztóját számolja ki! 2.22. main paraméterek

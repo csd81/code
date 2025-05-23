@@ -1,7 +1,9 @@
 
 
 
-2.11.2. Határozza meg a komplex gyököket is! A komplex gyököket is figyelembe véve a másodfokú egyenletnek mindig két megoldása van, de azok egybeeshetnek. 
+2.11.2. Határozza meg a komplex gyököket is! A komplex gyököket is 
+figyelembe véve a másodfokú egyenletnek mindig két megoldása van, de azok 
+egybeeshetnek. 
 
 2.11.2.
 #include <stdio.h>
@@ -28,13 +30,15 @@ printf("x1= %f+(%f)i\n", (-b) /(2*a), sqrt(-D));
 printf("x2= %f-(%f)i\n", (-b) /(2*a), sqrt(-D));
 } return 0;
 
-Here’s a C++11 version that always computes and prints two roots—including complex ones—for
+Here’s a C++11 version that always computes and prints two roots—including 
+complex ones—for
 
 $$
 a x^2 + b x + c = 0
 $$
 
-even when they coincide. It uses `<complex>` so you don’t have to branch on the sign of the discriminant yourself:
+even when they coincide. It uses `<complex>` so you don’t have to branch on 
+the sign of the discriminant yourself:
 
 ```cpp
 #include <iostream>
@@ -50,7 +54,8 @@ int main() {
 
     // Ensure it's really quadratic
     if (a == 0.0) {
-        std::cerr << "Coefficient a must be non-zero for a quadratic equation.\n";
+        std::cerr << "Coefficient a must be non-zero for a quadratic 
+equation.\n";
         return 1;
     }
 
@@ -86,7 +91,8 @@ int main() {
 ### Key points
 
 * **`<complex>`**
-  We wrap the real discriminant in a `std::complex<double>` so that `std::sqrt` will automatically give a complex result when $D<0$.
+  We wrap the real discriminant in a `std::complex<double>` so that `std::sqrt` 
+will automatically give a complex result when $D<0$.
 * **Unified formula**
 
   $$
@@ -95,7 +101,8 @@ int main() {
 
   works whether $\sqrt{D}$ is real or imaginary.
 * **Formatting**
-  We use `fixed` with `setprecision(4)` for all numeric output, and a small lambda to print the “+” or “–” between real and imaginary parts.
+  We use `fixed` with `setprecision(4)` for all numeric output, and a small 
+lambda to print the “+” or “–” between real and imaginary parts.
 
 
 

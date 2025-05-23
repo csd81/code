@@ -7,7 +7,9 @@ public: bool check() const;
 float area() const;
 float perimeter() const;
 void display() const;
-void setA(float para) {a=para;} void setB(float para) {b=para;} void setC(float para) {this->c=para;} float getA() const {return a;} float getB() const {return this->b;} float getC() const {return c;} };
+void setA(float para) {a=para;} void setB(float para) {b=para;} void setC(float 
+para) {this->c=para;} float getA() const {return a;} float getB() const {return 
+this->b;} float getC() const {return c;} };
 bool isoscelesTriangle::check() const { bool result=false;
 if (a==b || b==c || a==c) result=true;
 return result;
@@ -19,7 +21,8 @@ return result;
 } void isoscelesTriangle::display() const { bool valid=check();
 cout << boolalpha;
 cout << "The triangle is valid: " << valid << endl;
-if (valid) cout << "The sides are: " << this->a << ", " << b << ", " << getC() << endl;
+if (valid) cout << "The sides are: " << this->a << ", " << b << ", " << getC() 
+<< endl;
 } int main() { isoscelesTriangle myObject;
 myObject.setA(3);
 myObject.setB(3);

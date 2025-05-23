@@ -1,4 +1,7 @@
-2.9.3. Alakítsuk át a programot úgy, hogy minden iterációban kérje be a %g-ben használt pontosságot is! A válasz ne csak az legyen, hogy hagyományos vagy normál formában történik a kiírás, hanem pontosan meg kell adni számot a megfelelő formában! 2.10. Szorzótábla
+2.9.3. Alakítsuk át a programot úgy, hogy minden iterációban kérje be a 
+%g-ben használt pontosságot is! A válasz ne csak az legyen, hogy 
+hagyományos vagy normál formában történik a kiírás, hanem pontosan meg 
+kell adni számot a megfelelő formában! 2.10. Szorzótábla
 2.9.3.
 #include <stdio.h> int main() { int size = 5;
 double myArray [] = {3.456, 45697.678, -659.23, -0.0000965, 6.0000001};
@@ -8,7 +11,8 @@ char buffer [50];
 char tip [50];
 int stringSizeOfAnswer;
 int precision;
-printf("How do you think the %%g will display the next numbers? Regular or normal?\n");
+printf("How do you think the %%g will display the next numbers? Regular or 
+normal?\n");
 for (idxI=0;
 idxI < size;
 idxI++) { printf("\n%15.10lf ", myArray[idxI]);
@@ -26,6 +30,7 @@ else correct = 0;
 if (correct) { printf("Correct!\n");
 points++;
 } else printf("Incorrect!\n");
-} printf("You achieved a(n) %.lf %% result.\n", (double)points/(double)size*100);
+} printf("You achieved a(n) %.lf %% result.\n", 
+(double)points/(double)size*100);
 return 0;
 } 

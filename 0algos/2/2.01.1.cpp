@@ -1,7 +1,10 @@
 
 
 
-2.1.1. Írjon programot, amely bekéri egy vizsga eredményének százalékos értékét és kiírja, hogy sikeres volt-e a vizsga! A siker feltétele az 50%-nál jobb teljesítmény. Ötlet: ügyeljen arra, hogy az 50% még bukást jelent! 
+2.1.1. Írjon programot, amely bekéri egy vizsga eredményének százalékos 
+értékét és kiírja, hogy sikeres volt-e a vizsga! A siker feltétele az 
+50%-nál jobb teljesítmény. Ötlet: ügyeljen arra, hogy az 50% még bukást 
+jelent! 
 2.1.1.
 #include <stdio.h> int main() { float result;
 printf("result=");
@@ -12,7 +15,9 @@ if (result>50) { printf("Passed\n");
 } return 0;
 } 
 
-Here’s a clean C++11 version that reads a percentage grade, checks if it’s strictly greater than 50 % (so exactly 50 % still fails), and prints “Passed” or “Failed”:
+Here’s a clean C++11 version that reads a percentage grade, checks if it’s 
+strictly greater than 50 % (so exactly 50 % still fails), and prints 
+“Passed” or “Failed”:
 
 ```cpp
 #include <iostream>

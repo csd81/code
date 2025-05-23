@@ -1,7 +1,8 @@
 
 
 
-2.17.1. Írjon programot, amely a víz hőmérséklete alapján megállapítja annak halmazállapotát! 
+2.17.1. Írjon programot, amely a víz hőmérséklete alapján megállapítja 
+annak halmazállapotát! 
 
 #include <stdio.h> int main() { float temperature;
 printf("temperature of water=");

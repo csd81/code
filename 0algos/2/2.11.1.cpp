@@ -1,4 +1,6 @@
-// 2.11.1. Írjon programot a másodfokú egyenlet megoldására! Először kérje be az együtthatókat, azután írja ki, hogy hány megoldás van és adja meg a megoldásokat! 
+// 2.11.1. Írjon programot a másodfokú egyenlet megoldására! Először 
+kérje be az együtthatókat, azután írja ki, hogy hány megoldás van és 
+adja meg a megoldásokat! 
 
 
 

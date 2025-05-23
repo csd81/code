@@ -18,4 +18,5 @@ if (direction) idxJ++;
 else idxJ--;
 } } return 0;
 
-2.20.4. Négyzet helyett téglalap mozogjon vízszintesen a szélekről visszapattanva! 2.21. Legnagyobb közös osztó
+2.20.4. Négyzet helyett téglalap mozogjon vízszintesen a szélekről 
+visszapattanva! 2.21. Legnagyobb közös osztó

@@ -15,4 +15,6 @@ total = subTotal;
 printf("The total is %d.\n", total);
 return 0;
 
-2.25.3. Módosítsa úgy az előző programot, hogy nem használ statikus változót, hanem paraméterként adja át az eddigi részösszeget! 2.26. Alias változók
+2.25.3. Módosítsa úgy az előző programot, hogy nem használ statikus 
+változót, hanem paraméterként adja át az eddigi részösszeget! 2.26. 
+Alias változók

@@ -7,7 +7,9 @@ public: bool check() const;
 float area() const;
 float perimeter() const;
 void display() const;
-void setA(float para) {a=para;} void setB(float para) {b=para;} void setC(float para) {this->c=para;} float getA() const {return a;} float getB() const {return this->b;} float getC() const {return c;} };
+void setA(float para) {a=para;} void setB(float para) {b=para;} void setC(float 
+para) {this->c=para;} float getA() const {return a;} float getB() const {return 
+this->b;} float getC() const {return c;} };
 bool equilateralTriangle::check() const { bool result=false;
 if (a==b && b==c) result=true;
 return result;
@@ -19,7 +21,8 @@ return result;
 } void equilateralTriangle::display() const { bool valid=check();
 cout << boolalpha;
 cout << "The triangle is valid: " << valid << endl;
-if (valid) cout << "The sides are: " << this->a << ", " << b << ", " << getC() << endl;
+if (valid) cout << "The sides are: " << this->a << ", " << b << ", " << getC() 
+<< endl;
 } int main() { equilateralTriangle myObject;
 myObject.setA(3);
 myObject.setB(3);
@@ -29,4 +32,5 @@ if (myObject.check()) { cout << "Area: " << myObject.area() << endl;
 cout << "Perimeter: " << myObject.perimeter() << endl;
 } return 0;
 } 
-2.46.3. Készítsen hasonló osztályt szabályos háromszögre! 2.47. Statikus adattag
+2.46.3. Készítsen hasonló osztályt szabályos háromszögre! 2.47. Statikus 
+adattag

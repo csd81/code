@@ -22,4 +22,5 @@ wait(1);
 idxJ++;
 } } return 0;
 
-2.20.2. Módosítsa úgy a programot, hogy amint a négyzet eltűnik alul, felül jelenjen meg újból! 
+2.20.2. Módosítsa úgy a programot, hogy amint a négyzet eltűnik alul, 
+felül jelenjen meg újból! 

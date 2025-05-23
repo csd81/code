@@ -3,7 +3,9 @@
 #include <cstring> using namespace std;
 class Complex { float real, im;
 Complex multiply(const Complex&) const;
-public: void setReal(float para) {real=para;} void setIm(float para) {im=para;} float getReal() const {return real;} float getIm() const {return im;} void display() const;
+public: void setReal(float para) {real=para;} void setIm(float para) {im=para;} 
+float getReal() const {return real;} float getIm() const {return im;} void 
+display() const;
 void sum(const Complex&) const;
 void sub(const Complex&) const;
 void mul(const Complex&) const;
@@ -21,7 +23,8 @@ cout << resultReal << "+" << resultIm << "i";
 resultReal=real*para.real - im*para.im;
 resultIm=im*para.real+real*para.im;
 cout << resultReal << "+" << resultIm << "i";
-} Complex Complex::multiply(const Complex& para) const { float resultReal, resultIm;
+} Complex Complex::multiply(const Complex& para) const { float resultReal, 
+resultIm;
 Complex result;
 resultReal=real*para.real - im*para.im;
 resultIm=im*para.real+real*para.im;
@@ -70,4 +73,6 @@ a.div(b);
 cout << endl;
 return 0;
 } 
-2.48.1. Írjon komplex szám osztályt! Használjon privát adattagokat! Írja meg az add, sub, mul, div metódusokat! Az említett metódusok írják ki a műveletek eredményét a képernyőre! 
+2.48.1. Írjon komplex szám osztályt! Használjon privát adattagokat! Írja 
+meg az add, sub, mul, div metódusokat! Az említett metódusok írják ki a 
+műveletek eredményét a képernyőre! 

@@ -1,6 +1,8 @@
 2.51.1.
 #include <stdio.h>
-#include <stdlib.h> #define INPUT_FILE "sets.txt" #define max(a, b) ((a) > (b) ? (a) : (b)) #define min(a, b) ((a) > (b) ? (b) : (a)) void ReadSet(FILE * fd, int * size, int ** set) { int i;
+#include <stdlib.h> #define INPUT_FILE "sets.txt" #define max(a, b) ((a) > (b) 
+? (a) : (b)) #define min(a, b) ((a) > (b) ? (b) : (a)) void ReadSet(FILE * fd, 
+int * size, int ** set) { int i;
 fscanf(fd, "%d", size);
 } *set = (int *)malloc(sizeof(int) * (*size) );
 for (i = 0;
@@ -18,7 +20,8 @@ printf("}\n");
 } int Element(int e, int size, int * S) { int i = 0;
 while ((i < size) && (S[i] != e)) i++;
 return i < size;
-} void Union(int SizeA, int SizeB, int * SizeU, int * SA, int * SB, int ** C) { int size = max(SizeA, SizeB);
+} void Union(int SizeA, int SizeB, int * SizeU, int * SA, int * SB, int ** C) { 
+int size = max(SizeA, SizeB);
 int i;
 *SizeU = 0;
 int * A = SizeA > SizeB ? SA : SB;
@@ -59,7 +62,8 @@ if (Element(num, SetASize, SetA)) printf("%d is element of A\n", num);
 else printf("%d is not element of A\n", num);
 if (Element(num, SetBSize, SetB)) printf("%d is element of B\n", num);
 else printf("%d is not element of B\n", num);
-if (Element(num, SetUSize, SetU)) printf("%d is element of union of A and B\n", num);
+if (Element(num, SetUSize, SetU)) printf("%d is element of union of A and B\n", 
+num);
 else printf("%d is not element of union of A and B\n", num);
 PrintSet("A", SetASize, SetA);
 PrintSet("B", SetBSize, SetB);
@@ -76,5 +80,18 @@ free(SetU);
 SetU = NULL;
 return 0;
 
-2.51.1. Írjon programot, amely két halmaz unióját generálja! Mindkét halmaz egész számokat tartalmaz! A program olvassa be az input fájlt. Kérjen be egy számot a billentyűzetről, és döntse el, hogy a szám eleme-e az első halmaznak, a második halmaznak, illetve ezek uniójának! Írassa ki a képernyőre az előbbi három halmazt! Végül írassa ki, hogy az első halmaz részhalmaza-e a másodiknak, illetve fordítva! Használjon dinamikus tömböket! Az input fájl formátuma: Első sor: az első halmaz mérete Második sor: az első halmaz elemei Harmadik sor: a második halmaz mérete Negyedik sor: a második halmaz elemei A számok egy-egy space karakterrel vannak elválasztva. Példa bemenet: 3 80 54 41 5 41 21 54 76 80 Kimenet: Type a number: 76 76 is not element of A 76 is element of B 76 is element of union of A and B A = {80, 54, 41} B = {41, 21, 54, 76, 80} Union of A and B = {41, 21, 54, 76, 80} B is not subset of A A is subset of B 2.52. Halmazok különbsége
+2.51.1. Írjon programot, amely két halmaz unióját generálja! Mindkét 
+halmaz egész számokat tartalmaz! A program olvassa be az input fájlt. 
+Kérjen be egy számot a billentyűzetről, és döntse el, hogy a szám 
+eleme-e az első halmaznak, a második halmaznak, illetve ezek uniójának! 
+Írassa ki a képernyőre az előbbi három halmazt! Végül írassa ki, hogy 
+az első halmaz részhalmaza-e a másodiknak, illetve fordítva! Használjon 
+dinamikus tömböket! Az input fájl formátuma: Első sor: az első halmaz 
+mérete Második sor: az első halmaz elemei Harmadik sor: a második halmaz 
+mérete Negyedik sor: a második halmaz elemei A számok egy-egy space 
+karakterrel vannak elválasztva. Példa bemenet: 3 80 54 41 5 41 21 54 76 80 
+Kimenet: Type a number: 76 76 is not element of A 76 is element of B 76 is 
+element of union of A and B A = {80, 54, 41} B = {41, 21, 54, 76, 80} Union of 
+A and B = {41, 21, 54, 76, 80} B is not subset of A A is subset of B 2.52. 
+Halmazok különbsége
 

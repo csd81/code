@@ -40,4 +40,8 @@ free(myFan2.description);
 myFan2.description = NULL;
 } return 0;
 
-2.32.2. Módosítsa úgy a programot, hogy a ventilátor változó értékét tegye egyenlővé egy másik változóval, módosítsa az eredeti változóban a gyártót és a leírást! Írassa ki újból mindkét struktúrát! Milyen furcsaságot tapasztal? Hogy lehet azt korrigálni? 2.33. Többszörösen összetett típus
+2.32.2. Módosítsa úgy a programot, hogy a ventilátor változó értékét 
+tegye egyenlővé egy másik változóval, módosítsa az eredeti változóban 
+a gyártót és a leírást! Írassa ki újból mindkét struktúrát! Milyen 
+furcsaságot tapasztal? Hogy lehet azt korrigálni? 2.33. Többszörösen 
+összetett típus

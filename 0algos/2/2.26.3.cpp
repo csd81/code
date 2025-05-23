@@ -12,4 +12,5 @@ printf("The volume of the ball is: %f\n", volume);
 printf("The surface of the ball is: %f\n", surface);
 return 0;
 
-2.26.3. Írjon az előzőhöz hasonló programot gömbre vonatkozóan! 2.27. Két kulcsos hozzáférés
+2.26.3. Írjon az előzőhöz hasonló programot gömbre vonatkozóan! 2.27. 
+Két kulcsos hozzáférés

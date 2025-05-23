@@ -1,7 +1,8 @@
 2.57.1.
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h> #define DEFAULT_INPUTFILE "tipp1.txt" void GetNumbers(int * A) { int i, j, num;
+#include <time.h> #define DEFAULT_INPUTFILE "tipp1.txt" void GetNumbers(int * 
+A) { int i, j, num;
 for (i = 0;
 i < 5;
 i++) { } } do { num = rand() % 90 + 1;
@@ -54,4 +55,13 @@ PrintHits(Hits);
 fclose(fd);
 return 0;
 } 
-2.57.1. Írjon lottó-generáló programot! A program generáljon 1 és 90 között 5 különböző pozitív egész számot! Egy fájl tippeket tartalmaz. Olvassa be a tippeket a fájlból, majd hasonlítsa össze őket a generált számokkal! Írja ki a képernyőre a generált nyerőszámokat, és azt, hogy hány embernek van 1-es, 2-es, 3as, 4-es, illetve 5-ös találata a lottón! Az input fájl formátuma: Első sor: a tippek száma Minden további sor 5 tippet tartalmaz, szóköz karakterekkel elválasztva. Példa bemenet: 6 5 64 23 80 42 4 34 44 62 72 75 43 3 64 80 53 52 21 56 10 1 37 87 9 53 75 10 64 69 78 Kimenet: Generated numbers: 55, 64, 68, 75, 50 There is 1 1 hit There are 2 2 hits There is 0 3 hit There is 0 4 hit There is 0 5 hit 2.58. Hanoi tornyai
+2.57.1. Írjon lottó-generáló programot! A program generáljon 1 és 90 
+között 5 különböző pozitív egész számot! Egy fájl tippeket tartalmaz. 
+Olvassa be a tippeket a fájlból, majd hasonlítsa össze őket a generált 
+számokkal! Írja ki a képernyőre a generált nyerőszámokat, és azt, hogy 
+hány embernek van 1-es, 2-es, 3as, 4-es, illetve 5-ös találata a lottón! Az 
+input fájl formátuma: Első sor: a tippek száma Minden további sor 5 tippet 
+tartalmaz, szóköz karakterekkel elválasztva. Példa bemenet: 6 5 64 23 80 42 
+4 34 44 62 72 75 43 3 64 80 53 52 21 56 10 1 37 87 9 53 75 10 64 69 78 Kimenet: 
+Generated numbers: 55, 64, 68, 75, 50 There is 1 1 hit There are 2 2 hits There 
+is 0 3 hit There is 0 4 hit There is 0 5 hit 2.58. Hanoi tornyai

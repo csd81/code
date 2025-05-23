@@ -19,10 +19,13 @@ myPerson->sex=dummy;
 printf("grown up: 0 - no, 1 - yes ");
 scanf("%d", &dummy);
 myPerson->grownUp=dummy;
-printf("zodiac: 0 - Aries, 1 - Taurus, 2 - Gemini, 3 - Cancer, 4 Leo, 5 - Virgo, \ 6 - Libra, 7 - Scorpio, 8 - Sagittarius, 9 - Capricorn, 10 Aquarious, 11 - Pisces ");
+printf("zodiac: 0 - Aries, 1 - Taurus, 2 - Gemini, 3 - Cancer, 4 Leo, 5 - 
+Virgo, \ 6 - Libra, 7 - Scorpio, 8 - Sagittarius, 9 - Capricorn, 10 Aquarious, 
+11 - Pisces ");
 scanf("%d", &dummy);
 myPerson->zodiac=dummy;
-printf("religion: 0 - Judaism, 1 - Christian, 2 - Islam, 3 Hinduism, \ 4 - Budhism, 5 - other ");
+printf("religion: 0 - Judaism, 1 - Christian, 2 - Islam, 3 Hinduism, \ 4 - 
+Budhism, 5 - other ");
 scanf("%d", &dummy);
 myPerson->religion=dummy;
 printf("bloodType: 0 - 0, 1 - A, 2 - B, 3 - AB ");
@@ -31,7 +34,8 @@ myPerson->bloodType=dummy;
 } printf("RH: 0 - -, 1 - + ");
 scanf("%d", &dummy);
 myPerson->RH=dummy;
-void printPerson(Person *myPerson) { printf("person={name=%s, sex=", myPerson->name);
+void printPerson(Person *myPerson) { printf("person={name=%s, sex=", 
+myPerson->name);
 switch (myPerson->sex) { case 0: printf("female, ");
 break;
 case 1: printf("male, ");
@@ -100,4 +104,9 @@ printf("\n");
 printPerson(&me);
 return 0;
 } 
-2.34.1. Írjon programot egyén adatainak a tárolásához! Az ember típus mezői a név (statikus tömb), nem, nagykorú-e, csillagjegye, vallása (5 nagy vallás vagy egyéb), élő személy-e, vércsoport, RH csoport! Használjon megfelelő hosszú bitmezőket! Írjon bekérő és kiíró függvényt, a kiíró függvénynél ne számokat, hanem azok jelentéseit írja ki! Határozza meg a struktúra méretét! 
+2.34.1. Írjon programot egyén adatainak a tárolásához! Az ember típus 
+mezői a név (statikus tömb), nem, nagykorú-e, csillagjegye, vallása (5 
+nagy vallás vagy egyéb), élő személy-e, vércsoport, RH csoport! 
+Használjon megfelelő hosszú bitmezőket! Írjon bekérő és kiíró 
+függvényt, a kiíró függvénynél ne számokat, hanem azok jelentéseit 
+írja ki! Határozza meg a struktúra méretét! 

@@ -33,4 +33,6 @@ printf("varLongDouble=%Lg\n", myVar.varLongDouble);
 printf("varPInt=%p", myVar.varPInt);
 return 0;
 
-2.30.1. Készítsen struktúrát, amely minden egyszerű adattípusból tartalmaz egyet valamint egy egészre mutató mutatót! Kérje be a struktúra adattagjait a konzolról, majd írja ki azokat! 
+2.30.1. Készítsen struktúrát, amely minden egyszerű adattípusból 
+tartalmaz egyet valamint egy egészre mutató mutatót! Kérje be a struktúra 
+adattagjait a konzolról, majd írja ki azokat! 

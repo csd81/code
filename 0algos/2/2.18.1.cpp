@@ -23,4 +23,6 @@ break;
 default: printf("\nWrong character");
 } return 0;
 } 
-2.18.1. Írjon programot, amely megadja, hogy mik a római számjegyek (I, V, L, C, D, M) arab megfelelői! Kérjen be egy római számjegyet, konvertálja nagybetűre, ha szükséges és adja meg a szám értéket! 
+2.18.1. Írjon programot, amely megadja, hogy mik a római számjegyek (I, V, 
+L, C, D, M) arab megfelelői! Kérjen be egy római számjegyet, konvertálja 
+nagybetűre, ha szükséges és adja meg a szám értéket! 

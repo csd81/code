@@ -3,22 +3,29 @@
 #include <cstring> using namespace std;
 class Complex { float real, im;
 Complex multiply(const Complex&) const;
-public: void setReal(float para) {real=para;} void setIm(float para) {im=para;} float getReal() const {return real;} float getIm() const {return im;} void display() const;
+public: void setReal(float para) {real=para;} void setIm(float para) {im=para;} 
+float getReal() const {return real;} float getIm() const {return im;} void 
+display() const;
 Complex sum(const Complex&) const;
 Complex sub(const Complex&) const;
 Complex mul(const Complex&) const;
 Complex div(const Complex&) const;
 friend ostream& operator <<(ostream &os,const Complex &obj);
-const Complex operator+(const Complex &other) const { Complex result = sum(other);
+const Complex operator+(const Complex &other) const { Complex result = 
+sum(other);
 return result;
-} const Complex operator-(const Complex &other) const { Complex result = sub(other);
+} const Complex operator-(const Complex &other) const { Complex result = 
+sub(other);
 return result;
-} const Complex operator*(const Complex &other) const { Complex result = mul(other);
+} const Complex operator*(const Complex &other) const { Complex result = 
+mul(other);
 return result;
-} const Complex operator/(const Complex &other) const { Complex result = div(other);
+} const Complex operator/(const Complex &other) const { Complex result = 
+div(other);
 return result;
 } };
-ostream& operator <<(ostream &os,const Complex &obj) { os<< "(" << obj.real << " + " << obj.im << "i) ";
+ostream& operator <<(ostream &os,const Complex &obj) { os<< "(" << obj.real << 
+" + " << obj.im << "i) ";
 return os;
 } Complex Complex::sum(const Complex& para) const { float resultReal, resultIm;
 Complex result;
@@ -41,7 +48,8 @@ resultIm=im*para.real+real*para.im;
 result.real=resultReal;
 result.setIm(resultIm);
 return result;
-} Complex Complex::multiply(const Complex& para) const { float resultReal, resultIm;
+} Complex Complex::multiply(const Complex& para) const { float resultReal, 
+resultIm;
 Complex result;
 resultReal=real*para.real - im*para.im;
 resultIm=im*para.real+real*para.im;
@@ -71,4 +79,5 @@ cout << a << " * " << b << "=" << a * b << endl;
 cout << a << " / " << b << "=" << a / b << endl;
 return 0;
 
-2.48.3. Valósítsa meg az aritmetikai függvényeket operátorok segítségével! 2.49. Telefonszámla
+2.48.3. Valósítsa meg az aritmetikai függvényeket operátorok 
+segítségével! 2.49. Telefonszámla

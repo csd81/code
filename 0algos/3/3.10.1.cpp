@@ -1,4 +1,7 @@
-//3.10.1. Írjon függvényeket a következő feladatokra: határozza meg egy tömbben lévő elemek összegét, átlagát, minimumát, hogy egy adott elem szerepel-e benne! Egy fájlban legyen a main függvény és egy másikban a többi függvény! 
+//3.10.1. Írjon függvényeket a következő feladatokra: határozza meg egy 
+tömbben lévő elemek összegét, átlagát, minimumát, hogy egy adott elem 
+szerepel-e benne! Egy fájlban legyen a main függvény és egy másikban a 
+többi függvény! 
 
 Below is a C++11 solution split into three files:
 
