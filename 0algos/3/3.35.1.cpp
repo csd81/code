@@ -1,0 +1,57 @@
+3.35.1. Egy fájl egy magassági térképet tartalmaz. A magasságok pozitív egész számok. Írjon programot, amely beolvassa ezt a térképet egy mátrixba, kiírja a képernyőre és kiszámítja az adott területen az alföld, dombság, hegység és magashegység arányát! A mátrix legyen dinamikus! A magassági intervallumok a következők: 0 <= magasság < 250 250 <= magasság < 500 500 <= magasság < 1500 1500 <= magasság alföld dombság hegység magashegység Az input fájl formátuma: Első sor: number1 number2 A number1 a sorok, number2 az oszlopok számát adja meg. Ezután number1 db sor következik, minden sorban number2 db, szóköz karakterrel elválasztott érték található. Példa bemenet: 5 5 200 210 220 218 230 0 1600 322 31 1000 332 320 43 1 545 2000 32 252 0 321 1320 2123 324 21 43 Kimenet: 200 210 220 218 230 0 1600 322 31 1000 332 320 1 545 2000 32 252 0 321 1320 2123 324 Lowland: 52 % Hill: 24 % Mountain: 12 % High mountain: 12 % 3.36. Inverz mátrix
+3.35.1.
+#include <stdio.h>
+#include <stdlib.h> #define DEFAULT_INPUTFILE "map1.txt" #define HILL 250 #define MOUNTAIN 500 #define HIGHMOUNTAIN 1500 struct TMap { int r, c;
+int ** m;
+};
+void ReadMap(FILE * fd, struct TMap * M) { int i, j;
+fscanf(fd, "%d %d", &M->r, &M->c);
+M->m = (int**)malloc(sizeof(int*) * M->r);
+for (i = 0;
+i < M->r;
+i++) { M->m[i] = (int*)malloc(sizeof(int) * M->c);
+for (j = 0;
+j < M->c;
+j++) fscanf(fd, "%d", &M->m[i][j]);
+} } void FreeMap(struct TMap * M) { int i;
+for (i = 0;
+i < M->r;
+i++) { free(M->m[i]);
+M->m[i] = NULL;
+} free(M->m);
+M->m = NULL;
+} void PrintMap(struct TMap * M) { int i, j;
+printf("\nThe map:\n\n");
+for (i = 0;
+i < M->r;
+i++) { for (j = 0;
+j < M->c;
+j++) printf("%4d ", M->m[i][j]);
+printf("\n");
+} } void Count(struct TMap * M) { int lowland = 0, hill = 0, mountain = 0, highmountain = 0;
+int i, j, h;
+double A = M->r * M->c;
+for (i = 0;
+i < M->r;
+i++) { for (j = 0;
+j < M->c;
+j++) { h = M->m[i][j];
+if (h < HILL) lowland++;
+else if (h < MOUNTAIN) hill++;
+else if (h < HIGHMOUNTAIN) mountain++;
+else highmountain++;
+} } printf("\nLowland: %g %%\n", lowland / A * 100.0);
+printf("Hill: %g %%\n", hill / A * 100.0);
+printf("Mountain: %g %%\n", mountain / A * 100.0);
+printf("High mountain: %g %%\n\n", highmountain / A * 100.0);
+} int main(int argc, char * argv[]) { struct TMap Map;
+FILE * fd = fopen(argc > 1 ? argv[1] : DEFAULT_INPUTFILE, "r");
+if (fd == NULL) { perror("Error");
+return 0;
+} ReadMap(fd, &Map);
+fclose(fd);
+PrintMap(&Map);
+Count(&Map);
+FreeMap(&Map);
+return 0;
+} 
