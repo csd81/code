@@ -1,15 +1,14 @@
+// 3.10. Műveletek tömbökön
 //3.10.1. Írjon függvényeket a következő feladatokra: határozza meg egy 
-tömbben lévő elemek összegét, átlagát, minimumát, hogy egy adott elem 
-szerepel-e benne! Egy fájlban legyen a main függvény és egy másikban a 
-többi függvény! 
+// tömbben lévő elemek összegét, átlagát, minimumát, hogy egy adott elem 
+// szerepel-e benne! Egy fájlban legyen a main függvény és egy másikban a 
+// többi függvény! 
 
-Below is a C++11 solution split into three files:
 
----
 
-**inc.hpp**
+// inc.hpp
 
-```cpp
+ 
 #ifndef INC_HPP_
 #define INC_HPP_
 
@@ -29,14 +28,11 @@ int minIndex(const double* arr, int size);
 bool searchFor(const double* arr, int size, double value);
 
 #endif // INC_HPP_
-```
+ 
+//functions.cpp
 
----
 
-**functions.cpp**
-
-```cpp
-#include "inc.hpp"
+// #include "inc.hpp"
 #include <iostream>
 
 // Print the array as [e0, e1, …, eN-1]
@@ -80,14 +76,11 @@ bool searchFor(const double* arr, int size, double value) {
     }
     return false;
 }
-```
 
----
+// main.cpp
+ 
 
-**main.cpp**
-
-```cpp
-#include "inc.hpp"
+// #include "inc.hpp"
 #include <iostream>
 
 int main() {
@@ -116,16 +109,4 @@ int main() {
 
     return 0;
 }
-```
-
----
-
-### Build and run
-
-```bash
-g++ -std=c++11 -o myprog main.cpp functions.cpp
-./myprog
-```
-
-
-
+ 

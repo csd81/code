@@ -1,3 +1,4 @@
+// 3.13. Kódolt beszéd
 // 3.13.1. Írja meg a „tuvudsz ivigy beveszevelnivi” programot! A kimenet 
 // csupa nagybetű legyen! írja meg azt a függvényt, amely eldönti, hogy egy 
 // betű magánhangzó-e! 

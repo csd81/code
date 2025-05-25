@@ -19,68 +19,106 @@
 // B: 2 The sum: 3 
 // 3.24.1.
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h> #define DEFAULT_INPUTFILE "script.txt" #define 
-MAX_COMMAND_LEN 10 #define MAX_OPERAND_LEN 5 #define STOP_CMD "STOP" #define 
-GET_CMD "GET" #define ADD_CMD "ADD" #define SUB_CMD "SUB" #define MUL_CMD "MUL" 
-#define DIV_CMD "DIV" #define WRITE_CMD "WRITE" void Get(FILE * fd, int * N) { 
-char Op[MAX_OPERAND_LEN];
-fscanf(fd, "%s", Op);
-scanf("%d", N + (Op[0] - 'A'));
-} void WriteComment(FILE * fd) { char ch;
-fscanf(fd, "%c", &ch);
-do { fscanf(fd, "%c", &ch);
-if (ch != '#') printf("%c", ch);
-} while (ch != '#');
-} void Add(FILE * fd, int * N) { char Op1[MAX_OPERAND_LEN];
-char Op2[MAX_OPERAND_LEN];
-char ch1, ch2;
-fscanf(fd, "%s %s", Op1, Op2);
-ch1 = Op1[0];
-ch2 = Op2[0];
-N[ ch1 - 'A' ] += N[ ch2 - 'A' ];
-} void Sub(FILE * fd, int * N) { char Op1[MAX_OPERAND_LEN];
-char Op2[MAX_OPERAND_LEN];
-char ch1, ch2;
-fscanf(fd, "%s %s", Op1, Op2);
-ch1 = Op1[0];
-ch2 = Op2[0];
-N[ ch1 - 'A' ] -= N[ ch2 - 'A' ];
-} void Mul(FILE * fd, int * N) { char Op1[MAX_OPERAND_LEN];
-char Op2[MAX_OPERAND_LEN];
-char ch1, ch2;
-fscanf(fd, "%s %s", Op1, Op2);
-ch1 = Op1[0];
-ch2 = Op2[0];
-N[ ch1 - 'A' ] *= N[ ch2 - 'A' ];
-} void Div(FILE * fd, int * N) { char Op1[MAX_OPERAND_LEN];
-char Op2[MAX_OPERAND_LEN];
-} char ch1, ch2;
-fscanf(fd, "%s %s", Op1, Op2);
-ch1 = Op1[0];
-ch2 = Op2[0];
-N[ ch1 - 'A' ] /= N[ ch2 - 'A' ];
-void Write(FILE * fd, int * N) { char Op[MAX_OPERAND_LEN];
-fscanf(fd, "%s", Op);
-printf("%d\n", N[ Op[0] - 'A' ]);
-} void Run(FILE * fd) { int Numbers[3];
-Numbers[0] = Numbers[1] = Numbers[2] = 0;
-char Command[MAX_COMMAND_LEN];
-do { fscanf(fd, "%s", Command);
-if (strcmp(Command, "#") == 0) WriteComment(fd);
-if (strcmp(Command, GET_CMD) == 0) Get(fd, Numbers);
-if (strcmp(Command, ADD_CMD) == 0) Add(fd, Numbers);
-if (strcmp(Command, SUB_CMD) == 0) Sub(fd, Numbers);
-if (strcmp(Command, MUL_CMD) == 0) Mul(fd, Numbers);
-if (strcmp(Command, DIV_CMD) == 0) Div(fd, Numbers);
-} if (strcmp(Command, WRITE_CMD) == 0) Write(fd, Numbers);
-} while (strcmp(Command, STOP_CMD) != 0);
-int main(int argv, char * argc[]) { FILE * fd = fopen(argv > 1 ? argc[1] : 
-DEFAULT_INPUTFILE, "r");
-if (fd == NULL) { perror("Error");
-return 0;
-} Run(fd);
-fclose(fd);
-return 0;
-} 
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <map>
+
+#define DEFAULT_INPUTFILE "script.txt"
+
+void get(std::istream& in, std::map<char, int>& vars) {
+    std::string op;
+    in >> op;
+    int value;
+    std::cin >> value;
+    vars[op[0]] = value;
+}
+
+void write(std::istream& in, const std::map<char, int>& vars) {
+    std::string op;
+    in >> op;
+    std::cout << vars.at(op[0]) << std::endl;
+}
+
+void add(std::istream& in, std::map<char, int>& vars) {
+    std::string op1, op2;
+    in >> op1 >> op2;
+    vars[op1[0]] += vars[op2[0]];
+}
+
+void sub(std::istream& in, std::map<char, int>& vars) {
+    std::string op1, op2;
+    in >> op1 >> op2;
+    vars[op1[0]] -= vars[op2[0]];
+}
+
+void mul(std::istream& in, std::map<char, int>& vars) {
+    std::string op1, op2;
+    in >> op1 >> op2;
+    vars[op1[0]] *= vars[op2[0]];
+}
+
+void div(std::istream& in, std::map<char, int>& vars) {
+    std::string op1, op2;
+    in >> op1 >> op2;
+    if (vars[op2[0]] != 0) {
+        vars[op1[0]] /= vars[op2[0]];
+    } else {
+        std::cerr << "Error: Division by zero\n";
+    }
+}
+
+void writeComment(const std::string& line) {
+    auto first = line.find('#');
+    auto last = line.rfind('#');
+    if (first != std::string::npos && last != std::string::npos && last > first) {
+        std::string comment = line.substr(first + 1, last - first - 1);
+        std::cout << comment << std::endl;
+    }
+}
+
+void run(std::istream& in) {
+    std::map<char, int> vars = {{'A', 0}, {'B', 0}, {'C', 0}};
+    std::string line;
+
+    while (std::getline(in, line)) {
+        if (line.empty()) continue;
+
+        std::istringstream iss(line);
+        std::string command;
+        iss >> command;
+
+        if (command == "#") {
+            writeComment(line);
+        } else if (command == "GET") {
+            get(iss, vars);
+        } else if (command == "WRITE") {
+            write(iss, vars);
+        } else if (command == "ADD") {
+            add(iss, vars);
+        } else if (command == "SUB") {
+            sub(iss, vars);
+        } else if (command == "MUL") {
+            mul(iss, vars);
+        } else if (command == "DIV") {
+            div(iss, vars);
+        } else if (command == "STOP") {
+            break;
+        }
+    }
+}
+
+int main(int argc, char* argv[]) {
+    std::string filename = (argc > 1) ? argv[1] : DEFAULT_INPUTFILE;
+    std::ifstream infile(filename);
+
+    if (!infile) {
+        std::cerr << "Error opening file: " << filename << std::endl;
+        return 1;
+    }
+
+    run(infile);
+    return 0;
+}
+

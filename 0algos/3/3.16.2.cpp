@@ -3,60 +3,46 @@
 // be tömb méretet és ott hozza azt létre!  
 // 3.16.2.
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
-double* allocArray(int* size) {
-    printf("\nArray size: ");
-    scanf("%d", size);
-    double* result = (double*)malloc(*size * sizeof(double));
-    if (result == NULL) {
-        perror("Memory allocation failed");
-        exit(EXIT_FAILURE);
+#include <iostream>
+#include <vector>
+#include <iomanip>
+
+// A tömb létrehozása és feltöltése
+std::vector<double> allocArray(int& size) {
+    std::cout << "\nArray size: ";
+    std::cin >> size;
+
+    std::vector<double> result(size);
+    for (int i = 0; i < size; ++i) {
+        std::cout << i << ". element: ";
+        std::cin >> result[i];
     }
+
     return result;
 }
 
 int main() {
-    int size, idxI;
-    double *array = NULL, *temp = NULL;
+    int size;
+    
+    // 1. Kezdeti tömb létrehozása
+    std::vector<double> array = allocArray(size);
 
-    // 1. Kezdeti tömb létrehozása és feltöltése
-    array = allocArray(&size);
-    for (idxI = 0; idxI < size; idxI++) {
-        printf("%d. element: ", idxI);
-        scanf("%lf", &array[idxI]);
-    }
-
-    // 2. Méret duplázása
-    temp = (double*)realloc(array, size * 2 * sizeof(double));
-    if (temp == NULL) {
-        perror("Memory reallocation failed");
-        free(array);
-        exit(EXIT_FAILURE);
-    }
-    array = temp;
-
-    // 3. Új elemek bekérése
-    for (idxI = size; idxI < size * 2; idxI++) {
-        printf("%d. element: ", idxI);
-        scanf("%lf", &array[idxI]);
+    // 2. Méret duplázása (új elemeket hozzáfűzünk)
+    array.resize(size * 2);
+    for (int i = size; i < size * 2; ++i) {
+        std::cout << i << ". element: ";
+        std::cin >> array[i];
     }
 
     size *= 2; // frissített méret
 
-    // 4. Kiírás (opcionális)
-    printf("\nThe full array:\n");
-    for (idxI = 0; idxI < size; idxI++) {
-        printf("%.2lf ", array[idxI]);
+    // 3. Kiírás
+    std::cout << "\nThe full array:\n";
+    for (int i = 0; i < size; ++i) {
+        std::cout << std::fixed << std::setprecision(2) << array[i] << " ";
     }
-    printf("\n");
-
-    // 5. Felszabadítás
-    free(array);
-    array = NULL;
+    std::cout << "\n";
 
     return 0;
 }
-

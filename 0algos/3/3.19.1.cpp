@@ -1,38 +1,63 @@
+// 3.19. Gépelés
 
 // 3.19.1. Készítsen gépelést tanító programot! Sztring tömbben 
-tároljon 20 különféle szót! Kérje be, hogy hány szót akar gépelni, 
-véletlenszerűen válasszon ki egyet, amit megjelenít, és aztán várja azt 
-bemenetként! Hibás bevitel esetén kérje be újból a szót! A gyakorlás 
-végén írja ki az eltelt időt és a helyes és elrontott szavak számát! 
-3.20. Nagy számok összeadása
-3.19.1.
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <string.h> int main() { char words[][50]={"element", "size", "love", 
-"ball", "toy", "gambit", "cruiser", "shadow", "console", "Atlantis", "port", 
-"staple", "Leonardo", "bug", "hope", "vanity", "time", "issue", "fan", 
-"strength"};
-char temp[50];
-int size=sizeof(words)/sizeof(*words);
-int trial, idxI, randIndex, errors=0;
-clock_t start, finish;
-double duration;
-srand((unsigned)time(NULL));
-printf("How much word would you like to type: ");
-scanf("%d", &trial);
-start = clock();
-for (idxI=0;
-idxI<trial;
-idxI++) { randIndex = rand() % size;
-printf("type: %s\n", words[randIndex]);
-scanf("%s", temp);
-while (strcmp(temp, words[randIndex]) != 0) { printf("error!\n");
-errors++;
-scanf("%s", temp);
-} } finish = clock();
-duration = (double)(finish - start) / CLOCKS_PER_SEC;
-printf("Ellapsed time: %4.2lf\n", duration);
-} printf("Number of good trials: %d, bad trials: %d", trial, errors);
-return 0;
+// tároljon 20 különféle szót! Kérje be, hogy hány szót akar gépelni, 
+// véletlenszerűen válasszon ki egyet, amit megjelenít, és aztán várja azt 
+// bemenetként! Hibás bevitel esetén kérje be újból a szót! A gyakorlás 
+// végén írja ki az eltelt időt és a helyes és elrontott szavak számát! 
 
+// 3.19.1.
+
+
+#include <iostream>
+#include <vector>
+#include <string>
+#include <random>
+#include <chrono>
+
+int main() {
+    std::vector<std::string> words = {
+        "element", "size", "love", "ball", "toy", "gambit", "cruiser", "shadow",
+        "console", "Atlantis", "port", "staple", "Leonardo", "bug", "hope",
+        "vanity", "time", "issue", "fan", "strength"
+    };
+
+    int trial;
+    int errors = 0;
+    std::string input;
+
+    std::cout << "How many words would you like to type: ";
+    std::cin >> trial;
+    std::cin.ignore(); // clear newline after number
+
+    // Random number generator
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dist(0, words.size() - 1);
+
+    // Start timer
+    auto start = std::chrono::high_resolution_clock::now();
+
+    for (int i = 0; i < trial; ++i) {
+        std::string target = words[dist(gen)];
+        std::cout << "type: " << target << std::endl;
+
+        std::getline(std::cin, input);
+        while (input != target) {
+            std::cout << "error!\n";
+            ++errors;
+            std::getline(std::cin, input);
+        }
+    }
+
+    // Stop timer
+    auto finish = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = finish - start;
+
+    // Output
+    std::cout << "Elapsed time: " << duration.count() << " seconds\n";
+    std::cout << "Number of good trials: " << trial
+              << ", bad trials: " << errors << "\n";
+
+    return 0;
+}

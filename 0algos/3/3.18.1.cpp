@@ -1,58 +1,128 @@
-
+// 3.18. Virtuális memória
 // 3.18.1. Kérje be egy lebegőpontos tömb méretét! Ha az 5 vagy kisebb, 
-akkor hozzon létre dinamikus tömböt a memóriában, ha nagyobb, akkor pedig 
-bináris fájlt a háttértáron! Készítsen struktúrát, amely tartalmaz egy 
-FILE*, double* és méret adattagot! Készítsen függvényeket: tároló 
-inicializálására és felszabadítására, tároló adott pozíciójában 
-történő olvasásra és írásra. Menüben kérje be, hogy írni vagy olvasni 
-akar, a fő függvény számára a tárolás módja legyen transzparens! 3.19. 
-Gépelés
-3.18.1.
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h> const int limit=5;
-typedef struct { FILE* bf;
-double* array;
-long int size;
-} Store;
-void initStore(Store* myStore) { printf("Size of the array: ");
-scanf("%ld", &myStore->size);
-if (myStore->size>limit) myStore->bf = fopen("temp.txt", "w+b");
-else myStore->array = (double*)malloc(sizeof(double)*myStore->size);
-return;
-} void delStore(Store* myStore) { if (myStore->size>limit) { 
-fclose(myStore->bf);
-myStore->bf = NULL;
-} else free(myStore->array);
-myStore->array = NULL;
-return;
-} void readStore(Store* myStore) { double result;
-int idx;
-printf("Index of element to read: ");
-scanf("%d", &idx);
-if (myStore->size>limit) { fseek(myStore->bf, sizeof(double)*idx, SEEK_SET);
-fread(&result, sizeof(double), 1, myStore->bf);
-} else { result = myStore->array[idx];
-} printf("At %d there is: %lf\n", idx, result);
-} void writeStore(Store* myStore) { double value;
-int idx;
-printf("Index of element to write: ");
-scanf("%d", &idx);
-printf("value: ");
-scanf("%lf", &value);
-if (myStore->size>limit) { fseek(myStore->bf, sizeof(double)*idx, SEEK_SET);
-fwrite(&value, sizeof(double), 1, myStore->bf);
-} else { myStore->array[idx] = value;
-} printf("%lf is written at %d\n", value, idx);
-} int main() { Store myStore={NULL, NULL, 0};
-int selection=0;
-} initStore(&myStore);
-while (selection!=3) { printf("\nRead - 1\nWrite - 2\nQuit - 3\n");
-scanf("%d", &selection);
-switch (selection) { case 1: readStore(&myStore);
-break;
-case 2: writeStore(&myStore);
-break;
-} } delStore(&myStore);
-return 0;
+// akkor hozzon létre dinamikus tömböt a memóriában, ha nagyobb, akkor pedig 
+// bináris fájlt a háttértáron! Készítsen struktúrát, amely tartalmaz egy 
+// FILE*, double* és méret adattagot! Készítsen függvényeket: tároló 
+// inicializálására és felszabadítására, tároló adott pozíciójában 
+// történő olvasásra és írásra. Menüben kérje be, hogy írni vagy olvasni 
+// akar, a fő függvény számára a tárolás módja legyen transzparens! 
+// 3.18.1.
 
+
+#include <iostream>
+#include <vector>
+#include <fstream>
+#include <limits>
+
+const int limit = 5;
+const std::string tempFilename = "temp.bin";
+
+struct Store {
+    std::fstream file;
+    std::vector<double> memory;
+    long size = 0;
+    bool useFile = false;
+};
+
+void initStore(Store& store) {
+    std::cout << "Size of the array: ";
+    std::cin >> store.size;
+
+    if (store.size > limit) {
+        store.useFile = true;
+        store.file.open(tempFilename, std::ios::in | std::ios::out | std::ios::binary | std::ios::trunc);
+        if (!store.file) {
+            std::cerr << "Failed to open temporary file!\n";
+            std::exit(1);
+        }
+
+        // Initialize file with zeros
+        double zero = 0.0;
+        for (long i = 0; i < store.size; ++i) {
+            store.file.write(reinterpret_cast<char*>(&zero), sizeof(double));
+        }
+    } else {
+        store.memory.resize(store.size, 0.0);
+    }
+}
+
+void delStore(Store& store) {
+    if (store.useFile) {
+        store.file.close();
+        std::remove(tempFilename.c_str()); // clean up file
+    } else {
+        store.memory.clear();
+    }
+}
+
+void readStore(Store& store) {
+    int idx;
+    std::cout << "Index of element to read: ";
+    std::cin >> idx;
+
+    if (idx < 0 || idx >= store.size) {
+        std::cerr << "Invalid index.\n";
+        return;
+    }
+
+    double result = 0.0;
+    if (store.useFile) {
+        store.file.seekg(idx * sizeof(double), std::ios::beg);
+        store.file.read(reinterpret_cast<char*>(&result), sizeof(double));
+    } else {
+        result = store.memory[idx];
+    }
+
+    std::cout << "At " << idx << " there is: " << result << "\n";
+}
+
+void writeStore(Store& store) {
+    int idx;
+    double value;
+    std::cout << "Index of element to write: ";
+    std::cin >> idx;
+    std::cout << "Value: ";
+    std::cin >> value;
+
+    if (idx < 0 || idx >= store.size) {
+        std::cerr << "Invalid index.\n";
+        return;
+    }
+
+    if (store.useFile) {
+        store.file.seekp(idx * sizeof(double), std::ios::beg);
+        store.file.write(reinterpret_cast<const char*>(&value), sizeof(double));
+        store.file.flush();
+    } else {
+        store.memory[idx] = value;
+    }
+
+    std::cout << value << " is written at " << idx << "\n";
+}
+
+int main() {
+    Store store;
+    initStore(store);
+
+    int selection = 0;
+    while (selection != 3) {
+        std::cout << "\nRead - 1\nWrite - 2\nQuit - 3\n";
+        std::cin >> selection;
+
+        switch (selection) {
+            case 1:
+                readStore(store);
+                break;
+            case 2:
+                writeStore(store);
+                break;
+            case 3:
+                break;
+            default:
+                std::cout << "Invalid selection.\n";
+        }
+    }
+
+    delStore(store);
+    return 0;
+}

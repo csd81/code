@@ -1,11 +1,13 @@
 
-// // 3.20.1. Írjon programot két nagyon nagy pozitív egész szám 
+//  3.20. Nagy számok összeadása
+
+// 3.20.1. Írjon programot két nagyon nagy pozitív egész szám 
 // összeadására! A számok legfeljebb 100 jegyűek. Írja ki a képernyőre a 
 // két számot, majd az összegüket, a következő formátumban. A két számot 
 // fájlból olvassa be, a számok szóközzel vannak elválasztva. A számokat 
 // statikus karaktertömbökben tárolja! Példa bemenet: 434234643643746 
 // 575434253245430 Kimenet: 434234643643746 + 575434253245430 = 1009668896889176 
-// 3. 
+
 // 3.20.1.
 
 

@@ -19,70 +19,100 @@
 // 20000 HUF FBG4SW: Credits: 10/6 Average: 3 Bursary: 20000 HUF 
 // 3.22.1.
 
-#include <stdio.h>
-#include <stdlib.h> #define INPUT_FILE "students.txt" #define MIN_AVERAGE 2.0 
-#define MIDDLE_AVERAGE 3.0 #define GOOD_AVERAGE 4.0 #define EXCELLENT_AVERAGE 
-4.5 #define MIN_BURSARY 15000 #define MIDDLE_BURSARY 20000 #define GOOD_BURSARY 
-25000 #define EXCELLENT_BURSARY 30000 struct TSubject { int credit;
-int mark;
-};
-struct TStudent { char Neptun[7];
-int SubjNum;
-struct TSubject * Subjects;
-};
-void ReadStudent(FILE * fd, struct TStudent * S) { int i;
-fscanf(fd, "%s %d", S->Neptun, &S->SubjNum);
-printf("Neptun: %s %d subjects\n", S->Neptun, S->SubjNum);
-S->Subjects = (struct TSubject *)malloc(sizeof(struct TSubject) * S>SubjNum);
-for (i = 0;
-i < S->SubjNum;
-i++) fscanf(fd, "%d %d", &(S->Subjects + i)->credit, &(S->Subjects + i)>mark);
-} void Calc(struct TStudent * S, int SNum) { int i, j, sum;
-int Credits, MaxCredits, Bursary;
-double Average;
-struct TSubject * Subj;
-for (i = 0;
-i < SNum;
-i++) { Subj = S->Subjects;
-Credits = MaxCredits = 0;
-sum = 0;
-for (j = 0;
-j < S->SubjNum;
-j++) { sum += Subj->credit * Subj->mark;
-MaxCredits += Subj->credit;
-if (Subj->mark >= 2) Credits += Subj->credit;
-Subj++;
-} Average = (double)sum / MaxCredits;
-if (Average < MIN_AVERAGE) Bursary = 0;
-else if (Average < MIDDLE_AVERAGE) Bursary = MIN_BURSARY;
-else if (Average < GOOD_AVERAGE) Bursary = MIDDLE_BURSARY;
-else if (Average < EXCELLENT_AVERAGE) Bursary = GOOD_BURSARY;
-else Bursary = EXCELLENT_BURSARY;
-printf("%s:\n\tCredits: %d/%d\n\tAverage: %g\n\tBursary: %d HUF\n",S>Neptun, 
-MaxCredits, Credits, Average, Bursary);
-S++;
-} } int Read(FILE * fd, struct TStudent ** S) { int num, i;
-fscanf(fd, "%d", &num);
-*S = (struct TStudent *)malloc(sizeof(struct TStudent) * num);
-for (i = 0;
-i < num;
-i++) ReadStudent(fd, (*S) + i);
-return num;
-} void FreeStudents(struct TStudent * S, int SNum) { int i;
-for (i = 0;
-i < SNum;
-i++) { free(S[i].Subjects);
-S[i].Subjects = NULL;
-} } int main() { int StudentNum;
-struct TStudent * Students;
-FILE * fd = fopen(INPUT_FILE, "r");
-if (fd == NULL) { perror("Error");
-return 0;
-} StudentNum = Read(fd, &Students);
-fclose(fd);
-Calc(Students, StudentNum);
-FreeStudents(Students, StudentNum);
-return 0;
-} 
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+#include <iomanip>
 
+const std::string INPUT_FILE = "students.txt";
+
+// Ösztöndíj szintek
+const double MIN_AVERAGE = 2.0;
+const double MIDDLE_AVERAGE = 3.0;
+const double GOOD_AVERAGE = 4.0;
+const double EXCELLENT_AVERAGE = 4.5;
+
+const int MIN_BURSARY = 15000;
+const int MIDDLE_BURSARY = 20000;
+const int GOOD_BURSARY = 25000;
+const int EXCELLENT_BURSARY = 30000;
+
+// Tárgy
+struct Subject {
+    int credit;
+    int mark;
+};
+
+// Hallgató
+struct Student {
+    std::string neptun;
+    std::vector<Subject> subjects;
+};
+
+// Hallgató beolvasása fájlból
+void readStudent(std::ifstream& in, Student& student) {
+    int subjCount;
+    in >> student.neptun >> subjCount;
+    std::cout << "Neptun: " << student.neptun << " " << subjCount << " subjects" << std::endl;
+
+    for (int i = 0; i < subjCount; ++i) {
+        Subject s;
+        in >> s.credit >> s.mark;
+        student.subjects.push_back(s);
+    }
+}
+
+// Ösztöndíj számítás
+void calculateAndDisplay(const std::vector<Student>& students) {
+    for (const auto& student : students) {
+        int sumCredits = 0;
+        int passedCredits = 0;
+        int weightedSum = 0;
+
+        for (const auto& subj : student.subjects) {
+            weightedSum += subj.credit * subj.mark;
+            sumCredits += subj.credit;
+            if (subj.mark >= 2)
+                passedCredits += subj.credit;
+        }
+
+        double average = static_cast<double>(weightedSum) / sumCredits;
+
+        int bursary = 0;
+        if (average >= 2.0 && average < 3.0)
+            bursary = MIN_BURSARY;
+        else if (average < 4.0)
+            bursary = MIDDLE_BURSARY;
+        else if (average < 4.5)
+            bursary = GOOD_BURSARY;
+        else if (average <= 5.0)
+            bursary = EXCELLENT_BURSARY;
+
+        std::cout << student.neptun << ":\n"
+                  << "\tCredits: " << sumCredits << "/" << passedCredits << "\n"
+                  << "\tAverage: " << std::fixed << std::setprecision(2) << average << "\n"
+                  << "\tBursary: " << bursary << " HUF\n";
+    }
+}
+
+int main() {
+    std::ifstream infile(INPUT_FILE);
+    if (!infile) {
+        std::cerr << "Error opening file: " << INPUT_FILE << std::endl;
+        return 1;
+    }
+
+    int studentCount;
+    infile >> studentCount;
+
+    std::vector<Student> students(studentCount);
+    for (int i = 0; i < studentCount; ++i) {
+        readStudent(infile, students[i]);
+    }
+
+    calculateAndDisplay(students);
+
+    return 0;
+}
 

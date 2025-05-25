@@ -11,33 +11,56 @@
 // The Riemann integral of sin(x) over x from 0 to 1: 0.459696 The Riemann 
 // integral of tan(x) over x from 0 to 1: 0.615624 
 // 3.25.1.
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h> #define DEFAULT_A 0 #define DEFAULT_B 1 #define DEFAULT_NUM 
-1000000 #define min(a, b) ((a) > (b)) ? ( b ) : ( a ) #define max(a, b) ((a) > 
-(b)) ? ( a ) : ( b ) double f1(double x) { return sqrt( (2.0 - x) * x } ) * 4.0;
-double f2(double x) { return x * x;
-} void Integral(int a, int b, int num, double (*fptr)(double), char * funct ) { 
-int i;
-double res = 0.0;
-double interval = b - a;
-double mini = interval / num;
-double t;
-for (i = 0;
-i < num - 1;
-i++) { t = min(fptr(mini * i), fptr(mini * (i + 1))) * mini;
-res += t;
-} printf("The Riemann integral of %s over x from %d to %d: %g\n", funct, a, b, 
-res);
-} int main(int argc, char * argv[]) { int a, b, num;
-a = argc > 1 ? atoi(argv[1]) : DEFAULT_A;
-b = argc > 2 ? atoi(argv[2]) : DEFAULT_B;
-num = argc > 3 ? atoi(argv[3]) : DEFAULT_NUM;
-printf("\n");
-Integral(a, b, num, f1, "f1(x) ");
-Integral(a, b, num, f2, "f2(x) ");
-Integral(a, b, num, sin, "sin(x) ");
-Integral(a, b, num, tan, "tan(x) ");
-printf("\n");
-return 0;
-} 
+
+
+#include <iostream>
+#include <cmath>
+#include <string>
+
+#define DEFAULT_A 0
+#define DEFAULT_B 1
+#define DEFAULT_NUM 1000000
+
+inline double my_min(double a, double b) {
+    return (a < b) ? a : b;
+}
+
+// Függvények
+double f1(double x) {
+    return std::sqrt((2.0 - x) * x) * 4.0;
+}
+
+double f2(double x) {
+    return x * x;
+}
+
+// Integrál kiszámítása
+void Integral(int a, int b, int num, double (*fptr)(double), const std::string& name) {
+    double res = 0.0;
+    double h = static_cast<double>(b - a) / num;
+    for (int i = 0; i < num; ++i) {
+        double x1 = a + i * h;
+        double x2 = a + (i + 1) * h;
+        double height = my_min(fptr(x1), fptr(x2));
+        res += height * h;
+    }
+    std::cout << "The Riemann integral of " << name
+              << " over x from " << a << " to " << b << ": "
+              << res << "\n";
+}
+
+int main(int argc, char* argv[]) {
+    int a = (argc > 1) ? std::atoi(argv[1]) : DEFAULT_A;
+    int b = (argc > 2) ? std::atoi(argv[2]) : DEFAULT_B;
+    int num = (argc > 3) ? std::atoi(argv[3]) : DEFAULT_NUM;
+
+    std::cout << std::endl;
+    Integral(a, b, num, f1, "f1(x)");
+    Integral(a, b, num, f2, "f2(x)");
+    Integral(a, b, num, std::sin, "sin(x)");
+    Integral(a, b, num, std::tan, "tan(x)");
+    std::cout << std::endl;
+
+    return 0;
+}
+

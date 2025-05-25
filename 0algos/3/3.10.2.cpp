@@ -1,21 +1,12 @@
+// 3.10.2. Egészítse ki az előző programot a következő feladatokat 
+// ellátó függvényekkel! Maximális eleme indexének a meghatározása, 
+// szórás kiszámítása, két tömb elemeinek a felcserélése! 
+
+ 
+
+// function.hpp
 
 
-
-//3.10.2. Egészítse ki az előző programot a következő feladatokat 
-ellátó függvényekkel! Maximális eleme indexének a meghatározása, 
-szórás kiszámítása, két tömb elemeinek a felcserélése! 
-
-Below is a C++11 solution split into three files. It adds:
-
-* `maxIndex` – returns the index of the largest element
-* `stdDev` – computes the population standard deviation
-* `change` – swaps element‐by‐element two arrays
-
----
-
-**function.hpp**
-
-```cpp
 #ifndef FUNCTION_HPP
 #define FUNCTION_HPP
 
@@ -44,14 +35,12 @@ void change(double* arr1, double* arr2, int size);
 bool searchFor(const double* arr, int size, double value);
 
 #endif // FUNCTION_HPP
-```
 
----
 
-**functions.cpp**
+// functions.cpp
 
-```cpp
-#include "function.hpp"
+
+// #include "function.hpp"
 #include <iostream>
 #include <cmath>
 
@@ -116,14 +105,11 @@ bool searchFor(const double* arr, int size, double value) {
     }
     return false;
 }
-```
 
----
+// main.cpp
 
-**main.cpp**
 
-```cpp
-#include "function.hpp"
+// #include "function.hpp"
 #include <iostream>
 #include <iomanip>
 
@@ -165,15 +151,4 @@ int main() {
 
     return 0;
 }
-```
-
----
-
-**Build & run**
-
-```bash
-g++ -std=c++11 -o program main.cpp functions.cpp
-./program
-```
-
-
+ 

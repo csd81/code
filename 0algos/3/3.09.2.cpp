@@ -1,31 +1,42 @@
-3.9.2. 3 változó helyett egy 3 elemű tömbön végezze el az 
-elcsúsztatást! 
-3.9.2.
-#include <stdio.h> void print(float a[], int size) { int i;
-for(i = 0;
-i < size;
-++i) printf("a[%d]= %f ", i, a[i]);
-printf("\n");
-} void shift(float* a, int cyclic) { float temp;
-} temp = a[2];
-a[2] = a[1];
-a[1] = a[0];
-if (cyclic) a[0] = temp;
-else a[0] = 0;
-int main() { float x[3];
-} printf("Provide the next number: ");
-scanf("%f", &x[0]);
-printf("Provide the next number: ");
-scanf("%f", &x[1]);
-printf("Provide the next number: ");
-scanf("%f", &x[2]);
-printf("Original: ");
-print(x, 3);
-shift(x, 1);
-printf("After cyclic shift: ");
-print(x, 3);
-shift(x, 0);
-printf("After non-cyclic shift: ");
-print(x, 3);
-return 0;
+// 3.9.2. 3 változó helyett egy 3 elemű tömbön végezze el az 
+// elcsúsztatást! 
+// 3.9.2.
 
+ 
+#include <iostream>
+#include <array>
+
+void print(const std::array<float, 3>& a) {
+    for (size_t i = 0; i < a.size(); ++i)
+        std::cout << "a[" << i << "] = " << a[i] << "  ";
+    std::cout << "\n";
+}
+
+void shift(std::array<float, 3>& a, bool cyclic) {
+    float temp = a[2];
+    a[2] = a[1];
+    a[1] = a[0];
+    a[0] = cyclic ? temp : 0.0f;
+}
+
+int main() {
+    std::array<float, 3> x;
+
+    for (size_t i = 0; i < x.size(); ++i) {
+        std::cout << "Provide the next number: ";
+        std::cin >> x[i];
+    }
+
+    std::cout << "Original: ";
+    print(x);
+
+    shift(x, true);
+    std::cout << "After cyclic shift: ";
+    print(x);
+
+    shift(x, false);
+    std::cout << "After non-cyclic shift: ";
+    print(x);
+
+    return 0;
+}
