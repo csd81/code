@@ -1,35 +1,55 @@
+// 2.35. Szóbeli vizsga
+// 2.35.1. Írjon programot, amelyben bekéri egy szóbeli vizsga minősítését! 
+// A minősítés lehet: szörnyű, rossz, gyenge, jó, kiváló. Használjon 
+// felsorolás típust! Írjon függvényt a minősítés szöveges kiírására! 
+// Kérje be az ismétlő vizsga eredményét, határozza meg, hogy javított-e az 
+// illető! 
+// 2.35.1.
 
-2.35.1.
-#include <stdio.h> typedef enum { awfull, bad, weak, good, excelent } Result;
-void printResult(Result value) { switch (value) { case awfull: printf("awfull");
-break;
-case bad: printf("bad");
-break;
-case weak: printf("weak");
-break;
-case good: printf("good");
-break;
-case excelent: printf("excelent");
-break;
-} } int main() { Result exam1, exam2;
-int dummy;
-printf("Provide the result of your exam:\nawfull - %d, bad - %d, weak - %d, 
-good- %d, excelent - %d ", awfull, bad, weak, good, excelent);
-scanf("%d", &dummy);
-exam1 = (Result)dummy;
-printf("\nYour result is: ");
-printResult(exam1);
-printf("\n\nProvide the result of your repeating exam:\nawfull - %d, bad - %d, 
-weak - %d, good- %d, excelent - %d ", awfull, bad, weak, good, excelent);
-scanf("%d", &dummy);
-exam2 = (Result)dummy;
-} if (exam1 < exam2) { printf("Very good, you improved!");
-} if (exam1 == exam2) { printf("At least you tried!");
-} if (exam1 > exam2) { printf("You must be very unlucky!");
-} return 0;
 
-2.35.1. Írjon programot, amelyben bekéri egy szóbeli vizsga minősítését! 
-A minősítés lehet: szörnyű, rossz, gyenge, jó, kiváló. Használjon 
-felsorolás típust! Írjon függvényt a minősítés szöveges kiírására! 
-Kérje be az ismétlő vizsga eredményét, határozza meg, hogy javított-e az 
-illető! 
+#include <iostream>
+#include <string>
+
+enum class Result { Awful = 0, Bad, Weak, Good, Excellent };
+
+void printResult(Result r) {
+    switch (r) {
+        case Result::Awful:     std::cout << "awful";     break;
+        case Result::Bad:       std::cout << "bad";       break;
+        case Result::Weak:      std::cout << "weak";      break;
+        case Result::Good:      std::cout << "good";      break;
+        case Result::Excellent: std::cout << "excellent"; break;
+    }
+}
+
+int main() {
+    std::cout << "Enter your exam result:\n"
+              << "  0=awful, 1=bad, 2=weak, 3=good, 4=excellent\n> ";
+    int i1;
+    std::cin >> i1;
+    Result exam1 = static_cast<Result>(i1);
+
+    std::cout << "Your first result is: ";
+    printResult(exam1);
+    std::cout << "\n\n";
+
+    std::cout << "Enter your retake exam result:\n"
+              << "  0=awful, 1=bad, 2=weak, 3=good, 4=excellent\n> ";
+    int i2;
+    std::cin >> i2;
+    Result exam2 = static_cast<Result>(i2);
+
+    std::cout << "Your retake result is: ";
+    printResult(exam2);
+    std::cout << "\n\n";
+
+    if (exam2 > exam1) {
+        std::cout << "Very good, you improved!\n";
+    } else if (exam2 == exam1) {
+        std::cout << "At least you tried!\n";
+    } else {
+        std::cout << "You must be very unlucky!\n";
+    }
+
+    return 0;
+}

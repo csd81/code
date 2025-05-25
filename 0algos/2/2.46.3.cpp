@@ -1,36 +1,66 @@
-2.46.3.
-#include <iostream> using namespace std;
-class equilateralTriangle { private: float a;
-float b;
-float c;
-public: bool check() const;
-float area() const;
-float perimeter() const;
-void display() const;
-void setA(float para) {a=para;} void setB(float para) {b=para;} void setC(float 
-para) {this->c=para;} float getA() const {return a;} float getB() const {return 
-this->b;} float getC() const {return c;} };
-bool equilateralTriangle::check() const { bool result=false;
-if (a==b && b==c) result=true;
-return result;
-} float equilateralTriangle::area() const { float s=(a+b+c)/2;
-float result=s*(s-a)*(s-b);
-return result;
-} float equilateralTriangle::perimeter() const { float result=a+b+c;
-return result;
-} void equilateralTriangle::display() const { bool valid=check();
-cout << boolalpha;
-cout << "The triangle is valid: " << valid << endl;
-if (valid) cout << "The sides are: " << this->a << ", " << b << ", " << getC() 
-<< endl;
-} int main() { equilateralTriangle myObject;
-myObject.setA(3);
-myObject.setB(3);
-myObject.setC(5);
-myObject.display();
-if (myObject.check()) { cout << "Area: " << myObject.area() << endl;
-cout << "Perimeter: " << myObject.perimeter() << endl;
-} return 0;
-} 
-2.46.3. Készítsen hasonló osztályt szabályos háromszögre! 2.47. Statikus 
-adattag
+// 2.46.3. Készítsen hasonló osztályt szabályos háromszögre! 
+// 2.46.3.
+
+
+#include <iostream>
+#include <cmath>
+#include <iomanip>
+
+using namespace std;
+
+class EquilateralTriangle {
+private:
+    float a, b, c;
+
+public:
+    void setA(float val) { a = val; }
+    void setB(float val) { b = val; }
+    void setC(float val) { c = val; }
+
+    float getA() const { return a; }
+    float getB() const { return b; }
+    float getC() const { return c; }
+
+    bool check() const;
+    float area() const;
+    float perimeter() const;
+    void display() const;
+};
+
+bool EquilateralTriangle::check() const {
+    return (a == b && b == c);
+}
+
+float EquilateralTriangle::area() const {
+    // Heron-képlet szabályos háromszögre is alkalmazható
+    float s = (a + b + c) / 2;
+    float areaSquared = s * (s - a) * (s - b) * (s - c);
+    return areaSquared > 0 ? sqrt(areaSquared) : 0;
+}
+
+float EquilateralTriangle::perimeter() const {
+    return a + b + c;
+}
+
+void EquilateralTriangle::display() const {
+    cout << boolalpha;
+    bool valid = check();
+    cout << "The triangle is valid (equilateral): " << valid << endl;
+    cout << "Sides: a = " << a << ", b = " << b << ", c = " << c << endl;
+}
+
+int main() {
+    EquilateralTriangle myTriangle;
+    myTriangle.setA(5);
+    myTriangle.setB(5);
+    myTriangle.setC(5);
+
+    myTriangle.display();
+
+    if (myTriangle.check()) {
+        cout << "Area: " << myTriangle.area() << endl;
+        cout << "Perimeter: " << myTriangle.perimeter() << endl;
+    }
+
+    return 0;
+}

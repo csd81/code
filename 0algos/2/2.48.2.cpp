@@ -1,72 +1,74 @@
-2.48.2.
-#include <iostream>
-#include <cstring> using namespace std;
-class Complex { float real, im;
-Complex multiply(const Complex&) const;
-public: void setReal(float para) {real=para;} void setIm(float para) {im=para;} 
-float getReal() const {return real;} float getIm() const {return im;} void 
-display() const;
-Complex sum(const Complex&) const;
-Complex sub(const Complex&) const;
-Complex mul(const Complex&) const;
-Complex div(const Complex&) const;
-friend ostream& operator <<(ostream &os,const Complex &obj);
-};
-ostream& operator <<(ostream &os,const Complex &obj) { os<< "(" << obj.real << 
-" + " << obj.im << "i)";
-return os;
-} Complex Complex::sum(const Complex& para) const { float resultReal, resultIm;
-Complex result;
-} resultReal=real+para.real;
-resultIm=im+para.im;
-result.real=resultReal;
-result.setIm(resultIm);
-return result;
-Complex Complex::sub(const Complex& para) const { float resultReal, resultIm;
-Complex result;
-resultReal=real-para.real;
-resultIm=im-para.im;
-result.real=resultReal;
-result.setIm(resultIm);
-return result;
-} Complex Complex::mul(const Complex& para) const { float resultReal, resultIm;
-Complex result;
-resultReal=real*para.real - im*para.im;
-resultIm=im*para.real+real*para.im;
-result.real=resultReal;
-result.setIm(resultIm);
-return result;
-} Complex Complex::multiply(const Complex& para) const { float resultReal, 
-resultIm;
-Complex result;
-resultReal=real*para.real - im*para.im;
-resultIm=im*para.real+real*para.im;
-result.real=resultReal;
-result.setIm(resultIm);
-return result;
-} Complex Complex::div(const Complex& para) const { float resultReal, resultIm;
-Complex result;
-if (para.real==0 && para.im==0) { cout << "Error: divison by zero." << endl;
-return result;
-} Complex recip;
-recip.real=para.real/(para.real*para.real+para.im*para.im);
-recip.setIm(-para.im/(para.real*para.real+para.im*para.im));
-result=this->multiply(recip);
-resultReal=result.getReal();
-resultIm=result.im;
-return result;
-} void Complex::display() const { cout << real << " + " << im << "i";
-} int main() { Complex a, b;
-} a.setReal(1);
-a.setIm(2);
-b.setReal(3);
-b.setIm(4);
-cout << a << " + " << b << "=" << a.sum(b) << endl;
-cout << a << " - " << b << "=" << a.sub(b) << endl;
-cout << a << " * " << b << "=" << a.mul(b) << endl;
-cout << a << " / " << b << "=" << a.div(b) << endl;
-return 0;
+// 2.48. Komplex számok
+// 2.48.2. Módosítsa úgy a programot, hogy a metódusok ne végezzenek 
+// kiírást, hanem adják vissza az eredményt objektumként! Valósítsa meg 
+// kiíró operátort a komplex osztályra! 
+// 2.48.2.
 
-2.48.2. Módosítsa úgy a programot, hogy a metódusok ne végezzenek 
-kiírást, hanem adják vissza az eredményt objektumként! Valósítsa meg 
-kiíró operátort a komplex osztályra! 
+
+#include <iostream>
+
+class Complex {
+    float real, im;
+
+    Complex multiply(const Complex& other) const {
+        return Complex(
+            real * other.real - im * other.im,
+            real * other.im + im * other.real
+        );
+    }
+
+public:
+    Complex() : real(0), im(0) {}
+    Complex(float r, float i) : real(r), im(i) {}
+
+    void setReal(float val) { real = val; }
+    void setIm(float val) { im = val; }
+
+    float getReal() const { return real; }
+    float getIm() const { return im; }
+
+    Complex sum(const Complex& other) const {
+        return Complex(real + other.real, im + other.im);
+    }
+
+    Complex sub(const Complex& other) const {
+        return Complex(real - other.real, im - other.im);
+    }
+
+    Complex mul(const Complex& other) const {
+        return Complex(
+            real * other.real - im * other.im,
+            real * other.im + im * other.real
+        );
+    }
+
+    Complex div(const Complex& other) const {
+        float denom = other.real * other.real + other.im * other.im;
+        if (denom == 0.0f) {
+            std::cerr << "Error: division by zero." << std::endl;
+            return Complex();
+        }
+        Complex reciprocal(other.real / denom, -other.im / denom);
+        return multiply(reciprocal);
+    }
+
+    friend std::ostream& operator<<(std::ostream& os, const Complex& obj) {
+        os << "(" << obj.real << " + " << obj.im << "i)";
+        return os;
+    }
+};
+
+int main() {
+    Complex a, b;
+    a.setReal(1);
+    a.setIm(2);
+    b.setReal(3);
+    b.setIm(4);
+
+    std::cout << a << " + " << b << " = " << a.sum(b) << std::endl;
+    std::cout << a << " - " << b << " = " << a.sub(b) << std::endl;
+    std::cout << a << " * " << b << " = " << a.mul(b) << std::endl;
+    std::cout << a << " / " << b << " = " << a.div(b) << std::endl;
+
+    return 0;
+}

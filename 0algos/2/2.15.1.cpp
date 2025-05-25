@@ -1,27 +1,39 @@
+// 2.15. Típuskonverzió
+// 2.15.1. Írjon programot, amely bekér egy double értéket kiírja az eredeti 
+// értéket a float, int, short int, char típussá konvertált változatok 
+// nagyságát és értékeit! A változók méretei jobbra legyenek rendezve és 
+// az értékek kiírása azonos oszlopban kezdődjön! 
 
-2.15.1. Írjon programot, amely bekér egy double értéket kiírja az eredeti 
-értéket a float, int, short int, char típussá konvertált változatok 
-nagyságát és értékeit! A változók méretei jobbra legyenek rendezve és 
-az értékek kiírása azonos oszlopban kezdődjön! 
+#include <iostream>
+#include <iomanip>
+#include <limits>
 
-#include <math.h>
-#include <stdio.h> int main() { double 
-doubleValue=1.12345678912346789123456789e5;
-printf("%20.20s”, „doubleValue=");
-scanf("%lf", &doubleValue);
-float floatValue=(float)doubleValue;
-int intValue=(int)floatValue;
-short int shortIntValue=(short int)intValue;
-char charValue=(char)shortIntValue;
-printf("%20.20s%d ", "size of double=", sizeof doubleValue);
-printf("doubleValue=%25.20lf\n", doubleValue);
-printf("%20.20s%d ", "size of float=", sizeof floatValue);
-printf("floatValue=%25.20f\n", floatValue);
-printf("%20.20s%d ", "size of int=", sizeof intValue);
-printf("intValue=%d\n", intValue);
-printf("%20.20s%d ", "size of short int=", sizeof shortIntValue);
-printf("shortIntValue=%d\n", shortIntValue);
-printf("%20.20s%d ", "size of char=", sizeof charValue);
-printf("charValue=%d\n", charValue);
-return 0;
-} 
+int main() {
+    double doubleValue;
+
+    std::cout << std::fixed << std::setprecision(20);
+    std::cout << std::setw(20) << "doubleValue = ";
+    std::cin >> doubleValue;
+
+    float floatValue = static_cast<float>(doubleValue);
+    int intValue = static_cast<int>(floatValue);
+    short shortIntValue = static_cast<short>(intValue);
+    char charValue = static_cast<char>(shortIntValue);
+
+    std::cout << std::setw(20) << "size of double = " << std::setw(2) << sizeof(doubleValue)
+              << "  doubleValue = " << std::setw(25) << doubleValue << "\n";
+
+    std::cout << std::setw(20) << "size of float = " << std::setw(2) << sizeof(floatValue)
+              << "  floatValue = " << std::setw(25) << floatValue << "\n";
+
+    std::cout << std::setw(20) << "size of int = " << std::setw(2) << sizeof(intValue)
+              << "  intValue = " << std::setw(25) << intValue << "\n";
+
+    std::cout << std::setw(20) << "size of short int = " << std::setw(2) << sizeof(shortIntValue)
+              << "  shortIntValue = " << std::setw(25) << shortIntValue << "\n";
+
+    std::cout << std::setw(20) << "size of char = " << std::setw(2) << sizeof(charValue)
+              << "  charValue = " << std::setw(25) << static_cast<int>(charValue) << "\n";
+
+    return 0;
+}

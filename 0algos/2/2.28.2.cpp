@@ -1,36 +1,64 @@
+// 2.28.2. Írjon programot, amely a konzolos képernyőn szemléltet egy 2*3 
+// dinamikus double tömböt! 
+// 2.28.2
 
-2.28.2
-#include <stdio.h> int main() { double** myMatrix;
-int *pData=&myMatrix, **ppData=&pData, ***pppData=&ppData;
-int idxI, idxJ, idxK, temp = 0;
-myMatrix = (double**)malloc(2 * sizeof(double*));
-for (idxI=0;
-idxI<2;
-idxI++) { myMatrix[idxI] = (double*)malloc(3 * sizeof(double));
-} for(idxI = 0;
-idxI < 2;
-idxI++) for(idxJ = 0;
-idxJ < 3;
-idxJ++) myMatrix[idxI][idxJ] = ++temp;
-printf("****Adresses****\n");
-printf("myMatrix**: [%#p] -> myMatrix[0,1]*: [%#p, %#p]\n", &myMatrix, 
-&myMatrix[0], &myMatrix[1]);
-printf("myMatrix[0]*: [%#p]-> myMatrix[0][0,1,2]: [%#p, %#p, %#p]\n", 
-&myMatrix[0], &myMatrix[0][0], &myMatrix[0][1], &myMatrix[0][2]);
-printf("myMatrix[1]*: [%#p]-> myMatrix[1][0,1,2]: [%#p, %#p, %#p]\n", 
-&myMatrix[1], &myMatrix[1][0], &myMatrix[1][1], &myMatrix[1][2]);
-printf("\n***Values****\n");
-printf("myMatrix**: [%#p] : myMatrix[0,1]*: [%#p, %#p]\n", myMatrix, 
-myMatrix[0], myMatrix[1]);
-printf("myMatrix[0]*: [%#p] : myMatrix[0][0,1,2]: [%.2lf, %.2lf, %.2lf]\n", 
-myMatrix[0], myMatrix[0][0], myMatrix[0][1], myMatrix[0][2]);
-printf("myMatrix[1]*: [%#p] : myMatrix[1][0,1,2]: [%.2lf, %.2lf, %.2lf]\n", 
-myMatrix[1], myMatrix[1][0], myMatrix[1][1], myMatrix[1][2]);
-} for (idxI=0;
-idxI<2;
-idxI++) free(myMatrix[idxI]);
-free(myMatrix);
-return 0;
 
-2.28.2. Írjon programot, amely a konzolos képernyőn szemléltet egy 2*3 
-dinamikus double tömböt! 
+#include <iostream>
+#include <iomanip>
+
+int main() {
+    // Dinamikus 2×3-as mátrix
+    double** myMatrix = new double*[2];
+    for (int i = 0; i < 2; ++i) {
+        myMatrix[i] = new double[3];
+    }
+
+    // Feltöltés
+    int temp = 0;
+    for (int i = 0; i < 2; ++i)
+        for (int j = 0; j < 3; ++j)
+            myMatrix[i][j] = ++temp;
+
+    // Címek
+    std::cout << "**** Addresses ****\n";
+    std::cout << "myMatrix:             " << reinterpret_cast<void*>(&myMatrix)
+              << "  -> rows: [" << reinterpret_cast<void*>(myMatrix[0]) 
+              << ", " << reinterpret_cast<void*>(myMatrix[1]) << "]\n";
+
+    std::cout << "myMatrix[0] pointer:  " << reinterpret_cast<void*>(&myMatrix[0])
+              << "  -> elements: [" 
+              << reinterpret_cast<void*>(&myMatrix[0][0]) << ", "
+              << reinterpret_cast<void*>(&myMatrix[0][1]) << ", "
+              << reinterpret_cast<void*>(&myMatrix[0][2]) << "]\n";
+
+    std::cout << "myMatrix[1] pointer:  " << reinterpret_cast<void*>(&myMatrix[1])
+              << "  -> elements: [" 
+              << reinterpret_cast<void*>(&myMatrix[1][0]) << ", "
+              << reinterpret_cast<void*>(&myMatrix[1][1]) << ", "
+              << reinterpret_cast<void*>(&myMatrix[1][2]) << "]\n\n";
+
+    // Értékek és azok címei
+    std::cout << "*** Values ***\n";
+    std::cout << "Row pointers:         [" 
+              << reinterpret_cast<void*>(myMatrix[0]) << ", "
+              << reinterpret_cast<void*>(myMatrix[1]) << "]\n";
+
+    std::cout << std::fixed << std::setprecision(2);
+    std::cout << "Row 0 values @ " << reinterpret_cast<void*>(myMatrix[0])
+              << ": [" << myMatrix[0][0] << ", "
+              << myMatrix[0][1] << ", "
+              << myMatrix[0][2] << "]\n";
+
+    std::cout << "Row 1 values @ " << reinterpret_cast<void*>(myMatrix[1])
+              << ": [" << myMatrix[1][0] << ", "
+              << myMatrix[1][1] << ", "
+              << myMatrix[1][2] << "]\n";
+
+    // Felszabadítás
+    for (int i = 0; i < 2; ++i) {
+        delete[] myMatrix[i];
+    }
+    delete[] myMatrix;
+
+    return 0;
+}

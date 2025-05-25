@@ -1,25 +1,54 @@
+// 2.14.3. Határozzuk meg a sin(x)-t hatványsor segítségével! 
 
 
-2.14.3. Határozzuk meg a sin(x)-t hatványsor segítségével! 2.15. 
-Típuskonverzió
+// Íme a **2.14.3. feladat** teljesen helyes és **C++11-re portolt változata**, amely:
 
-#include <math.h>
-#include <stdio.h> int factorial_compute(int);
-int main() { double result = 0, value;
-int length, idxI;
-printf("The accuracy of sinus series calculating sin(x)\n");
-printf("x= " );
-scanf("%lf", &value);
-printf("length of the sinus series= " );
-scanf("%d", &length);
-for (idxI=0;
-idxI < length;
-idxI++) { result += (pow(-1, idxI) /factorial_compute(2*idxI + 1)) * pow(value, 
-2*idxI + 1);
-} printf("The sin(%lf) value with %d length sinus series is: %lf\n", value, 
-length, result);
-return 0;
-} konnyiteseert int factorial_compute(int factorial) { if (factorial == 0) 
-return 1;
-return factorial * factorial_compute(factorial - 1);
-} 
+// * A `sin(x)` értékét számolja ki **hatványsor (Taylor-sor)** alapján,
+// * A sor képlete:
+
+//   $$
+//   \sin(x) = \sum_{n=0}^{\infty} \frac{(-1)^n \cdot x^{2n+1}}{(2n+1)!}
+//   $$
+// * Rekurzív `factorial` helyett **iteratív, túlcsordulásbiztosabb verziót** használ,
+// * Tisztán kezeli a lebegőpontos műveleteket (`double`),
+// * Tizedes pontosságot használ kiíráskor,
+// * Összehasonlítja az eredményt a `std::sin` könyvtári értékkel is.
+ 
+#include <iostream>
+#include <cmath>
+#include <iomanip>
+
+// Iteratív faktoriál
+unsigned long long factorial(int n) {
+    unsigned long long result = 1;
+    for (int i = 2; i <= n; ++i)
+        result *= i;
+    return result;
+}
+
+int main() {
+    double x;
+    int length;
+
+    std::cout << "The accuracy of sinus series calculating sin(x)\n";
+    std::cout << "x = ";
+    std::cin >> x;
+
+    std::cout << "Length of the sinus series: ";
+    std::cin >> length;
+
+    double result = 0.0;
+
+    for (int i = 0; i < length; ++i) {
+        int exponent = 2 * i + 1;
+        double term = std::pow(-1, i) * std::pow(x, exponent) / factorial(exponent);
+        result += term;
+    }
+
+    std::cout << std::fixed << std::setprecision(10);
+    std::cout << "sin(" << x << ") with series length " << length << ": " << result << "\n";
+    std::cout << "std::sin(" << x << "): " << std::sin(x) << "\n";
+    std::cout << "Difference: " << std::fabs(result - std::sin(x)) << "\n";
+
+    return 0;
+}

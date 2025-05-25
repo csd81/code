@@ -1,3 +1,5 @@
+//  3. Tömbök és mátrixok feladatai 
+// 3.1. Egy sztring címei
 /* 3.1.1. Készítsünk programot, amely bekér egy legfeljebb 6 karakter 
 hosszú sztringet és a karakteres képernyőn megjeleníti azt úgy, hogy 
 kiírja az egyes karakterek értékeit, karakteresen és ASCII kóddal 16-os 

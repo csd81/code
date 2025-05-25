@@ -1,25 +1,40 @@
+// 2.14.2. Kérjünk be egy pontosságot és határozzuk meg, hogy a sor hány 
+// tagját kell figyelembe venni, az adott pontosság eléréséhez! 
 
+#include <iostream>
+#include <cmath>
+#include <iomanip>
 
-2.14.2. Kérjünk be egy pontosságot és határozzuk meg, hogy a sor hány 
-tagját kell figyelembe venni, az adott pontosság eléréséhez! 
-#include <math.h>
-#include <stdio.h> int main() { double result = 1, accurateResult, value;
-int length = 0, faktor = 1, idxI;
-double accuracy, difference;
-ala printf("The accuracy of power series calculating e^x\n");
-printf("x= " );
-scanf("%lf", &value);
-printf("How big the accuracy should be? ");
-scanf("%lf", &accuracy);
-accurateResult = exp(value);
-difference = accuracy+1;
-for (idxI = 1;
-difference > accuracy;
-idxI++) { result += pow(value, idxI) /faktor;
-faktor *= (idxI+1);
-difference = accurateResult - result;
-length = idxI;
-} printf("A length of %d was necessary to get a difference lower than %lf\n", 
-length, accuracy);
-return 0;
-} 
+int main() {
+    double value;
+    double accuracy;
+
+    std::cout << "The accuracy of power series calculating e^x\n";
+    std::cout << "x = ";
+    std::cin >> value;
+
+    std::cout << "How small should the accuracy (difference) be? ";
+    std::cin >> accuracy;
+
+    double result = 1.0;
+    double factorial = 1.0;
+    int length = 1;
+
+    double accurateResult = std::exp(value);
+    double difference = std::fabs(accurateResult - result);
+
+    while (difference > accuracy) {
+        factorial *= length;
+        result += std::pow(value, length) / factorial;
+        ++length;
+        difference = std::fabs(accurateResult - result);
+    }
+
+    std::cout << std::fixed << std::setprecision(10);
+    std::cout << "Power series value:  " << result << "\n";
+    std::cout << "Actual exp(x):       " << accurateResult << "\n";
+    std::cout << "Final difference:    " << difference << "\n";
+    std::cout << "Terms needed:        " << length << "\n";
+
+    return 0;
+}

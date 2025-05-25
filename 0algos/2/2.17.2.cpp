@@ -1,18 +1,32 @@
+// 2.17.2. Alakítsa át a programot, hogy ne Celsius fokot, hanem Farenheit-t 
+// kér be. Külön függvény végezze el a konvertálást! 
+// 2.17.2.
 
+#include <iostream>
+#include <iomanip>
 
-2.17.2. Alakítsa át a programot, hogy ne Celsius fokot, hanem Farenheit-t 
-kér be. Külön függvény végezze el a konvertálást! 2.18. Római számok
-2.17.2.
-#include <stdio.h> float changer(float);
-int main() { float celsius;
-float fahrenheit;
-printf("temperature of water(in fahrenheit): ");
-scanf("%f",&fahrenheit);
-celsius = changer(fahrenheit);
-if (celsius < 0) printf("The water is solid now.\n");
-else if (celsius > 100) printf("The water is gaseous now.\n");
-else printf("The water is liquid now.\n");
-return 0;
-} float changer(float temp) { return temp = (temp-32) * 5 / 9;
-} 
+// Függvény: Fahrenheit → Celsius
+float fahrenheitToCelsius(float fahrenheit) {
+    return (fahrenheit - 32.0f) * 5.0f / 9.0f;
+}
 
+int main() {
+    float fahrenheit;
+    std::cout << "Temperature of water (in Fahrenheit): ";
+    std::cin >> fahrenheit;
+
+    float celsius = fahrenheitToCelsius(fahrenheit);
+
+    std::cout << std::fixed << std::setprecision(2);
+    std::cout << "Converted to Celsius: " << celsius << " °C\n";
+
+    if (celsius < 0.0f) {
+        std::cout << "The water is solid now.\n";
+    } else if (celsius > 100.0f) {
+        std::cout << "The water is gaseous now.\n";
+    } else {
+        std::cout << "The water is liquid now.\n";
+    }
+
+    return 0;
+}

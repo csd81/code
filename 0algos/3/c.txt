@@ -1,0 +1,5543 @@
+/* 3.1.1. Készítsünk programot, amely bekér egy legfeljebb 6 karakter 
+hosszú sztringet és a karakteres képernyőn megjeleníti azt úgy, hogy 
+kiírja az egyes karakterek értékeit, karakteresen és ASCII kóddal 16-os 
+számrendszerben, valamint kiírja az egyes karakter változóknak a neveit és 
+ezeknek a címeit. Ötlet mutatók kiírásához használja a %p-t!  
+*/
+
+#include <iostream>
+#include <iomanip>   // std::hex, std::setw
+#include <string>
+
+int main() {
+    const int size = 6;
+    char str[size + 1] = {};  // +1 a nullterminátor miatt
+
+    std::cout << "string = ";
+    std::cin >> std::setw(size + 1) >> str; // maximum 6 karakter
+
+    std::cout << "The string is: " << str << '\n';
+
+    std::cout << "The static string address, str: " << static_cast<void*>(str) << '\n';
+    std::cout << "The dynamic string address, &str: " << static_cast<void*>(&str) << '\n';
+
+    std::cout << "\nCharacters: ";
+    for (int i = 0; i < size; ++i) {
+        std::cout << '\'' << str[i] << "' ";
+    }
+
+    std::cout << "\nASCII (hex): ";
+    for (int i = 0; i < size; ++i) {
+        if (str[i] == '\0') std::cout << "0x";
+        std::cout << "0x" << std::hex << std::uppercase
+                  << static_cast<int>(static_cast<unsigned char>(str[i])) << ' ';
+    }
+
+    std::cout << std::dec << "\nVariable names: ";
+    for (int i = 0; i < size; ++i) {
+        std::cout << "str[" << i << "] ";
+    }
+
+    std::cout << "\nAddresses: ";
+    for (int i = 0; i < size; ++i) {
+        std::cout << static_cast<void*>(&str[i]) << ' ';
+    }
+
+    std::cout << '\n';
+    return 0;
+}
+
+/* c++11
+3.1.2. Alakítsa át a program kiírását úgy, hogy a bekért szó 
+függőlegesen jelenjen meg és a hozzá tartozó kiírások az egyes 
+karakterektől jobbra helyezkedjenek el! 
+
+3.1.2.
+*/
+
+
+#include <iostream>
+#include <iomanip>
+#include <string>
+
+int main() {
+    const int size = 6;
+    char str[size + 1] = {};  // +1 a null terminátor miatt
+
+    std::cout << "string = ";
+    std::cin >> std::setw(size + 1) >> str;
+
+    std::cout << "\nThe string is: " << str << '\n';
+    std::cout << "The static string address, str: " << static_cast<void*>(str) << '\n';
+    std::cout << "The dynamic string address, &str: " << static_cast<void*>(&str) << "\n\n";
+
+    for (int i = 0; i < size; ++i) {
+        char ch = str[i];
+        std::cout << "'" << ch << "'\t";
+
+        // Hexadecimális ASCII érték
+        std::cout << "0x" << std::hex << std::uppercase
+                  << std::setw(2) << std::setfill('0')
+                  << static_cast<int>(static_cast<unsigned char>(ch)) << std::dec;
+
+        // Index és cím
+        std::cout << "\tstring[" << i << "]"
+                  << "\t" << static_cast<void*>(&str[i]) << '\n';
+    }
+
+    return 0;
+}
+/*
+3.2. Osztás és maradékképzés
+3.2.1. Tároljon két tömbben 5-5 egész számot, az osztókat és az 
+osztandókat! Az értékeket inicializálással adja át a tömböknek, legyen 
+köztük negatívok is! Tippelje meg az egészosztás és maradékképzés 
+eredményét! Írja ki a helyes választ és számolja, a helyes válaszok 
+számát! Ötlet: ellenőrizze, hogy a második tömbben ne legyen nulla! 
+*/ 
+
+
+#include <iostream>
+#include <vector>
+
+int main() {
+    const int size = 5;
+    std::vector<int> osztandok   = {10, -9, 0, 7, -12};  // op1
+    std::vector<int> osztok      = {2, 3, -4, 5, -6};     // op2
+
+    int valasz = 0;
+    int pontszam = 0;
+
+    for (int i = 0; i < size; ++i) {
+        if (osztok[i] == 0) {
+            std::cout << "Hiba: 0-val nem lehet osztani! (" << osztandok[i] << "/0 kihagyva)\n";
+            continue;
+        }
+
+        // Egész osztás tipp
+        std::cout << osztandok[i] << " / " << osztok[i] << " = ";
+        std::cin >> valasz;
+
+        int helyes = osztandok[i] / osztok[i];
+        std::cout << "Helyes válasz: " << helyes << '\n';
+        if (valasz == helyes) {
+            ++pontszam;
+        }
+
+        // Maradékképzés tipp
+        std::cout << osztandok[i] << " % " << osztok[i] << " = ";
+        std::cin >> valasz;
+
+        helyes = osztandok[i] % osztok[i];
+        std::cout << "Helyes válasz: " << helyes << "\n\n";
+        if (valasz == helyes) {
+            ++pontszam;
+        }
+    }
+
+    std::cout << "Összesen " << pontszam << " pontot értél el.\n";
+    return 0;
+}
+// 3.2.2. Továbbra is meg kell tippelni a megoldást, de az operandusokat 
+// generálja véletlenszerűen -10 és 10 között! Véletlenszerűen döntse el 
+// azt is, hogy egész vagy lebegőpontos osztást végez! Utóbbinál függvényt 
+// kell használni a maradékképzésre. Lebegőpontos osztásnál mindig írja ki 
+// a tizedes pontot az operandusoknál! 
+// 3.2.2.
+
+ #include <iostream>
+#include <random>
+#include <iomanip>
+
+int main() {
+    // Random engine és eloszlások
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dist(-10, 10);
+    std::uniform_int_distribution<> typeDist(0, 1); // 0 = int, 1 = float
+
+    int A = dist(gen);
+    int B;
+    do {
+        B = dist(gen); // biztosan ne legyen 0
+    } while (B == 0);
+
+    int type = typeDist(gen);
+
+    if (type == 0) {
+        // Egész osztás
+        std::cout << "Integer division:\n";
+        std::cout << A << " / " << B << " = " << (A / B) << "\n";
+    } else {
+        // Lebegőpontos osztás
+        double result = static_cast<double>(A) / static_cast<double>(B);
+        std::cout << "Floating point division:\n";
+        std::cout << std::fixed << std::setprecision(4);
+        std::cout << static_cast<double>(A) << " / " << static_cast<double>(B)
+                  << " = " << result << "\n";
+    }
+
+    return 0;
+}
+// 3.3. Sztring konvertálás
+
+// 3.3.1. Készítsen programot, amely statikus karaktertömbben lévő 4 számot 
+// átkonvertál short int, int, float és double típusra! A számok összegét 
+// írja be az eredeti tömbbe! 
+// 3.3.1.
+
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <iomanip>
+
+int main() {
+    std::string input = "23 35678 1.2345e11 -9.8765432e-11";
+
+    short shortIntValue;
+    int intValue;
+    float floatValue;
+    double doubleValue;
+
+    std::istringstream iss(input);
+    iss >> shortIntValue >> intValue >> floatValue >> doubleValue;
+
+    double sum = shortIntValue + intValue + floatValue + doubleValue;
+
+    std::ostringstream oss;
+    oss << std::fixed << std::setprecision(6) << sum;
+    input = oss.str(); // visszaírjuk az összeg szövegét az input stringbe
+
+    std::cout << "The sum is " << input << std::endl;
+
+    return 0;
+}
+// 3.3.2. A kezdeti sztringben 3 double típusú szám legyen, az elsőt eggyel, a 
+// másodikat kettővel, a harmadikat hárommal növeljük meg! A megnövelt 
+// értékeket egy új tömbbe írjuk ki normál alakban, 8 tizedes pontossággal 
+// és előjellel! 
+
+// 3.3.2.
+
+#include <iostream>
+#include <sstream>
+#include <iomanip>
+#include <vector>
+
+int main() {
+    std::string input = "48.1658745 -654686835454.321635432435421 9.8765432e-11";
+    std::istringstream iss(input);
+
+    std::vector<double> numbers(3);
+    for (int i = 0; i < 3; ++i) {
+        iss >> numbers[i];
+        numbers[i] += (i + 1);
+    }
+
+    std::ostringstream oss;
+    oss << std::showpos << std::fixed << std::setprecision(8);
+    for (const auto& num : numbers) {
+        oss << num << " ";
+    }
+
+    std::string output = oss.str();
+    std::cout << "The new string is: " << output << '\n';
+
+    return 0;
+}
+
+// 3.4. Sztring bekérés
+// 3.4.1. Kérjen be egy-egy sztringet gets, getchar és scanf segítségével! 
+// Írja ki a sztringeket puts, putchar és printf segítségével! 
+
+
+#include <iostream>
+#include <string>
+
+int main() {
+    std::string string1, string2, string3;
+    char ch;
+
+    std::cout << "String input with getchar-like (character by character).\n";
+    std::cout << "Type something and press Enter (ends on newline):\n";
+
+    // getchar alternatívája: karakterenként olvasás
+    while (std::cin.get(ch) && ch != '\n') {
+        string1 += ch;
+    }
+
+    std::cout << "String input with gets-like (getline): ";
+    std::getline(std::cin, string2); // teljes sort beolvas
+
+    std::cout << "String input with scanf-like (cin >>): ";
+    std::cin >> string3; // szóközig olvas
+
+    std::cout << "\nstring1 with getchar = " << string1 << std::endl;
+    std::cout << "string2 with gets = " << string2 << std::endl;
+    std::cout << "string3 with scanf = " << string3 << std::endl;
+
+    std::cout << "Press Enter to exit...";
+    std::cin.ignore(); // elnyeli az utolsó sortörést
+    std::cin.get();    // vár Entert
+
+    return 0;
+}
+// 3.4.2. Mi történik, ha a gets és a scanf részeket felcseréljük? 
+// Hogyan kezelhető a helyzet? 
+
+#include <iostream>
+#include <string>
+#include <limits>
+
+int main() {
+    std::string string2, string3;
+
+    std::cout << "String input with scanf-like (cin >>): ";
+    std::cin >> string3;
+
+    // FONTOS: elfogyasztjuk a maradék sortörést!
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+    std::cout << "String input with gets-like (getline): ";
+    std::getline(std::cin, string2);
+
+    std::cout << "string3 (scanf style): " << string3 << "\n";
+    std::cout << "string2 (gets style): " << string2 << "\n";
+
+    return 0;
+}
+// 3.5.1. Írjon programot, amelyben egy 5 hosszú statikus float tömb minden 
+// elemébe a hozzátartozó index gyökét írja be! Használjon for ciklust az 
+// egyes elemek eléréséhez és az eredmény kiírásához! Az egyes értékek 
+// vesszővel legyenek elválasztva! 
+// 3.5.1
+
+
+#include <iostream>
+#include <array>
+#include <cmath>
+#include <iomanip>
+
+int main() {
+    std::array<float, 5> tomb;
+
+    // 1. feltöltés index gyökeivel
+    for (size_t i = 0; i < tomb.size(); ++i) {
+        tomb[i] = std::sqrt(static_cast<float>(i));
+    }
+
+    // 2. kiírás vesszőkkel
+    std::cout << std::fixed << std::setprecision(4);
+    for (size_t i = 0; i < tomb.size(); ++i) {
+        std::cout << tomb[i];
+        if (i < tomb.size() - 1)
+            std::cout << ", ";
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
+// 3.5.2. Oldja meg, hogy az utolsó szám után ne jelenjen meg vessző a 
+// kiírásnál és hogy a tömb nagyságát szabadon lehessen meghatározni! 
+// 3.5.2.
+
+#include <iostream>
+#include <vector>
+#include <cmath>
+#include <iomanip>
+
+int main() {
+    int size;
+    std::cout << "Size of array? ";
+    std::cin >> size;
+
+    std::vector<float> tomb(size);
+
+    for (int i = 0; i < size; ++i) {
+        tomb[i] = std::sqrt(static_cast<float>(i));
+    }
+
+    std::cout << std::fixed << std::setprecision(4);
+
+    for (int i = 0; i < size; ++i) {
+        std::cout << tomb[i];
+        if (i != size - 1)
+            std::cout << ", ";
+    }
+    std::cout << "\n";
+
+    return 0;
+}
+// 3.6. Tömb reprezentálása
+// 3.6.1. A karakteres képernyőn reprezentáljon egy 4 hosszú egész tömböt! 
+// Kérje be a tömb elemeit és írja ki az értékeket '*' szimbólumokból 
+// készített négyzetekbe! Adja meg az egyes elemek indexeit és címeit! Írja 
+// ki a tömb mint mutató értékét és annak a címét! 
+// 3.6.1.
+
+
+#include <iostream>
+#include <iomanip>
+
+int main() {
+    const int size = 4;
+    int tomb[size];
+
+    // 1. Értékek bekérése
+    for (int i = 0; i < size; ++i) {
+        std::cout << "The " << i << ". value: ";
+        std::cin >> tomb[i];
+    }
+
+    // 2. Felső csillagsor (keret)
+    std::cout << std::setw(20) << " ";
+    for (int i = 0; i < size; ++i) {
+        std::cout << std::string(12, '*');
+    }
+    std::cout << "\n";
+
+    // 3. Értékek sor keretben
+    std::cout << std::setw(20) << " ";
+    for (int i = 0; i < size; ++i) {
+        std::cout << "*" << std::setw(10) << tomb[i] << "*";
+    }
+    std::cout << "\n";
+
+    // 4. Alsó csillagsor (keret)
+    std::cout << std::setw(20) << " ";
+    for (int i = 0; i < size; ++i) {
+        std::cout << std::string(12, '*');
+    }
+    std::cout << "\n";
+
+    // 5. Indexek
+    std::cout << std::setw(20) << "index: ";
+    for (int i = 0; i < size; ++i) {
+        std::cout << std::left << std::setw(13) << i;
+    }
+    std::cout << "\n";
+
+    // 6. Címek (elemek)
+    std::cout << std::setw(20) << "address: ";
+    for (int i = 0; i < size; ++i) {
+        std::cout << std::left << std::setw(13) << static_cast<const void*>(&tomb[i]);
+    }
+    std::cout << "\n";
+
+    // 7. A tömb mutatóként és címként
+    std::cout << std::setw(20) << "tomb: " << static_cast<const void*>(tomb) << "\n";
+    std::cout << std::setw(20) << "&tomb: " << static_cast<const void*>(&tomb) << "\n";
+
+    // 8. Tömb mérete
+    std::cout << std::setw(20) << "tomb size: " << size << "\n";
+
+    return 0;
+}
+// 3.6.2. Oldja meg ugyanezt a feladatot dinamikus tömbre is!
+//  Hol lesz eltérés? 
+
+// ### ✅ 3.6.2. feladat: Dinamikus tömbös változat
+
+// A C++11-es verzió **dinamikus tömböt** használ a statikus `int tomb[4]` helyett. A fő eltérések:
+
+// | Rész                          | Statikus változat             | Dinamikus változat (`new`)        |
+// | ----------------------------- | ----------------------------- | --------------------------------- |
+// | Tömb deklarálása              | `int tomb[size];`             | `int* tomb = new int[size];`      |
+// | Tömbre mutató érték (pointer) | `tomb`                        | `tomb`                            |
+// | Cím lekérése                  | `&tomb` (tömb egészének címe) | `&tomb` (a pointer változó címe!) |
+// | Felszabadítás szükséges?      | ❌ (automatikusan)             | ✅ `delete[] tomb;`                |
+
+// ---
+
+// ### 🧾 **C++11 megoldás (dinamikus tömbbel)**:
+
+
+#include <iostream>
+#include <iomanip>
+
+int main() {
+    const int size = 4;
+    int* tomb = new int[size]; // dinamikus tömb
+
+    // 1. Értékek bekérése
+    for (int i = 0; i < size; ++i) {
+        std::cout << "The " << i << ". value: ";
+        std::cin >> tomb[i];
+    }
+
+    // 2. Felső csillagsor (keret)
+    std::cout << std::setw(20) << " ";
+    for (int i = 0; i < size; ++i) {
+        std::cout << std::string(12, '*');
+    }
+    std::cout << "\n";
+
+    // 3. Értékek sor keretben
+    std::cout << std::setw(20) << " ";
+    for (int i = 0; i < size; ++i) {
+        std::cout << "*" << std::setw(10) << tomb[i] << "*";
+    }
+    std::cout << "\n";
+
+    // 4. Alsó csillagsor
+    std::cout << std::setw(20) << " ";
+    for (int i = 0; i < size; ++i) {
+        std::cout << std::string(12, '*');
+    }
+    std::cout << "\n";
+
+    // 5. Indexek
+    std::cout << std::setw(20) << "index: ";
+    for (int i = 0; i < size; ++i) {
+        std::cout << std::left << std::setw(13) << i;
+    }
+    std::cout << "\n";
+
+    // 6. Címek
+    std::cout << std::setw(20) << "address: ";
+    for (int i = 0; i < size; ++i) {
+        std::cout << std::left << std::setw(13) << static_cast<const void*>(&tomb[i]);
+    }
+    std::cout << "\n";
+
+    // 7. Mutatóként és mutató változóként
+    std::cout << std::setw(20) << "tomb: " << static_cast<const void*>(tomb) << "\n";
+    std::cout << std::setw(20) << "&tomb: " << static_cast<const void*>(&tomb) << "\n";
+
+    // 8. Méret
+    std::cout << std::setw(20) << "tomb size: " << size << "\n";
+
+    delete[] tomb; // ne felejtsd el!
+    return 0;
+}
+
+
+
+
+// ### 🧠 Megjegyzés a különbségekről
+
+// * `tomb` **statikus esetben** a teljes tömbre mutat, `&tomb` a tömbre mint objektumra (típus: `int(*)[4]`).
+// * `tomb` **dinamikus esetben** csak egy `int*` mutató az első elemre, `&tomb` az a pointer változó címe (típus: `int**` ha értelmezzük).
+// * A címek közötti különbséget nézd meg például a `static_cast<const void*>(...)` kiírásban.
+
+ // 3.7.1. Feladat: Írjon programot, amelyben egy 10*10-es statikus, 
+// inicializált, float értékeket tartalmazó mátrix tengerszint feletti 
+// magasság adatokat reprezentál! Adja meg a szárazföld és a tenger 
+// arányát, ha a negatív magasság tengerfeneket reprezentál! Adja meg a 
+// legmagasabb pontot és adja meg a legmagasabb pontot a tengerben feltételes 
+// maximum keresés segítségével! Azt az esetet is kezelni kell, amikor nincs 
+// tenger! Számolja ki a terület átlagos magasságát! 
+ 
+#include <iostream>
+#include <array>
+#include <iomanip>
+#include <cfloat> // FLT_MAX
+
+int main() {
+    const int xSize = 10, ySize = 10;
+    std::array<std::array<float, ySize>, xSize> matrix = {{
+        {4, 5, 6, 4, 2, 3, 4, 2, 4, 2},
+        {2, 2, 6, 5, 8, 7, 5, 3, 4, 2},
+        {4, 3, 6, 2, 6, 3, 4, 6, 7, 2},
+        {7, 2, 6, -2, -3, -3, -4, 6, 1, 2},
+        {4, 1, 6, -7, -2, -3, -2, -8, 4, 2},
+        {8, 1, 6, -7, -4, -3, -7, -6, -4, -2},
+        {4, 3, 6, 7, 3, -3, -4, -8, -2, -2},
+        {9, 2, 6, 6, 2, 2, -4, -8, -4, 2},
+        {4, 3, 6, 8, 3, 2, 4, -6, 4, 2},
+        {3, 3, 6, 7, 1, 3, 5, 6, 4, 2}
+    }};
+
+    int water = 0, land = 0;
+    float sum = 0.0f;
+
+    // Szárazföld / tenger arány és összeg
+    for (int i = 0; i < xSize; ++i) {
+        for (int j = 0; j < ySize; ++j) {
+            float val = matrix[i][j];
+            if (val < 0)
+                ++water;
+            else
+                ++land;
+            sum += val;
+        }
+    }
+
+    std::cout << "The ratio of land to water is: " << land << ":" << water << "\n";
+
+    // Legmagasabb pont
+    int maxX = 0, maxY = 0;
+    for (int i = 0; i < xSize; ++i) {
+        for (int j = 0; j < ySize; ++j) {
+            if (matrix[i][j] > matrix[maxX][maxY]) {
+                maxX = i;
+                maxY = j;
+            }
+        }
+    }
+
+    std::cout << "The highest point is at row: " << maxX
+              << ", column: " << maxY
+              << " and its height is: " << matrix[maxX][maxY] << "\n";
+
+    // Legsekélyebb vízpont
+    float shallowMax = -FLT_MAX;
+    int waterX = -1, waterY = -1;
+    for (int i = 0; i < xSize; ++i) {
+        for (int j = 0; j < ySize; ++j) {
+            float val = matrix[i][j];
+            if (val < 0 && val > shallowMax) {
+                shallowMax = val;
+                waterX = i;
+                waterY = j;
+            }
+        }
+    }
+
+    if (waterX == -1) {
+        std::cout << "There is no water so the search is meaningless.\n";
+    } else {
+        std::cout << "The most shallow water is at row: " << waterX
+                  << ", column: " << waterY
+                  << " and its depth is: " << shallowMax << "\n";
+    }
+
+    // Átlagos magasság
+    float avg = sum / (xSize * ySize);
+    std::cout << std::fixed << std::setprecision(4);
+    std::cout << "The average height is: " << avg << "\n";
+
+    return 0;
+}
+
+// 3.7.2. Határozza meg a legnagyobb szintkülönbséget a teljes területen, 
+// csak a szárazföldön, csak a tengerben! 
+// 3.7.2.
+
+
+#include <iostream>
+#include <array>
+#include <iomanip>
+#include <limits>
+
+int main() {
+    const int xSize = 10, ySize = 10;
+    std::array<std::array<float, ySize>, xSize> matrix = {{
+        {4, 5, 6, 4, 2, 3, 4, 2, 4, 2},
+        {2, 2, 6, 5, 8, 7, 5, 3, 4, 2},
+        {4, 3, 6, 2, 6, 3, 4, 6, 7, 2},
+        {7, 2, 6, -2, -3, -3, -4, 6, 1, 2},
+        {4, 1, 6, -7, -2, -3, -2, -8, 4, 2},
+        {8, 1, 6, -7, -4, -3, -7, -6, -4, -2},
+        {4, 3, 6, 7, 3, -3, -4, -8, -2, -2},
+        {9, 2, 6, 6, 2, 2, -4, -8, -4, 2},
+        {4, 3, 6, 8, 3, 2, 4, -6, 4, 2},
+        {3, 3, 6, 7, 1, 3, 5, 6, 4, 2}
+    }};
+
+    float highestLand = std::numeric_limits<float>::lowest();
+    float lowestLand = std::numeric_limits<float>::max();
+    float shallowestWater = std::numeric_limits<float>::lowest();
+    float deepestWater = std::numeric_limits<float>::max();
+
+    bool hasLand = false, hasWater = false;
+
+    // Végigmegyünk a mátrixon és frissítjük a min/max értékeket
+    for (int i = 0; i < xSize; ++i) {
+        for (int j = 0; j < ySize; ++j) {
+            float val = matrix[i][j];
+            if (val > 0) {
+                hasLand = true;
+                if (val > highestLand) highestLand = val;
+                if (val < lowestLand)  lowestLand = val;
+            } else {
+                hasWater = true;
+                if (val > shallowestWater) shallowestWater = val;
+                if (val < deepestWater)    deepestWater = val;
+            }
+        }
+    }
+
+    std::cout << std::fixed << std::setprecision(4);
+
+    if (hasLand)
+        std::cout << "The level difference on land is: "
+                  << (highestLand - lowestLand) << "\n";
+    else
+        std::cout << "There is no land.\n";
+
+    if (hasWater)
+        std::cout << "The level difference in water is: "
+                  << (shallowestWater - deepestWater) << "\n";
+    else
+        std::cout << "There is no water.\n";
+
+    if (hasLand && hasWater)
+        std::cout << "The biggest global level difference is: "
+                  << (highestLand - deepestWater) << "\n";
+    else
+        std::cout << "No global level difference can be computed.\n";
+
+    return 0;
+}
+
+ // 3.8. Kockadobás
+// 3.8.1. Írjon programot, amely kockadobást szimulál véletlen számok 
+// generálásával! Kérjen be egy sorozat hosszt, x-t, és addig generáljon 
+// véletlen számokat, amíg nem jelenik meg egymás után x darab hatos! Hány 
+// dobás után kaptuk meg a kívánt eredményt? Számolja az egyes dobások 
+// gyakoriságát! 
+
+// 3.8.1.
+
+#include <iostream>
+#include <vector>
+#include <random>
+
+int main() {
+    int repeatRequired;
+    std::cout << "How many consecutive 6s do you want: ";
+    std::cin >> repeatRequired;
+
+    if (repeatRequired <= 0) {
+        std::cout << "Invalid input. Must be at least 1.\n";
+        return 1;
+    }
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dist(1, 6);
+
+    std::vector<int> frequency(6, 0);
+    int repeatAct = 0;
+    int trial = 0;
+
+    while (repeatAct != repeatRequired) {
+        int num = dist(gen);
+        frequency[num - 1]++;
+        if (num == 6)
+            repeatAct++;
+        else
+            repeatAct = 0;
+        trial++;
+    }
+
+    std::cout << "It took " << trial << " rolls to get " 
+              << repeatRequired << " consecutive 6s.\n\n";
+    std::cout << "Roll frequencies:\n";
+    for (int i = 0; i < 6; ++i) {
+        std::cout << frequency[i] << " occurrences of " << (i + 1) << "\n";
+    }
+
+    return 0;
+}
+
+// 3.8.2. Módosítsa úgy az előző programot, hogy egy x értékre 30-szor 
+// fusson le a program! Átlagosan hány dobás szükséges x darab egymást 
+// követő hatoshoz? 
+// 3.8.2.
+
+
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+#include <vector>
+#include <numeric> // for std::accumulate
+
+int main() {
+    int repeatRequired;
+    std::cout << "How many consecutive 6s do you want: ";
+    std::cin >> repeatRequired;
+
+    const int NUM_RUNS = 30;
+    std::vector<int> trials(NUM_RUNS);
+
+    std::srand(static_cast<unsigned int>(std::time(nullptr)));
+
+    for (int i = 0; i < NUM_RUNS; ++i) {
+        int repeatCount = 0;
+        int trial = 0;
+
+        while (repeatCount < repeatRequired) {
+            int roll = std::rand() % 6 + 1;
+            trial++;
+            if (roll == 6) {
+                repeatCount++;
+            } else {
+                repeatCount = 0;
+            }
+        }
+
+        trials[i] = trial;
+    }
+
+    int sum = std::accumulate(trials.begin(), trials.end(), 0);
+    double average = static_cast<double>(sum) / NUM_RUNS;
+
+    std::cout << "\nIt's needed on average " << average
+              << " random number(s) to generate "
+              << repeatRequired << " consecutive 6s.\n";
+
+    return 0;
+}
+// 3.9. Csúsztatás
+// 3.9.1. Írjon függvényt, amely 3 cím szerint átadott float paraméter 
+// értékét (a, b és c) elcsúsztatja a következő módon: ciklikus eltolás: 
+// a → b, b → c, c → a, nem ciklikus eltolás: a → b, b → c, 0 → a! 
+// Egy negyedik paraméter jelezze, hogy az eltolás ciklikus-e! 
+// 3.9.1.
+
+
+#include <iostream>
+#include <iomanip>
+
+// Segédfüggvény az értékek kiírására
+void print(float a, float b, float c) {
+    std::cout << std::fixed << std::setprecision(2);
+    std::cout << "a=" << a << " b=" << b << " c=" << c << "\n";
+}
+
+// Csúsztatás: cyclic==true esetén ciklikus, különben 0-t kap az első
+void shift(float& a, float& b, float& c, bool cyclic) {
+    float temp = c;
+    c = b;
+    b = a;
+    if (cyclic) a = temp;
+    else a = 0.0f;
+}
+
+int main() {
+    float x1, x2, x3;
+
+    std::cout << "Provide the next number: ";
+    std::cin >> x1;
+    std::cout << "Provide the next number: ";
+    std::cin >> x2;
+    std::cout << "Provide the next number: ";
+    std::cin >> x3;
+
+    std::cout << "\nOriginal: ";
+    print(x1, x2, x3);
+
+    shift(x1, x2, x3, true);
+    std::cout << "After cyclic shift: ";
+    print(x1, x2, x3);
+
+    shift(x1, x2, x3, false);
+    std::cout << "After non-cyclic shift: ";
+    print(x1, x2, x3);
+
+    return 0;
+}
+// 3.9.2. 3 változó helyett egy 3 elemű tömbön végezze el az 
+// elcsúsztatást! 
+// 3.9.2.
+
+ 
+#include <iostream>
+#include <array>
+
+void print(const std::array<float, 3>& a) {
+    for (size_t i = 0; i < a.size(); ++i)
+        std::cout << "a[" << i << "] = " << a[i] << "  ";
+    std::cout << "\n";
+}
+
+void shift(std::array<float, 3>& a, bool cyclic) {
+    float temp = a[2];
+    a[2] = a[1];
+    a[1] = a[0];
+    a[0] = cyclic ? temp : 0.0f;
+}
+
+int main() {
+    std::array<float, 3> x;
+
+    for (size_t i = 0; i < x.size(); ++i) {
+        std::cout << "Provide the next number: ";
+        std::cin >> x[i];
+    }
+
+    std::cout << "Original: ";
+    print(x);
+
+    shift(x, true);
+    std::cout << "After cyclic shift: ";
+    print(x);
+
+    shift(x, false);
+    std::cout << "After non-cyclic shift: ";
+    print(x);
+
+    return 0;
+}
+// 3.9.3. Egy plusz változó jelezze, hogy melyik irányba történik a 
+// csúsztatás! A tömb mérete legyen megadható! 
+// 3.9.3.
+
+
+#include <iostream>
+#include <vector>
+#include <string>
+#include <iomanip>
+
+void print(const std::vector<float>& a) {
+    for (size_t i = 0; i < a.size(); ++i) {
+        std::cout << "myArray[" << i << "] = " << a[i] << "  ";
+    }
+    std::cout << "\n";
+}
+
+void shift(std::vector<float>& a, char direction, bool cyclic) {
+    int size = a.size();
+    if (size == 0) return;
+
+    float temp = (direction == 'r') ? a[size - 1] : a[0];
+
+    if (direction == 'r') {
+        for (int i = size - 1; i > 0; --i) {
+            a[i] = a[i - 1];
+        }
+        a[0] = cyclic ? temp : 0.0f;
+    } else if (direction == 'l') {
+        for (int i = 0; i < size - 1; ++i) {
+            a[i] = a[i + 1];
+        }
+        a[size - 1] = cyclic ? temp : 0.0f;
+    } else {
+        std::cerr << "Invalid direction. Use 'l' or 'r'.\n";
+    }
+}
+
+int main() {
+    int size;
+    std::cout << "Array size? ";
+    std::cin >> size;
+
+    if (size <= 0) {
+        std::cerr << "Size must be positive.\n";
+        return 1;
+    }
+
+    std::vector<float> myArray(size);
+    for (int i = 0; i < size; ++i) {
+        std::cout << "Provide the next number: ";
+        std::cin >> myArray[i];
+    }
+
+    std::cin.ignore(); // flush newline after number input
+
+    std::cout << "Original array:\n";
+    print(myArray);
+
+    char direction;
+    std::cout << "In which direction do you want to shift? (l/r): ";
+    std::cin >> direction;
+
+    // Ciklikus eltolás
+    shift(myArray, direction, true);
+    std::cout << "After cyclic shift:\n";
+    print(myArray);
+
+    // Nem ciklikus eltolás
+    shift(myArray, direction, false);
+    std::cout << "After non-cyclic shift:\n";
+    print(myArray);
+
+    return 0;
+}
+// 3.10. Műveletek tömbökön
+//3.10.1. Írjon függvényeket a következő feladatokra: határozza meg egy 
+// tömbben lévő elemek összegét, átlagát, minimumát, hogy egy adott elem 
+// szerepel-e benne! Egy fájlban legyen a main függvény és egy másikban a 
+// többi függvény! 
+
+
+
+// inc.hpp
+
+ 
+#ifndef INC_HPP_
+#define INC_HPP_
+
+// Print the array elements in [a0, a1, …, aN-1] format
+void print(const double* arr, int size);
+
+// Return the sum of all elements
+double sum(const double* arr, int size);
+
+// Return the average of all elements (assumes size > 0)
+double avg(const double* arr, int size);
+
+// Return the index of the minimum element (assumes size > 0)
+int minIndex(const double* arr, int size);
+
+// Return true if value is found in the array
+bool searchFor(const double* arr, int size, double value);
+
+#endif // INC_HPP_
+ 
+//functions.cpp
+
+
+// #include "inc.hpp"
+#include <iostream>
+
+// Print the array as [e0, e1, …, eN-1]
+void print(const double* arr, int size) {
+    std::cout << "[";
+    for (int i = 0; i < size; ++i) {
+        std::cout << arr[i];
+        if (i + 1 < size) 
+            std::cout << ", ";
+    }
+    std::cout << "]";
+}
+
+double sum(const double* arr, int size) {
+    double s = 0.0;
+    for (int i = 0; i < size; ++i) {
+        s += arr[i];
+    }
+    return s;
+}
+
+double avg(const double* arr, int size) {
+    return sum(arr, size) / size;
+}
+
+int minIndex(const double* arr, int size) {
+    int mi = 0;
+    for (int i = 1; i < size; ++i) {
+        if (arr[i] < arr[mi]) {
+            mi = i;
+        }
+    }
+    return mi;
+}
+
+bool searchFor(const double* arr, int size, double value) {
+    for (int i = 0; i < size; ++i) {
+        if (arr[i] == value) {
+            return true;
+        }
+    }
+    return false;
+}
+
+// main.cpp
+ 
+
+// #include "inc.hpp"
+#include <iostream>
+
+int main() {
+    // sample data
+    double myArray[] = { 12.0, 56.0, -7.0 };
+    int size = sizeof(myArray) / sizeof(myArray[0]);
+    double what = -8.0;
+
+    std::cout << "Array: ";
+    print(myArray, size);
+
+    double s = sum(myArray, size);
+    double a = avg(myArray, size);
+    std::cout << "\nSum: " << s
+              << ", Average: " << a << "\n";
+
+    int idx = minIndex(myArray, size);
+    std::cout << "Minimum at index " << idx
+              << " → value " << myArray[idx] << "\n";
+
+    if (searchFor(myArray, size, what)) {
+        std::cout << what << " is found.\n";
+    } else {
+        std::cout << what << " is not found.\n";
+    }
+
+    return 0;
+}
+ // 3.10.2. Egészítse ki az előző programot a következő feladatokat 
+// ellátó függvényekkel! Maximális eleme indexének a meghatározása, 
+// szórás kiszámítása, két tömb elemeinek a felcserélése! 
+
+ 
+
+// function.hpp
+
+
+#ifndef FUNCTION_HPP
+#define FUNCTION_HPP
+
+// Print array elements as [e0, e1, …, eN-1]
+void print(const double* arr, int size);
+
+// Sum of elements
+double sum(const double* arr, int size);
+
+// Average of elements (size > 0)
+double avg(const double* arr, int size);
+
+// Index of minimum element (size > 0)
+int minIndex(const double* arr, int size);
+
+// Index of maximum element (size > 0)
+int maxIndex(const double* arr, int size);
+
+// Population standard deviation: sqrt( Σ(xi–μ)² / N )
+double stdDev(const double* arr, int size);
+
+// Swap the contents of arr1 and arr2 (both length size)
+void change(double* arr1, double* arr2, int size);
+
+// Return true if value exists in arr
+bool searchFor(const double* arr, int size, double value);
+
+#endif // FUNCTION_HPP
+
+
+// functions.cpp
+
+
+// #include "function.hpp"
+#include <iostream>
+#include <cmath>
+
+void print(const double* arr, int size) {
+    std::cout << "[";
+    for (int i = 0; i < size; ++i) {
+        std::cout << arr[i];
+        if (i + 1 < size) std::cout << ", ";
+    }
+    std::cout << "]";
+}
+
+double sum(const double* arr, int size) {
+    double s = 0.0;
+    for (int i = 0; i < size; ++i) {
+        s += arr[i];
+    }
+    return s;
+}
+
+double avg(const double* arr, int size) {
+    return sum(arr, size) / size;
+}
+
+int minIndex(const double* arr, int size) {
+    int mi = 0;
+    for (int i = 1; i < size; ++i) {
+        if (arr[i] < arr[mi]) mi = i;
+    }
+    return mi;
+}
+
+int maxIndex(const double* arr, int size) {
+    int ma = 0;
+    for (int i = 1; i < size; ++i) {
+        if (arr[i] > arr[ma]) ma = i;
+    }
+    return ma;
+}
+
+double stdDev(const double* arr, int size) {
+    double mean = avg(arr, size);
+    double sumSq = 0.0;
+    for (int i = 0; i < size; ++i) {
+        double diff = arr[i] - mean;
+        sumSq += diff * diff;
+    }
+    return std::sqrt(sumSq / size);
+}
+
+void change(double* arr1, double* arr2, int size) {
+    for (int i = 0; i < size; ++i) {
+        double tmp   = arr1[i];
+        arr1[i]      = arr2[i];
+        arr2[i]      = tmp;
+    }
+}
+
+bool searchFor(const double* arr, int size, double value) {
+    for (int i = 0; i < size; ++i) {
+        if (arr[i] == value) return true;
+    }
+    return false;
+}
+
+// main.cpp
+
+
+// #include "function.hpp"
+#include <iostream>
+#include <iomanip>
+
+int main() {
+    double A[] = { 12.0, 56.0, -7.0 };
+    double B[] = { 24.0, -26.0,  4.0 };
+    int size   = sizeof(A) / sizeof(A[0]);
+    double what = -8.0;
+
+    std::cout << "Array A: "; print(A, size); 
+    std::cout << "\nArray B: "; print(B, size);
+    
+    double s  = sum(A, size);
+    double m  = avg(A, size);
+    int    iMin = minIndex(A, size);
+    int    iMax = maxIndex(A, size);
+    double sd = stdDev(A, size);
+    
+    std::cout << "\n\n-- Statistics for A --\n"
+              << "Sum:       " << s  << "\n"
+              << "Average:   " << m  << "\n"
+              << "Min index: " << iMin 
+                 << " (value " << A[iMin] << ")\n"
+              << "Max index: " << iMax
+                 << " (value " << A[iMax] << ")\n"
+              << "Std Dev:   " << std::fixed << std::setprecision(4) << sd << 
+"\n";
+
+    std::cout << "\n-- Swapping A and B --\n";
+    change(A, B, size);
+    std::cout << "A: "; print(A, size);
+    std::cout << "\nB: "; print(B, size);
+
+    std::cout << "\n\n-- Search --\n";
+    if (searchFor(A, size, what))
+        std::cout << what << " is in A\n";
+    else
+        std::cout << what << " is NOT in A\n";
+
+    return 0;
+}
+ // 3.10.3. Egészítse ki az előző programot a következő feladatokat 
+// ellátó függvényekkel! Adott elem első előfordulásának meghatározása, 
+// utolsó előfordulásának meghatározása, két tömb között az 
+// alapműveletek elvégzése az azonos indexű elemek között, skaláris szorzat 
+// meghatározása.  
+
+
+// function.hpp
+
+
+#ifndef FUNCTION_HPP
+#define FUNCTION_HPP
+
+// Print array elements as [e0, e1, …, eN-1]
+void print(const double* arr, int size);
+
+// Sum of elements
+double sum(const double* arr, int size);
+
+// Average of elements (size > 0)
+double avg(const double* arr, int size);
+
+// Index of minimum element (size > 0)
+int minIndex(const double* arr, int size);
+
+// Index of maximum element (size > 0)
+int maxIndex(const double* arr, int size);
+
+// Swap the contents of a1 and a2 (both length size)
+void change(double* a1, double* a2, int size);
+
+// Element-wise basic operations (+, –, *, /) between a1 and a2, printed to stdout
+void elementWiseOps(const double* a1, const double* a2, int size);
+
+// Scalar (dot) product of a1 and a2
+double dotProduct(const double* a1, const double* a2, int size);
+
+// First occurrence of value in arr, or –1 if not found
+int firstOccurrence(const double* arr, int size, double value);
+
+// Last occurrence of value in arr, or –1 if not found
+int lastOccurrence(const double* arr, int size, double value);
+
+// Returns true if value is found in arr
+bool searchFor(const double* arr, int size, double value);
+
+#endif // FUNCTION_HPP
+
+// functions.cpp
+
+
+// #include "function.hpp"
+#include <iostream>
+#include <cmath>
+
+// Print array as [e0, e1, …]
+void print(const double* arr, int size) {
+    std::cout << "[";
+    for (int i = 0; i < size; ++i) {
+        std::cout << arr[i];
+        if (i + 1 < size) std::cout << ", ";
+    }
+    std::cout << "]";
+}
+
+double sum(const double* arr, int size) {
+    double s = 0.0;
+    for (int i = 0; i < size; ++i) {
+        s += arr[i];
+    }
+    return s;
+}
+
+double avg(const double* arr, int size) {
+    return sum(arr, size) / size;
+}
+
+int minIndex(const double* arr, int size) {
+    int mi = 0;
+    for (int i = 1; i < size; ++i) {
+        if (arr[i] < arr[mi]) mi = i;
+    }
+    return mi;
+}
+
+int maxIndex(const double* arr, int size) {
+    int ma = 0;
+    for (int i = 1; i < size; ++i) {
+        if (arr[i] > arr[ma]) ma = i;
+    }
+    return ma;
+}
+
+void change(double* a1, double* a2, int size) {
+    for (int i = 0; i < size; ++i) {
+        double tmp = a1[i];
+        a1[i] = a2[i];
+        a2[i] = tmp;
+    }
+}
+
+void elementWiseOps(const double* a1, const double* a2, int size) {
+    std::cout << "\nElement-wise operations:\n";
+    for (int i = 0; i < size; ++i) {
+        std::cout << "Index " << i << ":\n";
+        std::cout << "  " << a1[i] << " + " << a2[i]
+                  << " = " << (a1[i] + a2[i]) << "\n";
+        std::cout << "  " << a1[i] << " - " << a2[i]
+                  << " = " << (a1[i] - a2[i]) << "\n";
+        std::cout << "  " << a1[i] << " * " << a2[i]
+                  << " = " << (a1[i] * a2[i]) << "\n";
+        std::cout << "  " << a1[i] << " / " << a2[i]
+                  << " = " << (a1[i] / a2[i]) << "\n";
+    }
+}
+
+double dotProduct(const double* a1, const double* a2, int size) {
+    double dot = 0.0;
+    for (int i = 0; i < size; ++i) {
+        dot += a1[i] * a2[i];
+    }
+    return dot;
+}
+
+int firstOccurrence(const double* arr, int size, double value) {
+    for (int i = 0; i < size; ++i) {
+        if (arr[i] == value) return i;
+    }
+    return -1;
+}
+
+int lastOccurrence(const double* arr, int size, double value) {
+    for (int i = size - 1; i >= 0; --i) {
+        if (arr[i] == value) return i;
+    }
+    return -1;
+}
+
+bool searchFor(const double* arr, int size, double value) {
+    return firstOccurrence(arr, size, value) != -1;
+}
+
+// main.cpp
+
+// #include "function.hpp"
+#include <iostream>
+#include <iomanip>
+
+int main() {
+    double A[]     = { 12.0, 56.0, -7.0, 56.0 };
+    double B[]     = { 24.0, -26.0, 4.0,  19.0 };
+    int    size    = sizeof(A) / sizeof(A[0]);
+    double what1   = -8.0;
+    double what2   = 56.0;
+
+    std::cout << "Array A: "; print(A, size);
+    std::cout << "\nArray B: "; print(B, size);
+
+    // basic stats on A
+    double s       = sum(A, size);
+    double m       = avg(A, size);
+    int    iMin    = minIndex(A, size);
+    int    iMax    = maxIndex(A, size);
+
+    std::cout << "\n\n-- Statistics for A --\n"
+              << "Sum:     " << s << "\n"
+              << "Average: " << m << "\n"
+              << "Min idx: " << iMin
+              << " (value " << A[iMin] << ")\n"
+              << "Max idx: " << iMax
+              << " (value " << A[iMax] << ")\n";
+
+    // presence test
+    std::cout << "\n-- Search for " << what1 << " in A --\n";
+    if (searchFor(A, size, what1))
+        std::cout << what1 << " is found in A\n";
+    else
+        std::cout << what1 << " is NOT found in A\n";
+
+    // swap A and B
+    std::cout << "\n-- Swap A and B --\n";
+    change(A, B, size);
+    std::cout << "A: "; print(A, size);
+    std::cout << "\nB: "; print(B, size);
+
+    // element-wise ops
+    elementWiseOps(A, B, size);
+
+    // dot product
+    double dot = dotProduct(A, B, size);
+    std::cout << "\n\nDot product: " << dot << "\n";
+
+    // first & last occurrence in B
+    int firstIdx = firstOccurrence(B, size, what2);
+    int lastIdx  = lastOccurrence(B, size, what2);
+    std::cout << "\n-- Occurrences of " << what2 << " in B --\n";
+    if (firstIdx != -1) {
+        std::cout << "First at index " << firstIdx
+                  << ", last at index " << lastIdx << "\n";
+    } else {
+        std::cout << what2 << " not found in B\n";
+    }
+
+    return 0;
+}
+// 3.11.1. Írjon programot, amely egy szöveg minden negyedik karakterét 
+// kihagyja, ha az nem white space! inicializálja úgy a sztringet, hogy abban 
+// több sor legyen és ezek a sorok a program kódban is sorokban legyenek 
+// (külön idézőjel párok felhasználásával)! A néggyel való 
+// oszthatóságot külön függvénnyel valósítsa meg! 
+// 3.11.1.
+
+
+#include <iostream>
+#include <string>
+#include <cctype>
+
+// Ellenőrzi, hogy a szám osztható-e 4-gyel
+bool divisibleBy4(int num) {
+    return num % 4 == 0;
+}
+
+int main() {
+    std::string s = 
+        "The project will scale up to 1,200 marine sites,\n"
+        "including different conditions such as surface waters,\n"
+        "waters near methane emissions from the sea floor, and deep-sea sediments.";
+
+    int visibleCharIndex = 0; // csak nem-whitespace karakterek indexelésére
+
+    for (size_t i = 0; i < s.length(); ++i) {
+        char c = s[i];
+        if (std::isspace(static_cast<unsigned char>(c))) {
+            std::cout << c; // whitespace-eket mindig kiírjuk
+        } else {
+            if (!divisibleBy4(visibleCharIndex)) {
+                std::cout << c;
+            }
+            ++visibleCharIndex; // csak nem-whitespace-ekre növeljük
+        }
+    }
+
+    return 0;
+}
+// 3.11.2. Módosítsa úgy a programot, hogy a magánhangzókat hagyja ki, de 
+// csak akkor, ha nem egy szó elején vannak! 
+// 3.11.2.
+
+ #include <iostream>
+#include <string>
+#include <cctype>
+#include <set>
+
+// Segédfüggvény: eldönti, hogy a karakter magánhangzó-e (angol)
+bool isVowel(char c) {
+    static const std::set<char> vowels = {'a', 'e', 'i', 'o', 'u'};
+    return vowels.count(std::tolower(static_cast<unsigned char>(c))) > 0;
+}
+
+int main() {
+    std::string text =
+        "The project will scale up to 1,200 marine sites,\n"
+        "including different conditions such as surface waters,\n"
+        "waters near methane emissions from the sea floor, and "
+        "deep sea sediments.";
+
+    bool atWordStart = true;
+
+    for (size_t i = 0; i < text.length(); ++i) {
+        char c = text[i];
+
+        if (std::isspace(static_cast<unsigned char>(c)) || std::ispunct(static_cast<unsigned char>(c))) {
+            atWordStart = true;
+            std::cout << c; // minden szóköz és írásjel változatlanul kimegy
+        } else {
+            if (isVowel(c) && !atWordStart) {
+                // nem írjuk ki a nem szóbeli magánhangzót
+            } else {
+                std::cout << c;
+            }
+            atWordStart = false;
+        }
+    }
+
+    return 0;
+}
+// 3.12.1. Készítsen magánhangzó statisztikát egy bekért sorról! A 
+// magánhangzó kis és nagy betűs alakját nem különböztetjük meg, csak az 
+// angol magánhangzókat tekintjük. 
+// 3.12.1.
+
+
+#include <iostream>
+#include <string>
+#include <cctype>
+#include <map>
+
+int main() {
+    std::string line;
+    std::cout << "text=\n";
+    std::getline(std::cin, line);
+
+    std::map<char, int> vowelCount = {
+        {'A', 0}, {'E', 0}, {'I', 0}, {'O', 0}, {'U', 0}
+    };
+
+    for (char ch : line) {
+        char upper = std::toupper(static_cast<unsigned char>(ch));
+        if (vowelCount.count(upper)) {
+            vowelCount[upper]++;
+        }
+    }
+
+    std::cout << "\nVowel statistics:\n";
+    for (const auto& pair : vowelCount) {
+        std::cout << " " << static_cast<char>(std::tolower(pair.first)) << "," << pair.first << ": " << pair.second << "\n";
+    }
+
+    return 0;
+}
+// 3.12.2. Készítsen statisztikát egy szövegben lévő szavak és mondatok 
+// számáról! 
+// 3.12.2.
+
+
+#include <iostream>
+#include <string>
+
+int main() {
+    std::string text;
+    std::cout << "Text: ";
+    std::getline(std::cin, text);
+
+    int sentence = 0;
+    int word = 0;
+    bool inWord = false;
+
+    for (char c : text) {
+        if (std::isspace(static_cast<unsigned char>(c))) {
+            if (inWord) {
+                word++;
+                inWord = false;
+            }
+        } else {
+            inWord = true;
+        }
+
+        if (c == '.' || c == '!' || c == '?') {
+            sentence++;
+        }
+    }
+
+    // If the last character was part of a word
+    if (inWord) {
+        word++;
+    }
+
+    std::cout << "\nText statistics:\n";
+    std::cout << "Words: " << word << "\n";
+    std::cout << "Sentences: " << sentence << "\n";
+
+    return 0;
+}
+// 3.13. Kódolt beszéd
+// 3.13.1. Írja meg a „tuvudsz ivigy beveszevelnivi” programot! A kimenet 
+// csupa nagybetű legyen! írja meg azt a függvényt, amely eldönti, hogy egy 
+// betű magánhangzó-e! 
+// 3.13.1.
+
+
+#include <iostream>
+#include <string>
+#include <cctype>
+#include <algorithm>
+
+bool isVowel(char c) {
+    static const std::string vowels = "AEIOU";
+    return vowels.find(c) != std::string::npos;
+}
+
+std::string convertToTuvudsz(const std::string& sentence) {
+    std::string result;
+    for (char ch : sentence) {
+        char upper = std::toupper(ch);
+        result += upper;
+        if (isVowel(upper)) {
+            result += 'V';
+            result += upper;
+        }
+    }
+    return result;
+}
+
+int main() {
+    std::string input;
+    std::cout << "sentence = \n";
+    std::getline(std::cin, input);
+
+    std::string transformed = convertToTuvudsz(input);
+    std::cout << transformed << "\n";
+
+    return 0;
+}
+// 3.13.2. Bővítse úgy a programot, hogy az új sztring egy megfelelően 
+// hosszú dinamikus tömbbe kerüljön! Készítse el a visszafele kódoló 
+// függvényt! 
+
+// 3.13.2.
+
+
+#include <iostream>
+#include <string>
+#include <cctype>
+#include <memory>
+
+int main() {
+    std::string original;
+    std::cout << "Sentence: ";
+    std::getline(std::cin, original);
+
+    size_t len = original.length();
+    // Dinamikus tömb a feldolgozott karakterekhez (+1 a null terminátor miatt)
+    std::unique_ptr<char[]> newVer(new char[len + 1]);
+
+    size_t idxJ = 0;
+    for (size_t idxI = 0; idxI < len; ++idxI) {
+        char current = std::toupper(original[idxI]);
+
+        if (current != 'V') {
+            newVer[idxJ++] = current;
+        } else {
+            if (idxI + 2 < len &&
+                std::toupper(original[idxI]) == std::toupper(original[idxI + 2])) {
+                newVer[idxJ++] = std::toupper(original[idxI++]);
+                newVer[idxJ++] = std::toupper(original[idxI++]);
+                idxI++; // skip 3rd (visszafele kódolt karakter)
+            } else {
+                // csak kihagyjuk a V-t
+            }
+        }
+    }
+
+    newVer[idxJ] = '\0'; // null-terminátor
+
+    std::cout << newVer.get() << std::endl;
+
+    return 0;
+}
+// 3.14. Sztring kivonás
+// 3.14.1. Írjon programot, amely egy sztringből kivon egy másikat! 
+// Például: almafavirág - fa = almavirág. Ha a második paraméter nincs az 
+// elsőben, akkor ne változzon az első paraméter érétke! 
+// 3.14.1.
+
+#include <iostream>
+#include <string>
+
+// kivonás függvény
+void subtract(std::string& from, const std::string& what) {
+    size_t pos = from.find(what);
+    if (pos != std::string::npos) {
+        from.erase(pos, what.length());
+    }
+}
+
+int main() {
+    std::string from, what;
+
+    std::cout << "Subtract from: ";
+    std::cin >> from;
+
+    std::cout << "Subtract what: ";
+    std::cin >> what;
+
+    subtract(from, what);
+
+    std::cout << "\nThe reduced word is: " << from << "\n";
+
+    return 0;
+}
+
+// 3.14.2. Módosítsa úgy a programot, hogy a második sztring minden 
+// előfordulását kiveszi az elsőből! 
+// 3.14.2.
+
+
+
+#include <iostream>
+#include <string>
+
+void substractAll(std::string& from, const std::string& what) {
+    size_t pos;
+    while ((pos = from.find(what)) != std::string::npos) {
+        from.erase(pos, what.length());
+    }
+}
+
+int main() {
+    std::string from, what;
+
+    std::cout << "Substract from = ";
+    std::cin >> from;
+
+    std::cout << "Substract what = ";
+    std::cin >> what;
+
+    substractAll(from, what);
+
+    std::cout << "\nThe reduced word is: " << from << "\n";
+
+    return 0;
+}
+// 3.15. Kisbetű - nagybetű
+
+// 3.15.1. Írjon programot, amely bekért mondatot formáz adott választás 
+// szerint! Menüből választhatóak a következő lehetőségek: UPPER CASE 
+// (mindent nagybetűre), lower case (mindent kisbetűre), tOGGLE CASE (kis 
+// betűket nagyra és nagyokat kicsire), Sentense case (a sor első betűje nagy 
+// csak), Title Case (minden szókezdő betű nagy). Mind a konvertálások, mind 
+// a menü függvénnyel legyen megoldva! 
+// 3.15.1.
+
+#include <iostream>
+#include <string>
+#include <cctype>
+#include <sstream>
+
+// UPPER CASE
+std::string toUpperCase(const std::string& input) {
+    std::string result = input;
+    for (char& c : result)
+        c = std::toupper(c);
+    return result;
+}
+
+// lower case
+std::string toLowerCase(const std::string& input) {
+    std::string result = input;
+    for (char& c : result)
+        c = std::tolower(c);
+    return result;
+}
+
+// tOGGLE CASE
+std::string toggleCase(const std::string& input) {
+    std::string result = input;
+    for (char& c : result) {
+        if (std::islower(c)) c = std::toupper(c);
+        else if (std::isupper(c)) c = std::tolower(c);
+    }
+    return result;
+}
+
+// Sentence case
+std::string sentenceCase(const std::string& input) {
+    std::string result = toLowerCase(input);
+    for (size_t i = 0; i < result.size(); ++i) {
+        if (!std::isspace(result[i])) {
+            result[i] = std::toupper(result[i]);
+            break;
+        }
+    }
+    return result;
+}
+
+// Title Case
+std::string titleCase(const std::string& input) {
+    std::string result = toLowerCase(input);
+    bool newWord = true;
+    for (char& c : result) {
+        if (std::isspace(c)) {
+            newWord = true;
+        } else if (newWord) {
+            c = std::toupper(c);
+            newWord = false;
+        }
+    }
+    return result;
+}
+
+int menu() {
+    int choice;
+    std::cout << "1. UPPER CASE\n";
+    std::cout << "2. lower case\n";
+    std::cout << "3. tOGGLE CASE\n";
+    std::cout << "4. Sentence case\n";
+    std::cout << "5. Title Case\n";
+    std::cout << "Select an option: ";
+    std::cin >> choice;
+    std::cin.ignore(); // remove leftover newline
+    return choice;
+}
+
+int main() {
+    std::string myString;
+    std::cout << "Original string: ";
+    std::getline(std::cin, myString);
+
+    int choice = menu();
+
+    std::string result;
+    switch (choice) {
+        case 1: result = toUpperCase(myString); break;
+        case 2: result = toLowerCase(myString); break;
+        case 3: result = toggleCase(myString); break;
+        case 4: result = sentenceCase(myString); break;
+        case 5: result = titleCase(myString); break;
+        default: std::cout << "Invalid choice.\n"; return 1;
+    }
+
+    std::cout << "\nResult: \"" << result << "\"\n";
+    return 0;
+}
+
+// 3.15.2. Valósítsa meg a „Nice Title Case” formázást! A szavak első 
+// betűje nagy kivéve az alábbi szavak esetén: and, of, the, a, an, from, for, 
+// in. A kivételt nem kell figyelembe venni a sor első karakterénél és egy 
+// kettős pont után. Például: „The Life of an English Man and the War” 
+// 3.15.2.
+
+
+#include <iostream>
+#include <string>
+#include <sstream>
+#include <vector>
+#include <set>
+#include <cctype>
+#include <algorithm>
+
+std::string toLower(const std::string& str) {
+    std::string res = str;
+    std::transform(res.begin(), res.end(), res.begin(), ::tolower);
+    return res;
+}
+
+std::string toTitleCaseWord(const std::string& word) {
+    if (word.empty()) return word;
+    std::string result = toLower(word);
+    result[0] = std::toupper(result[0]);
+    return result;
+}
+
+std::string niceTitleCase(const std::string& input) {
+    std::set<std::string> exceptions = {"and", "of", "the", "a", "an", "from", "for", "in"};
+
+    std::istringstream iss(input);
+    std::vector<std::string> words;
+    std::string word;
+    char prevEnd = '\0'; // store previous punctuation (for colon detection)
+    bool forceCapitalize = true;
+
+    while (iss >> word) {
+        std::string cleanWord = toLower(word);
+
+        // Remove trailing punctuation for colon detection
+        char lastChar = word.back();
+        bool endsWithColon = (lastChar == ':');
+        if (endsWithColon) cleanWord = cleanWord.substr(0, cleanWord.size() - 1);
+
+        if (forceCapitalize || exceptions.find(cleanWord) == exceptions.end()) {
+            word = toTitleCaseWord(cleanWord);
+        } else {
+            word = toLower(cleanWord);
+        }
+
+        if (endsWithColon) word += ":";
+
+        words.push_back(word);
+        forceCapitalize = endsWithColon; // reset flag if colon
+        prevEnd = lastChar;
+    }
+
+    // Join back into sentence
+    std::ostringstream oss;
+    for (size_t i = 0; i < words.size(); ++i) {
+        if (i > 0) oss << " ";
+        oss << words[i];
+    }
+
+    return oss.str();
+}
+
+int main() {
+    std::string input;
+    std::cout << "Original string: ";
+    std::getline(std::cin, input);
+
+    std::string result = niceTitleCase(input);
+
+    std::cout << "\nResult: \"" << result << "\"\n";
+    return 0;
+}
+// 3.16. Tömbnövelés
+
+// 3.16.1. Írjon programot, amely bekéri egy tömb méretét, lefoglalja a 
+// helyet a tömb számára és feltölti elemekkel! Növelje meg a tömb 
+// méretét duplájára úgy, hogy létrehoz egy új tömböt, és belemásolja a 
+// régi tömböt! Töltse fel a maradék helyet is új értékekkel! 
+// 3.16.1.
+
+
+#include <iostream>
+#include <vector>
+#include <iomanip>
+
+int main() {
+    int size;
+    std::cout << "Array size: ";
+    std::cin >> size;
+
+    std::vector<double> array(size);
+
+    // 1. Elemek bekérése
+    for (int i = 0; i < size; ++i) {
+        std::cout << i << ". element: ";
+        std::cin >> array[i];
+    }
+
+    // 2. Méret duplázása
+    int oldSize = size;
+    size *= 2;
+    array.resize(size);
+
+    // 3. Új elemek feltöltése
+    for (int i = oldSize; i < size; ++i) {
+        std::cout << i << ". element: ";
+        std::cin >> array[i];
+    }
+
+    // 4. Kiírás (opcionális)
+    std::cout << "\nThe full array:\n";
+    for (int i = 0; i < size; ++i) {
+        std::cout << std::fixed << std::setprecision(2) << array[i] << " ";
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
+
+// 3.16.2. Alakítsa át úgy az előző programot, hogy függvényben kérje 
+// be tömb méretet és ott hozza azt létre!  
+// 3.16.2.
+
+
+#include <iostream>
+#include <vector>
+#include <iomanip>
+
+// A tömb létrehozása és feltöltése
+std::vector<double> allocArray(int& size) {
+    std::cout << "\nArray size: ";
+    std::cin >> size;
+
+    std::vector<double> result(size);
+    for (int i = 0; i < size; ++i) {
+        std::cout << i << ". element: ";
+        std::cin >> result[i];
+    }
+
+    return result;
+}
+
+int main() {
+    int size;
+    
+    // 1. Kezdeti tömb létrehozása
+    std::vector<double> array = allocArray(size);
+
+    // 2. Méret duplázása (új elemeket hozzáfűzünk)
+    array.resize(size * 2);
+    for (int i = size; i < size * 2; ++i) {
+        std::cout << i << ". element: ";
+        std::cin >> array[i];
+    }
+
+    size *= 2; // frissített méret
+
+    // 3. Kiírás
+    std::cout << "\nThe full array:\n";
+    for (int i = 0; i < size; ++i) {
+        std::cout << std::fixed << std::setprecision(2) << array[i] << " ";
+    }
+    std::cout << "\n";
+
+    return 0;
+}
+// 3.17.1. Írjon programot két dinamikus mátrix összeszorzására! 
+// Függvényben foglaljon helyet a mátrixoknak, amelyeket véletlen egészekkel 
+// töltsön fel! Írjon függvényt a mátrixszorozásra, ellenőrizze, hogy a 
+// mátrix mértek kompatibilisek-e, a függvény visszatérési értéke legyen 
+// az új eredmény mátrix! Írassa ki az eredetei és az eredmény mátrixokat 
+// függvényben, majd szabadítsa fel azokat! 
+// 3.17.1.
+
+
+#include <iostream>
+#include <vector>
+#include <cstdlib>
+#include <ctime>
+#include <iomanip>
+
+using Matrix = std::vector<std::vector<double>>;
+
+Matrix allocMatrix(int rows, int cols) {
+    return Matrix(rows, std::vector<double>(cols, 0.0));
+}
+
+void randMatrix(Matrix& mat, int min, int max) {
+    std::srand(static_cast<unsigned int>(std::time(nullptr)));
+    for (auto& row : mat)
+        for (auto& val : row)
+            val = std::rand() % (max - min + 1) + min;
+}
+
+void printMatrix(const Matrix& mat) {
+    for (const auto& row : mat) {
+        std::cout << "[ ";
+        for (double val : row)
+            std::cout << std::setw(6) << val << " ";
+        std::cout << "]\n";
+    }
+}
+
+Matrix multMatrix(const Matrix& A, const Matrix& B) {
+    int rowA = A.size();
+    int colA = A[0].size();
+    int rowB = B.size();
+    int colB = B[0].size();
+
+    if (colA != rowB) {
+        std::cerr << "Matrix dimensions incompatible for multiplication!\n";
+        return Matrix(); // üres mátrix
+    }
+
+    Matrix C = allocMatrix(rowA, colB);
+
+    for (int i = 0; i < rowA; ++i) {
+        for (int j = 0; j < colB; ++j) {
+            double sum = 0.0;
+            for (int k = 0; k < colA; ++k) {
+                sum += A[i][k] * B[k][j];
+            }
+            C[i][j] = sum;
+        }
+    }
+    return C;
+}
+
+int main() {
+    int rowA, colA, rowB, colB;
+
+    std::cout << "Number of rows of matrix A: ";
+    std::cin >> rowA;
+    std::cout << "Number of columns of matrix A: ";
+    std::cin >> colA;
+
+    std::cout << "Number of rows of matrix B: ";
+    std::cin >> rowB;
+    std::cout << "Number of columns of matrix B: ";
+    std::cin >> colB;
+
+    Matrix A = allocMatrix(rowA, colA);
+    Matrix B = allocMatrix(rowB, colB);
+
+    randMatrix(A, 12, 16);
+    randMatrix(B, -4, 5);
+
+    std::cout << "Matrix A:\n";
+    printMatrix(A);
+    std::cout << "Matrix B:\n";
+    printMatrix(B);
+
+    Matrix C = multMatrix(A, B);
+
+    if (!C.empty()) {
+        std::cout << "Matrix A * B:\n";
+        printMatrix(C);
+    } else {
+        std::cout << "No result due to dimension mismatch.\n";
+    }
+
+    return 0;
+}
+// 3.17.2. Készítse el az újraméretez függvényt, amely vagy levág a 
+// mátrixból egy darabot, és/vagy a mátrix jobb oldalához illetve aljához 
+// hozzáfűz egy új részt! Az új rész egységmátrix szerűen tartalmazzon 
+// 0-kat és 1-ket, ha az új rész nem négyzet alakú, akkor az egyesek 
+// fűrészfog szerűen helyezkedjenek el! 1 1 1 1 1 1 1 3.3. ábra: Téglalap 
+// alakú egységmátrix 
+// 3.17.2.
+
+#include <iostream>
+#include <vector>
+#include <cstdlib>
+#include <ctime>
+#include <iomanip>
+
+using Matrix = std::vector<std::vector<double>>;
+
+Matrix allocMatrix(int rows, int cols) {
+    return Matrix(rows, std::vector<double>(cols));
+}
+
+void randMatrix(Matrix& mat, int min, int max) {
+    std::srand(static_cast<unsigned>(std::time(nullptr)));
+    for (auto& row : mat)
+        for (auto& val : row)
+            val = std::rand() % (max - min + 1) + min;
+}
+
+void printMatrix(const Matrix& mat) {
+    for (const auto& row : mat) {
+        std::cout << "[ ";
+        for (double val : row) {
+            std::cout << std::setw(5) << val << " ";
+        }
+        std::cout << "]\n";
+    }
+}
+
+Matrix generatePattern(int rows, int cols) {
+    Matrix result(rows, std::vector<double>(cols, 0));
+    for (int i = 0; i < rows && i < cols; ++i)
+        result[i][i] = 1;
+
+    // fűrészfog-szerű minta nem négyzetes esetben
+    if (rows != cols) {
+        for (int i = 0; i < rows; ++i)
+            for (int j = 0; j < cols; ++j)
+                if ((i + j) % std::max(1, std::min(rows, cols)) == 0)
+                    result[i][j] = 1;
+    }
+    return result;
+}
+
+Matrix cutAndResizeMatrix(const Matrix& original, int option) {
+    int rows = original.size();
+    int cols = original[0].size();
+    int cutRows = 0, addCols = 0;
+
+    if (option == 1 || option == 2) {
+        std::cout << "How many rows would you like to delete? ";
+        std::cin >> cutRows;
+        if (cutRows >= rows) cutRows = rows - 1;
+    }
+
+    if (option == 1 || option == 3) {
+        std::cout << "How many columns would you like to add? ";
+        std::cin >> addCols;
+    }
+
+    int newRows = rows - cutRows;
+    int newCols = cols + addCols;
+    Matrix newMat = allocMatrix(newRows, newCols);
+
+    // Copy old data
+    for (int i = 0; i < newRows; ++i)
+        for (int j = 0; j < cols; ++j)
+            newMat[i][j] = original[i][j];
+
+    // Generate pattern and fill extended part
+    if (addCols > 0) {
+        Matrix pattern = generatePattern(newRows, addCols);
+        for (int i = 0; i < newRows; ++i)
+            for (int j = 0; j < addCols; ++j)
+                newMat[i][cols + j] = pattern[i][j];
+    }
+
+    return newMat;
+}
+
+int main() {
+    int rows, cols;
+    std::cout << "Number of rows: ";
+    std::cin >> rows;
+    std::cout << "Number of columns: ";
+    std::cin >> cols;
+
+    Matrix mat = allocMatrix(rows, cols);
+    randMatrix(mat, 12, 16);
+
+    std::cout << "\nOriginal matrix:\n";
+    printMatrix(mat);
+
+    std::cout << "\nResize options:\n"
+              << "1. Cut rows and add columns\n"
+              << "2. Cut rows only\n"
+              << "3. Add columns only\n"
+              << "Choose: ";
+    int choice;
+    std::cin >> choice;
+
+    Matrix newMat = cutAndResizeMatrix(mat, choice);
+
+    std::cout << "\nNew matrix:\n";
+    printMatrix(newMat);
+
+    return 0;
+}
+// 3.18. Virtuális memória
+// 3.18.1. Kérje be egy lebegőpontos tömb méretét! Ha az 5 vagy kisebb, 
+// akkor hozzon létre dinamikus tömböt a memóriában, ha nagyobb, akkor pedig 
+// bináris fájlt a háttértáron! Készítsen struktúrát, amely tartalmaz egy 
+// FILE*, double* és méret adattagot! Készítsen függvényeket: tároló 
+// inicializálására és felszabadítására, tároló adott pozíciójában 
+// történő olvasásra és írásra. Menüben kérje be, hogy írni vagy olvasni 
+// akar, a fő függvény számára a tárolás módja legyen transzparens! 
+// 3.18.1.
+
+
+#include <iostream>
+#include <vector>
+#include <fstream>
+#include <limits>
+
+const int limit = 5;
+const std::string tempFilename = "temp.bin";
+
+struct Store {
+    std::fstream file;
+    std::vector<double> memory;
+    long size = 0;
+    bool useFile = false;
+};
+
+void initStore(Store& store) {
+    std::cout << "Size of the array: ";
+    std::cin >> store.size;
+
+    if (store.size > limit) {
+        store.useFile = true;
+        store.file.open(tempFilename, std::ios::in | std::ios::out | std::ios::binary | std::ios::trunc);
+        if (!store.file) {
+            std::cerr << "Failed to open temporary file!\n";
+            std::exit(1);
+        }
+
+        // Initialize file with zeros
+        double zero = 0.0;
+        for (long i = 0; i < store.size; ++i) {
+            store.file.write(reinterpret_cast<char*>(&zero), sizeof(double));
+        }
+    } else {
+        store.memory.resize(store.size, 0.0);
+    }
+}
+
+void delStore(Store& store) {
+    if (store.useFile) {
+        store.file.close();
+        std::remove(tempFilename.c_str()); // clean up file
+    } else {
+        store.memory.clear();
+    }
+}
+
+void readStore(Store& store) {
+    int idx;
+    std::cout << "Index of element to read: ";
+    std::cin >> idx;
+
+    if (idx < 0 || idx >= store.size) {
+        std::cerr << "Invalid index.\n";
+        return;
+    }
+
+    double result = 0.0;
+    if (store.useFile) {
+        store.file.seekg(idx * sizeof(double), std::ios::beg);
+        store.file.read(reinterpret_cast<char*>(&result), sizeof(double));
+    } else {
+        result = store.memory[idx];
+    }
+
+    std::cout << "At " << idx << " there is: " << result << "\n";
+}
+
+void writeStore(Store& store) {
+    int idx;
+    double value;
+    std::cout << "Index of element to write: ";
+    std::cin >> idx;
+    std::cout << "Value: ";
+    std::cin >> value;
+
+    if (idx < 0 || idx >= store.size) {
+        std::cerr << "Invalid index.\n";
+        return;
+    }
+
+    if (store.useFile) {
+        store.file.seekp(idx * sizeof(double), std::ios::beg);
+        store.file.write(reinterpret_cast<const char*>(&value), sizeof(double));
+        store.file.flush();
+    } else {
+        store.memory[idx] = value;
+    }
+
+    std::cout << value << " is written at " << idx << "\n";
+}
+
+int main() {
+    Store store;
+    initStore(store);
+
+    int selection = 0;
+    while (selection != 3) {
+        std::cout << "\nRead - 1\nWrite - 2\nQuit - 3\n";
+        std::cin >> selection;
+
+        switch (selection) {
+            case 1:
+                readStore(store);
+                break;
+            case 2:
+                writeStore(store);
+                break;
+            case 3:
+                break;
+            default:
+                std::cout << "Invalid selection.\n";
+        }
+    }
+
+    delStore(store);
+    return 0;
+}
+// 3.19. Gépelés
+
+// 3.19.1. Készítsen gépelést tanító programot! Sztring tömbben 
+// tároljon 20 különféle szót! Kérje be, hogy hány szót akar gépelni, 
+// véletlenszerűen válasszon ki egyet, amit megjelenít, és aztán várja azt 
+// bemenetként! Hibás bevitel esetén kérje be újból a szót! A gyakorlás 
+// végén írja ki az eltelt időt és a helyes és elrontott szavak számát! 
+
+// 3.19.1.
+
+
+#include <iostream>
+#include <vector>
+#include <string>
+#include <random>
+#include <chrono>
+
+int main() {
+    std::vector<std::string> words = {
+        "element", "size", "love", "ball", "toy", "gambit", "cruiser", "shadow",
+        "console", "Atlantis", "port", "staple", "Leonardo", "bug", "hope",
+        "vanity", "time", "issue", "fan", "strength"
+    };
+
+    int trial;
+    int errors = 0;
+    std::string input;
+
+    std::cout << "How many words would you like to type: ";
+    std::cin >> trial;
+    std::cin.ignore(); // clear newline after number
+
+    // Random number generator
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dist(0, words.size() - 1);
+
+    // Start timer
+    auto start = std::chrono::high_resolution_clock::now();
+
+    for (int i = 0; i < trial; ++i) {
+        std::string target = words[dist(gen)];
+        std::cout << "type: " << target << std::endl;
+
+        std::getline(std::cin, input);
+        while (input != target) {
+            std::cout << "error!\n";
+            ++errors;
+            std::getline(std::cin, input);
+        }
+    }
+
+    // Stop timer
+    auto finish = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = finish - start;
+
+    // Output
+    std::cout << "Elapsed time: " << duration.count() << " seconds\n";
+    std::cout << "Number of good trials: " << trial
+              << ", bad trials: " << errors << "\n";
+
+    return 0;
+}
+
+//  3.20. Nagy számok összeadása
+
+// 3.20.1. Írjon programot két nagyon nagy pozitív egész szám 
+// összeadására! A számok legfeljebb 100 jegyűek. Írja ki a képernyőre a 
+// két számot, majd az összegüket, a következő formátumban. A két számot 
+// fájlból olvassa be, a számok szóközzel vannak elválasztva. A számokat 
+// statikus karaktertömbökben tárolja! Példa bemenet: 434234643643746 
+// 575434253245430 Kimenet: 434234643643746 + 575434253245430 = 1009668896889176 
+
+// 3.20.1.
+
+
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <algorithm>
+
+const int MAX_NUMBER_LENGTH = 101;
+const std::string INPUT_FILE = "numbers.txt";
+
+// Egyjegyű karakterek összeadása '0'-hoz viszonyítva
+char addDigit(char a, char b, char carry, char& nextCarry) {
+    int sum = (a - '0') + (b - '0') + (carry - '0');
+    nextCarry = (sum >= 10) ? '1' : '0';
+    return (sum % 10) + '0';
+}
+
+std::string addBigNumbers(const std::string& num1, const std::string& num2) {
+    std::string a = num1;
+    std::string b = num2;
+
+    // Igazítsuk a rövidebb stringet nullákkal
+    while (a.length() < b.length()) a = "0" + a;
+    while (b.length() < a.length()) b = "0" + b;
+
+    std::string result(a.length() + 1, '0');
+    char carry = '0';
+
+    for (int i = a.length() - 1; i >= 0; --i) {
+        char nextCarry = '0';
+        result[i + 1] = addDigit(a[i], b[i], carry, nextCarry);
+        carry = nextCarry;
+    }
+
+    result[0] = carry;
+    if (result[0] == '0') {
+        result.erase(0, 1); // ha nincs értelme az első '0'-nak, töröljük
+    }
+
+    return result;
+}
+
+int main() {
+    std::ifstream file(INPUT_FILE);
+    if (!file) {
+        std::cerr << "Error opening file: " << INPUT_FILE << "\n";
+        return 1;
+    }
+
+    std::string num1, num2;
+    file >> num1 >> num2;
+
+    std::string sum = addBigNumbers(num1, num2);
+
+    std::cout << num1 << " + " << num2 << " = " << sum << "\n";
+
+    return 0;
+}
+//  3.21.1. Írjon programot, amely számokat olvas be fájlból, majd 
+// kiszámítja ezek átlagát és mediánját! A program írja ki a képernyőre 
+// a számokat, az átlagot, és a mediánt is! A medián kiszámításához 
+// először sorba kell rendeznie a számokat. Páratlan számú adat esetén a 
+// medián ebben a sorban a középső elem, páros számú adat esetén a két 
+// középső elem átlaga. Az input fájl formátuma: Első sor: Az adatok 
+// száma. Második sor: A számok, egy-egy szóköz karakterrel elválasztva. 
+// Példa bemenet: 
+
+// 4 2 5 3 4 2 5 1 3 5 1 5 5 5 4 4 3 4 4 2 5 5 1 5 5 3 2 5 2 5 
+
+// Kimenet: 
+// 30 numbers:
+// 4 2 5 3 4 2 5 1 3 5 1 5 5 5 4 4 3 4 4 2 5 5 1 5 5 3 2 5 2 5
+// The average is 3.63333
+// The median is: 4.00000
+
+
+
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <numeric>
+#include <iomanip>
+
+const std::string DEFAULT_INPUT = "datas.txt";
+
+// Adatok beolvasása fájlból
+int readNumbers(const std::string& filename, std::vector<int>& numbers) {
+    std::ifstream file(filename);
+    if (!file) {
+        std::cerr << "Error opening file: " << filename << "\n";
+        return 0;
+    }
+
+    int count;
+    file >> count;
+    numbers.resize(count);
+
+    for (int i = 0; i < count; ++i) {
+        file >> numbers[i];
+    }
+
+    return count;
+}
+
+// Átlag számítása
+double average(const std::vector<int>& nums) {
+    if (nums.empty()) return 0.0;
+    long long sum = std::accumulate(nums.begin(), nums.end(), 0LL);
+    return static_cast<double>(sum) / nums.size();
+}
+
+// Medián számítása
+double median(std::vector<int> nums) {
+    if (nums.empty()) return 0.0;
+
+    std::sort(nums.begin(), nums.end());
+    size_t n = nums.size();
+    if (n % 2 == 1) {
+        return nums[n / 2];
+    } else {
+        return (nums[n / 2 - 1] + nums[n / 2]) / 2.0;
+    }
+}
+
+int main(int argc, char* argv[]) {
+    std::string filename = (argc > 1) ? argv[1] : DEFAULT_INPUT;
+    std::vector<int> numbers;
+
+    int count = readNumbers(filename, numbers);
+    if (count == 0) return 1;
+
+    std::cout << count << " numbers:\n";
+    for (int num : numbers) {
+        std::cout << num << " ";
+    }
+    std::cout << "\n";
+
+    std::cout << std::fixed << std::setprecision(5);
+    std::cout << "The average is " << average(numbers) << "\n";
+    std::cout << "The median is: " << median(numbers) << "\n";
+
+    return 0;
+}
+// 3.22. Ösztöndíj
+// 3.22.1. Írjon programot, amely kiszámítja a hallgatók ösztöndíját a 
+// tanulmányi átlaguk alapján! Fájl tartalmazza a hallgatók adatait: neptun 
+// kódjukat, és a tárgyaik kreditértékét, illetve a szerzett érdemjegyeket. 
+// A program írja ki a képernyőre minden hallgató esetében a neptun kódot, a 
+// felvett tárgyak számát, a szerzett érdemjegyek kredittel súlyozott 
+// átlagát, a felvett és a teljesített kreditek összegét, és a hallgató 
+// számára megítélt ösztöndíjat! Egy tárgy teljesített, ha a hallgató 
+// átment az adott tárgyból. Az átlagba a felvett tárgyak és nem a 
+// teljesítettek tartoznak. Az ösztöndíjak összege: · 0 <= átlag < 2 → 0 
+// HUF · 2 <= átlag < 3 → 15 000 HUF · 3 <= átlag < 4 → 20 000 HUF · 4 <= 
+// átlag < 4.5 → 25 000 HUF · 4.5 <= átlag <= 5 → 30 000 HUF Az input fájl 
+// formátuma: Első sor: A hallgatók száma. A hallgatók adatait tartalmazó 
+// sor: Sztring number1 Az egyes tárgyakhoz tartozó sor: number2 number3 Példa 
+// bemenet: 2 TGDS32 3 4 2 3 5 3 4 FBG4SW 3 4 5 2 3 4 1 A TGDS32 és FBG4SW neptun 
+// kódú hallgató adatait látjuk. TGDS32 3 tárgyat vett fel, az első tárgya 
+// 4 kredit értékű, az érdemjegye belőle 2. Kimenet: Neptun: TGDS32 3 
+// subjects Neptun: FBG4SW 3 subjects TGDS32: Credits: 10/10 Average: 3.5 Bursary: 
+// 20000 HUF FBG4SW: Credits: 10/6 Average: 3 Bursary: 20000 HUF 
+// 3.22.1.
+
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+#include <iomanip>
+
+const std::string INPUT_FILE = "students.txt";
+
+// Ösztöndíj szintek
+const double MIN_AVERAGE = 2.0;
+const double MIDDLE_AVERAGE = 3.0;
+const double GOOD_AVERAGE = 4.0;
+const double EXCELLENT_AVERAGE = 4.5;
+
+const int MIN_BURSARY = 15000;
+const int MIDDLE_BURSARY = 20000;
+const int GOOD_BURSARY = 25000;
+const int EXCELLENT_BURSARY = 30000;
+
+// Tárgy
+struct Subject {
+    int credit;
+    int mark;
+};
+
+// Hallgató
+struct Student {
+    std::string neptun;
+    std::vector<Subject> subjects;
+};
+
+// Hallgató beolvasása fájlból
+void readStudent(std::ifstream& in, Student& student) {
+    int subjCount;
+    in >> student.neptun >> subjCount;
+    std::cout << "Neptun: " << student.neptun << " " << subjCount << " subjects" << std::endl;
+
+    for (int i = 0; i < subjCount; ++i) {
+        Subject s;
+        in >> s.credit >> s.mark;
+        student.subjects.push_back(s);
+    }
+}
+
+// Ösztöndíj számítás
+void calculateAndDisplay(const std::vector<Student>& students) {
+    for (const auto& student : students) {
+        int sumCredits = 0;
+        int passedCredits = 0;
+        int weightedSum = 0;
+
+        for (const auto& subj : student.subjects) {
+            weightedSum += subj.credit * subj.mark;
+            sumCredits += subj.credit;
+            if (subj.mark >= 2)
+                passedCredits += subj.credit;
+        }
+
+        double average = static_cast<double>(weightedSum) / sumCredits;
+
+        int bursary = 0;
+        if (average >= 2.0 && average < 3.0)
+            bursary = MIN_BURSARY;
+        else if (average < 4.0)
+            bursary = MIDDLE_BURSARY;
+        else if (average < 4.5)
+            bursary = GOOD_BURSARY;
+        else if (average <= 5.0)
+            bursary = EXCELLENT_BURSARY;
+
+        std::cout << student.neptun << ":\n"
+                  << "\tCredits: " << sumCredits << "/" << passedCredits << "\n"
+                  << "\tAverage: " << std::fixed << std::setprecision(2) << average << "\n"
+                  << "\tBursary: " << bursary << " HUF\n";
+    }
+}
+
+int main() {
+    std::ifstream infile(INPUT_FILE);
+    if (!infile) {
+        std::cerr << "Error opening file: " << INPUT_FILE << std::endl;
+        return 1;
+    }
+
+    int studentCount;
+    infile >> studentCount;
+
+    std::vector<Student> students(studentCount);
+    for (int i = 0; i < studentCount; ++i) {
+        readStudent(infile, students[i]);
+    }
+
+    calculateAndDisplay(students);
+
+    return 0;
+}
+
+// 3.23. Szavak keresése
+// 3.23.1. Írjon programot, amely beolvassa a „dune.txt” nevű fájlt és 
+// keresi benne az „Atreides” szót! A program írja ki a képernyőre az 
+// összes találatot az előtte lévő szóval együtt! Írja ki a találatok 
+// számát is! Ha egy írásjel szerepel az Atreides szó után, pl. 
+// „Atreides.”, „Atreides,”, az jó találatnak minősül, azonban amikor 
+// az Atreides szó egy részsztringje egy szónak, azt nem tekintjük jó 
+// találatnak, pl. „Atreides-Harkonnen”, „Atreides's”. Az input fájl 
+// formátuma: A szavak szóköz karakterekkel vannak elválasztva. Példa 
+// bemenet: Leto Atreides is the head of the Atreides house. Leto Atreides's son 
+// is Paul. Kimenet: Leto Atreides the Atreides 2 hits 
+// 3.23.1.
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
+#define MAX_LENGTH 100
+#define DEFAULT_INPUTFILE "dune.txt"
+#define DEFAULT_WORD "Atreides"
+
+// Ellenőrzi, hogy a len hosszú előtag után csak írásjel van-e
+int CheckWord(const char *W, int len) {
+    int l = strlen(W);
+    for (int i = len; i < l; i++) {
+        if (isalpha(W[i])) return 0; // Rossz: még betű jön
+        if (W[i] == '-' || W[i] == '\'') return 0; // Rossz: kötőjel, aposztróf
+    }
+    return 1; // Jó: csak írásjelek
+}
+
+// Megkeresi a szót a fájlban
+int SearchWord(FILE *fd, const char *target) {
+    int count = 0;
+    int len = strlen(target);
+    char ReadedWord[MAX_LENGTH] = {0};
+    char BeforeWord[MAX_LENGTH] = {0};
+
+    while (fscanf(fd, "%s", ReadedWord) == 1) {
+        if (strncmp(ReadedWord, target, len) == 0) {
+            if (CheckWord(ReadedWord, len)) {
+                printf("%s %s\n", BeforeWord, ReadedWord);
+                count++;
+            }
+        }
+        strcpy(BeforeWord, ReadedWord);
+    }
+
+    return count;
+}
+
+int main(int argc, char *argv[]) {
+    const char *filename = (argc > 1) ? argv[1] : DEFAULT_INPUTFILE;
+    const char *searchWord = (argc > 2) ? argv[2] : DEFAULT_WORD;
+
+    FILE *fd = fopen(filename, "r");
+    if (!fd) {
+        perror(filename);
+        return EXIT_FAILURE;
+    }
+
+    int hits = SearchWord(fd, searchWord);
+    printf("%d hits\n", hits);
+
+    fclose(fd);
+    return EXIT_SUCCESS;
+}
+
+// 3.24. Egyszerű sztringfordító
+// 3.24.1. Írjon programot, amely beolvas egy fájlból utasításokat és 
+// végrehajtja a benne foglaltakat! Az utasítások három integer típusú 
+// változót használhatnak: A, B, C. A script elején a változók értéke 0. A 
+// lehetséges utasítások a következők: GET Op: Op lehet egy változó (A, B, 
+// or C), ez a parancs beolvas egy tízes számrendszerbeli számot a 
+// billentyűzetről, és az Op-ban tárolja. WRITE Op: Op értékét a 
+// képernyőre írja. ADD Op1 Op2: Hozzáadja Op2-t Op1-hez, azaz Op1 = Op1 + 
+// Op2. SUB Op1 Op2: Kivonja Op2-t Op1-ből, azaz Op1 = Op1 - Op2. MUL Op1 Op2: 
+// Megszorozza Op1-et Op2-vel, azaz Op1 = Op1 * Op2. DIV Op1 Op2: Elosztja Op1-et 
+// Op2-vel, azaz Op1 = Op1 / Op2. STOP: Ez a parancs a script végét jelzi. 
+// Minden sorban csak egy parancs szerepel. Ha a sor # karakterrel kezdődik, azt 
+// a sort megjegyzésnek tekintjük. Ezeknek a soroknak a végét is egy # 
+// karakter jelzi. Az első # után egy szóköz karakter következik. A program 
+// írja ki ezeket a sorokat a képernyőre, a # karakterek kivételével! 
+// Például ha a sor a következő „# This is a comment! #”, a program a 
+// következőt írja ki: „This is a comment!” Példa bemenet: # Type A: # GET 
+// A # Type B: # GET B ADD A B # The sum: # WRITE A STOP Kimenet: Type A: 1 Type 
+// B: 2 The sum: 3 
+// 3.24.1.
+
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <map>
+
+#define DEFAULT_INPUTFILE "script.txt"
+
+void get(std::istream& in, std::map<char, int>& vars) {
+    std::string op;
+    in >> op;
+    int value;
+    std::cin >> value;
+    vars[op[0]] = value;
+}
+
+void write(std::istream& in, const std::map<char, int>& vars) {
+    std::string op;
+    in >> op;
+    std::cout << vars.at(op[0]) << std::endl;
+}
+
+void add(std::istream& in, std::map<char, int>& vars) {
+    std::string op1, op2;
+    in >> op1 >> op2;
+    vars[op1[0]] += vars[op2[0]];
+}
+
+void sub(std::istream& in, std::map<char, int>& vars) {
+    std::string op1, op2;
+    in >> op1 >> op2;
+    vars[op1[0]] -= vars[op2[0]];
+}
+
+void mul(std::istream& in, std::map<char, int>& vars) {
+    std::string op1, op2;
+    in >> op1 >> op2;
+    vars[op1[0]] *= vars[op2[0]];
+}
+
+void div(std::istream& in, std::map<char, int>& vars) {
+    std::string op1, op2;
+    in >> op1 >> op2;
+    if (vars[op2[0]] != 0) {
+        vars[op1[0]] /= vars[op2[0]];
+    } else {
+        std::cerr << "Error: Division by zero\n";
+    }
+}
+
+void writeComment(const std::string& line) {
+    auto first = line.find('#');
+    auto last = line.rfind('#');
+    if (first != std::string::npos && last != std::string::npos && last > first) {
+        std::string comment = line.substr(first + 1, last - first - 1);
+        std::cout << comment << std::endl;
+    }
+}
+
+void run(std::istream& in) {
+    std::map<char, int> vars = {{'A', 0}, {'B', 0}, {'C', 0}};
+    std::string line;
+
+    while (std::getline(in, line)) {
+        if (line.empty()) continue;
+
+        std::istringstream iss(line);
+        std::string command;
+        iss >> command;
+
+        if (command == "#") {
+            writeComment(line);
+        } else if (command == "GET") {
+            get(iss, vars);
+        } else if (command == "WRITE") {
+            write(iss, vars);
+        } else if (command == "ADD") {
+            add(iss, vars);
+        } else if (command == "SUB") {
+            sub(iss, vars);
+        } else if (command == "MUL") {
+            mul(iss, vars);
+        } else if (command == "DIV") {
+            div(iss, vars);
+        } else if (command == "STOP") {
+            break;
+        }
+    }
+}
+
+int main(int argc, char* argv[]) {
+    std::string filename = (argc > 1) ? argv[1] : DEFAULT_INPUTFILE;
+    std::ifstream infile(filename);
+
+    if (!infile) {
+        std::cerr << "Error opening file: " << filename << std::endl;
+        return 1;
+    }
+
+    run(infile);
+    return 0;
+}
+
+// 3.25. Riemann integrál
+// 3.25.1. Írjon programot, amely négy függvény Riemann-integrálját 
+// számítja ki 0 és 1 között! Elsőként az [a, b] intervallumot felosztjuk N 
+// db (1000000) részre, azaz egy kis intervallum hossza: h = (b - a)/N. N 
+// téglalapot képzünk úgy, hogy egyik téglalap se lógjon a függvény 
+// fölé. Az i-dik téglalap alapja tehát h magassága pedig f(h*i) és f(h*(i + 
+// 1)) közül a kisebbik. Az integrál a téglalapok összege. A számolandó 
+// függvények: f1(x) = f2(x) = x2 f3(x) = sin(x) f4(x) = tan(x) Ábra: Riemann 
+// integrál szemléltetése Példa bemenet: The Riemann integral of f1(x) over x 
+// from 0 to 1: 3.14159 The Riemann integral of f2(x) over x from 0 to 1: 0.333332 
+// The Riemann integral of sin(x) over x from 0 to 1: 0.459696 The Riemann 
+// integral of tan(x) over x from 0 to 1: 0.615624 
+// 3.25.1.
+
+
+#include <iostream>
+#include <cmath>
+#include <string>
+
+#define DEFAULT_A 0
+#define DEFAULT_B 1
+#define DEFAULT_NUM 1000000
+
+inline double my_min(double a, double b) {
+    return (a < b) ? a : b;
+}
+
+// Függvények
+double f1(double x) {
+    return std::sqrt((2.0 - x) * x) * 4.0;
+}
+
+double f2(double x) {
+    return x * x;
+}
+
+// Integrál kiszámítása
+void Integral(int a, int b, int num, double (*fptr)(double), const std::string& name) {
+    double res = 0.0;
+    double h = static_cast<double>(b - a) / num;
+    for (int i = 0; i < num; ++i) {
+        double x1 = a + i * h;
+        double x2 = a + (i + 1) * h;
+        double height = my_min(fptr(x1), fptr(x2));
+        res += height * h;
+    }
+    std::cout << "The Riemann integral of " << name
+              << " over x from " << a << " to " << b << ": "
+              << res << "\n";
+}
+
+int main(int argc, char* argv[]) {
+    int a = (argc > 1) ? std::atoi(argv[1]) : DEFAULT_A;
+    int b = (argc > 2) ? std::atoi(argv[2]) : DEFAULT_B;
+    int num = (argc > 3) ? std::atoi(argv[3]) : DEFAULT_NUM;
+
+    std::cout << std::endl;
+    Integral(a, b, num, f1, "f1(x)");
+    Integral(a, b, num, f2, "f2(x)");
+    Integral(a, b, num, std::sin, "sin(x)");
+    Integral(a, b, num, std::tan, "tan(x)");
+    std::cout << std::endl;
+
+    return 0;
+}
+
+// 3.26. Polinomok összeadása
+// 3.26.1. Írjon programot, amely polinomokat ad össze! Olvasson be fájlból 
+// két polinomot! Írja ki a képernyőre a két polinomot, illetve ezek 
+// összegét! A polinomok tárolására használjon dinamikus tömböket és 
+// struktúrákat. Az input fájl formátuma: Első sor: Number1 - az első 
+// polinom foka Második sor: Number1 + 1 egész szám, az első polinom 
+// együtthatói (az utolsó szám a konstans). Harmadik sor: Number2 - a második 
+// polinom foka Negyedik sor: Number2 + 1 egész szám, a második polinom (az 
+// utolsó szám a konstans). A számok egy-egy szóköz karakterrel vannak 
+// elválasztva Példa bemenet: 5 -3 5 -4 0 4 2 4 5 4 5 -1 0 Kimenet: - 3x^5 + 
+// 5x^4 - 4x^3 + 4x + 2 + 5x^4 + 4x^3 + 5x^2 - x = - 3x^5 + 10x^4 + 5x^2 + 3x + 2 
+// 3.26.1.
+
+
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+#include <sstream>
+#include <cstdlib>
+#include <cmath>
+
+struct Polynomial {
+    int degree;
+    std::vector<int> coeffs; // coeffs[0] is highest degree term
+
+    void read(std::ifstream& in) {
+        in >> degree;
+        coeffs.resize(degree + 1);
+        for (int i = 0; i <= degree; ++i)
+            in >> coeffs[i];
+    }
+
+    void print() const {
+        bool firstTerm = true;
+        for (int i = 0; i <= degree; ++i) {
+            int exp = degree - i;
+            int coeff = coeffs[i];
+            if (coeff == 0) continue;
+
+            if (!firstTerm) std::cout << (coeff > 0 ? " + " : " - ");
+            else if (coeff < 0) std::cout << "-";
+
+            if (std::abs(coeff) != 1 || exp == 0)
+                std::cout << std::abs(coeff);
+            else if (exp == 0 && std::abs(coeff) == 1)
+                std::cout << "1";
+
+            if (exp > 0) {
+                std::cout << "x";
+                if (exp > 1)
+                    std::cout << "^" << exp;
+            }
+
+            firstTerm = false;
+        }
+        if (firstTerm) std::cout << "0"; // if all coefficients were 0
+    }
+};
+
+Polynomial add(const Polynomial& A, const Polynomial& B) {
+    int maxDegree = std::max(A.degree, B.degree);
+    int minDegree = std::min(A.degree, B.degree);
+
+    Polynomial result;
+    result.degree = maxDegree;
+    result.coeffs.resize(maxDegree + 1, 0);
+
+    int offsetA = maxDegree - A.degree;
+    int offsetB = maxDegree - B.degree;
+
+    for (int i = 0; i <= A.degree; ++i)
+        result.coeffs[i + offsetA] += A.coeffs[i];
+    for (int i = 0; i <= B.degree; ++i)
+        result.coeffs[i + offsetB] += B.coeffs[i];
+
+    // Trim leading zeros
+    while (result.degree > 0 && result.coeffs[0] == 0) {
+        result.coeffs.erase(result.coeffs.begin());
+        result.degree--;
+    }
+
+    return result;
+}
+
+int main(int argc, char* argv[]) {
+    const std::string filename = (argc > 1) ? argv[1] : "polynoms.txt";
+    std::ifstream in(filename);
+    if (!in) {
+        std::cerr << "Error opening file: " << filename << "\n";
+        return 1;
+    }
+
+    Polynomial A, B;
+    A.read(in);
+    B.read(in);
+
+    std::cout << "First polynomial: ";
+    A.print();
+    std::cout << "\nSecond polynomial: ";
+    B.print();
+
+    Polynomial C = add(A, B);
+    std::cout << "\nSum: ";
+    C.print();
+    std::cout << "\n";
+
+    return 0;
+}
+// 3.27. Caesar dekódoló
+// 3.27.1. A Cézár-kódolás a következőképpen működik: Minden karaktert 
+// egy előre meghatározott N pozícióval eltolunk. Például, ha N = 1, az 
+// „APPLE” szó BQQMD lesz, ugyanis A-ból B lett, P-ből Q, stb. Ha N = 1, 
+// Z-ből A lesz. Példa N = 3-ra: eredeti szöveg: THE QUICK BROWN FOX JUMPS OVER 
+// THE LAZY DOG kódolt szöveg: WKH TXLFN EURZQ IRA MXPSV RYHU WKH ODCB GRJ Az 
+// ellenségtől egy kódolt üzenetet kaptunk. Nem ismerjük N értékét, de a 
+// kémünk azt állítja, hogy az eredeti üzenet szavai közt szerepel a 
+// „THE” szó. Írjon programot, amely beolvassa a kódolt üzenetet a 
+// „codedmessage.txt” fájlból, és megfejti, mi volt az eredeti üzenet! N 
+// értéke 1 és 26 közt van, a programnak tehát meg kell vizsgálnia minden 
+// N-t, amíg az üzenet nem tartalmazza a „THE” szót. Az üzenet 
+// tárolására használjon dinamikus tömböt! Ábra: Caesar kódolás 
+// szemléltetése Az input fájl formátuma: Első sor: Az üzenet szavainak 
+// száma. Második sor: Az üzenet szavai, egy-egy szóköz karakterrel 
+// elválasztva. Példa bemenet: 9 WKH TXLFN EURZQ IRA MXPSV RYHU WKH ODCB GRJ 
+// Kimenet: The coded message: WKH TXLFN EURZQ IRA MXPSV RYHU WKH ODCB GRJ The 
+// original message: THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG 
+// 3.27.1.
+
+
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+#include <algorithm>
+
+const std::string DEFAULT_FILENAME = "codedmsg.txt";
+const std::string KNOWN_WORD = "THE";
+const int ALPHABET_LEN = 26;
+
+using Message = std::vector<std::string>;
+
+bool readMessage(const std::string& filename, Message& msg) {
+    std::ifstream file(filename);
+    if (!file) {
+        std::cerr << "Error: Cannot open file: " << filename << "\n";
+        return false;
+    }
+
+    int wordCount;
+    file >> wordCount;
+    msg.resize(wordCount);
+
+    for (int i = 0; i < wordCount; ++i) {
+        file >> msg[i];
+    }
+
+    return true;
+}
+
+void printMessage(const Message& msg) {
+    for (const auto& word : msg)
+        std::cout << word << " ";
+    std::cout << "\n";
+}
+
+std::string caesarShift(const std::string& word, int shift) {
+    std::string result = word;
+    for (char& ch : result) {
+        ch = 'A' + (ch - 'A' + shift + ALPHABET_LEN) % ALPHABET_LEN;
+    }
+    return result;
+}
+
+Message shiftMessage(const Message& msg, int shift) {
+    Message shifted = msg;
+    for (auto& word : shifted) {
+        word = caesarShift(word, shift);
+    }
+    return shifted;
+}
+
+bool containsWord(const Message& msg, const std::string& word) {
+    for (const auto& w : msg) {
+        if (w == word) return true;
+    }
+    return false;
+}
+
+int main(int argc, char* argv[]) {
+    std::string filename = (argc > 1) ? argv[1] : DEFAULT_FILENAME;
+    Message codedMessage;
+
+    if (!readMessage(filename, codedMessage))
+        return 1;
+
+    std::cout << "The coded message:\n";
+    printMessage(codedMessage);
+
+    for (int shift = 1; shift < ALPHABET_LEN; ++shift) {
+        Message decoded = shiftMessage(codedMessage, shift);
+        if (containsWord(decoded, KNOWN_WORD)) {
+            std::cout << "\nThe original message (shift = " << shift << "):\n";
+            printMessage(decoded);
+            return 0;
+        }
+    }
+
+    std::cout << "\nNo matching message containing \"" << KNOWN_WORD << "\" was found.\n";
+    return 0;
+}
+// 3.27.2. Legyen a tartalmazott szó, a mostani „THE” is bemenet! Ha több 
+// lehetséges visszakódolás van, akkor jelenítse meg az összest! 
+// 3.27.2.
+
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+#include <algorithm>
+
+const std::string DEFAULT_INPUTFILE = "codedmsg.txt";
+const int MAX_WORD_LEN = 15;
+const int ALPHABET_LEN = 26;
+
+using Message = std::vector<std::string>;
+
+int readMessage(const std::string& filename, Message& msg) {
+    std::ifstream file(filename);
+    if (!file) {
+        std::cerr << "Cannot open file!\n";
+        return 0;
+    }
+
+    int num;
+    file >> num;
+    msg.resize(num);
+    for (int i = 0; i < num; ++i) {
+        file >> msg[i];
+    }
+
+    return num;
+}
+
+std::string shiftChar(char c, int shift) {
+    return std::string(1, static_cast<char>('A' + (c - 'A' + shift + ALPHABET_LEN) % ALPHABET_LEN));
+}
+
+Message shiftMessage(const Message& msg, int shift) {
+    Message shifted = msg;
+    for (std::string& word : shifted) {
+        for (char& ch : word) {
+            ch = 'A' + (ch - 'A' + shift + ALPHABET_LEN) % ALPHABET_LEN;
+        }
+    }
+    return shifted;
+}
+
+bool containsKnownWord(const Message& msg, const std::string& knownWord) {
+    for (const auto& word : msg) {
+        if (word.find(knownWord) != std::string::npos) {
+            return true;
+        }
+    }
+    return false;
+}
+
+void printMessage(const Message& msg) {
+    for (const auto& word : msg)
+        std::cout << word << " ";
+    std::cout << '\n';
+}
+
+int main(int argc, char* argv[]) {
+    std::string filename = (argc > 1) ? argv[1] : DEFAULT_INPUTFILE;
+    Message codedMessage;
+
+    if (readMessage(filename, codedMessage) == 0)
+        return 1;
+
+    std::string knownWord;
+    std::cout << "Known word: ";
+    std::cin >> knownWord;
+
+    // Convert known word to uppercase for consistency
+    std::transform(knownWord.begin(), knownWord.end(), knownWord.begin(), ::toupper);
+
+    std::cout << "\nThe coded message:\n";
+    printMessage(codedMessage);
+
+    std::cout << "\nPossible decodings containing \"" << knownWord << "\":\n";
+    for (int shift = 1; shift < ALPHABET_LEN; ++shift) {
+        Message decoded = shiftMessage(codedMessage, shift);
+        if (containsKnownWord(decoded, knownWord)) {
+            std::cout << "Shift " << shift << ": ";
+            printMessage(decoded);
+        }
+    }
+
+    return 0;
+}
+
+// 3.28. CD  katalógus
+// 3.28.1. Rendelkezik egy CD katalógussal, amit fájlban tárol. Írjon 
+// programot, amely képes arra, hogyha begépeli egy szoftver nevét, akkor 
+// megmondja, melyik CD-n van a szoftver! A szoftverek nevei maximum 15 karakter 
+// hosszúak, és minden CD-nek van egy neve, amely szintén maximum 15 karakter 
+// hosszú. Használjon struktúrákat, illetve dinamikus tömböket a fájlból 
+// beolvasott adatok tárolására! Az input fájl formátuma: Első sor: A CD-k 
+// száma. A további sorok: String: A CD neve Egész szám: A CD-n lévő 
+// szoftverek száma Ezután a CD-n lévő szoftverek neve következik. Példa 
+// bemenet: 2 2007/11 2 BurningStudio RadioRama 2005/4 3 Doc2PDF Apollo Stellarium 
+// A példában Jamesnek 2 CD-je van, az első neve „2007/11”, ezen a CD-n 
+// két szoftver van: BurningStudio és RadioRama. A másik CD 3 szoftvert 
+// tartalmaz. Kimenet: Software name: Apollo The Apollo is here: 2005/4 
+// 3.28.1.
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define DEFAULT_INPUTFILE "cds.txt"
+#define MAX_WORD_LENGTH 16
+
+typedef char TWord[MAX_WORD_LENGTH];
+
+struct TCD {
+    char Name[MAX_WORD_LENGTH];
+    int Num;
+    TWord* P; // Dinamikusan foglalt szoftverlista
+};
+
+void ReadCD(FILE* fd, struct TCD* cd) {
+    fscanf(fd, "%s", cd->Name);
+    fscanf(fd, "%d", &cd->Num);
+    cd->P = (TWord*)malloc(sizeof(TWord) * cd->Num);
+    for (int i = 0; i < cd->Num; ++i) {
+        fscanf(fd, "%s", cd->P[i]);
+    }
+}
+
+int ReadCDs(FILE* fd, struct TCD** outCDs) {
+    int count;
+    fscanf(fd, "%d", &count);
+    *outCDs = (struct TCD*)malloc(sizeof(struct TCD) * count);
+    for (int i = 0; i < count; ++i) {
+        ReadCD(fd, &(*outCDs)[i]);
+    }
+    return count;
+}
+
+void Search(struct TCD* cds, int num, const char* query) {
+    for (int i = 0; i < num; ++i) {
+        for (int j = 0; j < cds[i].Num; ++j) {
+            if (strcmp(cds[i].P[j], query) == 0) {
+                printf("The %s is here: %s\n", query, cds[i].Name);
+                return;
+            }
+        }
+    }
+    printf("%s does not exist!\n", query);
+}
+
+void FreeCDs(struct TCD* cds, int num) {
+    for (int i = 0; i < num; ++i) {
+        free(cds[i].P);
+    }
+    free(cds);
+}
+
+int main(int argc, char* argv[]) {
+    const char* filename = (argc > 1) ? argv[1] : DEFAULT_INPUTFILE;
+    FILE* fd = fopen(filename, "r");
+
+    if (!fd) {
+        perror("Error opening file");
+        return EXIT_FAILURE;
+    }
+
+    struct TCD* cds = NULL;
+    int cdCount = ReadCDs(fd, &cds);
+    fclose(fd);
+
+    TWord software;
+    printf("Program name: ");
+    scanf("%15s", software);
+
+    Search(cds, cdCount, software);
+
+    FreeCDs(cds, cdCount);
+    return EXIT_SUCCESS;
+}
+
+// 3.28.2. Írja át úgy az előző programot, hogy lehessen a keresésnél egy ? 
+// vagy egy * karaktert használni! A ? egy tetszőleges karakter helyett állhat, 
+// a * pedig a sztring végén lehet és azt jelezi, hogy még valamennyi karakter 
+// hátra van. Ha egy minta több program nevére is illeszkedik, akkor jelenítse 
+// meg mindet! 
+// 3.28.2.
+
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+#include <cstring>
+
+const std::string DEFAULT_INPUTFILE = "cds.txt";
+const size_t MAX_WORD_LENGTH = 16;
+
+struct CD {
+    std::string name;
+    std::vector<std::string> programs;
+};
+
+// Wildcard string comparison with support for ? and terminal *
+bool wildcardMatch(const std::string& pattern, const std::string& text) {
+    size_t pLen = pattern.length();
+    size_t tLen = text.length();
+
+    for (size_t i = 0; i < pLen; ++i) {
+        if (pattern[i] == '*') {
+            return text.substr(0, i) == pattern.substr(0, i);
+        }
+        if (i >= tLen || (pattern[i] != '?' && pattern[i] != text[i])) {
+            return false;
+        }
+    }
+    return tLen == pLen;
+}
+
+std::vector<CD> readCDs(std::ifstream& file) {
+    int cdCount;
+    file >> cdCount;
+    std::vector<CD> cds(cdCount);
+
+    for (int i = 0; i < cdCount; ++i) {
+        file >> cds[i].name;
+        int progCount;
+        file >> progCount;
+        cds[i].programs.resize(progCount);
+        for (int j = 0; j < progCount; ++j) {
+            file >> cds[i].programs[j];
+        }
+    }
+    return cds;
+}
+
+void searchPrograms(const std::vector<CD>& cds, const std::string& pattern) {
+    bool found = false;
+    for (const auto& cd : cds) {
+        for (const auto& prog : cd.programs) {
+            if (wildcardMatch(pattern, prog)) {
+                std::cout << "The " << prog << " is here: " << cd.name << "\n";
+                found = true;
+            }
+        }
+    }
+    if (!found) {
+        std::cout << pattern << " does not exist!\n";
+    }
+}
+
+int main(int argc, char* argv[]) {
+    std::string filename = argc > 1 ? argv[1] : DEFAULT_INPUTFILE;
+    std::ifstream file(filename);
+    if (!file) {
+        std::cerr << "Error opening file: " << filename << "\n";
+        return 1;
+    }
+
+    auto cds = readCDs(file);
+    file.close();
+
+    std::string pattern;
+    std::cout << "Program name (use * or ? as wildcards): ";
+    std::cin >> pattern;
+
+    searchPrograms(cds, pattern);
+
+    return 0;
+}
+// 3.29. Leltár
+// 3.29.1. Egy cég termékek vásárlásával és eladásával foglalkozik. Az 
+// év elején 10.000 Ft-ja van. Egy fájlban tárolja az információkat a 
+// termékekről, az eladásokról és a beszerzésekről. Írjon programot, amely 
+// a fájlból beolvassa az adatokat, és megmondja az egyes termékek 
+// mennyiségét, illetve a cég egyenlegét az eladások és beszerzések után! 
+// Használjon dinamikus tömböket és struktúrákat az adatok tárolására! Az 
+// input fájl formátuma: Első sor: Number1 - a termékek száma A következő 
+// Number1 db sor: String Number2 Number3 Number4 String: az i-edik termék neve 
+// Number2: az i-edik termék mennyisége Number3: az i-edik termék beszerzési 
+// ára Number4: az i-edik termék eladási ára Number5: a termékekkel 
+// kapcsolatos adás-vételek száma Az ezután következő Number5 db sor: 
+// Number6 Number7 Number6: Az aktuális termék indexe (nem a neve, hanem a 
+// sorszáma) Number7: Ha ez a szám pozitív, a cég beszerzett a Number6-os 
+// termékből Number7 db-ot, beszerzési áron;
+// ha negatív, akkor a cég a Number6-os termékből eladott Number7 abszolút 
+// értékének megfelelő számú darabot, eladási áron. Példa bemenet: 2 
+// hammer 100 500 800 screwdriver 50 300 400 2 1 10 2 -5 A példafájl esetében 
+// kétféle termékünk van: 100 db hammer és 50 db screwdriver. A cég 500 
+// Ft-ért tud hammer-t beszerezni, és 800 Ft-ért tudja eladni. 2 féle 
+// termékmozgás történt, először vásároltak 500 Ft/db áron 10 db 
+// hammer-t, majd 400 Ft/db áron eladtak 5 db screwdriver-t. Kimenet: Inventory: 
+// **************************************** hammer: Count: 100 Purchase price: 500 
+// Shop price: 800 screwdriver: Count: 50 Purchase price: 300 Shop price: 400 
+// Inventory: **************************************** hammer: Count: 110 Purchase 
+// price: 500 Shop price: 800 screwdriver: Count: 45 Purchase price: 300 Shop 
+// price: 400 We have got 7000 HUF 
+// 3.29.1.
+
+
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+#include <cstdlib>
+#include <iomanip>
+
+const std::string DEFAULT_INPUTFILE = "inventory.txt";
+const int START_MONEY = 10000;
+
+struct Good {
+    std::string name;
+    int count;
+    int purchasePrice;
+    int shopPrice;
+};
+
+void printInventory(const std::vector<Good>& goods) {
+    std::cout << "Inventory:\n****************************************\n";
+    for (const auto& g : goods) {
+        std::cout << g.name << ":\n"
+                  << "\tCount: " << g.count << "\n"
+                  << "\tPurchase price: " << g.purchasePrice << "\n"
+                  << "\tShop price: " << g.shopPrice << "\n";
+    }
+}
+
+std::vector<Good> readGoods(std::ifstream& in) {
+    int num;
+    in >> num;
+    std::vector<Good> goods(num);
+    for (int i = 0; i < num; ++i) {
+        in >> goods[i].name >> goods[i].count >> goods[i].purchasePrice >> goods[i].shopPrice;
+    }
+    return goods;
+}
+
+int applyTransactions(std::ifstream& in, std::vector<Good>& goods, int startingMoney) {
+    int numLogs;
+    in >> numLogs;
+    int balance = startingMoney;
+
+    for (int i = 0; i < numLogs; ++i) {
+        int productIndex, amount;
+        in >> productIndex >> amount;
+
+        --productIndex; // zero-based indexing
+
+        if (productIndex < 0 || productIndex >= static_cast<int>(goods.size())) {
+            std::cerr << "Invalid product index: " << productIndex + 1 << "\n";
+            continue;
+        }
+
+        goods[productIndex].count += amount;
+
+        if (amount > 0)
+            balance -= amount * goods[productIndex].purchasePrice;
+        else
+            balance += std::abs(amount) * goods[productIndex].shopPrice;
+    }
+
+    return balance;
+}
+
+int main(int argc, char* argv[]) {
+    std::string filename = (argc > 1) ? argv[1] : DEFAULT_INPUTFILE;
+    std::ifstream in(filename);
+    if (!in) {
+        std::cerr << "Error opening file: " << filename << "\n";
+        return EXIT_FAILURE;
+    }
+
+    try {
+        std::vector<Good> goods = readGoods(in);
+
+        printInventory(goods);
+
+        int finalMoney = applyTransactions(in, goods, START_MONEY);
+
+        printInventory(goods);
+
+        std::cout << "We have got " << finalMoney << " HUF\n";
+    } catch (const std::exception& e) {
+        std::cerr << "Exception: " << e.what() << "\n";
+        return EXIT_FAILURE;
+    }
+
+    return EXIT_SUCCESS;
+}
+
+// 3.30. Könyvtári rendszer
+// 3.30.1. A könyvtárakban a könyvek az Egyetemes Tizedes Osztályozás (ETO, 
+// angolul UDC) szerint vannak osztályozva. Minden könyvnek van egy ETO száma, 
+// amit a könyv témája határoz meg. Az ETO szám első számjegye a fő 
+// témát határozza meg: 0. Általános művek, bibliográfia, könyvtárügy. 
+// 1. Filozófia, pszichológia, logika, etika. 2. Vallás, egyházak, teológia. 
+// 3. Társadalomtudományok, közigazgatás, jog, oktatás. 4. Nem használt 5. 
+// Matematika, természettudományok, fizika, kémia. 6. Alkalmazott tudományok, 
+// műszaki tudományok, orvostudományok. 7. Művészetek, játék, sport, 
+// szórakozás. 8. Nyelvészet, irodalom 9. Régészet, földrajz, életrajz, 
+// történelem Például egy 543-as ETO számú könyvről tudjuk, hogy 
+// matematikával, vagy természettudományokkal foglalkozik. A többi számjegy a 
+// program szempontjából nem fontos. A „lib1.txt” fájlban könyvek adatai 
+// szerepelnek. A fájl tartalmazza a szerző nevét, a könyv címét, a kiadási 
+// évet és a könyv ETO számát. Írjon programot, amely beolvassa ezt a 
+// fájlt, listázza az egyes könyveket, végül összesítést ad, hogy hány 
+// könyv található a könyvtárban egy-egy a témában! Használjon dinamikus 
+// tömböket és struktúrákat az adatok tárolására! Az input fájl 
+// formátuma: Első sor: A könyvek száma. A többi sor formátuma: Szerző 
+// Rövid_Cím Kiadási év ETO (szóköz karakterekkel elválasztva). A szerző 
+// neve és a könyv címe maximum 20 karakterből áll, mindkettő egy-egy szó 
+// csak. Az ETO szám 3 karakterből áll. Példa bemenet: 
+// 3
+// Asimov Foundation 1980 820
+// Herbert Dune 1990 820
+// Dancs Terror 2001 512
+
+// Kimenet: 
+// Author: Asimov
+// Title: Foundation
+// Year of edition: 1980
+// UDC: 820 Language, Linguistics, Literature
+
+// Author: Herbert
+// Title: Dune
+// Year of edition: 1990
+// UDC: 820 Language, Linguistics, Literature
+
+// Author: Dancs
+// Title: Terror
+// Year of edition: 2001
+// UDC: 512 Mathematics and natural sciences
+
+// **************************************
+
+// Generalities: 0 books
+// Philosophy, Psychology: 0 books
+// Religion, Theology: 0 books
+// Social sciences: 0 books
+// vacant: 0 books
+// Mathematics and natural sciences: 1 books
+// Applied sciences, Medicine, Technology: 0 books
+// Arts, Recreation, Entertainment, Sport: 0 books
+// Language, Linguistics, Literature: 2 books
+// Geography, Biography, History: 0 books
+
+// 3.30.1.
+
+
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+#include <array>
+
+const std::string DEFAULT_INPUTFILE = "lib1.txt";
+const int MAX_UDC_CLASSES = 10;
+
+const std::array<std::string, MAX_UDC_CLASSES> UDC_CLASSES = {
+    "Generalities",
+    "Philosophy, Psychology",
+    "Religion, Theology",
+    "Social sciences",
+    "vacant",
+    "Mathematics and natural sciences",
+    "Applied sciences, Medicine, Technology",
+    "Arts, Recreation, Entertainment, Sport",
+    "Language, Linguistics, Literature",
+    "Geography, Biography, History"
+};
+
+struct Book {
+    std::string author;
+    std::string title;
+    int year;
+    std::string udc;
+};
+
+std::vector<Book> readBooks(const std::string& filename) {
+    std::ifstream in(filename);
+    if (!in) {
+        throw std::runtime_error("Could not open file: " + filename);
+    }
+
+    int n;
+    in >> n;
+    std::vector<Book> books(n);
+
+    for (int i = 0; i < n; ++i) {
+        in >> books[i].author >> books[i].title >> books[i].year >> books[i].udc;
+    }
+
+    return books;
+}
+
+void printBooksAndStats(const std::vector<Book>& books) {
+    std::array<int, MAX_UDC_CLASSES> counts = {0};
+
+    for (const auto& book : books) {
+        int mainClass = book.udc[0] - '0';
+        std::cout << "Author: " << book.author << "\n"
+                  << "Title: " << book.title << "\n"
+                  << "Year of edition: " << book.year << "\n"
+                  << "UDC: " << book.udc << " " << UDC_CLASSES[mainClass] << "\n\n";
+
+        if (mainClass >= 0 && mainClass < MAX_UDC_CLASSES) {
+            counts[mainClass]++;
+        }
+    }
+
+    std::cout << "**************************************\n\n";
+    for (int i = 0; i < MAX_UDC_CLASSES; ++i) {
+        std::cout << UDC_CLASSES[i] << ": " << counts[i] << " books\n";
+    }
+}
+
+int main(int argc, char* argv[]) {
+    try {
+        std::string filename = (argc > 1) ? argv[1] : DEFAULT_INPUTFILE;
+        auto books = readBooks(filename);
+        printBooksAndStats(books);
+    } catch (const std::exception& e) {
+        std::cerr << "Error: " << e.what() << "\n";
+        return EXIT_FAILURE;
+    }
+
+    return EXIT_SUCCESS;
+}
+// 3.31. Kikölcsönzött könyvek
+
+// 3.31.1. A könyvtárak nyilvántartást vezetnek a kikölcsönzött 
+// könyvekről. Ez tartalmazza a könyvek szerzőjét, címét, illetve a 
+// kölcsönzés lejáratának idejét. Tételezzük fel, hogy az aktuális dátum 
+// 2008. december 15. Írjon programot, amely beolvassa a kikölcsönzött 
+// könyvek listáját egy fájlból, és kilistázza azoknak a könyveknek az 
+// adatait, amelyek kölcsönzési ideje már lejárt! Használjon dinamikus 
+// tömböket és struktúrákat az adatok tárolására! Az input fájl 
+// formátuma: Első sor: A könyvek száma. A többi sor: Szerző Rövid_cím Év 
+// Hónap Nap A szerző neve és a könyv címe is egy-egy szó csak. Az év, 
+// hónap, nap a lejárat idejét jelölik. Példa bemenet: 3 Asimov Foundation 
+// 2009 1 20 Herbert Dune 2008 12 1 Dancs Terror 2008 11 30 Kimenet: Title: 
+// Herbert Author: Dune Expiraton: 2008 12 1 Title: Dancs Author: Terror 
+// Expiraton: 2008 11 30 
+// 3.31.1.
+
+
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+
+constexpr int YEAR = 2008;
+constexpr int MONTH = 12;
+constexpr int DAY = 15;
+
+struct Book {
+    std::string author;
+    std::string title;
+    int year, month, day;
+};
+
+bool isExpired(int y, int m, int d) {
+    if (y < YEAR) return true;
+    if (y == YEAR && m < MONTH) return true;
+    if (y == YEAR && m == MONTH && d < DAY) return true;
+    return false;
+}
+
+std::vector<Book> readBooks(std::ifstream& file) {
+    int count;
+    file >> count;
+    std::vector<Book> books(count);
+    for (int i = 0; i < count; ++i) {
+        file >> books[i].author >> books[i].title
+             >> books[i].year >> books[i].month >> books[i].day;
+    }
+    return books;
+}
+
+void printExpiredBooks(const std::vector<Book>& books) {
+    std::cout << "\nLejárt könyvek:\n\n";
+    for (const auto& book : books) {
+        if (isExpired(book.year, book.month, book.day)) {
+            std::cout << "Title: " << book.author << '\n';
+            std::cout << "Author: " << book.title << '\n';
+            std::cout << "Expiration: " << book.year << " "
+                      << book.month << " " << book.day << "\n\n";
+        }
+    }
+}
+
+int main(int argc, char* argv[]) {
+    std::string filename = (argc > 1) ? argv[1] : "lib1.txt";
+    std::ifstream file(filename);
+
+    if (!file) {
+        std::cerr << "Hiba a fájl megnyitásakor: " << filename << "\n";
+        return 1;
+    }
+
+    std::vector<Book> books = readBooks(file);
+    file.close();
+
+    printExpiredBooks(books);
+
+    return 0;
+}
+// 3.32. Szótár
+
+// 3.32.1. Írjon angol-magyar szótár programot! Fájl tartalmazza az 
+// angol-magyar szópárokat! A program olvasson be egy szót a billentyűzetről! 
+// A szó a két nyelv bármelyikén lehet. Ezután olvassa be a szópárokat a 
+// fájlból, és keresse meg a megadott szóhoz tartozó szópárt! Az is 
+// találatnak számít, ha a begépelt szó, az előtagja az egyik szótári 
+// bejegyzésnek. Írja ki a képernyőre a találatokat! Az input fájl 
+// formátuma: Első sor: A szópárok száma A többi sor: Angol_szó Magyar_szó 
+// (szóköz karakterrel elválasztva) Egy-egy szó maximális hossza 20 karakter. 
+// Példa bemenet: 5 SUN NAP DOG KUTYA BICYCLE BICIKLI VILLAGE FALU SUNSHINE 
+// NAPSUTES Kimenet: Type the word: NAP Hun->Eng: NAP SUN 1 hits Kimenet: Type the 
+// word: SUN Eng->Hun: SUN NAP Eng->Hun: SUNSHINE NAPSUTES 2 hits 
+
+// 3.32.1.
+
+
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+#include <algorithm>
+
+struct WordPair {
+    std::string eng;
+    std::string hun;
+};
+
+void search(const std::vector<WordPair>& dict, const std::string& word) {
+    int hits = 0;
+
+    for (const auto& pair : dict) {
+        // Angol->Magyar: előtag egyezés vagy teljes egyezés
+        if (pair.eng.find(word) == 0) {
+            std::cout << "Eng->Hun: " << pair.eng << " " << pair.hun << "\n";
+            ++hits;
+        }
+        // Magyar->Angol: csak teljes egyezés
+        if (pair.hun == word) {
+            std::cout << "Hun->Eng: " << pair.hun << " " << pair.eng << "\n";
+            ++hits;
+        }
+    }
+
+    std::cout << "\n" << hits << " hits\n";
+}
+
+int main(int argc, char* argv[]) {
+    const std::string filename = (argc > 1) ? argv[1] : "dict.txt";
+    std::ifstream file(filename);
+
+    if (!file) {
+        std::cerr << "Hiba a fájl megnyitásakor: " << filename << "\n";
+        return 1;
+    }
+
+    int num;
+    file >> num;
+
+    std::vector<WordPair> dict(num);
+    for (int i = 0; i < num; ++i) {
+        file >> dict[i].eng >> dict[i].hun;
+    }
+
+    std::string word;
+    std::cout << "\nType the word: ";
+    std::cin >> word;
+
+    std::cout << '\n';
+    search(dict, word);
+
+    return 0;
+}
+// 3.33. Sudoku  ellenőrző
+
+// 3.33.1. Írjon programot, amely leellenőriz egy kitöltött Sudoku táblát! A 
+// tábla értékeit olvassa be fájlból! Egy tábla akkor van helyesen 
+// kitöltve, ha minden sorban, minden oszlopban és minden kis 3x3-as kis 
+// négyzetben az 1-9 közti számjegyek mindegyike egyszer szerepel. Az ábrán 
+// egy helyesen kitöltött tábla szerepel. 9 5 8 2 7 4 6 3 1 1 4 7 5 3 6 9 2 8 2 
+// 6 3 9 8 1 4 7 5 8 3 1 4 6 9 2 5 7 4 2 5 3 1 7 8 9 6 7 9 6 8 5 2 1 4 3 3 1 4 7 2 
+// 8 5 6 9 5 8 9 6 4 3 7 1 2 6 7 2 1 9 5 3 8 4 Ábra: Sudoku tábla Az input fájl 
+// formátuma: Az input fájl 9 sort és 9 oszlopot tartalmaz. A számjegyek 
+// egy-egy szóköz karakterrel vannak elválasztva. Példa bemenet: 7 4 6 8 3 1 5 
+// 9 2 9 2 3 5 7 4 8 6 1 8 1 5 2 9 6 4 7 3 1 3 4 7 5 2 6 8 9 6 9 7 3 1 8 2 5 4 5 8 
+// 2 4 6 9 1 3 7 4 7 9 6 2 8 3 1 8 3 6 8 1 4 7 9 2 5 2 5 1 9 8 3 7 4 6 Kimenet: 
+// This is a wrong table! 
+
+
+// 3.33.1.
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#define SIZE 9
+#define TRUE 1
+#define FALSE 0
+#define DEFAULT_INPUTFILE "sudoku1.txt"
+
+typedef int TTable[SIZE][SIZE];
+
+void ReadTable(FILE* fd, TTable T) {
+    for (int i = 0; i < SIZE; ++i)
+        for (int j = 0; j < SIZE; ++j)
+            fscanf(fd, "%d", &T[i][j]);
+}
+
+void PrintTable(TTable T) {
+    printf("\nSudoku Table:\n");
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j)
+            printf("%d ", T[i][j]);
+        printf("\n");
+    }
+    printf("\n");
+}
+
+int isValidGroup(int values[SIZE]) {
+    int seen[SIZE + 1] = {0}; // index 1..9
+    for (int i = 0; i < SIZE; ++i) {
+        int val = values[i];
+        if (val < 1 || val > 9 || seen[val])
+            return FALSE;
+        seen[val] = 1;
+    }
+    return TRUE;
+}
+
+int CheckRows(TTable T) {
+    for (int i = 0; i < SIZE; ++i) {
+        int row[SIZE];
+        for (int j = 0; j < SIZE; ++j)
+            row[j] = T[i][j];
+        if (!isValidGroup(row)) return FALSE;
+    }
+    return TRUE;
+}
+
+int CheckColumns(TTable T) {
+    for (int j = 0; j < SIZE; ++j) {
+        int col[SIZE];
+        for (int i = 0; i < SIZE; ++i)
+            col[i] = T[i][j];
+        if (!isValidGroup(col)) return FALSE;
+    }
+    return TRUE;
+}
+
+int CheckBoxes(TTable T) {
+    for (int boxY = 0; boxY < 3; ++boxY) {
+        for (int boxX = 0; boxX < 3; ++boxX) {
+            int values[SIZE];
+            int idx = 0;
+            for (int i = 0; i < 3; ++i)
+                for (int j = 0; j < 3; ++j)
+                    values[idx++] = T[boxY * 3 + i][boxX * 3 + j];
+            if (!isValidGroup(values)) return FALSE;
+        }
+    }
+    return TRUE;
+}
+
+void Check(TTable T) {
+    if (CheckRows(T) && CheckColumns(T) && CheckBoxes(T)) {
+        printf("This table is correct!\n");
+    } else {
+        printf("This is a wrong table!\n");
+    }
+}
+
+int main(int argc, char* argv[]) {
+    TTable table;
+    FILE* fd = fopen(argc > 1 ? argv[1] : DEFAULT_INPUTFILE, "r");
+    if (!fd) {
+        perror("Error opening input file");
+        return 1;
+    }
+
+    ReadTable(fd, table);
+    fclose(fd);
+
+    PrintTable(table);
+    Check(table);
+
+    return 0;
+}
+// 3.34. Amőba játék
+
+// 3.34.1. Írjon egy egyszerű amőba játékot, 3x3-as pályára! Két játékos 
+// játszhat a programmal, akik a saját jelüket helyezhetik a mezőkbe 
+// felváltva (X vagy O). Az a játékos nyeri a játszmát, akinek 3 jele lesz 
+// egy sorban, oszlopban vagy átlóban. Ha nincs több üres cella, vagy a 
+// játékosok valamelyike nyer, a játék véget ér. A programnak minden lépés 
+// után ki kell rajzolnia a játéktábla aktuális állását karakteresen! 
+// Feltételezzük, hogy mindkét játékos megfelelő pozíciót ad meg minden 
+// lépésben. 
+// Példa bemenet: 
+// A B C ------
+// 1| | | | ------
+// 2| | | | ------
+// 3| | | | 
+// // ------
+// First player 
+// Target: A1 A B C ------1|X| | | ------2| | | | ------3| | | 
+// | ------Second player Target: B1 A B C ------1|X|O| | ------2| | | | ------3| | 
+// | | ------- First player Target: A2 A B C ------1|X|O| | ------2|X| | | 
+// ------3| | | | ------Second player Target: A3 A B C ------1|X|O| | ------2|X| | 
+// | ------3|O| | | ------First player Target: B2 A B C ------1|X|O| | 
+// ------2|X|X| | ------3|O| | | ------- Second player Target: C1 A B C 
+// ------1|X|O|O| ------2|X|X| | ------3|O| | | ------First player Target: C3 A B 
+// C ------1|X|O|O| ------2|X|X| | ------3|O| |X| ------First player won! 
+
+// 3.34.1.
+
+#include <iostream>
+#include <string>
+#include <cctype>
+
+const int SIZE = 3;
+const char SIGN1 = 'X';
+const char SIGN2 = 'O';
+
+using TTable = char[SIZE][SIZE];
+
+void InitTable(TTable table) {
+    for (int i = 0; i < SIZE; ++i)
+        for (int j = 0; j < SIZE; ++j)
+            table[i][j] = ' ';
+}
+
+void PrintTable(const TTable table) {
+    std::cout << "   A   B   C\n";
+    for (int i = 0; i < SIZE; ++i) {
+        std::cout << " " << i + 1 << " ";
+        for (int j = 0; j < SIZE; ++j) {
+            std::cout << "|" << table[j][i];
+        }
+        std::cout << "|\n";
+        std::cout << "  ---+---+---\n";
+    }
+}
+
+bool Win(const TTable table, char ch) {
+    for (int i = 0; i < SIZE; ++i) {
+        if ((table[0][i] == ch && table[1][i] == ch && table[2][i] == ch) || // row
+            (table[i][0] == ch && table[i][1] == ch && table[i][2] == ch))   // col
+            return true;
+    }
+    return (table[0][0] == ch && table[1][1] == ch && table[2][2] == ch) ||
+           (table[2][0] == ch && table[1][1] == ch && table[0][2] == ch);
+}
+
+bool Drawn(const TTable table) {
+    for (int i = 0; i < SIZE; ++i)
+        for (int j = 0; j < SIZE; ++j)
+            if (table[i][j] == ' ')
+                return false;
+    return true;
+}
+
+bool ValidCoord(char col, char row, int& x, int& y) {
+    col = toupper(col);
+    if (col < 'A' || col >= 'A' + SIZE || row < '1' || row >= '1' + SIZE)
+        return false;
+    x = col - 'A';
+    y = row - '1';
+    return true;
+}
+
+void Play(TTable table) {
+    int player = 0;
+    std::string input;
+    int x, y;
+
+    while (true) {
+        PrintTable(table);
+        std::cout << (player == 0 ? "First player" : "Second player") << " turn (e.g., A1): ";
+        std::cin >> input;
+        if (input == "0") {
+            std::cout << "Game cancelled.\n";
+            return;
+        }
+
+        if (input.size() < 2 || !ValidCoord(input[0], input[1], x, y)) {
+            std::cout << "Invalid input! Try again.\n";
+            continue;
+        }
+
+        if (table[x][y] != ' ') {
+            std::cout << "Cell already taken! Try another.\n";
+            continue;
+        }
+
+        table[x][y] = (player == 0 ? SIGN1 : SIGN2);
+
+        if (Win(table, table[x][y])) {
+            PrintTable(table);
+            std::cout << (player == 0 ? "First" : "Second") << " player won!\n";
+            return;
+        }
+
+        if (Drawn(table)) {
+            PrintTable(table);
+            std::cout << "Draw! Game over.\n";
+            return;
+        }
+
+        player = 1 - player;
+    }
+}
+
+int main() {
+    TTable table;
+    InitTable(table);
+    Play(table);
+    return 0;
+}
+
+// 3.35.  Térkép
+
+// 3.35.1. Egy fájl egy magassági térképet tartalmaz. A magasságok pozitív 
+// egész számok. Írjon programot, amely beolvassa ezt a térképet egy 
+// mátrixba, kiírja a képernyőre és kiszámítja az adott területen az 
+// alföld, dombság, hegység és magashegység arányát! A mátrix legyen 
+// dinamikus! A magassági intervallumok a következők: 0 <= magasság < 250 250 
+// <= magasság < 500 500 <= magasság < 1500 1500 <= magasság alföld dombság 
+// hegység magashegység Az input fájl formátuma: Első sor: number1 number2 A 
+// number1 a sorok, number2 az oszlopok számát adja meg. Ezután number1 db sor 
+// következik, minden sorban number2 db, szóköz karakterrel elválasztott 
+// érték található. 
+
+// Példa bemenet: 5 5 200 210 220 218 230 0 1600 322 31 1000 
+// 332 320 43 1 545 2000 32 252 0 321 1320 2123 324 21 43 
+
+// Kimenet: 200 210 220 218 
+// 230 0 1600 322 31 1000 332 320 1 545 2000 32 252 0 321 1320 2123 324 Lowland: 
+// 52 % Hill: 24 % Mountain: 12 % High mountain: 12 % 
+
+// 3.35.1.
+
+#include <iostream>
+#include <vector>
+#include <fstream>
+#include <iomanip>
+
+const int HILL = 250;
+const int MOUNTAIN = 500;
+const int HIGHMOUNTAIN = 1500;
+
+using Map = std::vector<std::vector<int>>;
+
+void readMap(std::ifstream& file, Map& map, int& rows, int& cols) {
+    file >> rows >> cols;
+    map.resize(rows, std::vector<int>(cols));
+
+    for (int i = 0; i < rows; ++i)
+        for (int j = 0; j < cols; ++j)
+            file >> map[i][j];
+}
+
+void printMap(const Map& map) {
+    std::cout << "\nThe map:\n\n";
+    for (const auto& row : map) {
+        for (int val : row)
+            std::cout << std::setw(5) << val;
+        std::cout << '\n';
+    }
+}
+
+void countTerrains(const Map& map) {
+    int lowland = 0, hill = 0, mountain = 0, highmountain = 0;
+    int total = 0;
+
+    for (const auto& row : map) {
+        for (int h : row) {
+            ++total;
+            if (h < HILL)
+                ++lowland;
+            else if (h < MOUNTAIN)
+                ++hill;
+            else if (h < HIGHMOUNTAIN)
+                ++mountain;
+            else
+                ++highmountain;
+        }
+    }
+
+    std::cout << std::fixed << std::setprecision(2);
+    std::cout << "\nLowland: "       << (lowland * 100.0 / total)      << " %\n";
+    std::cout << "Hill: "            << (hill * 100.0 / total)         << " %\n";
+    std::cout << "Mountain: "        << (mountain * 100.0 / total)     << " %\n";
+    std::cout << "High mountain: "   << (highmountain * 100.0 / total) << " %\n\n";
+}
+
+int main(int argc, char* argv[]) {
+    std::string filename = (argc > 1) ? argv[1] : "map1.txt";
+    std::ifstream file(filename);
+
+    if (!file) {
+        std::cerr << "Hiba a fájl megnyitásakor: " << filename << '\n';
+        return 1;
+    }
+
+    Map map;
+    int rows, cols;
+    readMap(file, map, rows, cols);
+    file.close();
+
+    printMap(map);
+    countTerrains(map);
+
+    return 0;
+}
+
+// 3.36. Inverz mátrix
+// 3.36.1. Írjon programot, amely kiszámítja egy 3x3-as mátrix inverzét! A 
+// program írja ki a képernyőre a mátrix adjungáltját, determinánst és az 
+// inverz mátrixot. Az inverz mátrixot a következőképpen számíthatjuk ki: 
+// A-1 = adj(A) / det(A), ahol adj(A) az A mátrix adjungáltja, és det(A) az A 
+// mátrix determinánsa. Ha det(A) = 0, akkor A nem invertálható. = Ábra: 
+// Mátrix elemeinek az indexelése Determináns: A 2x2-es mátrix determinánsa a 
+// következő: a11*a22 - a21*a12 A 3x3-as mátrix determinánsa: a11 * a22 * a33 
+// + a12 * a23 * a31 + a13 * a21 * a32 - a13 * a22 * a31 - a12 * a21 * a33 - a11 * 
+// a23 * a32 Adjungált: A A ⎛ A adj( ) = ⎜- ⎜ A A + ⎝ A + ahol A A A A 
+// A A A A A + A A - A - = det A A A A A A A A A - A A + A + A A A A A A ⎞ 
+// ⎟ ⎟ ⎠ ;
+// Példa bemenet: Original matrix: 1 2 3 2 4 5 3 5 6 Adjugate matrix: -1 3 -2 3 
+// -3 1 -2 1 0 Determinant of the matrix: -1 Inverse matrix: 1 -3 2 -3 3 -1 2 -1 
+// -0 
+
+// 3.36.1.
+
+
+#include <iostream>
+#include <array>
+#include <iomanip>
+
+constexpr int SIZE = 3;
+using Matrix = std::array<std::array<double, SIZE>, SIZE>;
+
+// Mátrix kiírás
+void printMatrix(const Matrix& m) {
+    std::cout << '\n';
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j)
+            std::cout << std::setw(6) << m[i][j] << ' ';
+        std::cout << '\n';
+    }
+    std::cout << '\n';
+}
+
+// 3x3 determináns számítása
+double getDeterminant(const Matrix& m) {
+    return  m[0][0] * m[1][1] * m[2][2]
+          + m[0][1] * m[1][2] * m[2][0]
+          + m[0][2] * m[1][0] * m[2][1]
+          - m[0][2] * m[1][1] * m[2][0]
+          - m[0][1] * m[1][0] * m[2][2]
+          - m[0][0] * m[1][2] * m[2][1];
+}
+
+// Kofaktor egy (i, j) helyen
+double getMinor(const Matrix& m, int row, int col) {
+    std::array<double, 4> vals;
+    int idx = 0;
+    for (int i = 0; i < SIZE; ++i) {
+        if (i == row) continue;
+        for (int j = 0; j < SIZE; ++j) {
+            if (j == col) continue;
+            vals[idx++] = m[i][j];
+        }
+    }
+    return vals[0]*vals[3] - vals[1]*vals[2];
+}
+
+// Adjungált mátrix (transzponált kofaktor mátrix)
+Matrix makeAdjugate(const Matrix& m) {
+    Matrix adj;
+    for (int i = 0; i < SIZE; ++i) {
+        for (int j = 0; j < SIZE; ++j) {
+            double minor = getMinor(m, i, j);
+            adj[j][i] = ((i + j) % 2 == 0 ? 1 : -1) * minor; // transzponált
+        }
+    }
+    return adj;
+}
+
+// Inverz mátrix
+bool invertMatrix(const Matrix& m, Matrix& inverse) {
+    double det = getDeterminant(m);
+    std::cout << "Determinant of the matrix: " << det << '\n';
+
+    if (det == 0.0) {
+        std::cout << "We cannot invert this matrix!\n";
+        return false;
+    }
+
+    Matrix adj = makeAdjugate(m);
+
+    std::cout << "Adjugate matrix:\n";
+    printMatrix(adj);
+
+    for (int i = 0; i < SIZE; ++i)
+        for (int j = 0; j < SIZE; ++j)
+            inverse[i][j] = adj[i][j] / det;
+
+    return true;
+}
+
+int main() {
+    Matrix matrix = {{
+        {1, 2, 3},
+        {2, 4, 5},
+        {3, 5, 6}
+    }};
+
+    std::cout << "Original matrix:\n";
+    printMatrix(matrix);
+
+    Matrix inverse;
+    if (invertMatrix(matrix, inverse)) {
+        std::cout << "Inverse matrix:\n";
+        printMatrix(inverse);
+    }
+
+    return 0;
+}
+// 3.37. Mátrixműveletek
+// 3.37.1. Írjon programot mátrixösszeadás és skalárral való szorzás 
+// megvalósítására! A program olvassa be fájlból két mátrixot! Adja össze 
+// a két mátrixot, és az eredményt szorozza meg 2-vel! A mátrixokat 
+// dinamikusan hozza létre! Ha A, B és C azonos méretű mátrixok, akkor Cij = 
+// Aij + Bij , ahol C az A és B mátrixok összege. Egy mátrix „d” 
+// skalárral való szorzásakor a mátrix minden elemét „d”-vel szorozzuk. 
+// Az input fájl formátuma: Első sor: Két szám, az első a sorok, a második 
+// az oszlopok száma. A többi sorban a két mátrix található, a példában 
+// látható módon. Minden sorban egy-egy mátrix-sor van, a számok szóköz 
+// karakterekkel vannak elválasztva. A mátrixok elemei egész számok. Példa 
+// bemenet: 2 3 4 3 4 3 1 5 2 4 1 1 7 3 Kimenet: A : 4 3 4 3 1 5 B : 2 4 1 1 7 3 
+// ************************ (A + B) * 2 = 12 14 10 8 16 16 
+
+// 3.37.1.
+
+
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <iomanip>
+
+using Matrix = std::vector<std::vector<int>>;
+
+Matrix readMatrix(std::ifstream& in, int rows, int cols) {
+    Matrix mat(rows, std::vector<int>(cols));
+    for (int i = 0; i < rows; ++i)
+        for (int j = 0; j < cols; ++j)
+            in >> mat[i][j];
+    return mat;
+}
+
+void printMatrix(const Matrix& mat) {
+    for (const auto& row : mat) {
+        for (int val : row)
+            std::cout << std::setw(4) << val;
+        std::cout << '\n';
+    }
+    std::cout << '\n';
+}
+
+Matrix addAndMultiplyMatrix(const Matrix& A, const Matrix& B, int scalar) {
+    int rows = A.size();
+    int cols = A[0].size();
+    Matrix C(rows, std::vector<int>(cols));
+
+    for (int i = 0; i < rows; ++i)
+        for (int j = 0; j < cols; ++j)
+            C[i][j] = (A[i][j] + B[i][j]) * scalar;
+
+    return C;
+}
+
+int main(int argc, char* argv[]) {
+    std::string filename = (argc > 1) ? argv[1] : "3.37.1.txt";
+    std::ifstream file(filename);
+    if (!file) {
+        std::cerr << "Nem sikerült megnyitni a fájlt: " << filename << '\n';
+        return 1;
+    }
+
+    int rows, cols;
+    file >> rows >> cols;
+
+    Matrix A = readMatrix(file, rows, cols);
+    Matrix B = readMatrix(file, rows, cols);
+
+    std::cout << "A:\n";
+    printMatrix(A);
+
+    std::cout << "B:\n";
+    printMatrix(B);
+
+    Matrix C = addAndMultiplyMatrix(A, B, 2);
+
+    std::cout << "************************\n(A + B) * 2 =\n\n";
+    printMatrix(C);
+
+    return 0;
+}
+// 3.38. Morze kód
+
+// 3.38.1. Írjon programot, ami egy üzenetet Morze kóddá alakít! Az üzenet 
+// begépelése után a program foglaljon le memóriát a kódolt üzenet 
+// számára, kódolja az üzenetet és jelenítse meg azt! Használja az alábbi 
+// sztring tömböt az egye karakterek leképezésére! A szóköz karakter kódja 
+// 5 pont. char* morsecodes[26] = { ".=", "=...", "=.=.", "=..", ".", "..=.", 
+// "==.", "....", "..", ".===", "=.=", ".=..", "==", "=.", "===", ".==.", "==.=", 
+// ".=.", "...", "=", "..=", "...=", ".==", "=..=", "=.==", "==.."};
+// Példa bemenet: Az üzenet: SOS I AM WRITING A TEST Üzenet: "SOS I AM WRITING 
+// A TEST" A kódolt üzenet: 
+// "...===................===......==.=...=..=.==.......=.....=....=" 
+
+// 3.38.1.:
+
+#include <iostream>
+#include <string>
+#include <vector>
+#include <cctype>
+
+const std::string morsecodes[26] = {
+    ".=", "=...", "=.=.", "=..", ".", "..=.", "==.", "....", "..", ".===",
+    "=.=", ".=..", "==", "=.", "===", ".==.", "==.=", ".=.", "...", "=",
+    "..=", "...=", ".==", "=..=", "=.==", "==.."
+};
+
+const std::string SZOKOZ = ".....";
+
+std::string toUpper(const std::string& input) {
+    std::string result;
+    for (char ch : input)
+        result += std::toupper(static_cast<unsigned char>(ch));
+    return result;
+}
+
+std::string morseEncode(const std::string& message) {
+    std::string result;
+    for (char ch : message) {
+        if (ch == ' ') {
+            result += SZOKOZ;
+        } else if (std::isupper(ch)) {
+            result += morsecodes[ch - 'A'];
+        }
+        // Optional: ignore other characters or handle them
+    }
+    return result;
+}
+
+int main() {
+    std::string message;
+    std::cout << "The message: ";
+    std::getline(std::cin, message);
+
+    message = toUpper(message);
+
+    std::cout << "Message: \"" << message << "\"\n";
+
+    std::string morse = morseEncode(message);
+
+    std::cout << "The coded message: \"" << morse << "\"\n";
+
+    return 0;
+}
+
+ 
+// 3.39.  Mátrix szorzása vektorral
+
+// 3.39.1. Írjon programot, amely megszoroz egy mátrixot egy vektorral! A 
+// mátrixot és a vektort fájlból olvassa be és tárolja őket dinamikus 
+// adatszerkezetekkel! Írja ki a képernyőre az eredeti mátrixot és vektort, 
+// majd a szorzatvektort! A szorzatvektor annyi értéket tartalmaz, amennyi a 
+// mátrix sorainak száma. Ha „P” a szorzatvektor, „A” a mátrix, és 
+// „V” az eredeti vektor, akkor Pi = Sum(j=1…c, Aij*Vj), ahol Aij a mátrix 
+// i-edik sorának j-edik oszlopában van, c a mátrix oszlopainak száma. Az 
+// input fájl formátuma: Első sor: num1 num2 num1: a mátrix sorainak száma 
+// num2: a mátrix oszlopainak száma, amely egyben az eredeti vektor elemeinek 
+// száma is A következő num1 db sor a mátrix sorait tartalmazza, mindegyik 
+// sorban num2 db érték található, szóköz karakterrel elválasztva. A 
+// mátrix után num2 db szám következik, az eredeti vektor elemei. Példa 
+// bemenet: 2 3 4 1 3 7 2 2 6 2 3 Kimenet: Matrix : 4 1 7 2 Vector : 6 3 2 2 3 
+// ************************ Matrix * Vector =  
+
+// 3.39.1
+
+#include <iostream>
+#include <vector>
+#include <fstream>
+#include <iomanip>
+
+using Matrix = std::vector<std::vector<int>>;
+using Vector = std::vector<int>;
+
+void readMatrix(std::ifstream& in, Matrix& matrix, int rows, int cols) {
+    matrix.resize(rows, std::vector<int>(cols));
+    for (int i = 0; i < rows; ++i)
+        for (int j = 0; j < cols; ++j)
+            in >> matrix[i][j];
+}
+
+void readVector(std::ifstream& in, Vector& vec, int size) {
+    vec.resize(size);
+    for (int i = 0; i < size; ++i)
+        in >> vec[i];
+}
+
+void printMatrix(const Matrix& matrix) {
+    for (const auto& row : matrix) {
+        for (int val : row)
+            std::cout << std::setw(4) << val;
+        std::cout << '\n';
+    }
+}
+
+void printVector(const Vector& vec) {
+    for (int val : vec)
+        std::cout << std::setw(4) << val << '\n';
+}
+
+Vector multiply(const Matrix& mat, const Vector& vec) {
+    Vector result(mat.size(), 0);
+    for (size_t i = 0; i < mat.size(); ++i)
+        for (size_t j = 0; j < vec.size(); ++j)
+            result[i] += mat[i][j] * vec[j];
+    return result;
+}
+
+int main(int argc, char* argv[]) {
+    std::string filename = (argc > 1) ? argv[1] : "3.39.1.txt";
+    std::ifstream file(filename);
+
+    if (!file) {
+        std::cerr << "Nem sikerült megnyitni a fájlt: " << filename << '\n';
+        return 1;
+    }
+
+    int rows, cols;
+    file >> rows >> cols;
+
+    Matrix matrix;
+    Vector vector;
+
+    readMatrix(file, matrix, rows, cols);
+    readVector(file, vector, cols);
+
+    Vector result = multiply(matrix, vector);
+
+    std::cout << "Matrix:\n";
+    printMatrix(matrix);
+    std::cout << "\nVector:\n";
+    printVector(vector);
+    std::cout << "\n************************\nMatrix * Vector = \n\n";
+    printVector(result);
+
+    return 0;
+}
+
+// 3.40. Sztring tokenizáló
+
+// 3.40.1. Írjon sztring tokenizáló programot! A felhasználó egy sztringet 
+// gépel be, amely több szóból állhat, a szavakat egy vagy több szóköz 
+// karakter választja el. Ezután a program számolja meg a sztringben lévő 
+// szavakat, foglaljon le dinamikus tömböket a szavak számára, és másolja be 
+// az egyes szavakat a lefoglalt karaktertömbökbe! Írja ki a program a 
+// képernyőre az eredeti sztringet, és az egyes szavakat! 
+// Példa bemenet: 
+// This is a simple example. 
+// The typed text: "This is a 
+// 1.: "This" 
+// 2.: "is" 
+// 3.: "a" 
+// 4.: "simple" 
+// 5.: "example." simple example." 
+
+// 3.40.1.
+
+
+#include <iostream>
+#include <sstream>
+#include <vector>
+#include <string>
+
+int main() {
+    std::string line;
+
+    std::cout << "Enter a sentence: ";
+    if (!std::getline(std::cin, line)) {
+        std::cerr << "Input error!\n";
+        return 1;
+    }
+
+    std::cout << "The typed text: \"" << line << "\"\n";
+
+    std::istringstream iss(line);
+    std::vector<std::string> tokens;
+    std::string word;
+
+    while (iss >> word) {
+        tokens.push_back(word);
+    }
+
+    for (size_t i = 0; i < tokens.size(); ++i) {
+        std::cout << (i + 1) << ".: \"" << tokens[i] << "\"\n";
+    }
+
+    return 0;
+}
+// 3.41. Szavak kicserélése
+
+// 3.41.1. Egy fájlban egy legfeljebb 1000 karakter hosszú sztring található. 
+// Írjon programot, amely beolvassa ezt a fájlt, majd bekér a felhasználótól 
+// két szót! A második szó nem lehet hosszabb az elsőnél. A program keresse 
+// meg az első szó minden előfordulását a szövegben, és cserélje ki a 
+// második szóra. Írja ki a képernyőre az új szöveget, és a találatok 
+// számát! 
+
+// Példa: 
+// The original text: "This is a very simple text that can help 
+// for you to understand the task. " 
+// Type a word: simple 
+// Type the new word: easy 1 hits 
+// The new text: "This is a very easy text that can help for you to 
+// understand the task. " 
+
+// 3.41.1.
+
+#include <iostream>
+#include <fstream>
+#include <string>
+
+int replaceWords(std::string& text, const std::string& from, const std::string& to) {
+    if (to.size() > from.size()) {
+        std::cerr << "Hiba: a csere szó nem lehet hosszabb, mint az eredeti!\n";
+        return -1;
+    }
+
+    int hits = 0;
+    size_t pos = 0;
+    while ((pos = text.find(from, pos)) != std::string::npos) {
+        text.replace(pos, to.length(), to);
+        // ha rövidebb lett a szó, a szöveget igazítjuk
+        if (to.length() < from.length()) {
+            text.erase(pos + to.length(), from.length() - to.length());
+        }
+        ++hits;
+        pos += to.length(); // lépés a következő lehetséges találatra
+    }
+    return hits;
+}
+
+int main(int argc, char* argv[]) {
+    const std::string filename = (argc > 1) ? argv[1] : "text.txt";
+    std::ifstream file(filename);
+
+    if (!file) {
+        std::cerr << "Nem sikerült megnyitni a fájlt: " << filename << '\n';
+        return 1;
+    }
+
+    std::string text((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+    file.close();
+
+    std::cout << "The original text: \"" << text << "\"\n\n";
+
+    std::string word1, word2;
+    std::cout << "Type a word: ";
+    std::cin >> word1;
+
+    std::cout << "Type the new word: ";
+    std::cin >> word2;
+
+    int hits = replaceWords(text, word1, word2);
+    if (hits >= 0) {
+        std::cout << "\n" << hits << " hits\n";
+        std::cout << "The new text: \"" << text << "\"\n";
+    }
+
+    return 0;
+}
+
+// 3.42. Ellenőrző összeg
+// 3.42.1. Írjon programot, amely képes ellenőrző összeg generálására egy 
+// üzenethez, és ezen összeg alapján ellenőrizni tudja a bejövő 
+// üzeneteket! Az ellenőrző összeg kiszámítása a következőképpen 
+// történik: Adjuk össze az üzenet minden bájtját, ha az összeg nagyobb, 
+// mint 255, akkor az összegnek csak a legkisebb bájtját tekintjük. Az így 
+// kapott bájt kettes komplemense (255 - sum + 1) lesz az ellenőrző összeg. 
+// Például az „ABCD” üzenet bájtjai: 0x41, 0x42, 0x43 and 0x44, így az 
+// összeg = 0x41 + 0x42 + 0x43 + 0x44 = 0x10A. Ebből legkisebb bájt: 0xA, a 
+// kettes komplemens pedig: 0xFF - 0xA + 0x1 = 0xF6. Az ellenőrzés menete: Az 
+// üzenettel együtt az ellenőrző összeg is megérkezik egy fájlban. A 
+// programnak össze kell adnia a beérkezett üzenet minden bájtját és az 
+// ellenőrző összeget. Ha az eredmény utolsó bájtja 0, akkor a beérkezett 
+// üzenet valószínűleg nem sérült. Egy fájl több üzenetet tartalmaz, az 
+// ellenőrző összegükkel együtt. A program olvassa be ezeket, és 
+// ellenőrizze őket! Írja ki a képernyőre az üzeneteket, az ellenőrző 
+// összegeket, és azt, hogy az üzenetek hibásak vagy helyesek! Végül 
+// számolja ki a „This is a simple checksum example.” üzenet ellenőrző 
+// összegét! Az input fájl formátuma: Első sor: Az üzenetek száma A többi 
+// sor felváltva tartalmaz üzeneteket és ellenőrző összegeket. Az üzenetek 
+// soraiban több szó is szerepelhet. Az üzenet után következő sor az üzenet 
+// ellenőrző összegét tartalmazza hexadecimális formában. Példa bemenet: 2 
+// This is the first row of the message. C2 This is the second row ov the message. 
+// 6E Kimenet: "This is the first row of the message." C2 ===> Correct! "This is 
+// the second row ov the message." 6E ===> Faulty! Sum of "This is a simple 
+// checksum example.": C6C The checksum: 94 
+
+// 3.42.1.
+
+
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <iomanip>
+
+using ubyte = unsigned char;
+
+ubyte getChecksum(const std::string& msg) {
+    unsigned int sum = 0;
+    for (char c : msg)
+        sum += static_cast<ubyte>(c);
+
+    std::cout << "\nSum of \"" << msg << "\": " << std::hex << std::uppercase << sum << '\n';
+
+    ubyte reduced = static_cast<ubyte>(sum);  // Only the least significant byte
+    ubyte checksum = 0xFF - reduced + 1;
+
+    std::cout << "The checksum: " << std::hex << static_cast<int>(checksum) << std::dec << '\n';
+
+    return checksum;
+}
+
+bool checkMessage(const std::string& msg, ubyte checksum) {
+    unsigned int sum = checksum;
+    for (char c : msg)
+        sum += static_cast<ubyte>(c);
+
+    return (static_cast<ubyte>(sum) == 0);
+}
+
+void readMessages(std::istream& in) {
+    int count;
+    in >> count;
+    in.ignore(); // skip newline
+
+    for (int i = 0; i < count; ++i) {
+        std::string msg;
+        std::getline(in, msg);
+
+        std::string checksum_line;
+        std::getline(in, checksum_line);
+        unsigned int checksum;
+        std::stringstream(checksum_line) >> std::hex >> checksum;
+
+        std::cout << "\"" << msg << "\" " << std::uppercase << checksum << " ===> ";
+        if (checkMessage(msg, static_cast<ubyte>(checksum))) {
+            std::cout << "Correct!\n";
+        } else {
+            std::cout << "Faulty!\n";
+        }
+    }
+}
+
+int main(int argc, char* argv[]) {
+    const std::string filename = (argc > 1) ? argv[1] : "message.txt";
+    std::ifstream file(filename);
+    if (!file) {
+        std::cerr << "Hiba a fájl megnyitásakor: " << filename << '\n';
+        return 1;
+    }
+
+    readMessages(file);
+    file.close();
+
+    getChecksum("This is a simple checksum example.");
+
+    return 0;
+}
+/*
+3.43. Statisztika
+
+3.43.1. Egy 5000 fős település lakosainak adatait kell feldolgoznunk. Van 
+egy fájlunk, amely a lakosok életkorát tartalmazza. Írjon programot, amely 
+kiírja a képernyőre, hogy mennyi kiskorú, felnőtt, nyugdíjas él a 
+teleülésen! Kiskorúnak számít az, aki még nem töltötte be a 18. 
+életévét, egyébként a felnőttek közé soroljuk. A nyugdíjkorhatár 62 
+év. 
+
+3.43.2. Bővítse ki az előző programot úgy, hogy a program kiírja, hogy 
+hányan születtek a második világháború alatt (1939-1945). Az aktuális 
+év 2010. 
+
+3.43.3. Bővítse ki az előző programot úgy, hogy a program kiírja azt is, 
+hogy hányan születtek szökőévben! Szökőévnek számítanak azok az 
+évek, ahol az évszám osztható 4-el, de a 100-asra végződőek közül csak 
+azok, amelyek oszthatóak 400-al. Ez alapján szökőév volt 1992, 1996, de 
+1900 nem, viszont 2000 igen. 
+
+3.43.1.-3.34.3.
+
+ 
+*/
+
+ 
+#include <iostream>
+#include <fstream>
+#include <string>
+
+constexpr int AKTUALIS_EV = 2010;
+
+bool szokoev(int ev) {
+    return (ev % 4 == 0 && ev % 100 != 0) || (ev % 400 == 0);
+}
+
+int main(int argc, char** argv) {
+    if (argc < 2) {
+        std::cerr << "Használat: " << argv[0] << " fajlnev.txt\n";
+        return EXIT_FAILURE;
+    }
+
+    std::ifstream file(argv[1]);
+    if (!file) {
+        std::cerr << "Nem sikerült megnyitni a fájlt: " << argv[1] << '\n';
+        return EXIT_FAILURE;
+    }
+
+    int kiskoru = 0;
+    int felnott = 0;
+    int nyugdijas = 0;
+    int vh2 = 0;
+    int szokoevben = 0;
+
+    int eletkor;
+    while (file >> eletkor) {
+        int ev = AKTUALIS_EV - eletkor;
+
+        // Életkori kategóriák
+        if (eletkor < 18) {
+            ++kiskoru;
+        } else {
+            ++felnott;
+            if (eletkor >= 62) {
+                ++nyugdijas;
+            }
+        }
+
+        // 2. világháború alatt születettek
+        if (ev >= 1939 && ev <= 1945) {
+            ++vh2;
+        }
+
+        // Szökőév ellenőrzés
+        if (szokoev(ev)) {
+            ++szokoevben;
+        }
+    }
+
+    // Kiírás
+    std::cout << "Kiskorúak száma: " << kiskoru << '\n';
+    std::cout << "Felnőttek száma: " << felnott << '\n';
+    std::cout << "Nyugdíjasok száma: " << nyugdijas << '\n';
+    std::cout << "Második világháború alatt születettek: " << vh2 << '\n';
+    std::cout << "Szökőévben születettek: " << szokoevben << '\n';
+
+    return 0;
+}
+
+/* 3.44. Kerítés
+
+3.44.1. Egy 400 méter kerületű telket szeretnénk körülvenni 
+drótkerítéssel. Több köteg drótkerítésünk van, amelyek hosszát 
+egyenként ismerjük. Írjon programot, amely 0 végjelig beolvassa az egyes 
+kötegek hosszait, majd a végén kiírja, hogy összesen hány méternyi 
+kerítésünk van és, ha kell-e még kerítést vennünk, akkor összesen 
+mennyit! 
+
+3.44.1.
+*/
+
+#include <iostream>
+
+int main() {
+    int koteg = 0;
+    int osszeg = 0;
+
+    std::cout << "Adja meg a kerítéskötetek hosszát (0 végjelig):\n";
+
+    do {
+        std::cout << "Köteg hossza (m): ";
+        std::cin >> koteg;
+        if (koteg > 0) {
+            osszeg += koteg;
+        }
+    } while (koteg != 0);
+
+    std::cout << "Összesen van " << osszeg << " méter kerítésünk.\n";
+
+    if (osszeg < 400) {
+        std::cout << "Még szükség van " << 400 - osszeg << " méternyi kerítésre.\n";
+    } else {
+        std::cout << "Megvan a szükséges kerítésmennyiség.\n";
+    }
+
+    return 0;
+}
+
+/*
+3.45. Jegyek átlaga Aladár év végén szeretné kiszámolni, hogy 
+mely tantárgyból hányasra áll. Minden tárgyból sok jegyet szerzett, 
+ezért úgy véli, fárasztó munka lenne kézzel átlagokat számolni, ezért 
+számítógépes segítséghez folyamodik.
+
+3.45.1. Írjon programot Aladárnak, amely beolvas 10 jegyet, majd kiszámolja 
+azok számtani átlagát! 
+
+3.45.1.
+*/
+
+
+#include <iostream>
+#include <vector>
+
+constexpr int N = 10;
+
+int main() {
+    std::vector<int> jegyek(N);
+    int osszeg = 0;
+
+    std::cout << "Kérem a " << N << " jegyet:\n";
+
+    for (int i = 0; i < N; ++i) {
+        std::cout << i + 1 << ". jegy: ";
+        std::cin >> jegyek[i];
+        osszeg += jegyek[i];
+    }
+
+    double atlag = static_cast<double>(osszeg) / N;
+
+    std::cout << "A jegyek számtani átlaga: " << atlag << std::endl;
+
+    return 0;
+}
+
+
+// 3.45.2. Bővítse ki az előző programot úgy, hogy 0 végjelig olvassa be a 
+// jegyeket és úgy végzi el a számolást! 
+
+// 3.45.3. Fejlessze tovább a programot úgy, hogy a jegyek szórását is 
+// meghatározza! Határozza meg az egyes jegyek átlagtól való eltérésit, 
+// utána ezen eltérések négyezeteinek az átlagát, majd az így kapott 
+// eredmény gyökét! 
+
+// 3.45.2-3.45.3.
+
+
+#include <iostream>
+#include <vector>
+#include <cmath>
+#include <iomanip>
+
+int main() {
+    std::vector<int> jegyek;
+    int jegy, i = 1;
+    int osszeg = 0;
+
+    std::cout << "Jegyek beolvasása (0 végjelig):\n";
+    do {
+        std::cout << i++ << ". jegy: ";
+        std::cin >> jegy;
+        if (jegy > 0) {
+            jegyek.push_back(jegy);
+            osszeg += jegy;
+        }
+    } while (jegy > 0);
+
+    if (jegyek.empty()) {
+        std::cout << "Nincsenek érvényes jegyek!\n";
+        return 0;
+    }
+
+    double atlag = static_cast<double>(osszeg) / jegyek.size();
+
+    // Szórás számítása
+    double elteres_osszeg = 0.0;
+    for (int j : jegyek) {
+        elteres_osszeg += std::pow(j - atlag, 2);
+    }
+
+    double szoras = std::sqrt(elteres_osszeg / jegyek.size());
+
+    // Eredmények kiírása
+    std::cout << std::fixed << std::setprecision(2);
+    std::cout << "\nA jegyek számtani átlaga: " << atlag << '\n';
+    std::cout << "A jegyek szórása: " << szoras << '\n';
+
+    return 0;
+}
+// 3.46. Nyúltenyésztés
+
+// 3.46.1. Mr. Fibonacci elhatározta, hogy belevág a nyúltenyésztésbe. Az 
+// első hónapban vesz egy újszülött nyúlpárt. Minden nyúl 2 hónap után 
+// válik termékennyé. Minden hónapban minden termékeny nyúlpár egy új 
+// nyúlpárt szül. A nyulakat etetni kell, minden nyúl egy zsák nyúltápot 
+// fogyaszt el minden hónapban és egy nyúlpár se pusztul el. Írjon programot, 
+// amely meghatározza, hogy hány zsák nyúltápot kell vásárolni egy évre, 
+// ha az első hónapban 1 nyúlpár van! 
+
+// 3.46.2. Bővítse ki az előző programot úgy, hogy 3 évre előre számoljon, 
+// figyelembe véve, hogy Mr. Fibonacci minden év elején eladja a termékeny 
+// nyulak 90 %-át, és a terméketlenek 95 %-át! Amennyiben az eladandó nyulak 
+// mennyisége nem egész szám, úgy ezt az értéket mindig lefele kerekítjük. 
+// Például 101 termékeny nyúl esetén 90-et adunk el. 3.47. Jegyek
+
+// 3.46.1.-3.46.2.
+
+
+#include <iostream>
+#include <cmath>
+#include <iomanip>
+
+int main() {
+    using ull = unsigned long long;
+    
+    ull termeketlen = 1; // 1 pár nyúl az elején (újszülött)
+    ull egyhonapos = 0;
+    ull termekeny = 0;
+
+    ull total_nyulpar = 1;
+    ull total_tap = 2; // 1 pár nyúl = 2 nyúl = 2 zsák
+
+    const int evek = 3;
+
+    for (int ev = 1; ev <= evek; ++ev) {
+        for (int honap = 1; honap <= 12; ++honap) {
+            ull uj_nyulpar = termekeny;
+
+            // Frissítjük az állapotokat
+            termekeny += egyhonapos;
+            egyhonapos = termeketlen;
+            termeketlen = uj_nyulpar;
+
+            ull havi_nyulpar = termekeny + egyhonapos + termeketlen;
+            total_nyulpar += uj_nyulpar;
+            total_tap += havi_nyulpar * 2;
+        }
+
+        // Év végén eladások
+        ull eladott_termekeny = static_cast<ull>(std::floor(termekeny * 0.9));
+        ull eladott_termeketlen = static_cast<ull>(std::floor((termeketlen + egyhonapos) * 0.95));
+
+        std::cout << "\n[Év " << ev << " vége] Eladás előtt:\n";
+        std::cout << "  Termekeny: " << termekeny << "\n";
+        std::cout << "  Termeketlen: " << (termeketlen + egyhonapos) << "\n";
+
+        termekeny -= eladott_termekeny;
+
+        // Termeketlen = (újszülött + egyhonapos), újraosztjuk:
+        ull marado_termeketlen = termeketlen + egyhonapos - eladott_termeketlen;
+        egyhonapos = 0;
+        termeketlen = marado_termeketlen;
+
+        std::cout << "  Eladás után:\n";
+        std::cout << "    Termekeny: " << termekeny << "\n";
+        std::cout << "    Termeketlen: " << termeketlen << "\n";
+    }
+
+    std::cout << "\nÖsszesen szükséges nyúltáp (3 évre): " << total_tap << " zsák\n";
+
+    return 0;
+}
+// 3.47.1. Egy 30 fős osztályban minden tanulóról tudjuk, hogy 
+// informatikából mennyi a jegyeinek az átlaga. Írjon programot, amely 
+// billentyűzetről beolvassa a 30 átlagot, majd kiírja a képernyőre, hogy 
+// volt-e bukás idén! Az bukik meg, akinek az átlaga kevesebb, mint 1.5. 
+// 3.47.1.
+
+#include <iostream>
+#include <vector>
+
+constexpr int N = 30;
+constexpr double BUKAS_HATAR = 1.5;
+
+int main() {
+    std::vector<double> atlagok(N);
+    bool voltBukas = false;
+
+    for (int i = 0; i < N; ++i) {
+        std::cout << "A(z) " << (i + 1) << ". atlag: ";
+        std::cin >> atlagok[i];
+        if (atlagok[i] < BUKAS_HATAR) {
+            voltBukas = true;
+        }
+    }
+
+    std::cout << "\n" << (voltBukas ? "Volt bukas!" : "Nem volt bukas!") << "\n";
+
+    return 0;
+}
+// 3.47.2. Módosítsa az előző programot úgy, hogy addig olvassa be az 
+// átlagokat, amíg bukott embert nem talál! Amennyiben 0-t olvasunk be, az azt 
+// jelenti, hogy vége a beolvasásnak, vagyis ez nem egy átlag. A program ez 
+// esetben is írja ki, hogy bukik-e valaki! 
+
+
+
+#include <iostream>
+
+constexpr double BUKAS_HATAR = 1.5;
+
+int main() {
+    double atlag = 0.0;
+    int sorszam = 1;
+    bool voltBukas = false;
+
+    while (true) {
+        std::cout << "Kerem a(z) " << sorszam++ << ". atlagot: ";
+        std::cin >> atlag;
+
+        if (atlag == 0.0) {
+            break;
+        }
+
+        if (atlag < BUKAS_HATAR) {
+            voltBukas = true;
+            break;
+        }
+    }
+
+    std::cout << (voltBukas ? "Volt bukas!\n" : "Nem volt bukas!\n");
+
+    return 0;
+}
+/* 
+3.48. Marsjáró 
+
+A Mars Explorer 3000-es marsjáró robot utazása során 100 méterenként feljegyzi, hogy a 
+bolygón való leszállóhelyéhez viszonyítva milyen magasan / mélyen jár, 
+így egy domborzati keresztmetszetet továbbít a földi irányító 
+központba. Szeretnénk részletesen megvizsgálni a bejárt terepet. A 
+vizsgálatra számítógépet használunk. A domborzati magasságokat egy 
+tömbben tároljuk.
+
+
+3.48.1. Írjon programot, amely a tömbben tárolt domborzati adatokból 
+meghatározza, hogy mekkora volt a legmagasabb, illetve legalacsonyabb 
+magasság, ahol a marsjáró járt, valamint hogy hol voltak ezek a pontok! 
+*/ 
+
+// 3.48.1.
+
+#include <iostream>
+#include <vector>
+#include <cstdlib>  // rand()
+#include <ctime>    // time()
+
+constexpr int N = 100;
+
+int main() {
+    std::srand(static_cast<unsigned int>(std::time(nullptr))); // véletlenszám inicializálása
+
+    std::vector<double> magassag(N);
+    
+    // Véletlenszerű magasságok generálása
+    for (int i = 0; i < N; ++i) {
+        magassag[i] = (std::rand() % 1000) / 10.0; // 0.0 - 99.9 közötti értékek
+    }
+
+    // Min/max keresés
+    int minIndex = 0;
+    int maxIndex = 0;
+
+    for (int i = 1; i < N; ++i) {
+        if (magassag[i] < magassag[minIndex]) {
+            minIndex = i;
+        }
+        if (magassag[i] > magassag[maxIndex]) {
+            maxIndex = i;
+        }
+    }
+
+    std::cout << "A legmagasabb pont: " << magassag[maxIndex]
+              << ", helye: " << maxIndex << '\n';
+    std::cout << "A legalacsonyabb pont: " << magassag[minIndex]
+              << ", helye: " << minIndex << '\n';
+
+    return 0;
+}
+
+/*
+3.48.2. Közeledik a marsbeli tél, ezért a marsjáró földi vezetői attól 
+félnek, hogy azelőtt leáll, mielőtt elküldené a legújabb 
+összegyűjtött méréseket. Ezért beállítják, hogy minden egyes mérés 
+után küldje el a Földre az aktuális magasságát. Írjon programot, amibe a 
+kezelő személy begépeli az aktuális kapott magasság értéket és minden 
+új adat után kiszámolja, hogy eddig mekkora volt a legmagasabb és 
+legalacsonyabb pont és hol voltak azok! 
+
+3.48.3. Bővítse ki az előző programot úgy, hogy azt is nyilván tartsa a 
+legmeredekebb lejtő és emelkedő meredekségét, valamint pozícióját! 
+Megjegyzés: két mérési adat közötti különbség egy derékszögű 
+háromszög egyik befogóját határozza meg, a másik befogó 100 méter. 
+
+3.48.4. Bővítse ki az előző programot úgy, hogy a leghosszabb sík 
+terület hosszát, valamint kezdő és vég pontjának pozícióját keresse 
+meg! Sík területnek számít az, ahol a terep pontjai összefüggően azonos 
+magasságúak. 
+*/
+//3.48.2.-3.48.4.
+
+#include <iostream>
+#include <vector>
+#include <cmath>
+#include <cstdlib>
+
+constexpr int N = 100;
+
+double magassagLekerdez() {
+    static int i = 0;
+    double res;
+    if (i >= 0 && i <= 3) res = 4;
+    else if (i >= 4 && i <= 10) res = 3;
+    else if (i >= 40 && i <= 60) res = 7;
+    else if (i >= 70 && i <= 100) res = 2;
+    else res = (std::rand() % 1000) / 10.0;
+    ++i;
+    return res;
+}
+
+struct Siksag {
+    int kezdet = 0;
+    int veg = 0;
+    int hossz = 1;
+};
+
+int main() {
+    std::vector<double> magassagok(N);
+    int minIndex = 0, maxIndex = 0;
+    int emelkedoIndex = 0;
+    double minMagassag, maxMagassag;
+    double maxKulonbseg = 0;
+    double elozo = 0.0;
+
+    Siksag maxSiksag;
+    Siksag aktSiksag;
+    aktSiksag.hossz = 0;
+
+    for (int i = 0; i < N; ++i) {
+        double magassag = magassagLekerdez();
+        magassagok[i] = magassag;
+
+        if (i == 0) {
+            minMagassag = maxMagassag = elozo = magassag;
+            continue;
+        }
+
+        // legmeredekebb lejtő vagy emelkedő
+        double kulonbseg = std::abs(magassag - elozo);
+        if (kulonbseg > maxKulonbseg) {
+            maxKulonbseg = kulonbseg;
+            emelkedoIndex = i;
+        }
+
+        // max és min pont
+        if (magassag > maxMagassag) {
+            maxMagassag = magassag;
+            maxIndex = i;
+        }
+        if (magassag < minMagassag) {
+            minMagassag = magassag;
+            minIndex = i;
+        }
+
+        // sík szakasz
+        if (std::abs(magassag - elozo) < 1e-6) {
+            if (aktSiksag.hossz == 0) {
+                aktSiksag.kezdet = i - 1;
+                aktSiksag.veg = i;
+                aktSiksag.hossz = 2;
+            } else {
+                aktSiksag.veg = i;
+                aktSiksag.hossz++;
+            }
+        } else {
+            if (aktSiksag.hossz > maxSiksag.hossz) {
+                maxSiksag = aktSiksag;
+            }
+            aktSiksag.hossz = 0;
+        }
+
+        elozo = magassag;
+    }
+
+    if (aktSiksag.hossz > maxSiksag.hossz) {
+        maxSiksag = aktSiksag;
+    }
+
+    // szög kiszámítása fokban (a = szintkülönbség, b = 100 m)
+    double maxFok = std::atan(maxKulonbseg / 100.0) * 180.0 / M_PI;
+
+    // eredmények kiíratása
+    std::cout << "A legmagasabb pont: " << maxMagassag << ", helye: " << maxIndex << '\n';
+    std::cout << "A legalacsonyabb pont: " << minMagassag << ", helye: " << minIndex << '\n';
+    std::cout << "A legmeredekebb emelkedo vagy lejtő: " << maxFok << " fok, helye: " << emelkedoIndex << '\n';
+    std::cout << "A leghosszabb sík terület:\n";
+    std::cout << "\tKezdete: " << maxSiksag.kezdet << '\n';
+    std::cout << "\tVege: " << maxSiksag.veg << '\n';
+    std::cout << "\tHossza: " << maxSiksag.hossz << '\n';
+
+    return 0;
+}
+
+/* c++11
+
+3.49.1. Nemo kapitány alámerül a Nautilus tengeralattjáróval, 
+hogy megvizsgálja a tenger élővilágát. 
+Merülés közben a segédei minden tízedik méternél megszámolják, 
+hogy mennyi halat látnak, hogy ezt felhasználhassák későbbi 
+kutatásaikhoz. 
+A számlálások eredményét egy vektorban tárolják el, ahol az i. komponens 
+a 10*i méter mélyen végzett számlálás eredményét tárolja. 
+Sajnos még nem áll rendelkezésre nagy memória kapacitású számítógép, 
+az eredményeket lyukkártyára írják. Megfigyelték, hogy nagyon gyakran nem 
+látnak egy halat sem, 
+ezért úgy gondolták, oly módon tárolják az eredményeket, hogy ezt a 
+tényt kihasználják 
+és a ritka vektorok tárolási módszeréhez folyamodtak, így helyet 
+takarítottak meg, 
+és az adatok feldolgozása is gyorsabb. Írjon programot, amely egy ilyen 
+ritka vektorokat kezel! 
+A ritka vektorok olyan vektorok, amelyek nagyon kevés nem 0 komponenst 
+tartalmaznak. 
+Ezeket célszerű úgy tárolni, hogy csak a nem 0 elemeket tároljuk, azon 
+vektoron belüli indexével. 
+Ennek egyik módja, ha a (szám, index) párokat láncolt listában tároljuk. 
+A vektor dimenziója nincs korlátozva. Valósítsa meg a következő 
+műveleteket: 
+· Beállít(index, érték): A vektor adott indexű elemét az adott értékre 
+állítja be.  
+  Ha az érték 0, akkor az elem nem tárolódik. 
+· Érték(index): A művelet visszaadja az adott indexű elem értékét. 
+· Töröl: A művelet nulláza a teljes vektor tartalmát. 
+· NemNullák: A művelet visszaadja, hogy mennyi nem 0 elem van a vektorban. 
+· Legutolsó: A művelet visszaadja, hogy hányas indexen található a 
+legutolsó nem 0 elem. 
+· Megjelenít: A művelet kiírja a képernyőre a teljes vektort egészen a 
+„Legutolsó” által meghatározott elemig.
+ A 0-kat is meg kell jeleníteni. 
+
+3.49.2. Előfordulhat, hogy az előző vektoron belül az elemek nem jó 
+sorrendben követik egymást. 
+éldául lehet, hogy előbb található meg az 5-ös indexű elem a listában, 
+mint a 3-as. 
+Implementálja a „Rendez” műveletet, amely az indexeknek megfelelően 
+növekvő sorrendbe rendezi 
+a listán belüli elemeket! 
+
+3.49.3. Bővítse ki az előző programot az összeadás és a szorzás 
+műveletekkel! 
+Az összeadás két ritka vektort ad össze. Ügyeljen arra, hogy a 0 elemeket 
+ne tárolja el! 
+A szorzás 2 ritka vektort szoroz össze skalárisan.  
+
+3.49.1-3.49.3. */
+
+
+
+#include <iostream>
+#include <memory>
+
+class SparseVector {
+    struct Node {
+        double value;
+        int index;
+        std::unique_ptr<Node> next;
+        Node(double val, int idx) : value(val), index(idx), next(nullptr) {}
+    };
+
+    std::unique_ptr<Node> head;
+
+    // Segédfüggvény: mély másolás egy láncolt listáról
+    static std::unique_ptr<Node> clone(const std::unique_ptr<Node>& src) {
+        if (!src) return nullptr;
+        std::unique_ptr<Node> res(new Node(src->value, src->index));
+        res->next = clone(src->next);
+        return res;
+    }
+
+public:
+    SparseVector() = default;
+    ~SparseVector() = default;
+
+    // Másoló konstruktor (deep copy)
+    SparseVector(const SparseVector& other) : head(clone(other.head)) {}
+
+    // Másoló értékadó operátor (deep copy)
+    SparseVector& operator=(const SparseVector& other) {
+        if (this != &other) {
+            head = clone(other.head);
+        }
+        return *this;
+    }
+
+    // Beállít: értéket ad egy indexhez (ha 0, akkor törli)
+    void set(int idx, double val) {
+        Node* prev = nullptr;
+        Node* curr = head.get();
+
+        while (curr && curr->index < idx) {
+            prev = curr;
+            curr = curr->next.get();
+        }
+        if (curr && curr->index == idx) {
+            if (val == 0.0) {
+                if (prev)
+                    prev->next = std::move(curr->next);
+                else
+                    head = std::move(curr->next);
+            } else {
+                curr->value = val;
+            }
+            return;
+        }
+        if (val == 0.0) return;
+
+        std::unique_ptr<Node> newNode(new Node(val, idx));
+        if (prev) {
+            newNode->next = std::move(prev->next);
+            prev->next = std::move(newNode);
+        } else {
+            newNode->next = std::move(head);
+            head = std::move(newNode);
+        }
+    }
+
+    // Lekérdezés
+    double get(int idx) const {
+        Node* curr = head.get();
+        while (curr && curr->index < idx)
+            curr = curr->next.get();
+        if (curr && curr->index == idx)
+            return curr->value;
+        return 0.0;
+    }
+
+    // Töröl mindent
+    void clear() {
+        head.reset();
+    }
+
+    // Nem nulla elemek száma
+    int nonZeros() const {
+        int count = 0;
+        Node* curr = head.get();
+        while (curr) {
+            ++count;
+            curr = curr->next.get();
+        }
+        return count;
+    }
+
+    // Legutolsó nem nulla index (ha nincs, -1)
+    int lastIndex() const {
+        int idx = -1;
+        Node* curr = head.get();
+        while (curr) {
+            if (curr->index > idx) idx = curr->index;
+            curr = curr->next.get();
+        }
+        return idx;
+    }
+
+    // Megjelenít (nullákkal együtt, egészen a legutolsóig)
+    void print() const {
+        int max = lastIndex();
+        if (max == -1) {
+            std::cout << "ures" << std::endl;
+            return;
+        }
+        for (int i = 0; i <= max; ++i) {
+            std::cout << get(i);
+            if (i < max) std::cout << ", ";
+        }
+        std::cout << std::endl;
+    }
+
+    // Rendezés index szerint (Bubble-sort szerűen, pointerek helyett 
+értékcserével)
+    void sort() {
+        if (!head || !head->next) return;
+        bool swapped;
+        do {
+            swapped = false;
+            Node* curr = head.get();
+            while (curr->next) {
+                if (curr->index > curr->next->index) {
+                    std::swap(curr->index, curr->next->index);
+                    std::swap(curr->value, curr->next->value);
+                    swapped = true;
+                }
+                curr = curr->next.get();
+            }
+        } while (swapped);
+    }
+
+    // Összeadás
+    SparseVector operator+(const SparseVector& other) const {
+        SparseVector result = *this;
+        Node* curr = other.head.get();
+        while (curr) {
+            result.set(curr->index, result.get(curr->index) + curr->value);
+            curr = curr->next.get();
+        }
+        return result;
+    }
+
+    // Skaláris szorzat (dot product)
+    double dot(const SparseVector& other) const {
+        double sum = 0.0;
+        Node* curr = head.get();
+        while (curr) {
+            double v = other.get(curr->index);
+            sum += curr->value * v;
+            curr = curr->next.get();
+        }
+        return sum;
+    }
+};
+
+int menu() {
+    std::cout << "\n1. Beallit (index, ertek)\n"
+              << "2. Ertek lekerdezese\n"
+              << "3. Mindet torol\n"
+              << "4. Nem nullak szama\n"
+              << "5. Legutolso index\n"
+              << "6. Megjelenit\n"
+              << "7. Rendez\n"
+              << "8. Osszead masik vektorral\n"
+              << "9. Skalaris szorzas masik vektorral\n"
+              << "10. Kilepes\n"
+              << "Valasztas: ";
+    int ch;
+    std::cin >> ch;
+    return ch;
+}
+
+int main() {
+    SparseVector v;
+    SparseVector v2;
+    v2.set(2, 5.0);
+    v2.set(6, 1.0);
+    v2.set(10, 7.0);
+
+    int menuval;
+    do {
+        menuval = menu();
+        if (menuval == 1) {
+            int idx; double val;
+            std::cout << "Index: "; std::cin >> idx;
+            std::cout << "Ertek: "; std::cin >> val;
+            v.set(idx, val);
+        } else if (menuval == 2) {
+            int idx;
+            std::cout << "Index: "; std::cin >> idx;
+            std::cout << "Ertek: " << v.get(idx) << "\n";
+        } else if (menuval == 3) {
+            v.clear();
+        } else if (menuval == 4) {
+            std::cout << "Nem nullak szama: " << v.nonZeros() << "\n";
+        } else if (menuval == 5) {
+            std::cout << "Legutolso index: " << v.lastIndex() << "\n";
+        } else if (menuval == 6) {
+            v.print();
+        } else if (menuval == 7) {
+            v.sort();
+        } else if (menuval == 8) {
+            v = v + v2;
+        } else if (menuval == 9) {
+            std::cout << "Skalaris szorzat: " << v.dot(v2) << "\n";
+        }
+    } while (menuval != 10);
+
+    return 0;
+}

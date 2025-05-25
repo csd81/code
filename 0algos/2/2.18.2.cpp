@@ -1,45 +1,51 @@
+// 2.18.2. Ne csak egy darab számjegyet, hanem egy több karakterből álló 
+// számot alakítson át! 
+// 2.18.2.
 
-2.18.2.
-#include <stdio.h>
-#include <ctype.h> int main() { char roman[30];
-int arabian = 0, size, idxI;
-printf("Roman number: ");
-scanf("%s", roman);
-size = strlen(roman);
-for (idxI = 0;
-idxI < size;
-idxI++) { roman[idxI] = toupper(roman[idxI]);
-} for (idxI = 0;
-idxI < size;
-idxI++) { switch (roman[idxI]) { case 'I': if (roman[idxI + 1] == 'X') { 
-arabian += 9;
-idxI += 1;
-} else { if (roman[idxI + 1] == 'V') { arabian += 4;
-idxI += 1;
-} else { arabian += 1;
-} } break;
-case 'V': arabian += 5;
-break;
-case 'X': if (roman[idxI + 1] == 'C') { arabian += 90;
-idxI += 1;
-} else { if (roman[idxI + 1] == 'L') { arabian += 40;
-idxI += 1;
-} else { arabian += 10;
-} } break;
-case 'L': arabian += 50;
-break;
-case 'C': if (roman[idxI + 1] == 'M') { arabian += 900;
-idxI += 1;
-} else { if (roman[idxI + 1] == 'D') { arabian += 400;
-idxI += 1;
-} else { arabian += 100;
-} } break;
-case 'D': arabian += 500;
-break;
-case 'M': arabian += 1000;
-break;
-} } } printf("%d\n", arabian);
-return 0;
+#include <iostream>
+#include <string>
+#include <cctype> // for toupper
 
-2.18.2. Ne csak egy darab számjegyet, hanem egy több karakterből álló 
-számot alakítson át! 
+int romanCharToValue(char ch) {
+    switch (ch) {
+        case 'I': return 1;
+        case 'V': return 5;
+        case 'X': return 10;
+        case 'L': return 50;
+        case 'C': return 100;
+        case 'D': return 500;
+        case 'M': return 1000;
+        default: return 0;
+    }
+}
+
+int romanToArabic(const std::string& roman) {
+    int total = 0;
+    int prev = 0;
+
+    for (int i = roman.size() - 1; i >= 0; --i) {
+        char ch = std::toupper(roman[i]);
+        int value = romanCharToValue(ch);
+
+        if (value < prev)
+            total -= value;
+        else
+            total += value;
+
+        prev = value;
+    }
+
+    return total;
+}
+
+int main() {
+    std::string roman;
+
+    std::cout << "Roman number: ";
+    std::cin >> roman;
+
+    int result = romanToArabic(roman);
+    std::cout << "Arabic value: " << result << "\n";
+
+    return 0;
+}

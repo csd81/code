@@ -1,0 +1,45 @@
+<Person>
+	<Name value="Jani"/>
+	<Age value="22"/>
+	<Count value="3"/>
+	<Cars>
+		<Car>
+			<ID value="0"/>
+			<Price value="50.000000"/>
+		</Car>
+		<Car>
+			<ID value="2"/>
+			<Price value="12.369000"/>
+		</Car>
+		<Car>
+			<ID value="21"/>
+			<Price value="0.569000"/>
+		</Car>
+	</Cars>
+</Person>
+<Person>
+	<Name value="Evi"/>
+	<Age value="36"/>
+	<Count value="2"/>
+	<Cars>
+		<Car>
+			<ID value="6"/>
+			<Price value="21.000000"/>
+		</Car>
+		<Car>
+			<ID value="1"/>
+			<Price value="15.400000"/>
+		</Car>
+	</Cars>
+</Person>
+<Person>
+	<Name value="Zotya"/>
+	<Age value="25"/>
+	<Count value="1"/>
+	<Cars>
+		<Car>
+			<ID value="3"/>
+			<Price value="5.700000"/>
+		</Car>
+	</Cars>
+</Person>

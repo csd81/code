@@ -1,16 +1,28 @@
+// 2.26.3. Írjon az előzőhöz hasonló programot gömbre vonatkozóan! 
 
-2.26.3.
-#include <stdio.h> #define _USE_MATH_DEFINES
-#include <math.h> int main() { float radius;
-float *radius1 = &radius, *radius2 = &radius, *radius3 = &radius;
-float surface, volume;
-} printf("The radius of the ball is: ");
-scanf("%f", &radius);
-surface = 4 * (*radius1) * (*radius2) * (*radius3) * (M_PI) / 3;
-volume = 4 * (*radius1) * (*radius2) * (M_PI);
-printf("The volume of the ball is: %f\n", volume);
-printf("The surface of the ball is: %f\n", surface);
-return 0;
+// 2.26.3.
 
-2.26.3. Írjon az előzőhöz hasonló programot gömbre vonatkozóan! 2.27. 
-Két kulcsos hozzáférés
+
+#include <iostream>
+#include <iomanip>
+#include <cmath>  // M_PI is available in C++
+
+int main() {
+    float radius;
+    float* radius1 = &radius;
+    float* radius2 = &radius;
+    float* radius3 = &radius;
+    float surface, volume;
+
+    std::cout << "The radius of the ball is: ";
+    std::cin >> radius;
+
+    surface = 4.0f * M_PI * (*radius1) * (*radius2);  // Surface = 4πr²
+    volume = (4.0f / 3.0f) * M_PI * (*radius1) * (*radius2) * (*radius3);  // Volume = 4/3πr³
+
+    std::cout << std::fixed << std::setprecision(3);
+    std::cout << "The surface of the ball is: " << surface << std::endl;
+    std::cout << "The volume of the ball is: " << volume << std::endl;
+
+    return 0;
+}

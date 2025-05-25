@@ -61,7 +61,17 @@
         "valarray": "cpp",
         "variant": "cpp",
         "math.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "bitset": "cpp",
+        "charconv": "cpp",
+        "chrono": "cpp",
+        "complex": "cpp",
+        "set": "cpp",
+        "unordered_set": "cpp",
+        "format": "cpp",
+        "semaphore": "cpp",
+        "stop_token": "cpp",
+        "thread": "cpp"
     },
     "github.copilot.enable": {
         "*": true,

@@ -1,38 +1,64 @@
+// 2.30. Struktúra kezelés
+// 2.30.1. Készítsen struktúrát, amely minden egyszerű adattípusból 
+// tartalmaz egyet valamint egy egészre mutató mutatót! Kérje be a struktúra 
+// adattagjait a konzolról, majd írja ki azokat! 
+// 2.30.1.
 
-2.30.1.
-#include <stdio.h> struct Var { char varChar;
-short int varShortInt;
-int varInt;
-float varFloat;
-double varDouble;
+
+#include <iostream>
+#include <memory>   // std::unique_ptr
+
+struct Var {
+    char        varChar;
+    short       varShortInt;
+    int         varInt;
+    float       varFloat;
+    double      varDouble;
+    long double varLongDouble;
+    int*        varPInt;
 };
-long double varLongDouble;
-int *varPInt;
-int main() { struct Var myVar;
-printf("varChar=");
-scanf("%c", &myVar.varChar);
-printf("varShortInt=");
-scanf("%hd", &myVar.varShortInt);
-printf("varInt=");
-scanf("%d", &myVar.varInt);
-printf("varFloat=");
-scanf("%f", &myVar.varFloat);
-printf("varDouble=");
-scanf("%lf", &myVar.varDouble);
-printf("varLongDouble=");
-scanf("%Lf", &myVar.varLongDouble);
-printf("varPInt=");
-scanf("%p", &myVar.varPInt);
-} printf("\nmyVar\n");
-printf("varChar=%c\n", myVar.varChar);
-printf("varShortInt=%hd\n", myVar.varShortInt);
-printf("varInt=%d\n", myVar.varInt);
-printf("varFloat=%g\n", myVar.varFloat);
-printf("varDouble=%lg\n", myVar.varDouble);
-printf("varLongDouble=%Lg\n", myVar.varLongDouble);
-printf("varPInt=%p", myVar.varPInt);
-return 0;
 
-2.30.1. Készítsen struktúrát, amely minden egyszerű adattípusból 
-tartalmaz egyet valamint egy egészre mutató mutatót! Kérje be a struktúra 
-adattagjait a konzolról, majd írja ki azokat! 
+int main() {
+    Var myVar;
+
+    std::cout << "varChar: ";
+    std::cin >> myVar.varChar;
+
+    std::cout << "varShortInt: ";
+    std::cin >> myVar.varShortInt;
+
+    std::cout << "varInt: ";
+    std::cin >> myVar.varInt;
+
+    std::cout << "varFloat: ";
+    std::cin >> myVar.varFloat;
+
+    std::cout << "varDouble: ";
+    std::cin >> myVar.varDouble;
+
+    std::cout << "varLongDouble: ";
+    std::cin >> myVar.varLongDouble;
+
+    // A mutatóhoz bekérünk egy egész értéket, és dinamikusan lefoglaljuk
+    int temp;
+    std::cout << "Enter integer for varPInt (we'll allocate and store it): ";
+    std::cin >> temp;
+    myVar.varPInt = new int(temp);
+
+    // Kiírás
+    std::cout << "\n--- myVar contents ---\n";
+    std::cout << "varChar        = " << myVar.varChar        << "\n";
+    std::cout << "varShortInt    = " << myVar.varShortInt    << "\n";
+    std::cout << "varInt         = " << myVar.varInt         << "\n";
+    std::cout << "varFloat       = " << myVar.varFloat       << "\n";
+    std::cout << "varDouble      = " << myVar.varDouble      << "\n";
+    std::cout << "varLongDouble  = " << myVar.varLongDouble  << "\n";
+    std::cout << "varPInt (addr) = " << static_cast<void*>(myVar.varPInt)
+              << "  *varPInt = " << *myVar.varPInt      << "\n";
+
+    // Felszabadítás
+    delete myVar.varPInt;
+    myVar.varPInt = nullptr;
+
+    return 0;
+}

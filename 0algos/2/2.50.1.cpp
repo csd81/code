@@ -1,93 +1,95 @@
-2.50.1.
-#include <stdio.h>
-#include <stdlib.h> #define INPUT_FILE "sets.txt" #define max(a, b) ((a) > (b) 
-? (a) : (b)) #define min(a, b) ((a) > (b) ? (b) : (a)) void ReadSet(FILE * fd, 
-int * size, int ** set) { int i;
-fscanf(fd, "%d", size);
-*set = (int *)malloc(sizeof(int) * (*size) );
-for (i = 0;
-i < *size;
-i++) fscanf(fd, "%d", *set + i);
-printf("\n");
-} void PrintSet(char * name, int size, int * set) { int i;
-printf("%s = ", name);
-printf("{");
-for (i = 0;
-i < size - 1;
-i++) } printf("%d, ", set[i]);
-if (size > 0) printf("%d", set[size - 1]);
-printf("}\n");
-int Element(int e, int size, int * S) { int i = 0;
-while ((i < size) && (S[i] != e)) i++;
-return i < size;
-} void Intersection(int SizeA, int SizeB, int * SizeI, int * SA, int * SB, int 
-** C) { int size = 0;
-int i;
-*SizeI = 0;
-int * A = SizeA > SizeB ? SA : SB;
-int * B = SizeA > SizeB ? SB : SA;
-for (i = 0;
-i < max(SizeA, SizeB);
-i++) { if (Element(A[i], max(SizeA, SizeB), A) && Element(A[i], min(SizeA, 
-SizeB), B) ) (*SizeI)++;
-} *C = (int *)malloc(sizeof(int) * (*SizeI) );
-for (i = 0;
-i < max(SizeA, SizeB);
-i++) { if (Element(A[i], max(SizeA, SizeB), A) && Element(A[i], min(SizeA, 
-SizeB), B) ) (*C)[size++] = A[i];
-} } int IsSubset(int SizeA, int SizeS, int * A, int * S) { int i;
-if (SizeS > SizeA) return 0;
-for (i = 0;
-i < SizeS;
-i++) if (!Element(S[i], SizeA, A)) return 0;
-return 1;
-} int main(int argc, char *argv[]) { int SetASize, SetBSize, SetISize;
-int * SetA;
-int * SetB;
-int * SetI;
-int num;
-FILE * fd = fopen(argc > 1 ? argv[1] : INPUT_FILE, "r");
-if (fd == NULL) { perror("Error");
-return 0;
-} ReadSet(fd, &SetASize, &SetA);
-ReadSet(fd, &SetBSize, &SetB);
-fclose(fd);
-Intersection(SetASize, SetBSize, &SetISize, SetA, SetB, &SetI);
-printf("Type a number: ");
-scanf("%d", &num);
-if (Element(num, SetASize, SetA)) printf("%d is element of A\n", num);
-else printf("%d is not element of A\n", num);
-if (Element(num, SetBSize, SetB)) printf("%d is element of B\n", num);
-else printf("%d is not element of B\n", num);
-if (Element(num, SetISize, SetI)) printf("%d is element of intersection of A 
-and B\n", num);
-else printf("%d is not element of intersection of A and B\n", num);
-PrintSet("A", SetASize, SetA);
-PrintSet("B", SetBSize, SetB);
-PrintSet("Intersection of A and B", SetISize, SetI);
-if (IsSubset(SetASize, SetBSize, SetA, SetB)) printf("B is subset of A\n");
-else printf("B is not subset of A\n");
-if (IsSubset(SetBSize, SetASize, SetB, SetA)) printf("A is subset of B\n");
-else printf("A is not subset of B\n");
-} free(SetA);
-SetA = NULL;
-free(SetB);
-SetB = NULL;
-free(SetI);
-SetI = NULL;
-return 0;
+// 2.50. Halmazok metszete
+// 2.50.1. Írjon programot, amely két halmaz metszetét generálja! Mindkét 
+// halmaz egész számokat tartalmaz. A program olvassa be az input fájlt! 
+// Kérjen be egy számot a billentyűzetről, és döntse el, hogy a szám 
+// eleme-e az első halmaznak, a második halmaznak, illetve ezek metszetének! 
+// Írassa ki a képernyőre az előbbi három halmazt! Végül írassa ki, hogy 
+// az első halmaz részhalmaza-e a másodiknak, illetve fordítva! Használjon 
+// dinamikus tömböket! Az input fájl formátuma: Első sor: az első halmaz 
+// mérete Második sor: az első halmaz elemei Harmadik sor: a második halmaz 
+// mérete Negyedik sor: a második halmaz elemei A számok egy-egy szóköz 
+// karakterrel vannak elválasztva. Példa bemenet: 3 80 54 41 5 41 21 54 76 80 
+// Kimenet: Type a number: 76 76 is not element of A 76 is element of B 76 is not 
+// element of intersection of A and B A = {80, 54, 41} B = {41, 21, 54, 76, 80} 
+// Intersection of A and B = {41, 54, 80} B is not subset of A A is subset of B 
+// 2.50.1.
 
-2.50.1. Írjon programot, amely két halmaz metszetét generálja! Mindkét 
-halmaz egész számokat tartalmaz. A program olvassa be az input fájlt! 
-Kérjen be egy számot a billentyűzetről, és döntse el, hogy a szám 
-eleme-e az első halmaznak, a második halmaznak, illetve ezek metszetének! 
-Írassa ki a képernyőre az előbbi három halmazt! Végül írassa ki, hogy 
-az első halmaz részhalmaza-e a másodiknak, illetve fordítva! Használjon 
-dinamikus tömböket! Az input fájl formátuma: Első sor: az első halmaz 
-mérete Második sor: az első halmaz elemei Harmadik sor: a második halmaz 
-mérete Negyedik sor: a második halmaz elemei A számok egy-egy szóköz 
-karakterrel vannak elválasztva. Példa bemenet: 3 80 54 41 5 41 21 54 76 80 
-Kimenet: Type a number: 76 76 is not element of A 76 is element of B 76 is not 
-element of intersection of A and B A = {80, 54, 41} B = {41, 21, 54, 76, 80} 
-Intersection of A and B = {41, 54, 80} B is not subset of A A is subset of B 
-2.51. Halmazok uniója
+
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <algorithm>
+
+void readSet(std::ifstream& file, std::vector<int>& set) {
+    int size;
+    file >> size;
+    set.resize(size);
+    for (int i = 0; i < size; ++i) {
+        file >> set[i];
+    }
+}
+
+void printSet(const std::string& name, const std::vector<int>& set) {
+    std::cout << name << " = {";
+    for (size_t i = 0; i < set.size(); ++i) {
+        std::cout << set[i];
+        if (i != set.size() - 1)
+            std::cout << ", ";
+    }
+    std::cout << "}\n";
+}
+
+bool elementOf(int num, const std::vector<int>& set) {
+    return std::find(set.begin(), set.end(), num) != set.end();
+}
+
+std::vector<int> intersection(const std::vector<int>& A, const std::vector<int>& B) {
+    std::vector<int> result;
+    for (int val : A) {
+        if (elementOf(val, B) && !elementOf(val, result))
+            result.push_back(val);
+    }
+    return result;
+}
+
+bool isSubset(const std::vector<int>& A, const std::vector<int>& B) {
+    for (int val : A) {
+        if (!elementOf(val, B))
+            return false;
+    }
+    return true;
+}
+
+int main(int argc, char* argv[]) {
+    std::string inputFile = (argc > 1) ? argv[1] : "sets.txt";
+    std::ifstream file(inputFile);
+
+    if (!file) {
+        std::cerr << "Error: could not open file: " << inputFile << "\n";
+        return 1;
+    }
+
+    std::vector<int> A, B;
+    readSet(file, A);
+    readSet(file, B);
+    file.close();
+
+    std::vector<int> I = intersection(A, B);
+
+    int num;
+    std::cout << "Type a number: ";
+    std::cin >> num;
+
+    std::cout << num << (elementOf(num, A) ? " is" : " is not") << " element of A\n";
+    std::cout << num << (elementOf(num, B) ? " is" : " is not") << " element of B\n";
+    std::cout << num << (elementOf(num, I) ? " is" : " is not") << " element of intersection of A and B\n";
+
+    printSet("A", A);
+    printSet("B", B);
+    printSet("Intersection of A and B", I);
+
+    std::cout << (isSubset(B, A) ? "B is" : "B is not") << " subset of A\n";
+    std::cout << (isSubset(A, B) ? "A is" : "A is not") << " subset of B\n";
+
+    return 0;
+}
