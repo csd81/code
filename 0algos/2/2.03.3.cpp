@@ -2,7 +2,7 @@
 // érték lehet, síkidomválasztáskor a kis és a nagy betűket is fogadjuk el, 
 // ha rossz választ adtunk, akkor az jelezzük, vegyük be a választható idomok 
 // közé a szabályos háromszöget!
-// 2.3.3.
+ 
 
 #include <iostream>
 #include <cmath>

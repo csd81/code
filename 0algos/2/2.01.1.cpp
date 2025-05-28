@@ -2,7 +2,7 @@
 // értékét és kiírja, hogy sikeres volt-e a vizsga! A siker feltétele az 
 // 50%-nál jobb teljesítmény. Ötlet: ügyeljen arra, hogy az 50% még bukást 
 // jelent! 
-// 2.1.1.
+ 
  
 #include <iostream>
 #include <iomanip>

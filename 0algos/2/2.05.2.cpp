@@ -1,7 +1,7 @@
 // 2.5.2. Határozza meg az összeadás, szorzás, osztás, hatványozás 
 // időigényét úgy, hogy az előző program legbelsejébe beírja a megfelelő 
 // utasítást!
-// 2.5.2.
+ 
 
 #include <iostream>
 #include <chrono>

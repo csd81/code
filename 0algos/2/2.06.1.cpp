@@ -5,7 +5,7 @@
 // súlya - float, bankszámla egyenlege - double, neve - char[200]! A bekért 
 // adatokat írja ki újból a képernyőre! A megadott és a kiírt érték mikor 
 // különbözhet? Mutasson rá példát! 
-// 2.6.1.
+
 
 #include <iostream>
 #include <string>
@@ -28,7 +28,7 @@ int main() {
     // Input buffer ürítése enter után
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-    std::cout << "sex = ";
+    std::cout << "sex (m/f)= ";
     std::cin >> sex;
 
     std::cout << "weight = ";

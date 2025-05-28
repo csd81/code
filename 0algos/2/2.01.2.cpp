@@ -3,9 +3,6 @@
 // van! A siker feltétele a 25 pontnál jobb eredmény. 
 // 2.1.2.
 
- 
-// 2.1.2. Kérjen be pontszámot, amely -25 és 50 közé kell essen!
-// A vizsga sikeres, ha a pontszám > 25.
 
 #include <iostream>
 #include <limits>  // std::numeric_limits

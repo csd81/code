@@ -2,8 +2,6 @@
 // érték is lehessen! A program elején kérje be, hogy négyzet vagy 
 // téglalapot vizsgál-e és ennek függvényében kérjen be egy vagy két oldal 
 // hosszat! 
-// 2.3.2.
-
 
 #include <iostream>
 #include <limits>

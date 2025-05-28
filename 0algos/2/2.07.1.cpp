@@ -5,7 +5,7 @@
 // függvényben belül úgy tud létrehozni, hogy a változó definiálások 
 // különböző blokkokban vannak. Egy negyedik változóba kérje be, melyik 
 // blokkba menjen be a program, írassa ki az ott lévő a változó értékét! 
-// 2.7.1.
+ 
 
 
 #include <iostream>
@@ -22,17 +22,20 @@ int main() {
     std::cin >> direction;
 
     if (direction == 1) {
-        const float a = 12.345f;
+        float a;
+        std::cin >> a;
         std::cout << "a (const float) = " << a << std::endl;
     }
 
     if (direction == 2) {
-        char a[200] = "test123";
+        char a[200];
+        std::cin >> a;
         std::cout << "a (char[200]) = " << a << std::endl;
     }
 
     if (direction == 3) {
-        unsigned long int a = 98765;
+        unsigned long int a;
+        std::cin >> a;
         std::cout << "a (unsigned long int) = " << a << std::endl;
     }
 

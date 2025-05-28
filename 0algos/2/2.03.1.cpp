@@ -4,7 +4,7 @@
 // A választástól függően számolja ki a területet vagy a kerületet! Az 
 // oldal hosszak egész értékek, a választás karakter típusú. Ötlet: 
 // ügyeljen arra, hogy negatív nagyságú oldal nincsen! 
-// 2.3.1.
+ 
 
 #include <iostream>
 

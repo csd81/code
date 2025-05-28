@@ -2,7 +2,6 @@
 // következőek: márka - char[200], végsebesség - float, regisztrációs szám 
 // - hexa, tömeg double, típus név - char[300], utas szám - int, műholdas 
 // navigáció - char. 
-// 2.6.2.
 
 
 #include <iostream>

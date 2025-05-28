@@ -1,5 +1,5 @@
 // 2.2.2. Az azonos sorok kiírásához használjon ciklust! 
-// 2.2.2.
+ 
 
 
 #include <iostream>

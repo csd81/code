@@ -1,0 +1,96 @@
+main() eleje!
+
+Pont: alap funkcionalitas teszt
+-3 4
+(5.2,-6)
+12.9321
+
+Pont: parameter nelkuli konstruktor teszt
+(0,0)
+
+Pont: setM(), getM() teszt
+1e+06
+1000
+
+Pont: M ellenorzese konstruktorban
+... eddig semmi ...
+Figyelem: Pont limiten tul! (1.21232e+06,-9)
+Figyelem: Pont limiten tul! (1.34,-1e+09)
+Figyelem: Pont limiten tul! (1.21232e+06,-9)
+(1.21232e+06,-9)
+warnings.log tartalma:
+Figyelem: Pont limiten tul! (1.21232e+06,-9)
+Figyelem: Pont limiten tul! (1.34,-1e+09)
+Figyelem: Pont limiten tul! (1.21232e+06,-9)
+
+Halmaz: konstruktorok, hozzaad(), kiir()
+halmaz1 [3]:(3.2,4.44)(-5.1,0)(99.3,1.14)
+halmaz2 [7]:(0,0)(0,0)(0,0)(0,0)(0,0)(-0.1,-0.02)(30,400)
+
+Halmaz: beolvas() teszt
+halmaz3 [7]:(1,9)(2,8)(3,7)(4,6)(5,5)(6,4)(7,3)
+
+Halmaz: fajlbair() teszt
+halmaz5 [4]:(10.1,-20.2)(30.3,-40.4)(50.5,-60.6)(70.7,-80.8)
+
+Utvonal: konstruktor teszt
+PATH [4]:(6.6,7.7)(-8.8,-9.9)(11,12.1)(0,0.01)
+
+Utvonal: irany, megfordit(), kiir()
+PATH [5]:(0,1)(2,3)(4,5)(6,7)(8,9)
+PATH [5]:(8,9)(6,7)(4,5)(2,3)(0,1)
+PATH [5]:(0,1)(2,3)(4,5)(6,7)(8,9)
+
+Utvonal: hossz() teszt
+0
+3.60555
+8.60555
+19.0459
+22.3261
+
+Haromszog: konstruktor, getA(), getB(), getC()
+TRIANGLE [3]:(9.2,1.3)(0,0.1)(-2,-3.7)
+(9.2,1.3)
+(0,0.1)
+(-2,-3.7)
+
+Haromszog: alak() teszt
+hegyesszogu
+derekszogu
+tompaszogu
+
+Teglalap: konstruktor teszt
+Megjegyzes: a csucsok sorrendje elterhet!
+RECTANGLE [4]:(-2,-3)(-2,5)(4,5)(4,-3)
+
+Teglalap: terulet() teszt
+2142.21
+
+Teglalap: tartalmaz() teszt
+0 0 0 0 
+0 1 1 0 
+0 1 1 0 
+0 0 0 0 
+
+Sokszog: konstruktor teszt
+sokszog_1 [5]:(2.1,2)(4.2,1.9)(5.1,7.3)(3,8.2)(1.1,4.7)
+
+Sokszog: kerulet() teszt
+0
+4.20476
+13.667
+14.734
+19.7316
+
+Sokszog: kerulet() teszt
+0
+4.20476
+13.667
+14.734
+19.7316
+
+Sokszog: bennfoglalo() teszt
+Megjegyzes: a csucsok sorrendje elterhet!
+RECTANGLE [4]:(1.1,1.9)(1.1,7.3)(5.1,7.3)(5.1,1.9)
+
+main() vege!

@@ -1,0 +1,11 @@
+Verseny1
+Anita 35.91 1
+Bea 40.17 1
+Csilla 39.93 1
+Diana 36.98 1
+Emma 37.11 1
+Emma 39.22 0
+Diana 37.12 1
+Anita 38.88 0
+Anita 35.92 1
+Csilla 38.50 0

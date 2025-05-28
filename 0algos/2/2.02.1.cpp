@@ -1,9 +1,6 @@
 // 2.2.1. A sakktábla elkészítéséhez csak printf függvényt használjon a 
 // programban! Ötlet: minden sorhoz külön printf-t használjon! 
-// 2.2.1.
-
-// 2.2.1. Sakktábla kirajzolása kizárólag cout használatával, minden sor külön sorban
-
+ 
 #include <iostream>
 
 int main() {

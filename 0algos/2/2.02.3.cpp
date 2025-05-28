@@ -1,7 +1,7 @@
 // 2.2.3. Egy adott sor kirajzolásához is használjon ciklust! Keresse meg egy 
 // sor ismétlődő mintáját és az kerüljön a ciklus magjába! Figyeljen 
 // különösen a fejlécek helyes megjelenítésére. 
-// 2.2.3.
+
 
 #include <iostream>
 
