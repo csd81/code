@@ -4,11 +4,11 @@
 using namespace std;
 
 #include "pont.h"
-//#include "halmaz.h"
-//#include "utvonal.h"
-//#include "haromszog.h"
-//#include "teglalap.h"
-//#include "sokszog.h"
+#include "halmaz.h"
+#include "utvonal.h"
+#include "haromszog.h"
+#include "teglalap.h"
+#include "sokszog.h"
 
 int main()
 {

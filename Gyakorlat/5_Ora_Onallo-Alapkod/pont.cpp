@@ -2,11 +2,54 @@
 
 #include <cmath>
 
-Pont::Pont(double x, double y):
-    x(x),
-    y(y)
+double Pont::M = 106;
+
+double Pont::getM()
 {
+    return M;
 }
+
+void Pont::setM(double newM)
+{
+    M = newM;
+}
+
+void Pont::figyelmeztetes(const string &uzenet) const
+{
+    std::cout << uzenet << std::endl;
+    std::ofstream fajl("warnings.log", std::ios::app);
+    if (fajl.is_open()) {
+        fajl << uzenet << std::endl;
+    } else {
+
+        std::cerr << "Hiba: nem sikerült megnyitni a warnings.log fájlt!" << std::endl;
+    }
+}
+
+void Pont::ellenoriz() const
+{
+
+    if (std::abs(x) > M || std::abs(y) > M)
+    {
+        std::string uzenet << "Figyelem: a pont koordinátái (" << x << ", " << y
+                  << ") meghaladják az M=" << M << " értéket.\n";
+        figyelmeztetes(uzenet);
+
+    }
+
+}
+
+Pont::Pont(double x, double y):     x(x),     y(y){
+    ellenoriz();
+}
+
+Pont::Pont():     x(0),     y(0)
+{}
+
+Pont::Pont(const Pont &masik) : x(masik.x), y(masik.y) {
+    ellenoriz();
+}
+
 
 double Pont::getX() const
 {

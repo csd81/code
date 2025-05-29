@@ -1,0 +1,41 @@
+Feladat
+•
+
+•
+•
+•
+
+•
+
+•
+•
+•
+•
+
+A feladat elkezdéséhez a mellékelt projekt tartalmaz kódokat. A megoldás bizonyos feladatoknál
+ezekhez a kódokhoz is hozzá kell nyúlni, és a teszteléshez a main függvényben a nem használt
+kódokat ki lehet kommentezni.
+Ügyelj arra, hogy minden lefoglalt memória kerüljön megfelelően felszabadításra.
+A meglévő Datum osztály, valamint a készítendő DatumLista osztály legyenek a Naptar
+névtérben.
+Készíts egy DatumLista osztályt, amely dátumokat (Datum típus) tárol. A tárolt dátumok
+mennyiségét a konstruktorban kapja meg az osztály, és foglaljon helyet ennyi dátumnak (a
+megadott Datum osztállyal ez alapból nem működik, azt ki kell kicsit egészíteni). Az osztály
+tároljon még egy megjegyzést (egy szöveg, ami akár szóközöket is tartalmazhat). Ezt is kapja meg
+a konstruktor paraméterben.
+Legyen az osztálynak beállító és lekérő függvénye mind a megjegyzéshez, mind az egyes
+dátumokhoz (setMegjegyzes, getMegjegyzes, setDatum, getDatum), valamint lekérő függvény a
+dátumok darabszámához is (getDarab). Egy dátum lekérésénél most nem kell ellenőrizni az
+indexet, de a beállításnál igen.
+Készíts az osztályhoz másoló konstruktort.
+Készíts az osztályhoz egy hozzaad függvényt, amely megkap egy dátumot és hozzáadja az
+osztályhoz, megnövelve a tároló méretét.
+Készíts az osztályban egy legkorabbi függvényt, amely visszaadja a dátumok közül a legkorábbit
+(feltételezhetjük, hogy van dátum az osztályban).
+Az osztályban legyen egy statikus adattag, ami a tömb maximális méretét tárolja. Kezdetben az
+értéke legyen 6, de lehessen lekérdezni és átállítani (getMaxDarab, setMaxDarab). Ha a hozzaad
+függvény ne növelhesse a tömb méretét az itt eltárolt maximum érték fölé. Az elképzelhető,
+hogy a maximum méretet utólag állítjuk kisebbre, mint a tömb elemszáma, de ezzel most nem
+foglalkozunk.
+
+
