@@ -1,0 +1,27 @@
+[
+    {
+        "Name": "mindenes",
+        "Type": "kebab",
+        "Quantity": 1
+    },
+    {
+        "Name": "magyaros",
+        "Type": "pizza",
+        "Quantity": 2
+    },
+    {
+        "Name": "hagymas sajtos",
+        "Type": "kebab",
+        "Quantity": 1
+    },
+    {
+        "Name": "vega",
+        "Type": "burger",
+        "Quantity": 2
+    },
+    {
+        "Name": "csipos",
+        "Type": "kebab",
+        "Quantity": 3
+    }
+]

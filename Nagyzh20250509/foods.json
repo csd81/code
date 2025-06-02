@@ -1,0 +1,104 @@
+[
+    {
+        "Type": "burger",
+        "Name": "bacon cheese",
+        "MeatType": "marha",
+        "MeatSize": 100,
+        "Bacon": true,
+        "Cheese": true
+    },
+    {
+        "Type": "burger",
+        "Name": "chicken",
+        "MeatType": "csirke",
+        "MeatSize": 100,
+        "Bacon": false,
+        "Cheese": true
+    },
+    {
+        "Type": "kebab",
+        "Name": "csipos",
+        "Sauce": "csipos",
+        "Onion": true,
+        "Tomato": false,
+        "Feta": false
+    },
+    {
+        "Type": "burger",
+        "Name": "dupla",
+        "MeatType": "marha",
+        "MeatSize": 200,
+        "Bacon": false,
+        "Cheese": false
+    },
+    {
+        "Type": "pizza",
+        "Name": "gorog",
+        "Toppings": ["gyros hus", "oliva", "feta sajt", "sajt"]
+    },
+    {
+        "Type": "kebab",
+        "Name": "hagymas sajtos",
+        "Sauce": "edes",
+        "Onion": true,
+        "Tomato": false,
+        "Feta": true
+    },
+    {
+        "Type": "pizza",
+        "Name": "hawaii",
+        "Toppings": ["sonka", "ananasz", "sajt"]
+    },
+    {
+        "Type": "pizza",
+        "Name": "magyaros",
+        "Toppings": ["hagyma", "sonka", "kolbasz", "bacon", "eros paprika", "sajt"]
+    },
+    {
+        "Type": "kebab",
+        "Name": "mindenes",
+        "Sauce": "fokhagymas",
+        "Onion": true,
+        "Tomato": true,
+        "Feta": true
+    },
+    {
+        "Type": "burger",
+        "Name": "natur",
+        "MeatType": "marha",
+        "MeatSize": 100,
+        "Bacon": false,
+        "Cheese": false
+    },
+    {
+        "Type": "kebab",
+        "Name": "natur",
+        "Sauce": "edes",
+        "Onion": false,
+        "Tomato": false,
+        "Feta": false
+    },
+    {
+        "Type": "pizza",
+        "Name": "premium",
+        "Toppings": ["kolbasz", "bacon", "juhturo", "feta sajt", "sajt"]
+    },
+    {
+        "Type": "pizza",
+        "Name": "songoku",
+        "Toppings": ["sonka", "gomba", "kukorica", "sajt"]
+    },
+    {
+        "Type": "burger",
+        "Name": "vega",
+        "MeatType": "vegetarianus",
+        "MeatSize": 100,
+        "Bacon": false,
+        "Cheese": false
+    },
+    {
+        "Type": "pizza",
+        "Name": "vega",
+        "Toppings": ["paradicsom", "gomba", "brokkoli", "kukorica", "sajt"]
+    }
+]

@@ -1,0 +1,84 @@
+Main eleje
+
+
+Loading menu...
+
+Menu:
+bacon cheese burger, 100g marha baconnel sajttal ; 1700 Ft
+chicken burger, 100g csirke sajttal ; 1200 Ft
+csipos kebab, csiposszosz, hagyma ; 1950 Ft
+dupla burger, 200g marha ; 2500 Ft
+gorog pizza, feltetek: gyros hus, oliva, feta sajt, sajt ; 3200 Ft
+hagymas sajtos kebab, edesszosz, hagyma, feta sajt ; 2200 Ft
+hawaii pizza, feltetek: sonka, ananasz, sajt ; 2900 Ft
+magyaros pizza, feltetek: hagyma, sonka, kolbasz, bacon, eros paprika, sajt ; 3800 Ft
+mindenes kebab, fokhagymasszosz, hagyma, paradicsom, feta sajt ; 2300 Ft
+natur burger, 100g marha ; 1500 Ft
+natur kebab, edesszosz ; 1800 Ft
+premium pizza, feltetek: kolbasz, bacon, juhturo, feta sajt, sajt ; 3500 Ft
+songoku pizza, feltetek: sonka, gomba, kukorica, sajt ; 3200 Ft
+vega burger, 100g vegetarianus ; 1200 Ft
+vega pizza, feltetek: paradicsom, gomba, brokkoli, kukorica, sajt ; 3500 Ft
+
+Loading orders...
+
+Processing orders...
+Items in order:
+2 * songoku pizza, feltetek: sonka, gomba, kukorica, sajt ; 3200 Ft => 6400 Ft
+1 * hawaii pizza, feltetek: sonka, ananasz, sajt ; 2900 Ft => 2900 Ft
+1 * premium pizza, feltetek: kolbasz, bacon, juhturo, feta sajt, sajt ; 3500 Ft => 3500 Ft
+Total cost: 12800
+
+Items in order:
+4 * chicken burger, 100g csirke sajttal ; 1200 Ft => 4800 Ft
+2 * gorog pizza, feltetek: gyros hus, oliva, feta sajt, sajt ; 3200 Ft => 6400 Ft
+1 * natur kebab, edesszosz ; 1800 Ft => 1800 Ft
+Total cost: 13000
+
+Items in order:
+1 * mindenes kebab, fokhagymasszosz, hagyma, paradicsom, feta sajt ; 2300 Ft => 2300 Ft
+2 * magyaros pizza, feltetek: hagyma, sonka, kolbasz, bacon, eros paprika, sajt ; 3800 Ft => 7600 Ft
+1 * hagymas sajtos kebab, edesszosz, hagyma, feta sajt ; 2200 Ft => 2200 Ft
+2 * vega burger, 100g vegetarianus ; 1200 Ft => 2400 Ft
+3 * csipos kebab, csiposszosz, hagyma ; 1950 Ft => 5850 Ft
+Total cost: 20350
+
+Setting premium toppings
+
+Menu with new prices
+bacon cheese burger, 100g marha baconnel sajttal ; 1700 Ft
+chicken burger, 100g csirke sajttal ; 1200 Ft
+csipos kebab, csiposszosz, hagyma ; 1950 Ft
+dupla burger, 200g marha ; 2500 Ft
+gorog pizza, feltetek: gyros hus, oliva, feta sajt, sajt ; 3400 Ft
+hagymas sajtos kebab, edesszosz, hagyma, feta sajt ; 2200 Ft
+hawaii pizza, feltetek: sonka, ananasz, sajt ; 2900 Ft
+magyaros pizza, feltetek: hagyma, sonka, kolbasz, bacon, eros paprika, sajt ; 4000 Ft
+mindenes kebab, fokhagymasszosz, hagyma, paradicsom, feta sajt ; 2300 Ft
+natur burger, 100g marha ; 1500 Ft
+natur kebab, edesszosz ; 1800 Ft
+premium pizza, feltetek: kolbasz, bacon, juhturo, feta sajt, sajt ; 4100 Ft
+songoku pizza, feltetek: sonka, gomba, kukorica, sajt ; 3200 Ft
+vega burger, 100g vegetarianus ; 1200 Ft
+vega pizza, feltetek: paradicsom, gomba, brokkoli, kukorica, sajt ; 3500 Ft
+
+<< operator
+Order1:
+2 * songoku pizza
+1 * hawaii pizza
+1 * premium pizza
+
+Order2:
+4 * chicken burger
+2 * gorog pizza
+1 * natur kebab
+
+Order3:
+1 * mindenes kebab
+2 * magyaros pizza
+1 * hagymas sajtos kebab
+2 * vega burger
+3 * csipos kebab
+
+
+main() vege!

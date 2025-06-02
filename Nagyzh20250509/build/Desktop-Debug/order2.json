@@ -1,0 +1,17 @@
+[
+    {
+        "Name": "chicken",
+        "Type": "burger",
+        "Quantity": 4
+    },
+    {
+        "Name": "gorog",
+        "Type": "pizza",
+        "Quantity": 2
+    },
+    {
+        "Name": "natur",
+        "Type": "kebab",
+        "Quantity": 1
+    }
+]
