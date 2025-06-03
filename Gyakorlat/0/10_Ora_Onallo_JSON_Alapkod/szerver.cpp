@@ -47,6 +47,16 @@ void Szerver::betolt()
 }
 }
 
+// A Szerver osztálynak legyen egy listaz metódusa, amely kilistázza a játékosokat (a Karakter
+// osztály kiir metódusát felhasználva).
+void Szerver::listaz() const
+{
+    for (const auto& it : karakterek) {
+        it->kiir();
+    }
+}
+// A Szerver osztály destruktora szabadítson fel minden lefoglalt memóriát.
+
 void Szerver::listaz()
 {
     for (auto it: karakterek){
