@@ -22,10 +22,13 @@ void Hamburger::print() const
 
 int Hamburger::price() const
 {
-int ar=500;
-    if (meat=="marhahús") ar+=10*size;
-    if (meat=="csirkehús") ar+=6*size;
-    if (meat=="vegetáriánus") ar+=7*size;
+    int ar = 500;
+    if (meat == "marha")
+        ar += 10 * size;
+    if (meat == "csirke")
+        ar += 6 * size;
+    if (meat == "vegetarianus")
+        ar += 7 * size;
 
     if (hasBacon) ar+=100;
     if (hasCheese) ar+=100;
