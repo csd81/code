@@ -1,0 +1,37 @@
+[
+    {
+        "ID": "Maritimer",
+        "ratio": 0.0,
+        "xattack": 20
+    },
+    {
+        "ID": "John",
+        "ratio": 0.0,
+        "xattack": 17
+    },
+    {
+        "ID": "Kyrhell",
+        "ratio": 1.0,
+        "xattack": 297
+    },
+    {
+        "ID": "Quincy",
+        "ratio": 0.0,
+        "xattack": 32
+    },
+    {
+        "ID": "Oggie",
+        "ratio": 0.0,
+        "xattack": 257
+    },
+    {
+        "ID": "Pietro",
+        "ratio": 0.0,
+        "xattack": 16
+    },
+    {
+        "ID": "Richard",
+        "ratio": 0.0,
+        "xattack": 21
+    }
+]

@@ -1,0 +1,79 @@
+main() eleje!
+
+--- Dice, kockadobas pelda:
+2 5 2 1 4 1 6 2 6 5 
+
+--- Camp, beolvas JSON-bol
+Megtortent.
+
+--- Camp, print(), parameter nelkuli
+Karforgato John, ar: 120, ero: 5
+Magus Kyrhell, ar: 250, varazsero: 12
+Mesterlovesz Legolas, ar: 325, ugyesseg: 45
+Karforgato Maritimer, ar: 130, ero: 6
+Karforgato Norrey, ar: 110, ero: 4
+Magus Oggie, ar: 300, varazsero: 14
+Mesterlovesz Pietro, ar: 215, ugyesseg: 51
+Karforgato Quincy, ar: 200, ero: 9
+Mesterlovesz Richard, ar: 275, ugyesseg: 37
+Megtortent.
+
+--- Camp, print(), 1 db azonosito
+Kiiras-1:
+Magus Kyrhell, ar: 250, varazsero: 12
+Kiiras-2:
+Mesterlovesz Pietro, ar: 215, ugyesseg: 51
+Kiiras-3:
+Karforgato Quincy, ar: 200, ero: 9
+
+--- Camp, print(), tobb azonosito
+Kiiras-Lista-A:
+Karforgato John, ar: 120, ero: 5
+Mesterlovesz Richard, ar: 275, ugyesseg: 37
+Magus Kyrhell, ar: 250, varazsero: 12
+Mesterlovesz Pietro, ar: 215, ugyesseg: 51
+Magus Oggie, ar: 300, varazsero: 14
+
+Kiiras-Lista-B:
+Karforgato Norrey, ar: 110, ero: 4
+Karforgato Maritimer, ar: 130, ero: 6
+
+--- Camp, getAttackPower()
+John -> 16 14 19 12 21 19 12 26 16 15 25 23 14 21 19 20 18 15 16 21
+Quincy -> 34 27 31 34 39 31 31 37 37 24 32 37 26 40 31 31 25 26 36 33
+Legolas -> 0 45 0 0 0 0 45 45 45 0 45 45 0 45 0 45 45 0 45 45
+Pietro -> 51 0 0 0 51 0 0 51 0 0 51 0 51 51 0 0 0 0 0 0
+Kyrhell -> 12 72 108 156 24 36 0 120 48 24 132 108 12 132 12 48 24 12 36 24
+Oggie -> 14 84 28 28 0 14 56 84 0 28 112 98 224 0 252 0 84 56 84 0
+
+--- readTeam(), Team osztaly, abban print()
+*** 1. csapat:
+Magus Kyrhell, ar: 250, varazsero: 12
+Karforgato John, ar: 120, ero: 5
+Mesterlovesz Legolas, ar: 325, ugyesseg: 45
+
+*** 2. csapat:
+Karforgato Maritimer, ar: 130, ero: 6
+Karforgato John, ar: 120, ero: 5
+Magus Kyrhell, ar: 250, varazsero: 12
+Karforgato Quincy, ar: 200, ero: 9
+Magus Oggie, ar: 300, varazsero: 14
+Mesterlovesz Pietro, ar: 215, ugyesseg: 51
+Mesterlovesz Richard, ar: 275, ugyesseg: 37
+
+--- Team, calculateStats()
+*** 1. csapat statisztikai:
+Kyrhell, varhato tamadoero: 60.3012, ar/ertek arany: 0.241205
+John, varhato tamadoero: 17.5112, ar/ertek arany: 0.145927
+Legolas, varhato tamadoero: 25.038, ar/ertek arany: 0.07704
+
+*** 2. csapat statisztikai:
+Maritimer, varhato tamadoero: 20.9217, ar/ertek arany: 0.160936
+John, varhato tamadoero: 17.4955, ar/ertek arany: 0.145796
+Kyrhell, varhato tamadoero: 60.7044, ar/ertek arany: 0.242818
+Quincy, varhato tamadoero: 31.4516, ar/ertek arany: 0.157258
+Oggie, varhato tamadoero: 69.7774, ar/ertek arany: 0.232591
+Pietro, varhato tamadoero: 16.9371, ar/ertek arany: 0.0787772
+Richard, varhato tamadoero: 20.4018, ar/ertek arany: 0.0741884
+
+main() vege!

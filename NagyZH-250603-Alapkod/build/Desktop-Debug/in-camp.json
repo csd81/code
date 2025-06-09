@@ -1,0 +1,59 @@
+[
+    {
+        "Type": "Swordsman",
+        "Id": "John",
+        "Price": 120,
+        "Strength": 5
+    },
+    {
+        "Type": "Mage",
+        "Id": "Kyrhell",
+        "Price": 250,
+        "Magic": 12
+    },
+    {
+        "Type": "Marksman",
+        "Id": "Legolas",
+        "Price": 325,
+        "Agility": 45,
+        "Elite": true
+    },
+    {
+        "Type": "Swordsman",
+        "Id": "Maritimer",
+        "Price": 130,
+        "Strength": 6
+    },
+    {
+        "Type": "Swordsman",
+        "Id": "Norrey",
+        "Price": 110,
+        "Strength": 4
+    },
+    {
+        "Type": "Mage",
+        "Id": "Oggie",
+        "Price": 300,
+        "Magic": 14
+    },
+    {
+        "Type": "Marksman",
+        "Id": "Pietro",
+        "Price": 215,
+        "Agility": 51,
+        "Elite": false
+    },
+    {
+        "Type": "Swordsman",
+        "Id": "Quincy",
+        "Price": 200,
+        "Strength": 9
+    },
+    {
+        "Type": "Marksman",
+        "Id": "Richard",
+        "Price": 275,
+        "Agility": 37,
+        "Elite": true
+    }
+]
