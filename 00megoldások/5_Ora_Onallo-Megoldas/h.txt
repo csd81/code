@@ -1,0 +1,115 @@
+#ifndef HALMAZ_H
+#define HALMAZ_H
+
+#include <vector>
+using namespace std;
+
+#include "pont.h"
+
+class Halmaz
+{
+protected:
+    string megnevezes;
+    vector<Pont> pontok;
+public:
+    Halmaz(const string& megnevezes);
+    Halmaz(const string& megnevezes, size_t meret); // int meret is OK
+	/// lehetne a ket konstruktort egyben is implementalni:
+    // Halmaz(const string& megnevezes, size_t meret=0);
+    void hozzaad (const Pont& ujpont);
+    void hozzaad (double x, double y);
+    void kiir () const;
+    void beolvas (const string& fajl);
+    void fajlbair (const string& fajl) const;
+};
+
+#endif // HALMAZ_H
+#ifndef HAROMSZOG_H
+#define HAROMSZOG_H
+
+#include "halmaz.h"
+
+class Haromszog : public Halmaz
+{
+public:
+    Haromszog(const Pont& A,
+              const Pont& B,
+              const Pont& C);
+    Pont getA () const;
+    Pont getB () const;
+    Pont getC () const;
+    string alak () const;
+};
+
+#endif // HAROMSZOG_H
+#ifndef PONT_H
+#define PONT_H
+
+#include <iostream>
+using namespace std;
+
+class Pont
+{
+    static double M;
+    double x, y;
+public:
+    Pont();
+    Pont(double x, double y);
+    Pont(const Pont& orig);
+    double getX () const;
+    double getY () const;
+    void kiir (ostream& os=std::cout) const;
+    static double tavolsag (const Pont& p1, const Pont& p2);
+
+    static void setM (double M);
+    static double getM ();
+    void checkM () const;
+};
+
+#endif // PONT_H
+#ifndef SOKSZOG_H
+#define SOKSZOG_H
+
+#include "halmaz.h"
+#include "teglalap.h" // a bennfoglalo() fuggveny miatt
+
+class Sokszog : public Halmaz
+{
+public:
+    Sokszog(const string& megnevezes);
+    double kerulet () const;
+    Teglalap bennfoglalo () const;
+};
+
+#endif // SOKSZOG_H
+#ifndef TEGLALAP_H
+#define TEGLALAP_H
+
+#include "halmaz.h"
+
+class Teglalap : public Halmaz
+{
+public:
+    Teglalap(double xmin, double xmax,
+             double ymin, double ymax);
+    double terulet () const;
+    bool tartalmaz (const Pont& pont) const;
+};
+
+#endif // TEGLALAP_H
+#ifndef UTVONAL_H
+#define UTVONAL_H
+
+#include "halmaz.h"
+
+class Utvonal : public Halmaz
+{
+    bool irany=true; // default ertek, ha a konstruktor nem allitja be
+public:
+    Utvonal();
+    void megfordit ();
+    void kiir ();
+    double hossz () const;
+};
+
+#endif // UTVONAL_H
