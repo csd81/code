@@ -1,0 +1,268 @@
+[
+    {
+        "Type": "Bus",
+        "From": "Budapest",
+        "To": "Bratislava",
+        "TravelTime": 180,
+        "Price": 6500,
+        "Stops": 1,
+        "TotalStopTime": 20
+    },
+    {
+        "Type": "Plain",
+        "From": "Zagrab",
+        "To": "Milano",
+        "TravelTime": 95,
+        "Price": 21000,
+        "Class": "business"
+    },
+    {
+        "Type": "Train",
+        "From": "Berlin",
+        "To": "Parizs",
+        "TravelTime": 270,
+        "Price": 9700,
+        "Stops": 8
+    },
+    {
+        "Type": "Train",
+        "From": "Budapest",
+        "To": "Zagrab",
+        "TravelTime": 280,
+        "Price": 7800,
+        "Stops": 14
+    },
+    {
+        "Type": "Train",
+        "From": "Brusszel",
+        "To": "Amszterdam",
+        "TravelTime": 150,
+        "Price": 9800,
+        "Stops": 3
+    },
+    {
+        "Type": "Plain",
+        "From": "Varso",
+        "To": "Oslo",
+        "TravelTime": 150,
+        "Price": 28000,
+        "Class": "economy"
+    },
+    {
+        "Type": "Bus",
+        "From": "Budapest",
+        "To": "Becs",
+        "TravelTime": 230,
+        "Price": 5400,
+        "Stops": 2,
+        "TotalStopTime": 30
+    },
+    {
+        "Type": "Bus",
+        "From": "Budapest",
+        "To": "Szolnok",
+        "TravelTime": 70,
+        "Price": 1200,
+        "Stops": 0,
+        "TotalStopTime": 0
+    },
+    {
+        "Type": "Bus",
+        "From": "Becs",
+        "To": "Milano",
+        "TravelTime": 470,
+        "Price": 9800,
+        "Stops": 2,
+        "TotalStopTime": 40
+    },
+    {
+        "Type": "Bus",
+        "From": "Krakow",
+        "To": "Lviv",
+        "TravelTime": 360,
+        "Price": 8900,
+        "Stops": 3,
+        "TotalStopTime": 40
+    },
+    {
+        "Type": "Train",
+        "From": "Budapest",
+        "To": "Munchen",
+        "TravelTime": 420,
+        "Price": 15500,
+        "Stops": 6
+    },
+    {
+        "Type": "Bus",
+        "From": "Becs",
+        "To": "Parizs",
+        "TravelTime": 980,
+        "Price": 21800,
+        "Stops": 5,
+        "TotalStopTime": 75
+    },
+    {
+        "Type": "Train",
+        "From": "Budapest",
+        "To": "Veszprem",
+        "TravelTime": 100,
+        "Price": 2200,
+        "Stops": 6
+    },
+    {
+        "Type": "Train",
+        "From": "Berlin",
+        "To": "Varso",
+        "TravelTime": 360,
+        "Price": 14500,
+        "Stops": 5
+    },
+    {
+        "Type": "Train",
+        "From": "Zurich",
+        "To": "Milano",
+        "TravelTime": 270,
+        "Price": 13500,
+        "Stops": 4
+    },
+    {
+        "Type": "Plain",
+        "From": "Sofia",
+        "To": "Milano",
+        "TravelTime": 180,
+        "Price": 26000,
+        "Class": "business"
+    },
+    {
+        "Type": "Bus",
+        "From": "Zagrab",
+        "To": "Ljubljana",
+        "TravelTime": 160,
+        "Price": 5400,
+        "Stops": 1,
+        "TotalStopTime": 15
+    },
+    {
+        "Type": "Plain",
+        "From": "Sofia",
+        "To": "Berlin",
+        "TravelTime": 140,
+        "Price": 29000,
+        "Class": "first"
+    },
+    {
+        "Type": "Bus",
+        "From": "Praga",
+        "To": "Becs",
+        "TravelTime": 240,
+        "Price": 8200,
+        "Stops": 2,
+        "TotalStopTime": 30
+    },
+    {
+        "Type": "Plain",
+        "From": "Budapest",
+        "To": "London",
+        "TravelTime": 160,
+        "Price": 32000,
+        "Class": "economy"
+    },
+    {
+        "Type": "Plain",
+        "From": "Budapest",
+        "To": "Becs",
+        "TravelTime": 80,
+        "Price": 13000,
+        "Class": "economy"
+    },
+    {
+        "Type": "Bus",
+        "From": "Zurich",
+        "To": "Milano",
+        "TravelTime": 480,
+        "Price": 12000,
+        "Stops": 5,
+        "TotalStopTime": 50
+    },
+    {
+        "Type": "Plain",
+        "From": "Becs",
+        "To": "Parizs",
+        "TravelTime": 130,
+        "Price": 34000,
+        "Class": "business"
+    },
+    {
+        "Type": "Train",
+        "From": "Becs",
+        "To": "Parizs",
+        "TravelTime": 360,
+        "Price": 23100,
+        "Stops": 12
+    },
+    {
+        "Type": "Plain",
+        "From": "Bukarest",
+        "To": "Madrid",
+        "TravelTime": 210,
+        "Price": 37000,
+        "Class": "economy"
+    },
+    {
+        "Type": "Bus",
+        "From": "Kolozsvar",
+        "To": "Belgrad",
+        "TravelTime": 300,
+        "Price": 7800,
+        "Stops": 2,
+        "TotalStopTime": 35
+    },
+    {
+        "Type": "Plain",
+        "From": "Becs",
+        "To": "Parizs",
+        "TravelTime": 120,
+        "Price": 65000,
+        "Class": "first"
+    },
+    {
+        "Type": "Train",
+        "From": "Koppenhaga",
+        "To": "Hamburg",
+        "TravelTime": 290,
+        "Price": 12000,
+        "Stops": 4
+    },
+    {
+        "Type": "Plain",
+        "From": "Ljubljana",
+        "To": "Brusszel",
+        "TravelTime": 145,
+        "Price": 30000,
+        "Class": "business"
+    },
+    {
+        "Type": "Plain",
+        "From": "Becs",
+        "To": "Parizs",
+        "TravelTime": 150,
+        "Price": 18000,
+        "Class": "economy"
+    },
+    {
+        "Type": "Train",
+        "From": "Madrid",
+        "To": "Parizs",
+        "TravelTime": 170,
+        "Price": 12980,
+        "Stops": 3
+    },
+    {
+        "Type": "Train",
+        "From": "Salzburg",
+        "To": "Munchen",
+        "TravelTime": 120,
+        "Price": 8700,
+        "Stops": 2
+    }
+]

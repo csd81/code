@@ -13,6 +13,7 @@ class Camp
 {
     vector<Character*> characters;
 public:
+    ~Camp();
     void load(const string& filename);
 
 

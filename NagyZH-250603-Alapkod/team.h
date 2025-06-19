@@ -12,6 +12,7 @@ class Team
 {
     vector<Character*> members;
 public:
+    ~Team();
     void addMember(Character* c);
     void print();
     void calculateStats(string jsonFile);

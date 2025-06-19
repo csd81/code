@@ -9,6 +9,14 @@
 using namespace std;
 using namespace nlohmann;
 
+Camp::~Camp()
+{
+    for (Character* c : characters){
+        delete c;
+    }
+    characters.clear();
+}
+
 void Camp::load(const string &filename)
 {
     ifstream ifs(filename);

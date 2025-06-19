@@ -18,10 +18,10 @@ int Mage::attackPower() const
 {
     int attack = 0;
 
-    int roll =0;
-        while(roll != 1){
-        roll = Dice::roll();
-            attack += roll * magic;
+
+    while (Dice::roll() != 1) {
+        attack += magic;
     }
+
         return attack;
 }

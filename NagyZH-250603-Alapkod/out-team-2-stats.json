@@ -11,8 +11,8 @@
     },
     {
         "ID": "Kyrhell",
-        "ratio": 1.0,
-        "xattack": 297
+        "ratio": 0.0,
+        "xattack": 70
     },
     {
         "ID": "Quincy",
@@ -22,7 +22,7 @@
     {
         "ID": "Oggie",
         "ratio": 0.0,
-        "xattack": 257
+        "xattack": 59
     },
     {
         "ID": "Pietro",

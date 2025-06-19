@@ -1,5 +1,11 @@
 #include "team.h"
 
+Team::~Team()
+{
+
+    members.clear();
+}
+
 void Team::addMember(Character *c)
 {
     members.push_back(c);
@@ -27,7 +33,7 @@ void Team::calculateStats(string jsonFile)
     double ratio = xattack/price;
         cout << "ID: " << c->getId()
              << " expected attack: "  << xattack
-             << " attack/price ratio: "  << ratio;
+             << " attack/price ratio: "  << ratio << endl;
     data.push_back({
         {"ID", c->getId()},
         {"xattack", xattack},

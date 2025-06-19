@@ -1,0 +1,63 @@
+main eleje
+
+
+Loading trips...
+
+Travel options from Becs to Parizs:
+[BUS] Becs - Parizs : 980 minutes, 21800 Ft, 5 stops (75 minutes)
+[PLAIN] Becs - Parizs : 130 minutes, 34000 Ft, business class
+[TRAIN] Becs - Parizs : 360 minutes, 23100 Ft, 12 stops
+[PLAIN] Becs - Parizs : 120 minutes, 65000 Ft, first class
+[PLAIN] Becs - Parizs : 150 minutes, 18000 Ft, economy class
+
+Promoted location test...
+Promoted location:
+Promoted location: Madrid
+Promoted location: London
+
+Listing promoted travels...
+
+-------Travels to Parizs-------
+[TRAIN] Berlin - Parizs : 270 minutes, 9700 Ft, 8 stops
+[BUS] Becs - Parizs : 980 minutes, 21800 Ft, 5 stops (75 minutes)
+[PLAIN] Becs - Parizs : 130 minutes, 34000 Ft, business class
+[TRAIN] Becs - Parizs : 360 minutes, 23100 Ft, 12 stops
+[PLAIN] Becs - Parizs : 120 minutes, 65000 Ft, first class
+[PLAIN] Becs - Parizs : 150 minutes, 18000 Ft, economy class
+[TRAIN] Madrid - Parizs : 170 minutes, 12980 Ft, 3 stops
+
+-------Travels to Milano-------
+[PLAIN] Zagrab - Milano : 95 minutes, 21000 Ft, business class
+[BUS] Becs - Milano : 470 minutes, 9800 Ft, 2 stops (40 minutes)
+[TRAIN] Zurich - Milano : 270 minutes, 13500 Ft, 4 stops
+[PLAIN] Sofia - Milano : 180 minutes, 26000 Ft, business class
+[BUS] Zurich - Milano : 480 minutes, 12000 Ft, 5 stops (50 minutes)
+
+FilterBase<T> test seemingly ok...
+
+Filter trips that arrive at Milano...
+[PLAIN] Zagrab - Milano : 95 minutes, 21000 Ft, business class
+[BUS] Becs - Milano : 470 minutes, 9800 Ft, 2 stops (40 minutes)
+[TRAIN] Zurich - Milano : 270 minutes, 13500 Ft, 4 stops
+[PLAIN] Sofia - Milano : 180 minutes, 26000 Ft, business class
+[BUS] Zurich - Milano : 480 minutes, 12000 Ft, 5 stops (50 minutes)
+
+Filter trips at most 2 hour trips from Budapest...
+[BUS] Budapest - Szolnok : 70 minutes, 1200 Ft, 0 stops (0 minutes)
+[TRAIN] Budapest - Veszprem : 100 minutes, 2200 Ft, 6 stops
+[PLAIN] Budapest - Becs : 80 minutes, 13000 Ft, economy class
+
+Travel options from Budapest to Milano:
+No direct trips found, searching for 1 stop options...
+----
+[TRAIN] Budapest - Zagrab : 280 minutes, 7800 Ft, 14 stops
+ => [PLAIN] Zagrab - Milano : 95 minutes, 21000 Ft, business class
+----
+[BUS] Budapest - Becs : 230 minutes, 5400 Ft, 2 stops (30 minutes)
+ => [BUS] Becs - Milano : 470 minutes, 9800 Ft, 2 stops (40 minutes)
+----
+[PLAIN] Budapest - Becs : 80 minutes, 13000 Ft, economy class
+ => [BUS] Becs - Milano : 470 minutes, 9800 Ft, 2 stops (40 minutes)
+----
+
+main() vege!
