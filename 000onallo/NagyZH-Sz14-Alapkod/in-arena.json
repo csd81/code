@@ -1,0 +1,47 @@
+[
+    {
+        "CharacterClass": "Soldier",
+        "Id": "Red_S1",
+        "MaxHP": 100,
+        "Power": 75,
+        "Armor": 15
+    },
+    {
+        "CharacterClass": "Soldier",
+        "Id": "Red_S2",
+        "MaxHP": 110,
+        "Power": 32,
+        "Armor": 45
+    },
+    {
+        "CharacterClass": "Mage",
+        "Id": "Red_M",
+        "MaxHP": 60,
+        "Magic": 40
+    },
+    {
+        "CharacterClass": "Priest",
+        "Id": "Red_P",
+        "MaxHP": 50,
+        "Magic": 17
+    },
+    {
+        "CharacterClass": "Soldier",
+        "Id": "Blue_S",
+        "MaxHP": 140,
+        "Power": 40,
+        "Armor": 3
+    },
+    {
+        "CharacterClass": "Mage",
+        "Id": "Blue_M",
+        "MaxHP": 80,
+        "Magic": 55
+    },
+    {
+        "CharacterClass": "Priest",
+        "Id": "Blue_P",
+        "MaxHP": 55,
+        "Magic": 27
+    }
+]

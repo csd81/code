@@ -1,0 +1,10 @@
+This_Is_Sparta TracThor 2
+Lone_Unsullied RobinHood42 1
+Gandalf25 Harry_Potter 1
+Szoke_herceg MrLegolas 2
+Harry_Potter Lone_Unsullied 2
+TracThor MrLegolas 0
+OsMagus12 Gandalf25 2
+This_Is_Sparta Szoke_herceg 1
+Gandalf25 TracThor 0
+RobinHood42 OsMagus12 2

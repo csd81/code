@@ -1,0 +1,107 @@
+<h1>Szamok Osztály – Projektleírás</h1>
+
+<h2>Feladatleírás</h2>
+
+<p>A feladat célja egy <code>Szamok</code> osztály elkészítése, amely lebegőpontos számok tömbjét tárolja és kezeli.</p>
+
+<hr />
+
+<h2>Követelmények</h2>
+
+<h3>Névtér</h3>
+
+<ul>
+<li>A <code>Szamok</code> osztály a <code>Tarolo</code> névtérben helyezkedjen el.</li>
+<li>A <code>main.cpp</code>-ben <strong>ne</strong> használj <code>using namespace Tarolo</code> utasítást.</li>
+</ul>
+
+<hr />
+
+<h2>Osztály: Szamok</h2>
+
+<h3>Adattagok</h3>
+
+<ul>
+<li><strong>Lebegőpontos számok</strong> dinamikusan foglalt tömbje</li>
+<li>A tömb méretét a konstruktor paraméterben kapja meg.</li>
+<li>A konstruktor második paramétere egy alapérték, amelyet minden elem felvesz (alapértelmezett érték: <code>0</code>).</li>
+</ul>
+
+<h3>Konstruktor</h3>
+
+<ul>
+<li><p>Paraméterek:</p>
+
+<ul>
+<li><code>méret</code> (unsigned int)</li>
+<li><code>alapérték</code> (float, alapértelmezett: 0)</li>
+</ul></li>
+<li>A konstruktor foglalja le a szükséges memóriát.</li>
+</ul>
+
+<h3>Destruktor</h3>
+
+<ul>
+<li>Szabadítsa fel az előzőleg lefoglalt memóriát.</li>
+</ul>
+
+<h3>Függvények</h3>
+
+<h4>darabLeker</h4>
+
+<ul>
+<li>Adja vissza az eltárolt értékek számát.</li>
+</ul>
+
+<h4>ertekBeallit</h4>
+
+<ul>
+<li><p>Paraméterek:</p>
+
+<ul>
+<li>index</li>
+<li>új érték</li>
+</ul></li>
+<li>Beállítja a tömb adott helyén lévő értéket.</li>
+<li><strong>Érvénytelen index</strong> esetén a függvény <strong>ne csináljon semmit</strong>.</li>
+</ul>
+
+<h4>ertekLeker</h4>
+
+<ul>
+<li><p>Paraméter:</p>
+
+<ul>
+<li>index</li>
+</ul></li>
+<li>Visszaadja a tömb adott helyén lévő számot.</li>
+<li><strong>Érvénytelen index</strong> esetén a függvény <strong>-10^8</strong> értékkel tér vissza.</li>
+</ul>
+
+<hr />
+
+<h2>Main.cpp követelmények</h2>
+
+<h3>Kiir függvény</h3>
+
+<ul>
+<li>Készíts egy <code>kiir</code> függvényt, amely paraméterben kap egy <code>Szamok</code> objektumot.</li>
+<li>Jelenítse meg a tárolt értékeket <strong>egy sorban, vesszővel elválasztva</strong>.</li>
+</ul>
+
+<h3>Main függvény</h3>
+
+<ul>
+<li>Hozz létre <strong>két <code>Szamok</code> objektumot</strong>.</li>
+<li>Töltsd fel őket értékekkel.</li>
+<li>Jelenítsd meg az értékeket a <strong>kiir függvény</strong> segítségével.</li>
+</ul>
+
+<hr />
+
+<h2>Megjegyzések</h2>
+
+<ul>
+<li>Dolgozz gondosan a dinamikus memóriakezeléssel (<code>new</code> és <code>delete</code>).</li>
+<li>Ne használj <code>using namespace Tarolo</code> a <code>main</code>-ben.</li>
+</ul>

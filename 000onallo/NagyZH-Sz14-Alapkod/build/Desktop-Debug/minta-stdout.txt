@@ -1,0 +1,70 @@
+main() eleje!
+
+--- Arena beolvasasa JSON-bol
+Megtortent.
+
+--- Arena: print() teszt
+[HP 60/60 Mage Red_M, magic: 40]
+[HP 50/50 Priest Red_P, magic: 17]
+[HP 140/140 Soldier Blue_S, power: 40, armor: 3]
+
+--- Arena: printAll() teszt
+[HP 100/100 Soldier Red_S1, power: 75, armor: 15]
+[HP 110/110 Soldier Red_S2, power: 32, armor: 45]
+[HP 60/60 Mage Red_M, magic: 40]
+[HP 50/50 Priest Red_P, magic: 17]
+[HP 140/140 Soldier Blue_S, power: 40, armor: 3]
+[HP 80/80 Mage Blue_M, magic: 55]
+[HP 55/55 Priest Blue_P, magic: 27]
+
+--- Arena: performAction() tesztek
+#00: [HP 140/140 Soldier Blue_S, power: 40, armor: 3]
+#01: [HP 68/140 Soldier Blue_S, power: 40, armor: 3]
+#02: [HP 28/140 Soldier Blue_S, power: 40, armor: 3]
+#03: [HP 55/140 Soldier Blue_S, power: 40, armor: 3]
+#04: [HP 75/100 Soldier Red_S1, power: 75, armor: 15]
+#05: [HP 109/110 Soldier Red_S2, power: 32, armor: 45]
+#06: [HP 54/110 Soldier Red_S2, power: 32, armor: 45]
+#07: [HP 0/110 Soldier Red_S2, power: 32, armor: 45]
+#08: [HP 0/110 Soldier Red_S2, power: 32, armor: 45]
+#09: [HP 80/80 Mage Blue_M, magic: 55]
+#10: [HP 5/80 Mage Blue_M, magic: 55]
+#11: [HP 0/80 Mage Blue_M, magic: 55]
+#12: [HP 60/60 Mage Red_M, magic: 40]
+#13: [HP 82/140 Soldier Blue_S, power: 40, armor: 3]
+#14: [HP 0/55 Priest Blue_P, magic: 27]
+#15: [HP 82/140 Soldier Blue_S, power: 40, armor: 3]
+#16: [HP 92/100 Soldier Red_S1, power: 75, armor: 15]
+#17: [HP 100/100 Soldier Red_S1, power: 75, armor: 15]
+#18: [HP 0/110 Soldier Red_S2, power: 32, armor: 45]
+#19: [HP 60/60 Mage Red_M, magic: 40]
+#20: [HP 10/50 Priest Red_P, magic: 17]
+#21: [HP 20/60 Mage Red_M, magic: 40]
+#22: [HP 37/60 Mage Red_M, magic: 40]
+*** Vegallapot:
+[HP 100/100 Soldier Red_S1, power: 75, armor: 15]
+[HP 0/110 Soldier Red_S2, power: 32, armor: 45]
+[HP 37/60 Mage Red_M, magic: 40]
+[HP 10/50 Priest Red_P, magic: 17]
+[HP 82/140 Soldier Blue_S, power: 40, armor: 3]
+[HP 0/80 Mage Blue_M, magic: 55]
+[HP 0/55 Priest Blue_P, magic: 27]
+
+--- ActionList beolvasas, printSome()
+Red_S1 -> Blue_S
+Red_M -> Blue_S
+Blue_P -> Blue_S
+Blue_S -> Red_S1
+Blue_S -> Red_S2
+
+--- Arena, ActionList vegrehajtas
+*** Vegallapot (megegyezik az elozovel):
+[HP 100/100 Soldier Red_S1, power: 75, armor: 15]
+[HP 0/110 Soldier Red_S2, power: 32, armor: 45]
+[HP 37/60 Mage Red_M, magic: 40]
+[HP 10/50 Priest Red_P, magic: 17]
+[HP 82/140 Soldier Blue_S, power: 40, armor: 3]
+[HP 0/80 Mage Blue_M, magic: 55]
+[HP 0/55 Priest Blue_P, magic: 27]
+
+main() vege!

@@ -1,0 +1,10 @@
+OsMagus12 magus 8 45
+RobinHood42 ijasz 8 84
+Szoke_herceg harcos 2 kard
+Harry_Potter magus 5 25
+Lone_Unsullied harcos 12 landzsa
+Gandalf25 magus 19 59
+MrLegolas ijasz 15 95
+TracThor harcos 17 kalapacs
+This_Is_Sparta harcos 9 landzsa
+*
