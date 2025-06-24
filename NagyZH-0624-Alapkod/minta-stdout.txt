@@ -1,0 +1,105 @@
+main() eleje!
+
+--- Castle, beolvas JSON-bol
+Megtortent.
+
+--- Castle, printAll()
+Ijasz (gyalogsag), koltseg: 120, fegyver: ij, konnyu pancelzat
+Dardas (gyalogsag), koltseg: 90, fegyver: darda, konnyu pancelzat
+Kardforgato (gyalogsag), koltseg: 350, fegyver: kard, nehez pancelzat
+Fejszes (gyalogsag), koltseg: 85, fegyver: fejsze, konnyu pancelzat
+Landzsas (gyalogsag), koltseg: 130, fegyver: landzsa, konnyu pancelzat
+Testor (gyalogsag), koltseg: 280, fegyver: alabard, nehez pancelzat
+Konnyulovas (lovassag), koltseg: 600, menetsebesseg: 60
+Lovasijasz (lovassag), koltseg: 750, menetsebesseg: 55
+Vertes (lovassag), koltseg: 1150, menetsebesseg: 50
+Katapult (gep), koltseg: 8750, legenyseg: 4 fo
+Ballista (gep), koltseg: 6900, legenyseg: 3 fo
+
+--- Castle, kiiro << operator
+*** 1. Kiiras string-be (nincs output)
+*** 2. A string tartalma:
+~~~
+Ijasz (gyalogsag), koltseg: 120, fegyver: ij, konnyu pancelzat
+Dardas (gyalogsag), koltseg: 90, fegyver: darda, konnyu pancelzat
+Kardforgato (gyalogsag), koltseg: 350, fegyver: kard, nehez pancelzat
+Fejszes (gyalogsag), koltseg: 85, fegyver: fejsze, konnyu pancelzat
+Landzsas (gyalogsag), koltseg: 130, fegyver: landzsa, konnyu pancelzat
+Testor (gyalogsag), koltseg: 280, fegyver: alabard, nehez pancelzat
+Konnyulovas (lovassag), koltseg: 600, menetsebesseg: 60
+Lovasijasz (lovassag), koltseg: 750, menetsebesseg: 55
+Vertes (lovassag), koltseg: 1150, menetsebesseg: 50
+Katapult (gep), koltseg: 8750, legenyseg: 4 fo
+Ballista (gep), koltseg: 6900, legenyseg: 3 fo
+~~~
+
+--- Castle, readArmy(), Army osztaly
+Beolvasas megtortent.
+
+--- Army, display()
+Army-1:
+100 x Ijasz (gyalogsag), koltseg: 120, fegyver: ij, konnyu pancelzat
+150 x Dardas (gyalogsag), koltseg: 90, fegyver: darda, konnyu pancelzat
+50 x Konnyulovas (lovassag), koltseg: 600, menetsebesseg: 60
+75 x Fejszes (gyalogsag), koltseg: 85, fegyver: fejsze, konnyu pancelzat
+
+Army-2:
+100 x Kardforgato (gyalogsag), koltseg: 350, fegyver: kard, nehez pancelzat
+100 x Konnyulovas (lovassag), koltseg: 600, menetsebesseg: 60
+25 x Vertes (lovassag), koltseg: 1150, menetsebesseg: 50
+3 x Ballista (gep), koltseg: 6900, legenyseg: 3 fo
+
+Army-3:
+75 x Lovasijasz (lovassag), koltseg: 750, menetsebesseg: 55
+5 x Katapult (gep), koltseg: 8750, legenyseg: 4 fo
+
+Army-4:
+100 x Konnyulovas (lovassag), koltseg: 600, menetsebesseg: 60
+50 x Lovasijasz (lovassag), koltseg: 750, menetsebesseg: 55
+35 x Vertes (lovassag), koltseg: 1150, menetsebesseg: 50
+
+--- Army, getSpeed()
+Army-1 menetsebessege: 30
+Army-2 menetsebessege: 25
+Army-3 menetsebessege: 35
+Army-4 menetsebessege: 50
+
+--- Army, soldierCount()
+Army-1 katonak szama: 375
+Army-2 katonak szama: 234
+Army-3 katonak szama: 95
+Army-4 katonak szama: 185
+
+--- Army, horseCount()
+Army-1 lovak szama: 50
+Army-2 lovak szama: 131
+Army-3 lovak szama: 85
+Army-4 lovak szama: 185
+
+--- Army, dailyCost() alap
+Army-1 napi ellatmany: 9875
+Army-2 napi ellatmany: 7160
+Army-3 napi ellatmany: 3225
+Army-4 napi ellatmany: 6475
+
+--- Army, dailyCost(), valtoztathato napi ellatmany
+Napi koltsegek megemelt ellatmany mellett:
+Army-1 napi ellatmany (+3/katona): 11000
+Army-2 napi ellatmany (+3/katona): 7862
+Army-3 napi ellatmany (+3/katona): 3510
+Army-4 napi ellatmany (+3/katona): 7030
+
+--- Army, totalMissionCost()
+Kuldetes: 77 km, 14 nap a masik varban
+Army-1 teljes koltsege: 259375
+Army-2 teljes koltsege: 301970
+Army-3 teljes koltsege: 164500
+Army-4 teljes koltsege: 254300
+
+Kuldetes: 263 km, 60 nap a masik varban
+Army-1 teljes koltsege: 832125
+Army-2 teljes koltsege: 731570
+Army-3 teljes koltsege: 345100
+Army-4 teljes koltsege: 603950
+
+main() vege!

@@ -1,0 +1,12 @@
+[
+    {
+        "Name": "Katapult",
+        "EquipCost": 8750,
+        "Crew": 4
+    },
+    {
+        "Name": "Ballista",
+        "EquipCost": 6900,
+        "Crew": 3
+    }
+]

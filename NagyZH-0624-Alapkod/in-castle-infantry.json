@@ -1,0 +1,38 @@
+[
+    {
+        "Name": "Ijasz",
+        "EquipCost": 120,
+        "Weapon": "ij",
+        "Heavy": false
+    },
+    {
+        "Name": "Dardas",
+        "EquipCost": 90,
+        "Weapon": "darda",
+        "Heavy": false
+    },
+    {
+        "Name": "Kardforgato",
+        "EquipCost": 350,
+        "Weapon": "kard",
+        "Heavy": true
+    },
+    {
+        "Name": "Fejszes",
+        "EquipCost": 85,
+        "Weapon": "fejsze",
+        "Heavy": false
+    },
+    {
+        "Name": "Landzsas",
+        "EquipCost": 130,
+        "Weapon": "landzsa",
+        "Heavy": false
+    },
+    {
+        "Name": "Testor",
+        "EquipCost": 280,
+        "Weapon": "alabard",
+        "Heavy": true
+    }
+]

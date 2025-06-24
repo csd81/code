@@ -1,0 +1,17 @@
+[
+    {
+        "Name": "Konnyulovas",
+        "EquipCost": 600,
+        "Speed": 60
+    },
+    {
+        "Name": "Lovasijasz",
+        "EquipCost": 750,
+        "Speed": 55
+    },
+    {
+        "Name": "Vertes",
+        "EquipCost": 1150,
+        "Speed": 50
+    }
+]
